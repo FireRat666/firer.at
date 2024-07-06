@@ -2,7 +2,7 @@
   "name": "glitch-in-bio",
   "version": "1.0.1",
   "description": "Your very own link-in-bio app.",
-  "main": "index.html",
+  "main": "./index.html",
   "scripts": {
     "start": "vite",
     "build": "vite build",

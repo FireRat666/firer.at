@@ -12,8 +12,8 @@
     ],
     "exclude": [
       "./public/",
-      "vite.config.js",
-      "settings.json"
+      "./vite.config.js",
+      "./settings.json"
     ]
   },
   "noSavedEvents": true
