@@ -1,4 +1,4 @@
-import { html } from "../scripts/lighterhtml.js";
+import { html } from "lighterhtml";
 import settings from "../settings.json";
 import { SVGs } from "./social-svgs";
 

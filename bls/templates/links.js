@@ -1,5 +1,5 @@
 import { links } from "../settings.json";
-import { html } from "../scripts/lighterhtml.js";
+import { html } from "lighterhtml";
 
 function renderLink(link) {
   const classes = link.url

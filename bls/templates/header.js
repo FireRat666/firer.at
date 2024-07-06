@@ -1,4 +1,4 @@
-import { html } from "../scripts/lighterhtml.js";
+import { html } from "lighterhtml";
 import settings from "../settings.json";
 
 export const renderHeader = html.node`<div>
