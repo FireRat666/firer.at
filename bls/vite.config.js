@@ -1,4 +1,4 @@
-import { defineConfig } from "vite";
+import { defineConfig } from "./vite/client";
 
 export default defineConfig(async ({ command, mode }) => {
   return {
