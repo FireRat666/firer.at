@@ -1,4 +1,4 @@
-import { html } from "./scripts/lighterhtml.js";
+import { html } from "../scripts/lighterhtml.js";
 import settings from "../settings.json";
 
 export const renderFooter = html.node`<footer class="footer">

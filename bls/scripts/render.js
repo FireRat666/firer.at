@@ -1,5 +1,5 @@
 // Importing modules and functions
-import {render, html, svg} from './scripts/lighterhtml.js';
+import {render, html, svg} from './lighterhtml.js';
 // import { html, render } from "lighterhtml";
 import { renderMeta } from "../templates/meta.js";
 import { renderHeader } from "../templates/header.js";
