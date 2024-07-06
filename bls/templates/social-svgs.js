@@ -1,4 +1,4 @@
-import { html } from "lighterhtml";
+import { html } from "./scripts/lighterhtml.js";
 
 /**
  * All of our SVG icons are in this object.
