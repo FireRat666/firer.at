@@ -18,7 +18,7 @@
       if (location.protocol == "http:") location.protocol = "https:";
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker
-          .register("sw.js")
+          .register("https://firer.at/bls/sw.js")
           .then((reg) => console.log("Service Worker registered", reg))
           .catch((err) =>
             console.error("Service Worker **not** registered", err)
@@ -27,7 +27,7 @@
         console.warn("Service Worker not supported in this browser");
       }
     </script>
-    <script type="module" src="https://firer.at/blsscripts/render.js"></script>
+    <script type="module" src="https://firer.at/bls/scripts/render.js"></script>
     <!-- templates/head.js will fill in here -->
   </head>
   <body>
