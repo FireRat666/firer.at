@@ -1,0 +1,29 @@
+			:root { color-scheme: dark; }
+		a.buttonG { 
+			:root { color-scheme: dark; }padding: 0.6vh 0.6vw; border: 0.1vh outset buttonborder; border-radius: 1vh;
+			color: #00FF00; background-color: #333333; text-decoration: none; 
+			}
+			
+		a.buttonY { padding: 0.6vh 0.6vw; border: 0.1vh outset buttonborder; border-radius: 1vh;
+			color: #FFFF00; background-color: #333333; text-decoration: none; 
+			}
+			
+		a.buttonGY { padding: 0.6vh 0.6vw; border: 0.1vh outset buttonborder; border-radius: 1vh;
+			color: #AAFF00; background-color: #333333; text-decoration: none; 
+			}
+						
+		a.buttonR { padding: 0.6vh 0.6vw; border: 0.1vh outset buttonborder; border-radius: 1vh;
+			color: #FF0000; background-color: #333333; text-decoration: none; 
+			}
+			
+		a.buttonW { padding: 0.6vh 0.6vw; border: 0.1vh outset buttonborder; border-radius: 1vh;
+			color: #FFFFFF; background-color: #333333; text-decoration: none; 
+			}
+
+		/* Base styles */
+		body { font-size: 35px; }
+		/* Larger screens */
+		@media (min-width: 1200px) { body { font-size: 45px; } } 
+		/* Smaller tablets and mobiles */
+		@media (max-width: 900px) { body { font-size: 30px; } }
+		input.url {font-size: 30px;}

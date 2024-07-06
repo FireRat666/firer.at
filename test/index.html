@@ -1,0 +1,107 @@
+<html>
+	<head>
+		<meta name="color-scheme" content="dark">
+		<meta property="og:title" content="A Github Test Space">
+		<meta property="og:description" content="Watch things and Play Games!">
+		<meta property="og:image" content="https://cdn.sidequestvr.com/file/636703/flower-tile-seamless-pattern.png">  
+		<script src="https://aframe.io/releases/1.4.0/aframe.min.js" sq-space="https://sidequestvr.com/space/2471"></script>
+		<script src="https://vidya.sdq.st/say-names.js" four-twenty="false" announce-events="true"></script>
+		<script src="https://firer.at/test/tests.js"></script>
+    		<link rel="stylesheet" href="https://firer.at/pages/style.css" />
+		<!-- IMPORTANT Scripts for Screen Stuff Copy This as well as the Screen -->
+<!-- 		<script src="https://firerat.glitch.me/bullshcript.js"></script> -->
+		<script>
+	// Using the https://firerat.glitch.me/bullshcript.js for the Screen Scripts, https://firetws.glitch.me/bullshcript.js is a backup
+
+  // Enable/Create screens on space load  enableFireScreen(); 
+  // window.onload = (event) => { 
+  //   // enableScreencast(); 
+  //   enableFireScreen(); 
+  // };
+
+	</script>
+</head>
+	<body id="body" class="fixed" style="background-color:#111111;color: #FFFFFF;">
+	   <div style="display: none;"><a-scene id="ascene"
+            sq-friendpositionjoinallowed="enabled: false" sq-portalsenabled="enabled: true" sq-refreshrate="rate:90" sq-spawnpoint="position: 0 0 0;" sq-maxoccupancy="number: 20"
+             sq-assetbundle="
+				android: https://firer.at/android.banter;
+				desktop: https://firer.at/windows.banter;"    >
+
+	<!-- Screen for Movies/Screencast -->
+  <script src="https://firer.at/scripts/firescreencast.js"
+          website="https://firer.at/test/" mipmaps="1" pixelsperunit="1600" backdrop="0"
+          position="5 1.5 0" rotation="0 -90 0" scale="2 2 1" volumelevel="0.1"></script>
+    
+	<!-- Main Fire Browser, grabbable/moveable -->
+  <script src="https://firer.at/test/firescreen.js"
+          website="https://firer.at/test/" mipmaps="1" pixelsperunit="1600"
+          position="0 1.5 6" rotation="0 180 0" scale="2 2 1" volumelevel="0.2"></script>
+
+    
+    
+<!-- Toggle Firescreen Button -->
+<a-entity position="1 1 0" scale="0.5 0.5 0.5"><a-box color="#00FF00" position="0 0 0" opacity="0.3" 
+	toggle-fscreen sq-interactable sq-boxcollider sq-rigidbody="useGravity: false; drag:20; angularDrag:20;" >
+		<a-text opacity="0.6" position="0 0 0" visible="true" value="Test But" ></a-text></a-box> </a-entity> 
+    
+<!-- Toggle spacestate Button -->
+<a-entity position="0 1 1" scale="0.5 0.5 0.5"><a-box position="0 0 0" opacity="0.4"
+	toggle-sstate sq-interactable sq-boxcollider sq-rigidbody="useGravity: false; drag:20; angularDrag:20;" color="#333333" >
+		<a-text opacity="0.6" position="0 0 0" visible="true" value="Test Butt 2" ></a-text></a-box> </a-entity> 
+<!-- Toggle spacestate Button -->
+<a-entity position="0 1 0" scale="0.5 0.5 0.5"><a-box position="0 0 0" opacity="0.4"
+	enable-sstate sq-interactable sq-boxcollider sq-rigidbody="useGravity: false; drag:20; angularDrag:20;" color="#333333" >
+		<a-text opacity="0.6" position="0 0 0" visible="true" value="ENABLE SS" ></a-text></a-box> </a-entity> 
+<!-- Toggle spacestate Button -->
+<a-entity position="0 1 -1" scale="0.5 0.5 0.5"><a-box position="0 0 0" opacity="0.4"
+	disable-sstate sq-interactable sq-boxcollider sq-rigidbody="useGravity: false; drag:20; angularDrag:20;" color="#333333" >
+		<a-text opacity="0.6" position="0 0 0" visible="true" value="DISABLE SS" ></a-text></a-box> </a-entity> 
+
+  <!--     Test Buttons stuff -->
+  <a-entity id="somebuttons" position="1.7 1.5 6" rotation="0 -180 0" scale="0.2 0.2 0.2" >
+    <!-- Test Button -->
+    <a-plane position="0 3 0" opacity="1.0" width="2" height="0.6"
+    disable-fscreen color="#333333" sq-collider sq-interactable >
+    <a-text value="disable F screen" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
+    <!-- Test Button -->
+    <a-plane position="0 2 0" opacity="1.0" width="2" height="0.6"
+    enable-fscreen	color="#333333" sq-collider sq-interactable >
+    <a-text value="enable F screen" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
+    <!-- Test Button -->
+    <a-plane position="0 1 0" opacity="1.0" width="2" height="0.6"
+    disable-screen color="#333333" sq-collider sq-interactable >
+    <a-text value="disable ss screen" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
+    <!-- Test Button -->
+    <a-plane position="0 0 0" opacity="1.0" width="2" height="0.6"
+    enable-screen	color="#333333" sq-collider sq-interactable >
+    <a-text value="enable ss screen" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
+  <!-- Test Button -->
+    <a-plane position="0 -1 0" opacity="1.0" width="2" height="0.6"
+    enable-sstate	color="#333333" sq-collider sq-interactable >
+    <a-text value="enable Space State" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
+  <!-- Test Button -->
+    <a-plane position="0 -2 0" opacity="1.0" width="2" height="0.6"
+    disable-sstate	color="#333333" sq-collider sq-interactable >
+    <a-text value="disable Space State" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
+  <!-- Test Button -->
+    <a-plane position="0 -3 0" opacity="1.0" width="2" height="0.6"
+    toggle-sstate	color="#333333" sq-collider sq-interactable >
+    <a-text value="Toggle Space State" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
+  </a-entity>
+
+  <a-entity sq-mirror position="-5 1 0" rotation="0 90 0" scale="3 3 1"></a-entity>
+    
+    </a-scene></div>
+<center><br/>
+	<a href="https://firer.at/pages/games.html" class="buttonG">Go Home</a>
+	<p>Or Enter a URL here:<br/>
+  <form id="form" method="get">
+  <input type="url" id="text" value="https://" class="url" size="40" placeholder="https://bantervr.com" onchange="document.getElementById('form').action = this.value;" />
+  <input type="button" id="btn" value="Go" class="url" 
+         onclick="window.open(document.getElementById('text').value);" />
+  </form>
+	</p>
+</center>
+  </body>
+</html>
