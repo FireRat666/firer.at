@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="https://cdn.glitch.global/cd2f93df-ff17-4277-9d8b-4b89b4d5d349/bls-logo.png?v=1719652547267" />
-    <link rel="stylesheet" type="text/css" href="https://firer.at/bls/styles/style.css" />
+    <link rel="stylesheet" type="text/css" href="./public/styles/style.css" />
     <!--PWA requirements-->
     <meta name="theme-color" content="#000000" />
     <link
@@ -13,12 +13,12 @@
     />
 
     <!-- PWA setup - update public/sw.js if you add your own assets like a new .css file -->
-    <link rel="manifest" href="https://firer.at/bls/manifest.json" />
+    <link rel="manifest" href="./manifest.json" />
     <script>
       if (location.protocol == "http:") location.protocol = "https:";
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker
-          .register("https://firer.at/bls/sw.js")
+          .register("./sw.js")
           .then((reg) => console.log("Service Worker registered", reg))
           .catch((err) =>
             console.error("Service Worker **not** registered", err)
@@ -27,7 +27,7 @@
         console.warn("Service Worker not supported in this browser");
       }
     </script>
-    <script type="module" src="https://firer.at/bls/scripts/render.js"></script>
+    <script type="module" src="./scripts/render.js"></script>
     <!-- templates/head.js will fill in here -->
   </head>
   <body>

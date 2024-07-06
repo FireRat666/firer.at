@@ -11,7 +11,7 @@
       "^backend/"
     ],
     "exclude": [
-      "public/",
+      "./public/",
       "vite.config.js",
       "settings.json"
     ]

@@ -11,12 +11,12 @@ self.addEventListener("install", e => {
     caches.open("glitch-in-bio-pwa").then(cache => {
       // Cache the homepage and stylesheets - add any assets you want to cache!
       return cache.addAll([
-        "https://firer.at/bls/", 
-        "https://firer.at/bls/styles/style.css",
-        "https://firer.at/bls/styles/themes/glitch.css",
-        "https://firer.at/bls/styles/themes/gallery.css",
-        "https://firer.at/bls/styles/themes/menu.css",
-        "https://firer.at/bls/styles/themes/custom-theme.css"
+        "./", 
+        "./styles/style.css",
+        "./styles/themes/glitch.css",
+        "./styles/themes/gallery.css",
+        "./styles/themes/menu.css",
+        "./styles/themes/custom-theme.css"
       ]);
     })
   );
