@@ -1,5 +1,6 @@
 // Importing modules and functions
-import { html, render } from "lighterhtml";
+import {render, html, svg} from '//unpkg.com/lighterhtml?module';
+// import { html, render } from "lighterhtml";
 import { renderMeta } from "../templates/meta.js";
 import { renderHeader } from "../templates/header.js";
 import { renderLinks } from "../templates/links.js";
