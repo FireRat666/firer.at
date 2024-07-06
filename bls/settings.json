@@ -1,0 +1,55 @@
+{
+  "metaTitle": "The Banter Late Show",
+  "metaDescription": "The pioneer of late shows in virtual reality.",
+  "name": "The Banter Late Show",
+  "theme": "glitch",
+  "avatarImage": "https://cdn.glitch.global/cd2f93df-ff17-4277-9d8b-4b89b4d5d349/bls-logo.png?v=1719652547267",
+  "links": [
+    {
+      "url": "https://www.youtube.com/@BanterLateShow",
+      "text": "Watch previous episodes on YouTube."
+    },
+    {
+      "url": "https://ko-fi.com/banterlateshow",
+      "text": "Enjoying the show? We're grateful for your support on Ko-fi!"
+    },
+    {
+      "url": "#",
+      "text": "Advertise and be a sponsor of the show. (COMING SOON)"
+    }
+  ],
+  "social": {
+    "glitch": "",
+    "arena": "",
+    "bandcamp": "",
+    "cohost": "",
+    "dev": "",
+    "facebook": "",
+    "github": "",
+    "gitlab": "",
+    "hashnode": "",
+    "instagram": "https://www.instagram.com/banterlateshow",
+    "keybase": "",
+    "paypal": "https://paypal.me/banterlateshow",
+    "kofi": "https://ko-fi.com/banterlateshow",
+    "letterboxd": "",
+    "linkedin": "",
+    "mastodon": "",
+    "medium": "",
+    "onlyfans": "",
+    "patreon": "",
+    "pinboard": "",
+    "pinterest": "",
+    "podcast": "",
+    "soundcloud": "",
+    "spotify": "",
+    "stackoverflow": "",
+    "substack": "",
+    "twitter": "",
+    "twitch": "",
+    "tiktok": "",
+    "tumblr": "",
+    "youtube": "https://www.youtube.com/@BanterLateShow",
+    "email": ""
+  }
+}
