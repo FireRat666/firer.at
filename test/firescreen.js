@@ -11,8 +11,6 @@ window.addEventListener('load', (event) => {
 	} else {console.log("Window is Not Banter, Not Starting Script");};
 });
 
-
-
 function loadscripts() {
 let scriptloaded = document.getElementById("screen-scripts");
 if (scriptloaded) { console.log("Fire Screen Scripts Already Loaded"); 
