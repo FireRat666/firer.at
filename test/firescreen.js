@@ -12,15 +12,17 @@ window.addEventListener('load', (event) => {
 });
 
 function loadscripts() {
-let scriptloaded = document.getElementById("screen-scripts");
-if (scriptloaded) { console.log("Fire Screen Scripts Already Loaded"); 
-  } else {
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.id = "screen-scripts";
-    script.src = 'https://firer.at/test/firescreenscripts.js';
-    document.body.appendChild(script);
-    console.log("Added Fire Screen Scripts")
+	if(window.isBanter) {
+		let scriptloaded = document.getElementById("screen-scripts");
+		if (scriptloaded) { console.log("Fire Screen Scripts Already Loaded"); 
+		  } else {
+			var script = document.createElement('script');
+			script.type = 'text/javascript';
+			script.id = "screen-scripts";
+			script.src = 'https://firer.at/test/firescreenscripts.js';
+			document.body.appendChild(script);
+			console.log("Added Fire Screen Scripts")
+  };
   }
 };
 
