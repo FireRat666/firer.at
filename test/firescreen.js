@@ -3,11 +3,15 @@
 let fireScreenOn = 1;
 // Create screen on space load 
 window.addEventListener('load', (event) => {
-  setTimeout(() => { 
-    console.log("Loading FireScreen"); loadscripts(); 
-    setTimeout(() => { enableFireScreen(); }, 5000);
-  }, 2500);
+	if(window.isBanter) {
+	  setTimeout(() => { 
+		console.log("Loading FireScreen"); loadscripts(); 
+		setTimeout(() => { enableFireScreen(); }, 5000);
+	  }, 2500);console.log("Window is Banter, Starting Script");
+	} else {console.log("Window is Not Banter, Not Starting Script");};
 });
+
+
 
 function loadscripts() {
 let scriptloaded = document.getElementById("screen-scripts");
