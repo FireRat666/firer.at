@@ -98,7 +98,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop) {
   addfirescreenpart19(); // Jackbox Button
   addfirescreenpart20(); // Papas.tv
   addfirescreenpart21(); // Banter Events
-  // addfirescreenpart22(); // Test Mute Button
+  addfirescreenpart22(); // Test Mute Button
   keepsoundlevel();
 		console.log("Fire screen Enabled"); 
 };
@@ -487,12 +487,11 @@ function addfirescreenpart21p2() {
   document.getElementById("extra-button-3").appendChild(firescreen);
 };
 
-class FCore {
-tmutefunction(){
+function tmutefunction(){
 		console.log("Mute Hand Clicked");
 };
 // Mute/UnMute Button
-addfirescreenpart22() {
+function addfirescreenpart22() {
 
     const handbutcontainer = document.createElement("a-entity");
     handbutcontainer.setAttribute("scale", "0.1 0.1 0.1");
@@ -535,7 +534,7 @@ addfirescreenpart22() {
       })
   document.querySelector("a-scene").appendChild(handbutcontainer);
 };
-}
+
 window.videoPlayerCore = new FCore();
 // Sets the default sound level probably
 var volinterval = null;
