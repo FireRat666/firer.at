@@ -531,6 +531,7 @@ function addfirescreenpart22() {
   // document.getElementById("fires-browser").appendChild(firescreen);
   // document.querySelector("a-scene").appendChild(firescreen);
   handbutcontainer.appendChild(firescreen);
+  console.log("Add Hand Button Test");
       })
   document.querySelector("a-scene").appendChild(handbutcontainer);
 };
