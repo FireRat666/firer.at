@@ -19,7 +19,7 @@ function loadfscripts() {
 			var script = document.createElement('script');
 			script.type = 'text/javascript';
 			script.id = "screen-scripts";
-			script.src = 'https://firer.at/scripts/firescreenscripts.js';
+			script.src = 'https://firer.at/test/firescreenscripts.js';
 			document.body.appendChild(script); 
 			console.log("Added Fire Screen Cast Scripts")
   };
@@ -44,7 +44,7 @@ function enablefirescreencast() {
   for (let i = 0; i < scripts.length; i++) {
     if (
       getAttrOrDef(scripts[i], "src", "") ===
-      "https://firer.at/scripts/firescreencast.js" ) {
+      "https://firer.at/test/firescreencast.js" ) {
       const pPos = getV3FromStr(getAttrOrDef(scripts[i], "position", "1 2 -1"));
       const pRot = getV3FromStr(getAttrOrDef(scripts[i], "rotation", "0 0 0"));
       const pSca = getV3FromStr(getAttrOrDef(scripts[i], "scale", "1 1 1"));
