@@ -6,6 +6,8 @@
 	
 window.addEventListener('load', (event) => {
 	if(window.isBanter) {
+	LoadAssetBundle();
+    async LoadAssetBundle() {
 		console.log("Window is Banter, Starting Script");
 	console.log("Asset Bundle Loading...");
 	const windowsUrl = "https://banterlateshow.com/assetbundle/bls_v201aus_standalonewindows";
@@ -20,7 +22,9 @@ window.addEventListener('load', (event) => {
         console.log("Asset Bundle Loading go...");
     const assetBundle = await gameObject.AddComponent(new BS.BanterAssetBundle(windowsUrl, osxUrl, linuxUrl, androidUrl, iosUrl, vosUrl, isScene, legacyShaderFix));
         console.log("Asset Bundle Loaded");
+	}
 	} else {console.log("Window is Not Banter, Not Starting Script");};
+	
 });
 	
      window.loadDoneCallback = ()=>{
