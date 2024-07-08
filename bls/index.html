@@ -1,6 +1,5 @@
 <html>
-  <head android-bundle="https://banterlateshow.com/assetbundle/bls_v201aus_android?1"
-        windows-bundle="https://banterlateshow.com/assetbundle/bls_v201aus_standalonewindows?1" >
+  <head>
     <title>The Banter Late Show</title>
     <link rel="icon" href="https://banterlateshow.com/images/logo-bls.png" />
     <meta property="og:title" content="Banter Late Show">
@@ -9,6 +8,12 @@
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <link rel="apple-touch-icon" href="https://banterlateshow.com/images/appicon-bls.jpg" />
     <script src="https://banterlateshow.com/bullshcript.js"></script>
+    <script>
+	BS.LoadAssetBundles("https://banterlateshow.com/assetbundle/bls_v201aus_android?1", "https://banterlateshow.com/assetbundle/bls_v201aus_standalonewindows?1");
+     window.loadDoneCallback = ()=>{
+        movePlayer({x: 0, y: 0.01, z: 0});
+     };
+    </script>
   </head>
   <body>
     <!-- Banter Only Portion -->
