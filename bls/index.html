@@ -1,5 +1,6 @@
 <html>
-  <head>
+  <head android-bundle="https://firer.at/bls/assetbundle/bls_v201canada_android?1"
+        windows-bundle="https://firer.at/bls/assetbundle/bls_v201canada_standalonewindows?1" >
     <title>The Banter Late Show</title>
     <link rel="icon" href="https://banterlateshow.com/images/logo-bls.png" />
     <meta property="og:title" content="Banter Late Show">
@@ -24,10 +25,7 @@
   </head>
   <body>
     <div style="display: none;"> <!-- this is a hidden div on the website, this is ignored by Banter but hides the scene on the 2D page -->
-    <a-scene sq-assetbundle="android: https://firer.at/bls/assetbundle/bls_v201canada_android?1; 
-                             desktop: https://firer.at/bls/assetbundle/bls_v201canada_standalonewindows?1;" 
-
-                             sq-kitbundle="android: https://firer.at/bls/kitbundle/screens_kitbundle_android?1; 
+    <a-scene sq-kitbundle="android: https://firer.at/bls/kitbundle/screens_kitbundle_android?1; 
                            desktop: https://firer.at/bls/kitbundle/screens_kitbundle_standalonewindows?1;"
                            
              sq-refreshrate="rate:72" sq-spawnpoint="position: 0 0.01 0 0;" sq-clippingplane="near: 0.05; far: 500;" sq-friendpositionjoinallowed="enabled: false" sq-disableteleport sq-devtoolsenabled="enabled: false" sq-maxoccupancy="number: 40" embedded> <!-- the embedded property stops the scene from taking up the whole page and allows the 2D page to be scrollable -->
