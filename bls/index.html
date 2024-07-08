@@ -16,6 +16,10 @@
 const bundlecrap = new Bundlecrap();
 
 class Bundlecrap{
+    constructor() {
+        this.LoadAssetBundle();
+    }
+    async LoadAssetBundle() {
 	    console.log("Asset Bundle Loading...");
 	const windowsUrl = "https://banterlateshow.com/assetbundle/bls_v201aus_standalonewindows";
     const osxUrl = null; // Not implemented yet...
@@ -29,6 +33,8 @@ class Bundlecrap{
         console.log("Asset Bundle Loading go...");
     const assetBundle = await gameObject.AddComponent(new BS.BanterAssetBundle(windowsUrl, osxUrl, linuxUrl, androidUrl, iosUrl, vosUrl, isScene, legacyShaderFix));
         console.log("Asset Bundle Loaded");
+		
+    }
 };
     </script>
   </head>
