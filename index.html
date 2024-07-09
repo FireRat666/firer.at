@@ -5,7 +5,7 @@
 		<meta name="color-scheme" content="dark">
 		<meta property="og:title" content="A Github Test Space">
 		<meta property="og:description" content="FireR.at's Website/Space">
-		<meta property="og:image" content="https://cdn.sidequestvr.com/file/636694/0121-1024x1024-box-tile-optical.png">  
+		<meta property="og:image" content="https://cdn.sidequestvr.com/file/636703/flower-tile-seamless-pattern.png">  
 		<script src="https://aframe.io/releases/1.4.0/aframe.min.js" sq-space="https://sidequestvr.com/space/2471"></script>
 		<title>FireR.at's Website/Space</title>
 		<script src="https://vidya.sdq.st/say-names.js" four-twenty="false" announce-events="true"></script>
@@ -24,8 +24,6 @@
 
   // Enable/Create screens on space load  enableFireScreen(); 
   // window.onload = (event) => { 
-  //   // enableScreencast(); 
-  //   enableFireScreen(); 
   // };
 
 	</script>
@@ -38,14 +36,19 @@
 				desktop: https://firer.at/windows.banter;"    >
 
 	<!-- Screen for Movies/Screencast -->
-  <script src="https://firer.at/scripts/firescreencast.js"
+  <script src="https://firer.at/scripts/firescreen.js"
           website="https://firer.at/" mipmaps="1" pixelsperunit="1600" backdrop="0"
-          position="5 1.5 0" rotation="0 -90 0" scale="2 2 1" volumelevel="0.1"></script>
+          position="5 1.5 0" rotation="0 -90 0" scale="1.5 1.5 1" volumelevel="0.1" castmode="1" ></script>
+
+	<!-- Main Fire Browser, grabbable/moveable -->
+  <script src="https://firer.at/scripts/firescreen.js"
+          website="https://firer.at/" mipmaps="1" pixelsperunit="1600"
+          position="0 1.5 6" rotation="0 180 0" scale="2 2 1" volumelevel="0.2" extras="0" ></script>
     
 	<!-- Main Fire Browser, grabbable/moveable -->
   <script src="https://firer.at/scripts/firescreen.js"
           website="https://firer.at/" mipmaps="1" pixelsperunit="1600"
-          position="0 1.5 6" rotation="0 180 0" scale="2 2 1" volumelevel="0.2"></script>
+          position="0 1.5 -6" rotation="0 0 0" scale="1 1 1" volumelevel="0.2" extras="1" ></script>
 
   <!--     Test Buttons stuff -->
   <a-entity id="somebuttons" position="1.7 1.5 6" rotation="0 -180 0" scale="0.2 0.2 0.2" >
@@ -68,7 +71,7 @@
   </a-entity>
 
   <a-entity sq-mirror position="-5 1 0" rotation="0 90 0" scale="3 3 1"></a-entity>
-    
+
     </a-scene></div>
 <center><br/>
 	<a href="https://firer.at/pages/games.html" class="buttonG">Go Home</a>
