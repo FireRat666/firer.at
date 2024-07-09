@@ -74,6 +74,8 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
   firescreen.setAttribute( "sq-browser", p_url);
   firescreen.setAttribute("sq-browser-interaction");
   firescreen.setAttribute("enable-interaction");
+  firescreen.setAttribute("class", "firescreenc");
+  firescreen.setAttribute("name", "firescreenc");
   
  if (p_castmode == "0") {
    firescreen.setAttribute( "sq-rigidbody", "useGravity: false; drag:10; angularDrag:10;");
@@ -404,15 +406,18 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 // Sets the default sound level probably
 var volinterval = null;
 function keepsoundlevel() {
-  let firescreenv = document.getElementById("fires-browser");
+console.log("keepsoundlevel");
   if (fireScreenOn) {
   // Loop to keep sound level set, runs every second
     volinterval = setInterval(function() {
-      let volume = parseFloat(firescreenv.getAttribute("volumelevel"));
-      firescreenv.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
-      "document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
-      // console.log("The volume is: " + volume);
-    }, 1000); } else { clearInterval(volinterval); }
+    document.querySelectorAll('.firescreenc')
+      .forEach((firescreenc) => {
+        let volume = parseFloat(firescreenc.getAttribute("volumelevel"));
+        console.log("Setting Volume: " + volume);
+        firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
+          "document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
+      });
+    }, 2000); } else { clearInterval(volinterval); }
 };
 
 ////////////////////////////////////////////////////////////////
