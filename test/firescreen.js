@@ -288,7 +288,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	console.log("MySArray0: " + mySecondArray[0] + " test")
 	console.log("MySArray1: " + mySecondArray[1] + " test")
 	console.log("MySArray2: " + mySecondArray[2] + " test")
-	homebutpos = (Number(myArray[0]) + Number(mySecondArray[0])) + (Number(myArray[1]) + Number(mySecondArray[1])) + (Number(myArray[2]) + Number(mySecondArray[2]))
+	homebutpos = (Number(myArray[0]) + Number(mySecondArray[0])) + " " + (Number(myArray[1]) + Number(mySecondArray[1])) + " " + (Number(myArray[2]) + Number(mySecondArray[2]))
 	console.log("Button Home pos: " + homebutpos + " test 2");
 	// p_buttonpos += getV3FromStr(homebutpos);
 	// console.log("Button pos _p 2: " + p_buttonpos)
