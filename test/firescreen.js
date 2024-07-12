@@ -537,6 +537,7 @@ function addfirescreenpart22() {
 	init: function () {
 	  this.el.addEventListener("click", () => {  
 		var screenScale = this.el.parentElement;
+		let butcolor = parseFloat(screenScale.getAttribute("button-color"));
 		let scaleX = screenScale.object3D.scale.x;
 		let scaleY = screenScale.object3D.scale.y;
 		switch (this.data.size) {
@@ -555,7 +556,7 @@ function addfirescreenpart22() {
       if (scaleY <= 0) {scaleY = 0.05};
 		this.el.setAttribute("color","#AAAAAA");
 		screenScale.setAttribute("scale", scaleX + " " + scaleY + " 1");
-		setTimeout(() => {  this.el.setAttribute("color",buttoncolor); }, 100);
+		setTimeout(() => {  this.el.setAttribute("color", butcolor); }, 100);
 		});		},		});
 		
   // Rotate either screen when buttons clicked by HBR
@@ -567,6 +568,7 @@ function addfirescreenpart22() {
 	init: function () {
 	  this.el.addEventListener("click", () => {
 		let browserRotation = this.el.parentElement;
+		let butcolor = parseFloat(browserRotation.getAttribute("button-color"));
 		let x = browserRotation.object3D.rotation.x;
 		let y = browserRotation.object3D.rotation.y;
 		let z = browserRotation.object3D.rotation.z;
@@ -580,7 +582,7 @@ function addfirescreenpart22() {
 		}
 		this.el.setAttribute("color","#AAAAAA");
 		browserRotation.setAttribute("rotation", x + " " + y + " " + z);  
-		setTimeout(() => {  this.el.setAttribute("color",buttoncolor); }, 100); 
+		setTimeout(() => {  this.el.setAttribute("color", butcolor); }, 100); 
 		});        },      });
 
 	// Toggle for hiding and showing the scale buttons By Fire with help from HBR
@@ -588,6 +590,8 @@ function addfirescreenpart22() {
 	init: function () {
 	  this.el.addEventListener("click", () => {
 		const rotats = this.el;
+		const browserElement = this.el.parentElement;
+		let butcolor = parseFloat(browserElement.getAttribute("button-color"));
 		const rotatebutton = rotats.parentElement.children[6];
 		var els = document.getElementsByClassName("tilt");
 		if (rotatebutton.getAttribute("visible")) {
@@ -596,7 +600,7 @@ function addfirescreenpart22() {
 				el.setAttribute("visible","false");
 			});
 		} else {
-			  rotats.setAttribute("color",buttoncolor);
+			  rotats.setAttribute("color", butcolor);
 			[].forEach.call(els, function (el) {
 				el.setAttribute("visible","true");
 			});
@@ -608,10 +612,12 @@ function addfirescreenpart22() {
 	init: function () {
 	  this.el.addEventListener("click", () => {
 		const hidebut = this.el;
+		const browserElement = this.el.parentElement;
+		let butcolor = parseFloat(browserElement.getAttribute("button-color"));
 		const somebutton = hidebut.parentElement.children[2];
 		var buttons = document.getElementsByClassName("buttons");
 		if (somebutton.getAttribute("visible")) {
-			  hidebut.setAttribute("color","#FF0000");
+			  hidebut.setAttribute("color", butcolor);
 			[].forEach.call(buttons, function (el) {
 				el.setAttribute("visible","false");
 			});
@@ -631,6 +637,8 @@ function addfirescreenpart22() {
 	  this.el.addEventListener("click", () => {  
 		var screenVolume = this.el.parentElement;
 		let volume = parseFloat(screenVolume.getAttribute("volumelevel"));
+		let butcolor = parseFloat(screenVolume.getAttribute("button-color"));
+		console.log("The button color is: " + butcolor);
 		volume += this.data.vvalue;
 		volume = volume.toFixed(2);
 		if (volume > 1) {volume = 1};
@@ -639,7 +647,7 @@ function addfirescreenpart22() {
 	"document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
 		this.el.setAttribute("color","#AAAAAA");
 		screenVolume.setAttribute("volumelevel", volume);
-		setTimeout(() => {  this.el.setAttribute("color",buttoncolor); }, 100);
+		setTimeout(() => {  this.el.setAttribute("color", butcolor); }, 100);
 		});		},		});
 		
 	
@@ -650,6 +658,7 @@ function addfirescreenpart22() {
   },
   init: function () {
     const browserElement = this.el.parentElement;
+	let butcolor = parseFloat(browserElement.getAttribute("button-color"));
     this.el.addEventListener("click", () => {
       const actionType = this.data.action;
       this.el.setAttribute("color", "#AAAAAA");
@@ -657,7 +666,7 @@ function addfirescreenpart22() {
         actionType: actionType
       }]);
       setTimeout(() => {
-        this.el.setAttribute("color", buttoncolor);
+        this.el.setAttribute("color", butcolor);
       }, 100);
     });
   },
