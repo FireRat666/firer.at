@@ -30,8 +30,9 @@ function enableFireScreen() {
       const pExtras = getAttrOrDef(scripts[i], "extras", "0");
       const pCastMode = getAttrOrDef(scripts[i], "castmode", "0");
       const pButtonColor = getAttrOrDef(scripts[i], "button-color", "#00FF00");
+      const pBackDropColor = getAttrOrDef(scripts[i], "backdrop-color", "#000000");
       const pURL = "url: " + pWebsite + "; mipMaps: " + pMipmaps + "; pixelsPerUnit: " + pPixelsperunit + "; mode: local;";
-      createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pExtras, pCastMode, pWebsite, pButtonColor);
+      createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pExtras, pCastMode, pWebsite, pButtonColor, pBackDropColor);
     }
   };
 }
@@ -62,7 +63,7 @@ function disableFireScreen() {
   keepsoundlevel();
 };
 
-function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_extras, p_castmode, p_website, p_buttoncolor) {
+function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_extras, p_castmode, p_website, p_buttoncolor, p_backdropcolor) {
   //just to be sure we don't create multiple
   // disableFireScreen();
   // Reset firescree variable maybe
@@ -106,7 +107,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firebackdrop.setAttribute("depth", "0.01");
 	firebackdrop.setAttribute("width", "1.09");
 	firebackdrop.setAttribute("height", "0.64");
-	firebackdrop.setAttribute("color", "#000000");
+	firebackdrop.setAttribute("color", p_backdropcolor);
 	firescreen.appendChild(firebackdrop);
 };
 
