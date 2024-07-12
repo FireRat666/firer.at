@@ -1,7 +1,7 @@
 // Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek and FireRat, And thank you to everyone who helped test it
 let fireScreenOn = 1;
 let buttoncolor = "#00FF00"
-var butcolor = "#00FF00"
+let butcolor = "#00FF00"
 // Create screen on space load 
 window.addEventListener('load', (event) => {
 	if(window.isBanter) {
@@ -536,7 +536,7 @@ function addfirescreenpart22() {
 	init: function () {
 	  this.el.addEventListener("click", () => {  
 		var screenScale = this.el.parentElement;
-		butcolor = parseFloat(screenScale.getAttribute("button-color"));
+		let butcolor = screenScale.getAttribute("button-color");
 		let scaleX = screenScale.object3D.scale.x;
 		let scaleY = screenScale.object3D.scale.y;
 		switch (this.data.size) {
@@ -567,7 +567,7 @@ function addfirescreenpart22() {
 	init: function () {
 	  this.el.addEventListener("click", () => {
 		let browserRotation = this.el.parentElement;
-		butcolor = parseFloat(browserRotation.getAttribute("button-color"));
+		let butcolor = browserRotation.getAttribute("button-color");
 		let x = browserRotation.object3D.rotation.x;
 		let y = browserRotation.object3D.rotation.y;
 		let z = browserRotation.object3D.rotation.z;
@@ -590,7 +590,7 @@ function addfirescreenpart22() {
 	  this.el.addEventListener("click", () => {
 		const rotats = this.el;
 		const browserElement = this.el.parentElement;
-		butcolor = parseFloat(browserElement.getAttribute("button-color"));
+		let butcolor = browserElement.getAttribute("button-color");
 		const rotatebutton = rotats.parentElement.children[6];
 		var els = document.getElementsByClassName("tilt");
 		if (rotatebutton.getAttribute("visible")) {
@@ -612,7 +612,7 @@ function addfirescreenpart22() {
 	  this.el.addEventListener("click", () => {
 		const hidebut = this.el;
 		const browserElement = this.el.parentElement;
-		butcolor = parseFloat(browserElement.getAttribute("button-color"));
+		let butcolor = browserElement.getAttribute("button-color");
 		const somebutton = hidebut.parentElement.children[2];
 		var buttons = document.getElementsByClassName("buttons");
 		if (somebutton.getAttribute("visible")) {
@@ -636,7 +636,7 @@ function addfirescreenpart22() {
 	  this.el.addEventListener("click", () => {  
 		var screenVolume = this.el.parentElement;
 		let volume = parseFloat(screenVolume.getAttribute("volumelevel"));
-		butcolor = parseFloat(screenVolume.getAttribute("button-color"));
+		let butcolor = screenVolume.getAttribute("button-color");
 
 		console.log("The button color is: " + butcolor);
 		volume += this.data.vvalue;
@@ -658,7 +658,7 @@ function addfirescreenpart22() {
   },
   init: function () {
     const browserElement = this.el.parentElement;
-	butcolor = parseFloat(browserElement.getAttribute("button-color"));
+	let butcolor = browserElement.getAttribute("button-color");
     this.el.addEventListener("click", () => {
       const actionType = this.data.action;
       this.el.setAttribute("color", "#AAAAAA");
