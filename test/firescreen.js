@@ -278,7 +278,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
   firehomebut.setAttribute("sq-interactable");
   firehomebut.setAttribute("class", "buttons");
   firehomebut.setAttribute("src", "https://firer.at/files/Home.png");
-  firehomebut.setAttribute("click-url", p_website);
+  firehomebut.setAttribute("click-url", "url:" + p_website);
   firescreen.appendChild(firehomebut);
 // Go Back Button
   let firebackward = document.createElement("a-plane");
