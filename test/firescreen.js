@@ -274,25 +274,17 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	// Home Button
 	let homebutpos = "-0.27 0.38 0"
 	let firehomebut = document.createElement("a-plane");
-	// console.log(p_buttonpos);
-	// let buttonposstring = p_buttonpos.toString();
-	console.log("Button pos _p: " + p_buttonpos + " test");
-	// console.log("Button string: " + buttonposstring + " test");
-	const myArray = p_buttonpos.split(" ");
-	const mySecondArray = homebutpos.split(" ");
-	// homebutpos += p_buttonpos;
-	console.log("Button Home pos: " + homebutpos + " test");
-	console.log("MyArray0: " + myArray[0] + " test")
-	console.log("MyArray1: " + myArray[1] + " test")
-	console.log("MyArray2: " + myArray[2] + " test")
-	console.log("MySArray0: " + mySecondArray[0] + " test")
-	console.log("MySArray1: " + mySecondArray[1] + " test")
-	console.log("MySArray2: " + mySecondArray[2] + " test")
-	homebutpos = (Number(myArray[0]) + Number(mySecondArray[0])) + " " + (Number(myArray[1]) + Number(mySecondArray[1])) + " " + (Number(myArray[2]) + Number(mySecondArray[2]))
-	console.log("Button Home pos: " + homebutpos + " test 2");
-	// p_buttonpos += getV3FromStr(homebutpos);
-	// console.log("Button pos _p 2: " + p_buttonpos)
-	firehomebut.setAttribute("position", "-0.27 0.38 0");
+	const homeArray = p_buttonpos.split(" ");
+	const homeposArray = homebutpos.split(" ");
+	console.log("homeArray0: " + homeArray[0] + " test")
+	console.log("homeArray1: " + homeArray[1] + " test")
+	console.log("homeArray2: " + homeArray[2] + " test")
+	console.log("homeposArray0: " + homeposArray[0] + " test")
+	console.log("homeposArray1: " + homeposArray[1] + " test")
+	console.log("homeposArray2: " + homeposArray[2] + " test")
+	homebutpos = (Number(homeArray[0]) + Number(homeposArray[0])) + " " + (Number(homeArray[1]) + Number(homeposArray[1])) + " " + (Number(homeArray[2]) + Number(homeposArray[2]))
+	console.log("Button Home pos: " + homebutpos);
+	firehomebut.setAttribute("position", homebutpos);
 	firehomebut.setAttribute("width", "0.1");
 	firehomebut.setAttribute("height", "0.1");
 	if (buttoncolor === "#00FF00") {
@@ -309,8 +301,12 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firescreen.appendChild(firehomebut);
 
 	// Go Back Button
+	let backbutpos = "-0.5 0.38 0";
 	let firebackward = document.createElement("a-plane");
-	firebackward.setAttribute("position", "-0.5 0.38 0");
+	const backArray = p_buttonpos.split(" ");
+	const backposArray = backbutpos.split(" ");
+	backbutpos = (Number(backArray[0]) + Number(backposArray[0])) + " " + (Number(backArray[1]) + Number(backposArray[1])) + " " + (Number(backArray[2]) + Number(backposArray[2]));
+	firebackward.setAttribute("position", backbutpos);
 	firebackward.setAttribute("width", "0.1");
 	firebackward.setAttribute("height", "0.1");
 	firebackward.setAttribute("color", buttoncolor);
@@ -322,8 +318,12 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firebackward.setAttribute("navigate-browser", "action: goback");
 	firescreen.appendChild(firebackward); 
 	// Mute/UnMute Button
+	let mutebutpos = "0.2 0.38 0";
 	let firemutebut = document.createElement("a-plane");
-	firemutebut.setAttribute("position", "0.2 0.38 0");
+	const muteArray = p_buttonpos.split(" ");
+	const muteposArray = mutebutpos.split(" ");
+	mutebutpos = (Number(muteArray[0]) + Number(muteposArray[0])) + " " + (Number(muteArray[1]) + Number(muteposArray[1])) + " " + (Number(muteArray[2]) + Number(muteposArray[2]));
+	firemutebut.setAttribute("position", mutebutpos);
 	firemutebut.setAttribute("width", "0.1");
 	firemutebut.setAttribute("height", "0.1");
 	firemutebut.setAttribute("color", "#FFFFFF");
@@ -335,8 +335,12 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firemutebut.setAttribute("toggle-mute");
 	firescreen.appendChild(firemutebut);
 	// Volume Up Button
+	let volupbutpos = "0.5 0.38 0";
 	let firevolup = document.createElement("a-plane");
-	firevolup.setAttribute("position", "0.5 0.38 0");
+	const volupArray = p_buttonpos.split(" ");
+	const volupposArray = volupbutpos.split(" ");
+	volupbutpos = (Number(volupArray[0]) + Number(volupposArray[0])) + " " + (Number(volupArray[1]) + Number(volupposArray[1])) + " " + (Number(volupArray[2]) + Number(volupposArray[2]));
+	firevolup.setAttribute("position", volupbutpos);
 	firevolup.setAttribute("width", "0.1");
 	firevolup.setAttribute("height", "0.1");
 	if (p_volupcolor === "null") {
@@ -352,8 +356,12 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firevolup.setAttribute("volume-level", "vvalue: 0.05");
 	firescreen.appendChild(firevolup);
 	// Volume Down Button
+	let voldownbutpos = "0.35 0.38 0";
 	let firevoldown = document.createElement("a-plane");
-	firevoldown.setAttribute("position", "0.35 0.38 0");
+	const voldownArray = p_buttonpos.split(" ");
+	const voldownposArray = voldownbutpos.split(" ");
+	voldownbutpos = (Number(voldownArray[0]) + Number(voldownposArray[0])) + " " + (Number(voldownArray[1]) + Number(voldownposArray[1])) + " " + (Number(voldownArray[2]) + Number(voldownposArray[2]));
+	firevoldown.setAttribute("position", voldownbutpos);
 	firevoldown.setAttribute("width", "0.1");
 	firevoldown.setAttribute("height", "0.1");
 	if (p_voldowncolor === "null") {
