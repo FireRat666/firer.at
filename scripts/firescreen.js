@@ -4,11 +4,10 @@ let buttoncolor = ""
 // Create screen on space load 
 window.addEventListener('load', (event) => {
 	if(window.isBanter) {
+		console.log("Window is Banter, Loading FireScreen");
 		setTimeout(() => { 
-			console.log("Loading FireScreen"); loadscripts(); 
-			setTimeout(() => { enableFireScreen(); }, 5000);
-		}, 2500);
-		console.log("Window is Banter, Starting Script");
+			enableFireScreen();
+		}, 3000);
 	} else { console.log("Window is Not Banter, Not Starting Script");};
 });
 
@@ -29,35 +28,23 @@ function enableFireScreen() {
       const pBackdrop = getAttrOrDef(scripts[i], "backdrop", "1");
       const pExtras = getAttrOrDef(scripts[i], "extras", "0");
       const pCastMode = getAttrOrDef(scripts[i], "castmode", "0");
+      const pDisableInteraction = getAttrOrDef(scripts[i], "disable-interaction", "0");
       const pButtonColor = getAttrOrDef(scripts[i], "button-color", "#00FF00");
       const pBackDropColor = getAttrOrDef(scripts[i], "backdrop-color", "#000000");
       const pVolUpColor = getAttrOrDef(scripts[i], "volup-color", "null");
       const pVolDownColor = getAttrOrDef(scripts[i], "voldown-color", "null");
+      const pButtonPos = getAttrOrDef(scripts[i], "button-position", "0 0 0");
       const pIconMuteUrl = getAttrOrDef(scripts[i], "icon-mute-url", "https://firer.at/files/VolumeMute.png");
       const pIconVolUpUrl = getAttrOrDef(scripts[i], "icon-volup-url", "https://firer.at/files/VolumeHigh.png");
       const pIconVolDownUrl = getAttrOrDef(scripts[i], "icon-voldown-url", "https://firer.at/files/VolumeLow.png");
       const pIconDirectionUrl = getAttrOrDef(scripts[i], "icon-direction-url", "https://firer.at/files/Arrow.png");
       const pURL = "url: " + pWebsite + "; mipMaps: " + pMipmaps + "; pixelsPerUnit: " + pPixelsperunit + "; mode: local;";
       createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pExtras, pCastMode, pWebsite, pButtonColor, 
-		pBackDropColor, pIconMuteUrl, pIconVolUpUrl, pIconVolDownUrl, pIconDirectionUrl, pVolUpColor, pVolDownColor);
+		pBackDropColor, pIconMuteUrl, pIconVolUpUrl, pIconVolDownUrl, pIconDirectionUrl, pVolUpColor, pVolDownColor,
+		pDisableInteraction, pButtonPos);
     }
   };
 }
-
-function loadscripts() {
-	// if(window.isBanter) {
-		// let scriptloaded = document.getElementById("screen-scripts");
-		// if (scriptloaded) { console.log("Fire Screen Scripts Already Loaded"); 
-		  // } else {
-			// var script = document.createElement('script');
-			// script.type = 'text/javascript';
-			// script.id = "screen-scripts";
-			// script.src = 'https://firer.at/test/firescreenscripts.js';
-			// document.body.appendChild(script);
-			// console.log("Added Fire Screen Scripts")
-  // };
-  // }
-};
 
 function disableFireScreen() {
 	let firescreen = document.getElementById("fires-browser");
@@ -71,11 +58,8 @@ function disableFireScreen() {
 };
 
 function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_extras, p_castmode, p_website, p_buttoncolor, 
-	p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor) {
-	//just to be sure we don't create multiple
-	// disableFireScreen();
-	// Reset firescree variable maybe
-	// firescreen = "null";
+	p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor,
+	p_disableinteraction, p_buttonpos) {
 	buttoncolor = p_buttoncolor;
 	let firescreen = document.createElement("a-entity");
 	firescreen.id = "fires-browser";
@@ -85,8 +69,10 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firescreen.setAttribute("volumelevel", p_volume);
 	firescreen.setAttribute("button-color", p_buttoncolor);
 	firescreen.setAttribute( "sq-browser", p_url);
-	firescreen.setAttribute("sq-browser-interaction");
-	firescreen.setAttribute("enable-interaction");
+	if (p_disableinteraction === "0") {
+		firescreen.setAttribute("sq-browser-interaction");
+		firescreen.setAttribute("enable-interaction");
+	}
 	firescreen.setAttribute("class", "firescreenc");
 	firescreen.setAttribute("name", "firescreenc");
   
@@ -254,8 +240,12 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 		fireinfobut.setAttribute("click-url", "url: https://firer.at/pages/Info.html");
 		firescreen.appendChild(fireinfobut);
 		// Go Forwards Button
+		let forwardbutpos = "-0.4 0.38 0"
 		let fireforward = document.createElement("a-plane");
-		fireforward.setAttribute("position", "-0.4 0.38 0");
+		const forwardArray = p_buttonpos.split(" ");
+		const forwardposArray = forwardbutpos.split(" ");
+		forwardbutpos = (Number(forwardArray[0]) + Number(forwardposArray[0])) + " " + (Number(forwardArray[1]) + Number(forwardposArray[1])) + " " + (Number(forwardArray[2]) + Number(forwardposArray[2]));
+		fireforward.setAttribute("position", forwardbutpos);
 		fireforward.setAttribute("width", "0.1");
 		fireforward.setAttribute("height", "0.1");
 		fireforward.setAttribute("color", buttoncolor);
@@ -282,8 +272,12 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	};
 
 	// Home Button
+	let homebutpos = "-0.27 0.38 0"
 	let firehomebut = document.createElement("a-plane");
-	firehomebut.setAttribute("position", "-0.27 0.38 0");
+	const homeArray = p_buttonpos.split(" ");
+	const homeposArray = homebutpos.split(" ");
+	homebutpos = (Number(homeArray[0]) + Number(homeposArray[0])) + " " + (Number(homeArray[1]) + Number(homeposArray[1])) + " " + (Number(homeArray[2]) + Number(homeposArray[2]));
+	firehomebut.setAttribute("position", homebutpos);
 	firehomebut.setAttribute("width", "0.1");
 	firehomebut.setAttribute("height", "0.1");
 	if (buttoncolor === "#00FF00") {
@@ -300,8 +294,12 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firescreen.appendChild(firehomebut);
 
 	// Go Back Button
+	let backbutpos = "-0.5 0.38 0";
 	let firebackward = document.createElement("a-plane");
-	firebackward.setAttribute("position", "-0.5 0.38 0");
+	const backArray = p_buttonpos.split(" ");
+	const backposArray = backbutpos.split(" ");
+	backbutpos = (Number(backArray[0]) + Number(backposArray[0])) + " " + (Number(backArray[1]) + Number(backposArray[1])) + " " + (Number(backArray[2]) + Number(backposArray[2]));
+	firebackward.setAttribute("position", backbutpos);
 	firebackward.setAttribute("width", "0.1");
 	firebackward.setAttribute("height", "0.1");
 	firebackward.setAttribute("color", buttoncolor);
@@ -313,8 +311,12 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firebackward.setAttribute("navigate-browser", "action: goback");
 	firescreen.appendChild(firebackward); 
 	// Mute/UnMute Button
+	let mutebutpos = "0.2 0.38 0";
 	let firemutebut = document.createElement("a-plane");
-	firemutebut.setAttribute("position", "0.2 0.38 0");
+	const muteArray = p_buttonpos.split(" ");
+	const muteposArray = mutebutpos.split(" ");
+	mutebutpos = (Number(muteArray[0]) + Number(muteposArray[0])) + " " + (Number(muteArray[1]) + Number(muteposArray[1])) + " " + (Number(muteArray[2]) + Number(muteposArray[2]));
+	firemutebut.setAttribute("position", mutebutpos);
 	firemutebut.setAttribute("width", "0.1");
 	firemutebut.setAttribute("height", "0.1");
 	firemutebut.setAttribute("color", "#FFFFFF");
@@ -326,8 +328,12 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firemutebut.setAttribute("toggle-mute");
 	firescreen.appendChild(firemutebut);
 	// Volume Up Button
+	let volupbutpos = "0.5 0.38 0";
 	let firevolup = document.createElement("a-plane");
-	firevolup.setAttribute("position", "0.5 0.38 0");
+	const volupArray = p_buttonpos.split(" ");
+	const volupposArray = volupbutpos.split(" ");
+	volupbutpos = (Number(volupArray[0]) + Number(volupposArray[0])) + " " + (Number(volupArray[1]) + Number(volupposArray[1])) + " " + (Number(volupArray[2]) + Number(volupposArray[2]));
+	firevolup.setAttribute("position", volupbutpos);
 	firevolup.setAttribute("width", "0.1");
 	firevolup.setAttribute("height", "0.1");
 	if (p_volupcolor === "null") {
@@ -343,8 +349,12 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firevolup.setAttribute("volume-level", "vvalue: 0.05");
 	firescreen.appendChild(firevolup);
 	// Volume Down Button
+	let voldownbutpos = "0.35 0.38 0";
 	let firevoldown = document.createElement("a-plane");
-	firevoldown.setAttribute("position", "0.35 0.38 0");
+	const voldownArray = p_buttonpos.split(" ");
+	const voldownposArray = voldownbutpos.split(" ");
+	voldownbutpos = (Number(voldownArray[0]) + Number(voldownposArray[0])) + " " + (Number(voldownArray[1]) + Number(voldownposArray[1])) + " " + (Number(voldownArray[2]) + Number(voldownposArray[2]));
+	firevoldown.setAttribute("position", voldownbutpos);
 	firevoldown.setAttribute("width", "0.1");
 	firevoldown.setAttribute("height", "0.1");
 	if (p_voldowncolor === "null") {
@@ -446,62 +456,9 @@ console.log("keepsoundlevel");
     }, 2000); } else { clearInterval(volinterval); }
 };
 
-////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////
-
-
-function tmutefunction(){
-		console.log("Mute Hand Clicked");
-};
-// Mute/UnMute Button
-function addfirescreenpart22() {
-
-    const handbutcontainer = document.createElement("a-entity");
-    handbutcontainer.setAttribute("scale", "0.1 0.1 0.1");
-    handbutcontainer.setAttribute("position", "0 0 0");
-    handbutcontainer.setAttribute("sq-lefthand", "whoToShow: onlyme;");
-    [
-      {
-        image: "https://firer.at/files/VolumeMute.png",
-        position: "-0.1 0.0 -0.0", 
-        buttontype: "fires-handmute", 
-        aattribute: "mute-hand", 
-        callback: () => this.tmutefunction()
-      },
-      {
-        image: "https://firer.at/files/VolumeHigh.png",
-        position: "-0.1 0.5 -0.5", 
-        buttontype: "fires-handcontrols", 
-        aattribute: "mute-hand", 
-        callback: () => this.tmutefunction()
-      }
-    ].forEach(item => {
-  let firesp22 = document.createElement("a-plane");
-  firesp22.setAttribute("sq-lefthand", "whoToShow: onlyme;");
-  firesp22.id = item.buttontype;
-  firesp22.setAttribute("position", item.position);
-  firesp22.setAttribute("scale", "0.5 0.5 0.5");
-  firesp22.setAttribute("rotation", "0 -90 180");
-  // firesp22.setAttribute("color", "#FFFFFF");
-  // firesp22.setAttribute("transparent", true);
-  // firesp22.setAttribute("material", "transparent: true");
-  firesp22.setAttribute("sq-collider");
-  firesp22.setAttribute("sq-interactable");
-  firesp22.setAttribute("class", "buttons");
-  firesp22.setAttribute("src", item.image);
-  firesp22.setAttribute(item.aattribute, "");
-  firesp22.addEventListener("click", () => item.callback());
-  // firescreen.appendChild(firesp22);
-  // document.querySelector("a-scene").appendChild(firesp22);
-  handbutcontainer.appendChild(firesp22);
-  console.log("Add Hand Button Test");
-      })
-  document.querySelector("a-scene").appendChild(handbutcontainer);
-};
-
 
 ////////////////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////
+
 
 // Everyone who helped make this possible, HBR, Vanquisher, DedZed, Sebek and FireRat, And thank you to everyone who helped test it
 // Enables Interaction for all the browser windows by HBR
