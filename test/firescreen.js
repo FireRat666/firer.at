@@ -4,11 +4,10 @@ let buttoncolor = ""
 // Create screen on space load 
 window.addEventListener('load', (event) => {
 	if(window.isBanter) {
+		console.log("Window is Banter, Loading FireScreen");
 		setTimeout(() => { 
-			console.log("Loading FireScreen"); loadscripts(); 
-			setTimeout(() => { enableFireScreen(); }, 5000);
-		}, 2500);
-		console.log("Window is Banter, Starting Script");
+			enableFireScreen();
+		}, 3000);
 	} else { console.log("Window is Not Banter, Not Starting Script");};
 });
 
