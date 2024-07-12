@@ -517,7 +517,6 @@ function addfirescreenpart22() {
 		const TheBrowser = this.el.parentElement;
 		let buttoncolor = this.el.getAttribute("color");
 		if (buttoncolor != null) {
-			console.log(buttoncolor);
 			this.el.setAttribute("color", "#FFFFFF"); 
 			setTimeout(() => {  this.el.setAttribute("color", buttoncolor); }, 100);
 		};
@@ -619,7 +618,7 @@ function addfirescreenpart22() {
 	init: function () {
 	  this.el.addEventListener("click", () => {
 		const rotats = this.el;
-		let buttoncolor = this.el.getAttribute("color");
+		let buttoncolor = this.el.parentElement.getAttribute("button-color");
 		const rotatebutton = rotats.parentElement.children[6];
 		var els = document.getElementsByClassName("tilt");
 		if (rotatebutton.getAttribute("visible")) {
