@@ -1,6 +1,7 @@
 // Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek and FireRat, And thank you to everyone who helped test it
 let fireScreenOn = 1;
 let buttoncolor = "#00FF00"
+var butcolor = "#00FF00"
 // Create screen on space load 
 window.addEventListener('load', (event) => {
 	if(window.isBanter) {
@@ -478,7 +479,6 @@ function addfirescreenpart22() {
 
 ////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////
-let butcolor = "null"
 
 // Everyone who helped make this possible, HBR, Vanquisher, DedZed, Sebek and FireRat, And thank you to everyone who helped test it
 // Enables Interaction for all the browser windows by HBR
