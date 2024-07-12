@@ -68,6 +68,8 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	let firescreen = document.createElement("a-entity");
 	firescreen.id = "fires-browser";
 	firescreen.setAttribute("position", p_pos);
+	console.log(p_pos);
+	console.log(p_buttonpos);
 	firescreen.setAttribute("rotation", p_rot);
 	firescreen.setAttribute("scale", p_sca);
 	firescreen.setAttribute("volumelevel", p_volume);
