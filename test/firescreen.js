@@ -515,6 +515,10 @@ function addfirescreenpart22() {
 	init: function () {
 	  this.el.addEventListener("click", () => {                         
 		const TheBrowser = this.el.parentElement;
+		let buttoncolor = this.el.getAttribute("color");
+		if (buttoncolor != null) {
+			console.log(buttoncolor);
+		} else { console.log("buttoncolor is: " + buttoncolor); }
 		TheBrowser.setAttribute("sq-browser", { url: this.data.url, pixelsPerUnit: 1600, mipMaps: 1, mode: "local", });		
 		});		},		});
 		
@@ -560,7 +564,7 @@ function addfirescreenpart22() {
 	init: function () {
 	  this.el.addEventListener("click", () => {  
 		var screenScale = this.el.parentElement;
-		let buttoncolor = screenScale.getAttribute("button-color");
+		let buttoncolor = this.el.getAttribute("color");
 		let scaleX = screenScale.object3D.scale.x;
 		let scaleY = screenScale.object3D.scale.y;
 		switch (this.data.size) {
@@ -613,8 +617,7 @@ function addfirescreenpart22() {
 	init: function () {
 	  this.el.addEventListener("click", () => {
 		const rotats = this.el;
-		const browserElement = this.el.parentElement;
-		let buttoncolor = browserElement.getAttribute("button-color");
+		let buttoncolor = this.el.getAttribute("color");
 		const rotatebutton = rotats.parentElement.children[6];
 		var els = document.getElementsByClassName("tilt");
 		if (rotatebutton.getAttribute("visible")) {
@@ -635,8 +638,7 @@ function addfirescreenpart22() {
 	init: function () {
 	  this.el.addEventListener("click", () => {
 		const hidebut = this.el;
-		const browserElement = this.el.parentElement;
-		let buttoncolor = browserElement.getAttribute("button-color");
+		let buttoncolor = this.el.getAttribute("color");
 		const somebutton = hidebut.parentElement.children[2];
 		var buttons = document.getElementsByClassName("buttons");
 		if (somebutton.getAttribute("visible")) {
@@ -659,10 +661,8 @@ function addfirescreenpart22() {
 	init: function () {
 	  this.el.addEventListener("click", () => {  
 		var screenVolume = this.el.parentElement;
-		// var currentcolor = this.el;
 		let buttoncolor = this.el.getAttribute("color");
 		let volume = parseFloat(screenVolume.getAttribute("volumelevel"));
-		// let buttoncolor = screenVolume.getAttribute("button-color");
 		volume += this.data.vvalue;
 		volume = volume.toFixed(2);
 		if (volume > 1) {volume = 1};
