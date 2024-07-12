@@ -1,5 +1,6 @@
 // Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek and FireRat, And thank you to everyone who helped test it
-let fireScreenOn = 1;
+var fireScreenOn = 0;
+let buttoncolor = ""
 // Create screen on space load 
 window.addEventListener('load', (event) => {
 	if(window.isBanter) {
@@ -28,8 +29,10 @@ function enableFireScreen() {
       const pBackdrop = getAttrOrDef(scripts[i], "backdrop", "1");
       const pExtras = getAttrOrDef(scripts[i], "extras", "0");
       const pCastMode = getAttrOrDef(scripts[i], "castmode", "0");
+      const pButtonColor = getAttrOrDef(scripts[i], "button-color", "#00FF00");
+      const pBackDropColor = getAttrOrDef(scripts[i], "backdrop-color", "#000000");
       const pURL = "url: " + pWebsite + "; mipMaps: " + pMipmaps + "; pixelsPerUnit: " + pPixelsperunit + "; mode: local;";
-      createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pExtras, pCastMode, pWebsite);
+      createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pExtras, pCastMode, pWebsite, pButtonColor, pBackDropColor);
     }
   };
 }
@@ -60,17 +63,19 @@ function disableFireScreen() {
   keepsoundlevel();
 };
 
-function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_extras, p_castmode, p_website) {
+function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_extras, p_castmode, p_website, p_buttoncolor, p_backdropcolor) {
   //just to be sure we don't create multiple
   // disableFireScreen();
   // Reset firescree variable maybe
   // firescreen = "null";
+  buttoncolor = p_buttoncolor;
   let firescreen = document.createElement("a-entity");
   firescreen.id = "fires-browser";
   firescreen.setAttribute("position", p_pos);
   firescreen.setAttribute("rotation", p_rot);
   firescreen.setAttribute("scale", p_sca);
   firescreen.setAttribute("volumelevel", p_volume);
+  firescreen.setAttribute("button-color", p_buttoncolor);
   firescreen.setAttribute( "sq-browser", p_url);
   firescreen.setAttribute("sq-browser-interaction");
   firescreen.setAttribute("enable-interaction");
@@ -102,7 +107,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firebackdrop.setAttribute("depth", "0.01");
 	firebackdrop.setAttribute("width", "1.09");
 	firebackdrop.setAttribute("height", "0.64");
-	firebackdrop.setAttribute("color", "#000000");
+	firebackdrop.setAttribute("color", p_backdropcolor);
 	firescreen.appendChild(firebackdrop);
 };
 
@@ -125,7 +130,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firegrowbutton.setAttribute("position", "0.6 0.06 0");
 	firegrowbutton.setAttribute("width", "0.1");
 	firegrowbutton.setAttribute("height", "0.1");
-	firegrowbutton.setAttribute("color", "#00FF00");
+	firegrowbutton.setAttribute("color", buttoncolor);
 	firegrowbutton.setAttribute("material", "transparent: true");
 	firegrowbutton.setAttribute("sq-collider");
 	firegrowbutton.setAttribute("sq-interactable");
@@ -138,7 +143,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	fireshrinkbutton.setAttribute("position", "0.6 -0.06 0");
 	fireshrinkbutton.setAttribute("width", "0.1");
 	fireshrinkbutton.setAttribute("height", "0.1");
-	fireshrinkbutton.setAttribute("color", "#00FF00");
+	fireshrinkbutton.setAttribute("color", buttoncolor);
 	fireshrinkbutton.setAttribute("material", "transparent: true");
 	fireshrinkbutton.setAttribute("sq-collider");
 	fireshrinkbutton.setAttribute("sq-interactable");
@@ -151,7 +156,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firerotleft.setAttribute("position", "-0.5 -0.37 0");
 	firerotleft.setAttribute("width", "0.1");
 	firerotleft.setAttribute("height", "0.1");
-	firerotleft.setAttribute("color", "#00FF00");
+	firerotleft.setAttribute("color", buttoncolor);
 	firerotleft.setAttribute("material", "transparent: true");
 	firerotleft.setAttribute("sq-collider");
 	firerotleft.setAttribute("sq-interactable");
@@ -165,7 +170,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firerotright.setAttribute("position", "0.5 -0.37 0");
 	firerotright.setAttribute("width", "0.1");
 	firerotright.setAttribute("height", "0.1");
-	firerotright.setAttribute("color", "#00FF00");
+	firerotright.setAttribute("color", buttoncolor);
 	firerotright.setAttribute("material", "transparent: true");
 	firerotright.setAttribute("sq-collider");
 	firerotright.setAttribute("sq-interactable");
@@ -179,7 +184,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firetiltforward.setAttribute("position", "-0.4 -0.37 0");
 	firetiltforward.setAttribute("width", "0.1");
 	firetiltforward.setAttribute("height", "0.1");
-	firetiltforward.setAttribute("color", "#00FF00");
+	firetiltforward.setAttribute("color", buttoncolor);
 	firetiltforward.setAttribute("material", "transparent: true");
 	firetiltforward.setAttribute("sq-collider");
 	firetiltforward.setAttribute("sq-interactable");
@@ -193,7 +198,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firetiltbackward.setAttribute("position", "0.4 -0.37 0");
 	firetiltbackward.setAttribute("width", "0.1");
 	firetiltbackward.setAttribute("height", "0.1");
-	firetiltbackward.setAttribute("color", "#00FF00");
+	firetiltbackward.setAttribute("color", buttoncolor);
 	firetiltbackward.setAttribute("material", "transparent: true");
 	firetiltbackward.setAttribute("sq-collider");
 	firetiltbackward.setAttribute("sq-interactable");
@@ -232,7 +237,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	fireinfobut.setAttribute("position", "-0.6 0.28 0");
 	fireinfobut.setAttribute("width", "0.1");
 	fireinfobut.setAttribute("height", "0.1");
-	fireinfobut.setAttribute("color", "#00FF00");
+	fireinfobut.setAttribute("color", buttoncolor);
 	fireinfobut.setAttribute("material", "transparent: true");
 	fireinfobut.setAttribute("sq-collider");
 	fireinfobut.setAttribute("sq-interactable");
@@ -245,7 +250,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	fireforward.setAttribute("position", "-0.4 0.38 0");
 	fireforward.setAttribute("width", "0.1");
 	fireforward.setAttribute("height", "0.1");
-	fireforward.setAttribute("color", "#00FF00");
+	fireforward.setAttribute("color", buttoncolor);
 	fireforward.setAttribute("material", "transparent: true");
 	fireforward.setAttribute("sq-collider");
 	fireforward.setAttribute("sq-interactable");
@@ -272,7 +277,11 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
   firehomebut.setAttribute("position", "-0.27 0.38 0");
   firehomebut.setAttribute("width", "0.1");
   firehomebut.setAttribute("height", "0.1");
-  firehomebut.setAttribute("color", "#FF0000");
+  if (buttoncolor === "#00FF00") {
+	firehomebut.setAttribute("color", "#FF0000");
+  } else {
+	firehomebut.setAttribute("color", buttoncolor);
+  }
   firehomebut.setAttribute("material", "transparent: true");
   firehomebut.setAttribute("sq-collider");
   firehomebut.setAttribute("sq-interactable");
@@ -285,7 +294,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
   firebackward.setAttribute("position", "-0.5 0.38 0");
   firebackward.setAttribute("width", "0.1");
   firebackward.setAttribute("height", "0.1");
-  firebackward.setAttribute("color", "#00FF00");
+  firebackward.setAttribute("color", buttoncolor);
   firebackward.setAttribute("material", "transparent: true");
   firebackward.setAttribute("sq-collider");
   firebackward.setAttribute("sq-interactable");
@@ -311,7 +320,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
   firevolup.setAttribute("position", "0.5 0.38 0");
   firevolup.setAttribute("width", "0.1");
   firevolup.setAttribute("height", "0.1");
-  firevolup.setAttribute("color", "#00FF00");
+  firevolup.setAttribute("color", buttoncolor);
   firevolup.setAttribute("material", "transparent: true");
   firevolup.setAttribute("sq-collider");
   firevolup.setAttribute("sq-interactable");
@@ -324,7 +333,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
   firevoldown.setAttribute("position", "0.35 0.38 0");
   firevoldown.setAttribute("width", "0.1");
   firevoldown.setAttribute("height", "0.1");
-  firevoldown.setAttribute("color", "#00FF00");
+  firevoldown.setAttribute("color", buttoncolor);
   firevoldown.setAttribute("material", "transparent: true");
   firevoldown.setAttribute("sq-collider");
   firevoldown.setAttribute("sq-interactable");
@@ -413,7 +422,6 @@ console.log("keepsoundlevel");
     document.querySelectorAll('.firescreenc')
       .forEach((firescreenc) => {
         let volume = parseFloat(firescreenc.getAttribute("volumelevel"));
-        console.log("Setting Volume: " + volume);
         firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
           "document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
       });
@@ -480,6 +488,7 @@ console.log("keepsoundlevel");
 	init: function () {
 	  this.el.addEventListener("click", () => {  
 		var screenScale = this.el.parentElement;
+		let buttoncolor = screenScale.getAttribute("button-color");
 		let scaleX = screenScale.object3D.scale.x;
 		let scaleY = screenScale.object3D.scale.y;
 		switch (this.data.size) {
@@ -498,7 +507,7 @@ console.log("keepsoundlevel");
       if (scaleY <= 0) {scaleY = 0.05};
 		this.el.setAttribute("color","#AAAAAA");
 		screenScale.setAttribute("scale", scaleX + " " + scaleY + " 1");
-		setTimeout(() => {  this.el.setAttribute("color","#00FF00"); }, 100);
+		setTimeout(() => {  this.el.setAttribute("color", buttoncolor); }, 100);
 		});		},		});
 		
   // Rotate either screen when buttons clicked by HBR
@@ -510,6 +519,7 @@ console.log("keepsoundlevel");
 	init: function () {
 	  this.el.addEventListener("click", () => {
 		let browserRotation = this.el.parentElement;
+		let buttoncolor = browserRotation.getAttribute("button-color");
 		let x = browserRotation.object3D.rotation.x;
 		let y = browserRotation.object3D.rotation.y;
 		let z = browserRotation.object3D.rotation.z;
@@ -523,7 +533,7 @@ console.log("keepsoundlevel");
 		}
 		this.el.setAttribute("color","#AAAAAA");
 		browserRotation.setAttribute("rotation", x + " " + y + " " + z);  
-		setTimeout(() => {  this.el.setAttribute("color","#00FF00"); }, 100); 
+		setTimeout(() => {  this.el.setAttribute("color", buttoncolor); }, 100); 
 		});        },      });
 
 	// Toggle for hiding and showing the scale buttons By Fire with help from HBR
@@ -531,6 +541,8 @@ console.log("keepsoundlevel");
 	init: function () {
 	  this.el.addEventListener("click", () => {
 		const rotats = this.el;
+		const browserElement = this.el.parentElement;
+		let buttoncolor = browserElement.getAttribute("button-color");
 		const rotatebutton = rotats.parentElement.children[6];
 		var els = document.getElementsByClassName("tilt");
 		if (rotatebutton.getAttribute("visible")) {
@@ -539,7 +551,7 @@ console.log("keepsoundlevel");
 				el.setAttribute("visible","false");
 			});
 		} else {
-			  rotats.setAttribute("color","#00FF00");
+			  rotats.setAttribute("color", buttoncolor);
 			[].forEach.call(els, function (el) {
 				el.setAttribute("visible","true");
 			});
@@ -551,10 +563,12 @@ console.log("keepsoundlevel");
 	init: function () {
 	  this.el.addEventListener("click", () => {
 		const hidebut = this.el;
+		const browserElement = this.el.parentElement;
+		let buttoncolor = browserElement.getAttribute("button-color");
 		const somebutton = hidebut.parentElement.children[2];
 		var buttons = document.getElementsByClassName("buttons");
 		if (somebutton.getAttribute("visible")) {
-			  hidebut.setAttribute("color","#FF0000");
+			  hidebut.setAttribute("color", buttoncolor);
 			[].forEach.call(buttons, function (el) {
 				el.setAttribute("visible","false");
 			});
@@ -574,6 +588,7 @@ console.log("keepsoundlevel");
 	  this.el.addEventListener("click", () => {  
 		var screenVolume = this.el.parentElement;
 		let volume = parseFloat(screenVolume.getAttribute("volumelevel"));
+		let buttoncolor = screenVolume.getAttribute("button-color");
 		volume += this.data.vvalue;
 		volume = volume.toFixed(2);
 		if (volume > 1) {volume = 1};
@@ -582,7 +597,7 @@ console.log("keepsoundlevel");
 	"document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
 		this.el.setAttribute("color","#AAAAAA");
 		screenVolume.setAttribute("volumelevel", volume);
-		setTimeout(() => {  this.el.setAttribute("color","#00FF00"); }, 100);
+		setTimeout(() => {  this.el.setAttribute("color", buttoncolor); }, 100);
 		});		},		});
 		
 	
@@ -593,6 +608,7 @@ console.log("keepsoundlevel");
   },
   init: function () {
     const browserElement = this.el.parentElement;
+	let buttoncolor = browserElement.getAttribute("button-color");
     this.el.addEventListener("click", () => {
       const actionType = this.data.action;
       this.el.setAttribute("color", "#AAAAAA");
@@ -600,7 +616,7 @@ console.log("keepsoundlevel");
         actionType: actionType
       }]);
       setTimeout(() => {
-        this.el.setAttribute("color", "#00FF00");
+        this.el.setAttribute("color", buttoncolor);
       }, 100);
     });
   },
