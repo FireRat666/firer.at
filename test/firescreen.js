@@ -22,7 +22,7 @@ function enableFireScreen() {
       const pPos = getV3FromStr(getAttrOrDef(scripts[i], "position", "1 2 -1"));
       const pRot = getV3FromStr(getAttrOrDef(scripts[i], "rotation", "0 0 0"));
       const pSca = getV3FromStr(getAttrOrDef(scripts[i], "scale", "1 1 1"));
-      const pVolume = getAttrOrDef(scripts[i], "volumelevel", "0.1");
+      const pVolume = getAttrOrDef(scripts[i], "volumelevel", "0.25");
       const pWebsite = getAttrOrDef(scripts[i], "website", "https://firer.at/pages/games.html");
       const pMipmaps = getAttrOrDef(scripts[i], "mipmaps", "1");
       const pPixelsperunit = getAttrOrDef(scripts[i], "pixelsperunit", "1600");
