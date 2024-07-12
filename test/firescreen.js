@@ -1,7 +1,6 @@
 // Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek and FireRat, And thank you to everyone who helped test it
-let fireScreenOn = 1;
-let buttoncolor = "#00FF00"
-let butcolor = "#00FF00"
+var fireScreenOn = 0;
+let buttoncolor = ""
 // Create screen on space load 
 window.addEventListener('load', (event) => {
 	if(window.isBanter) {
@@ -537,7 +536,7 @@ function addfirescreenpart22() {
 	init: function () {
 	  this.el.addEventListener("click", () => {  
 		var screenScale = this.el.parentElement;
-		let butcolor = screenScale.getAttribute("button-color");
+		let buttoncolor = screenScale.getAttribute("button-color");
 		let scaleX = screenScale.object3D.scale.x;
 		let scaleY = screenScale.object3D.scale.y;
 		switch (this.data.size) {
@@ -556,7 +555,7 @@ function addfirescreenpart22() {
       if (scaleY <= 0) {scaleY = 0.05};
 		this.el.setAttribute("color","#AAAAAA");
 		screenScale.setAttribute("scale", scaleX + " " + scaleY + " 1");
-		setTimeout(() => {  this.el.setAttribute("color", butcolor); }, 100);
+		setTimeout(() => {  this.el.setAttribute("color", buttoncolor); }, 100);
 		});		},		});
 		
   // Rotate either screen when buttons clicked by HBR
@@ -568,7 +567,7 @@ function addfirescreenpart22() {
 	init: function () {
 	  this.el.addEventListener("click", () => {
 		let browserRotation = this.el.parentElement;
-		let butcolor = browserRotation.getAttribute("button-color");
+		let buttoncolor = browserRotation.getAttribute("button-color");
 		let x = browserRotation.object3D.rotation.x;
 		let y = browserRotation.object3D.rotation.y;
 		let z = browserRotation.object3D.rotation.z;
@@ -582,7 +581,7 @@ function addfirescreenpart22() {
 		}
 		this.el.setAttribute("color","#AAAAAA");
 		browserRotation.setAttribute("rotation", x + " " + y + " " + z);  
-		setTimeout(() => {  this.el.setAttribute("color", butcolor); }, 100); 
+		setTimeout(() => {  this.el.setAttribute("color", buttoncolor); }, 100); 
 		});        },      });
 
 	// Toggle for hiding and showing the scale buttons By Fire with help from HBR
@@ -591,7 +590,7 @@ function addfirescreenpart22() {
 	  this.el.addEventListener("click", () => {
 		const rotats = this.el;
 		const browserElement = this.el.parentElement;
-		let butcolor = browserElement.getAttribute("button-color");
+		let buttoncolor = browserElement.getAttribute("button-color");
 		const rotatebutton = rotats.parentElement.children[6];
 		var els = document.getElementsByClassName("tilt");
 		if (rotatebutton.getAttribute("visible")) {
@@ -600,7 +599,7 @@ function addfirescreenpart22() {
 				el.setAttribute("visible","false");
 			});
 		} else {
-			  rotats.setAttribute("color", butcolor);
+			  rotats.setAttribute("color", buttoncolor);
 			[].forEach.call(els, function (el) {
 				el.setAttribute("visible","true");
 			});
@@ -613,11 +612,11 @@ function addfirescreenpart22() {
 	  this.el.addEventListener("click", () => {
 		const hidebut = this.el;
 		const browserElement = this.el.parentElement;
-		let butcolor = browserElement.getAttribute("button-color");
+		let buttoncolor = browserElement.getAttribute("button-color");
 		const somebutton = hidebut.parentElement.children[2];
 		var buttons = document.getElementsByClassName("buttons");
 		if (somebutton.getAttribute("visible")) {
-			  hidebut.setAttribute("color", butcolor);
+			  hidebut.setAttribute("color", buttoncolor);
 			[].forEach.call(buttons, function (el) {
 				el.setAttribute("visible","false");
 			});
@@ -637,13 +636,8 @@ function addfirescreenpart22() {
 	  this.el.addEventListener("click", () => {  
 		var screenVolume = this.el.parentElement;
 		let volume = parseFloat(screenVolume.getAttribute("volumelevel"));
-		let butcolor = screenVolume.getAttribute("button-color");
-		console.log("The button color is: " + butcolor);
-		if (butcolor === null) {
-			console.log("The button color is null")
-			butcolor = buttoncolor
-			console.log("Button color is: " + butcolor);
-		}
+		let buttoncolor = screenVolume.getAttribute("button-color");
+		console.log("The button color is: " + buttoncolor);
 		volume += this.data.vvalue;
 		volume = volume.toFixed(2);
 		if (volume > 1) {volume = 1};
@@ -652,7 +646,7 @@ function addfirescreenpart22() {
 	"document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
 		this.el.setAttribute("color","#AAAAAA");
 		screenVolume.setAttribute("volumelevel", volume);
-		setTimeout(() => {  this.el.setAttribute("color", butcolor); }, 100);
+		setTimeout(() => {  this.el.setAttribute("color", buttoncolor); }, 100);
 		});		},		});
 		
 	
@@ -663,7 +657,7 @@ function addfirescreenpart22() {
   },
   init: function () {
     const browserElement = this.el.parentElement;
-	let butcolor = browserElement.getAttribute("button-color");
+	let buttoncolor = browserElement.getAttribute("button-color");
     this.el.addEventListener("click", () => {
       const actionType = this.data.action;
       this.el.setAttribute("color", "#AAAAAA");
@@ -671,7 +665,7 @@ function addfirescreenpart22() {
         actionType: actionType
       }]);
       setTimeout(() => {
-        this.el.setAttribute("color", butcolor);
+        this.el.setAttribute("color", buttoncolor);
       }, 100);
     });
   },
