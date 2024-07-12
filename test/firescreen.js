@@ -31,8 +31,13 @@ function enableFireScreen() {
       const pCastMode = getAttrOrDef(scripts[i], "castmode", "0");
       const pButtonColor = getAttrOrDef(scripts[i], "button-color", "#00FF00");
       const pBackDropColor = getAttrOrDef(scripts[i], "backdrop-color", "#000000");
+      const pIconMuteUrl = getAttrOrDef(scripts[i], "icon-mute-url", "https://firer.at/files/VolumeMute.png");
+      const pIconVolUpUrl = getAttrOrDef(scripts[i], "icon-volup-url", "https://firer.at/files/VolumeHigh.png");
+      const pIconVolDownUrl = getAttrOrDef(scripts[i], "icon-voldown-url", "https://firer.at/files/VolumeLow.png");
+      const pIconDirectionUrl = getAttrOrDef(scripts[i], "icon-direction-url", "https://firer.at/files/Arrow.png");
       const pURL = "url: " + pWebsite + "; mipMaps: " + pMipmaps + "; pixelsPerUnit: " + pPixelsperunit + "; mode: local;";
-      createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pExtras, pCastMode, pWebsite, pButtonColor, pBackDropColor);
+      createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pExtras, pCastMode, pWebsite, pButtonColor, 
+		pBackDropColor, pIconMuteUrl, pIconVolUpUrl, pIconVolDownUrl, pIconDirectionUrl);
     }
   };
 }
@@ -63,7 +68,8 @@ function disableFireScreen() {
   keepsoundlevel();
 };
 
-function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_extras, p_castmode, p_website, p_buttoncolor, p_backdropcolor) {
+function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_extras, p_castmode, p_website, p_buttoncolor, 
+	p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl) {
   //just to be sure we don't create multiple
   // disableFireScreen();
   // Reset firescree variable maybe
@@ -255,7 +261,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	fireforward.setAttribute("sq-collider");
 	fireforward.setAttribute("sq-interactable");
 	fireforward.setAttribute("class", "buttons");
-	fireforward.setAttribute("src", "https://firer.at/files/Arrow.png");
+	fireforward.setAttribute("src", p_icondirectionurl);
 	fireforward.setAttribute("navigate-browser", "action: goforward");
 	fireforward.setAttribute("rotation", "0 0 180");
 	firescreen.appendChild(fireforward);
@@ -299,7 +305,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
   firebackward.setAttribute("sq-collider");
   firebackward.setAttribute("sq-interactable");
   firebackward.setAttribute("class", "buttons");
-  firebackward.setAttribute("src", "https://firer.at/files/Arrow.png");
+  firebackward.setAttribute("src", p_icondirectionurl);
   firebackward.setAttribute("navigate-browser", "action: goback");
   firescreen.appendChild(firebackward); 
 // Mute/UnMute Button
@@ -312,7 +318,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
   firemutebut.setAttribute("sq-collider");
   firemutebut.setAttribute("sq-interactable");
   firemutebut.setAttribute("class", "buttons");
-  firemutebut.setAttribute("src", "https://firer.at/files/VolumeMute.png");
+  firemutebut.setAttribute("src", p_iconmuteurl);
   firemutebut.setAttribute("toggle-mute");
   firescreen.appendChild(firemutebut);
 // Volume Up Button
@@ -325,7 +331,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
   firevolup.setAttribute("sq-collider");
   firevolup.setAttribute("sq-interactable");
   firevolup.setAttribute("class", "buttons");
-  firevolup.setAttribute("src", "https://firer.at/files/VolumeHigh.png");
+  firevolup.setAttribute("src", p_iconvolupurl);
   firevolup.setAttribute("volume-level", "vvalue: 0.05");
   firescreen.appendChild(firevolup);
 // Volume Down Button
@@ -338,7 +344,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
   firevoldown.setAttribute("sq-collider");
   firevoldown.setAttribute("sq-interactable");
   firevoldown.setAttribute("class", "buttons");
-  firevoldown.setAttribute("src", "https://firer.at/files/VolumeLow.png");
+  firevoldown.setAttribute("src", p_iconvoldownurl);
   firevoldown.setAttribute("volume-level", "vvalue: -0.05");
   firescreen.appendChild(firevoldown);
 
