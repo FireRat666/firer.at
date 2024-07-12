@@ -518,7 +518,9 @@ function addfirescreenpart22() {
 		let buttoncolor = this.el.getAttribute("color");
 		if (buttoncolor != null) {
 			console.log(buttoncolor);
-		} else { console.log("buttoncolor is: " + buttoncolor); }
+			this.el.setAttribute("color", "#FFFFFF"); 
+			setTimeout(() => {  this.el.setAttribute("color", buttoncolor); }, 100);
+		};
 		TheBrowser.setAttribute("sq-browser", { url: this.data.url, pixelsPerUnit: 1600, mipMaps: 1, mode: "local", });		
 		});		},		});
 		
