@@ -244,8 +244,13 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 		fireinfobut.setAttribute("click-url", "url: https://firer.at/pages/Info.html");
 		firescreen.appendChild(fireinfobut);
 		// Go Forwards Button
+		let forwardbutpos = "-0.4 0.38 0"
 		let fireforward = document.createElement("a-plane");
-		fireforward.setAttribute("position", "-0.4 0.38 0");
+		const forwardArray = p_buttonpos.split(" ");
+		const forwardposArray = forwardbutpos.split(" ");
+		forwardbutpos = (Number(forwardArray[0]) + Number(forwardposArray[0])) + " " + (Number(forwardArray[1]) + Number(forwardposArray[1]))
+		 + " " + (Number(forwardArray[2]) + Number(forwardposArray[2]));
+		fireforward.setAttribute("position", forwardbutpos);
 		fireforward.setAttribute("width", "0.1");
 		fireforward.setAttribute("height", "0.1");
 		fireforward.setAttribute("color", buttoncolor);
@@ -276,14 +281,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	let firehomebut = document.createElement("a-plane");
 	const homeArray = p_buttonpos.split(" ");
 	const homeposArray = homebutpos.split(" ");
-	console.log("homeArray0: " + homeArray[0] + " test")
-	console.log("homeArray1: " + homeArray[1] + " test")
-	console.log("homeArray2: " + homeArray[2] + " test")
-	console.log("homeposArray0: " + homeposArray[0] + " test")
-	console.log("homeposArray1: " + homeposArray[1] + " test")
-	console.log("homeposArray2: " + homeposArray[2] + " test")
-	homebutpos = (Number(homeArray[0]) + Number(homeposArray[0])) + " " + (Number(homeArray[1]) + Number(homeposArray[1])) + " " + (Number(homeArray[2]) + Number(homeposArray[2]))
-	console.log("Button Home pos: " + homebutpos);
+	homebutpos = (Number(homeArray[0]) + Number(homeposArray[0])) + " " + (Number(homeArray[1]) + Number(homeposArray[1])) + " " + (Number(homeArray[2]) + Number(homeposArray[2]));
 	firehomebut.setAttribute("position", homebutpos);
 	firehomebut.setAttribute("width", "0.1");
 	firehomebut.setAttribute("height", "0.1");
