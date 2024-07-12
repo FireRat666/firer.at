@@ -274,19 +274,21 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	// Home Button
 	let homebutpos = "-0.27 0.38 0"
 	let firehomebut = document.createElement("a-plane");
-	console.log("Button pos _p: " + p_buttonpos + " test")
-	const myArray = p_buttonpos.split(" ");
-	const mySecondArray = homebutpos.split(" ");
+	console.log(p_buttonpos);
+	console.log("Button pos _p: " + p_buttonpos + " test");
+	// const myArray = p_buttonpos.split(" ");
+	// const mySecondArray = homebutpos.split(" ");
 	// homebutpos += p_buttonpos;
-	console.log("Button Home pos: " + homebutpos + " test")
-	console.log("MyArray0: " + myArray[0] + " test")
-	console.log("MyArray1: " + myArray[1] + " test")
-	console.log("MyArray2: " + myArray[2] + " test")
-	console.log("MyArray3: " + myArray[3] + " test")
-	console.log("MySArray0: " + mySecondArray[0] + " test")
-	console.log("MySArray1: " + mySecondArray[1] + " test")
-	console.log("MySArray2: " + mySecondArray[2] + " test")
-	console.log("MySArray3: " + mySecondArray[3] + " test")
+	console.log(homebutpos);
+	console.log("Button Home pos: " + homebutpos + " test");
+	// console.log("MyArray0: " + myArray[0] + " test")
+	// console.log("MyArray1: " + myArray[1] + " test")
+	// console.log("MyArray2: " + myArray[2] + " test")
+	// console.log("MyArray3: " + myArray[3] + " test")
+	// console.log("MySArray0: " + mySecondArray[0] + " test")
+	// console.log("MySArray1: " + mySecondArray[1] + " test")
+	// console.log("MySArray2: " + mySecondArray[2] + " test")
+	// console.log("MySArray3: " + mySecondArray[3] + " test")
 	// p_buttonpos += getV3FromStr(homebutpos);
 	// console.log("Button pos _p 2: " + p_buttonpos)
 	firehomebut.setAttribute("position", "-0.27 0.38 0");
