@@ -33,7 +33,7 @@ function enableFireScreen() {
       const pBackDropColor = getAttrOrDef(scripts[i], "backdrop-color", "#000000");
       const pVolUpColor = getAttrOrDef(scripts[i], "volup-color", "null");
       const pVolDownColor = getAttrOrDef(scripts[i], "voldown-color", "null");
-      const pButtonPos = getV3FromStr(getAttrOrDef(scripts[i], "button-position", "0 0 0"));
+      const pButtonPos = getAttrOrDef(scripts[i], "button-position", "0 0 0");
       const pIconMuteUrl = getAttrOrDef(scripts[i], "icon-mute-url", "https://firer.at/files/VolumeMute.png");
       const pIconVolUpUrl = getAttrOrDef(scripts[i], "icon-volup-url", "https://firer.at/files/VolumeHigh.png");
       const pIconVolDownUrl = getAttrOrDef(scripts[i], "icon-voldown-url", "https://firer.at/files/VolumeLow.png");
@@ -68,8 +68,6 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	let firescreen = document.createElement("a-entity");
 	firescreen.id = "fires-browser";
 	firescreen.setAttribute("position", p_pos);
-	console.log(p_pos);
-	console.log(p_buttonpos);
 	firescreen.setAttribute("rotation", p_rot);
 	firescreen.setAttribute("scale", p_sca);
 	firescreen.setAttribute("volumelevel", p_volume);
