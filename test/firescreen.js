@@ -248,8 +248,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 		let fireforward = document.createElement("a-plane");
 		const forwardArray = p_buttonpos.split(" ");
 		const forwardposArray = forwardbutpos.split(" ");
-		forwardbutpos = (Number(forwardArray[0]) + Number(forwardposArray[0])) + " " + (Number(forwardArray[1]) + Number(forwardposArray[1]))
-		 + " " + (Number(forwardArray[2]) + Number(forwardposArray[2]));
+		forwardbutpos = (Number(forwardArray[0]) + Number(forwardposArray[0])) + " " + (Number(forwardArray[1]) + Number(forwardposArray[1])) + " " + (Number(forwardArray[2]) + Number(forwardposArray[2]));
 		fireforward.setAttribute("position", forwardbutpos);
 		fireforward.setAttribute("width", "0.1");
 		fireforward.setAttribute("height", "0.1");
