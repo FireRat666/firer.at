@@ -29,6 +29,7 @@ function enableFireScreen() {
       const pBackdrop = getAttrOrDef(scripts[i], "backdrop", "1");
       const pExtras = getAttrOrDef(scripts[i], "extras", "0");
       const pCastMode = getAttrOrDef(scripts[i], "castmode", "0");
+      const pDisableInteraction = getAttrOrDef(scripts[i], "disable-interaction", "0");
       const pButtonColor = getAttrOrDef(scripts[i], "button-color", "#00FF00");
       const pBackDropColor = getAttrOrDef(scripts[i], "backdrop-color", "#000000");
       const pVolUpColor = getAttrOrDef(scripts[i], "volup-color", "null");
@@ -39,25 +40,11 @@ function enableFireScreen() {
       const pIconDirectionUrl = getAttrOrDef(scripts[i], "icon-direction-url", "https://firer.at/files/Arrow.png");
       const pURL = "url: " + pWebsite + "; mipMaps: " + pMipmaps + "; pixelsPerUnit: " + pPixelsperunit + "; mode: local;";
       createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pExtras, pCastMode, pWebsite, pButtonColor, 
-		pBackDropColor, pIconMuteUrl, pIconVolUpUrl, pIconVolDownUrl, pIconDirectionUrl, pVolUpColor, pVolDownColor);
+		pBackDropColor, pIconMuteUrl, pIconVolUpUrl, pIconVolDownUrl, pIconDirectionUrl, pVolUpColor, pVolDownColor,
+		pDisableInteraction);
     }
   };
 }
-
-function loadscripts() {
-	// if(window.isBanter) {
-		// let scriptloaded = document.getElementById("screen-scripts");
-		// if (scriptloaded) { console.log("Fire Screen Scripts Already Loaded"); 
-		  // } else {
-			// var script = document.createElement('script');
-			// script.type = 'text/javascript';
-			// script.id = "screen-scripts";
-			// script.src = 'https://firer.at/test/firescreenscripts.js';
-			// document.body.appendChild(script);
-			// console.log("Added Fire Screen Scripts")
-  // };
-  // }
-};
 
 function disableFireScreen() {
 	let firescreen = document.getElementById("fires-browser");
@@ -71,7 +58,8 @@ function disableFireScreen() {
 };
 
 function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_extras, p_castmode, p_website, p_buttoncolor, 
-	p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor) {
+	p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor,
+	p_disableinteraction) {
 	//just to be sure we don't create multiple
 	// disableFireScreen();
 	// Reset firescree variable maybe
@@ -85,8 +73,10 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firescreen.setAttribute("volumelevel", p_volume);
 	firescreen.setAttribute("button-color", p_buttoncolor);
 	firescreen.setAttribute( "sq-browser", p_url);
-	firescreen.setAttribute("sq-browser-interaction");
-	firescreen.setAttribute("enable-interaction");
+	if (p_disableinteraction === "0") {
+		firescreen.setAttribute("sq-browser-interaction");
+		firescreen.setAttribute("enable-interaction");
+	}
 	firescreen.setAttribute("class", "firescreenc");
 	firescreen.setAttribute("name", "firescreenc");
   
