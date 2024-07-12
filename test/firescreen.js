@@ -639,7 +639,7 @@ function addfirescreenpart22() {
 	init: function () {
 	  this.el.addEventListener("click", () => {
 		const hidebut = this.el;
-		let buttoncolor = this.el.getAttribute("color");
+		let buttoncolor = this.el.parentElement.getAttribute("button-color");
 		const somebutton = hidebut.parentElement.children[2];
 		var buttons = document.getElementsByClassName("buttons");
 		if (somebutton.getAttribute("visible")) {
