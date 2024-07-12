@@ -31,13 +31,15 @@ function enableFireScreen() {
       const pCastMode = getAttrOrDef(scripts[i], "castmode", "0");
       const pButtonColor = getAttrOrDef(scripts[i], "button-color", "#00FF00");
       const pBackDropColor = getAttrOrDef(scripts[i], "backdrop-color", "#000000");
+      const pVolUpColor = getAttrOrDef(scripts[i], "volup-color", "null");
+      const pVolDownColor = getAttrOrDef(scripts[i], "voldown-color", "null");
       const pIconMuteUrl = getAttrOrDef(scripts[i], "icon-mute-url", "https://firer.at/files/VolumeMute.png");
       const pIconVolUpUrl = getAttrOrDef(scripts[i], "icon-volup-url", "https://firer.at/files/VolumeHigh.png");
       const pIconVolDownUrl = getAttrOrDef(scripts[i], "icon-voldown-url", "https://firer.at/files/VolumeLow.png");
       const pIconDirectionUrl = getAttrOrDef(scripts[i], "icon-direction-url", "https://firer.at/files/Arrow.png");
       const pURL = "url: " + pWebsite + "; mipMaps: " + pMipmaps + "; pixelsPerUnit: " + pPixelsperunit + "; mode: local;";
       createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pExtras, pCastMode, pWebsite, pButtonColor, 
-		pBackDropColor, pIconMuteUrl, pIconVolUpUrl, pIconVolDownUrl, pIconDirectionUrl);
+		pBackDropColor, pIconMuteUrl, pIconVolUpUrl, pIconVolDownUrl, pIconDirectionUrl, pVolUpColor, pVolDownColor);
     }
   };
 }
@@ -69,7 +71,7 @@ function disableFireScreen() {
 };
 
 function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_extras, p_castmode, p_website, p_buttoncolor, 
-	p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl) {
+	p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor) {
 	//just to be sure we don't create multiple
 	// disableFireScreen();
 	// Reset firescree variable maybe
@@ -328,7 +330,11 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firevolup.setAttribute("position", "0.5 0.38 0");
 	firevolup.setAttribute("width", "0.1");
 	firevolup.setAttribute("height", "0.1");
-	firevolup.setAttribute("color", buttoncolor);
+	if (p_volupcolor === "null") {
+		firevolup.setAttribute("color", buttoncolor);
+	} else {
+		firevolup.setAttribute("color", p_volupcolor);
+	}
 	firevolup.setAttribute("material", "transparent: true");
 	firevolup.setAttribute("sq-collider");
 	firevolup.setAttribute("sq-interactable");
@@ -341,7 +347,11 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firevoldown.setAttribute("position", "0.35 0.38 0");
 	firevoldown.setAttribute("width", "0.1");
 	firevoldown.setAttribute("height", "0.1");
-	firevoldown.setAttribute("color", buttoncolor);
+	if (p_voldowncolor === "null") {
+		firevoldown.setAttribute("color", buttoncolor);
+	} else {
+		firevoldown.setAttribute("color", p_voldowncolor);
+	}
 	firevoldown.setAttribute("material", "transparent: true");
 	firevoldown.setAttribute("sq-collider");
 	firevoldown.setAttribute("sq-interactable");
@@ -649,8 +659,10 @@ function addfirescreenpart22() {
 	init: function () {
 	  this.el.addEventListener("click", () => {  
 		var screenVolume = this.el.parentElement;
+		// var currentcolor = this.el;
+		let buttoncolor = this.el.getAttribute("color");
 		let volume = parseFloat(screenVolume.getAttribute("volumelevel"));
-		let buttoncolor = screenVolume.getAttribute("button-color");
+		// let buttoncolor = screenVolume.getAttribute("button-color");
 		volume += this.data.vvalue;
 		volume = volume.toFixed(2);
 		if (volume > 1) {volume = 1};
