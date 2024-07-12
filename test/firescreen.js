@@ -274,9 +274,9 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	// Home Button
 	let homebutpos = "-0.27 0.38 0"
 	let firehomebut = document.createElement("a-plane");
-	console.log("Button pos _p: " + p_buttonpos)
-	homebutpos += getV3FromStr(p_buttonpos);
-	console.log("Button Home pos: " + homebutpos)
+	console.log("Button pos _p: " + p_buttonpos + " test")
+	homebutpos += p_buttonpos;
+	console.log("Button Home pos: " + homebutpos + " test")
 	// p_buttonpos += getV3FromStr(homebutpos);
 	// console.log("Button pos _p 2: " + p_buttonpos)
 	firehomebut.setAttribute("position", "-0.27 0.38 0");
