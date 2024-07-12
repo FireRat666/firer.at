@@ -277,7 +277,11 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
   firehomebut.setAttribute("position", "-0.27 0.38 0");
   firehomebut.setAttribute("width", "0.1");
   firehomebut.setAttribute("height", "0.1");
-  firehomebut.setAttribute("color", "#FF0000");
+  if (buttoncolor === "#00FF00") {
+	firehomebut.setAttribute("color", "#FF0000");
+  } else {
+	firehomebut.setAttribute("color", buttoncolor);
+  }
   firehomebut.setAttribute("material", "transparent: true");
   firehomebut.setAttribute("sq-collider");
   firehomebut.setAttribute("sq-interactable");
@@ -638,7 +642,6 @@ function addfirescreenpart22() {
 		var screenVolume = this.el.parentElement;
 		let volume = parseFloat(screenVolume.getAttribute("volumelevel"));
 		let buttoncolor = screenVolume.getAttribute("button-color");
-		console.log("The button color is: " + buttoncolor);
 		volume += this.data.vvalue;
 		volume = volume.toFixed(2);
 		if (volume > 1) {volume = 1};
