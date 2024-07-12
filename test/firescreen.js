@@ -33,6 +33,7 @@ function enableFireScreen() {
       const pBackDropColor = getAttrOrDef(scripts[i], "backdrop-color", "#000000");
       const pVolUpColor = getAttrOrDef(scripts[i], "volup-color", "null");
       const pVolDownColor = getAttrOrDef(scripts[i], "voldown-color", "null");
+      const pButtonPos = getV3FromStr(getAttrOrDef(scripts[i], "button-position", "1 2 -1"));
       const pIconMuteUrl = getAttrOrDef(scripts[i], "icon-mute-url", "https://firer.at/files/VolumeMute.png");
       const pIconVolUpUrl = getAttrOrDef(scripts[i], "icon-volup-url", "https://firer.at/files/VolumeHigh.png");
       const pIconVolDownUrl = getAttrOrDef(scripts[i], "icon-voldown-url", "https://firer.at/files/VolumeLow.png");
@@ -40,7 +41,7 @@ function enableFireScreen() {
       const pURL = "url: " + pWebsite + "; mipMaps: " + pMipmaps + "; pixelsPerUnit: " + pPixelsperunit + "; mode: local;";
       createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pExtras, pCastMode, pWebsite, pButtonColor, 
 		pBackDropColor, pIconMuteUrl, pIconVolUpUrl, pIconVolDownUrl, pIconDirectionUrl, pVolUpColor, pVolDownColor,
-		pDisableInteraction);
+		pDisableInteraction, pButtonPos);
     }
   };
 }
@@ -58,7 +59,7 @@ function disableFireScreen() {
 
 function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_extras, p_castmode, p_website, p_buttoncolor, 
 	p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor,
-	p_disableinteraction) {
+	p_disableinteraction, p_buttonpos) {
 	//just to be sure we don't create multiple
 	// disableFireScreen();
 	// Reset firescree variable maybe
@@ -271,7 +272,10 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	};
 
 	// Home Button
+	let homebutpos = "-0.27 0.38 0"
 	let firehomebut = document.createElement("a-plane");
+	homebutpos += p_buttonpos;
+	console.log(homebutpos)
 	firehomebut.setAttribute("position", "-0.27 0.38 0");
 	firehomebut.setAttribute("width", "0.1");
 	firehomebut.setAttribute("height", "0.1");
