@@ -637,8 +637,12 @@ function addfirescreenpart22() {
 		var screenVolume = this.el.parentElement;
 		let volume = parseFloat(screenVolume.getAttribute("volumelevel"));
 		let butcolor = screenVolume.getAttribute("buttoncolor");
-
 		console.log("The button color is: " + butcolor);
+		if (butcolor === null) {
+			console.log("The button color is null")
+			butcolor = buttoncolor
+			console.log("Button color is: " + butcolor);
+		}
 		volume += this.data.vvalue;
 		volume = volume.toFixed(2);
 		if (volume > 1) {volume = 1};
