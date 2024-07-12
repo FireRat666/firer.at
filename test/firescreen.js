@@ -30,7 +30,7 @@ function enableFireScreen() {
       const pBackdrop = getAttrOrDef(scripts[i], "backdrop", "1");
       const pExtras = getAttrOrDef(scripts[i], "extras", "0");
       const pCastMode = getAttrOrDef(scripts[i], "castmode", "0");
-      const pButtonColor = getAttrOrDef(scripts[i], "buttoncolor", "#00FF00");
+      const pButtonColor = getAttrOrDef(scripts[i], "button-color", "#00FF00");
       const pURL = "url: " + pWebsite + "; mipMaps: " + pMipmaps + "; pixelsPerUnit: " + pPixelsperunit + "; mode: local;";
       createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pExtras, pCastMode, pWebsite, pButtonColor);
     }
@@ -75,6 +75,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
   firescreen.setAttribute("rotation", p_rot);
   firescreen.setAttribute("scale", p_sca);
   firescreen.setAttribute("volumelevel", p_volume);
+  firescreen.setAttribute("button-color", p_buttoncolor);
   firescreen.setAttribute( "sq-browser", p_url);
   firescreen.setAttribute("sq-browser-interaction");
   firescreen.setAttribute("enable-interaction");
@@ -536,7 +537,7 @@ function addfirescreenpart22() {
 	init: function () {
 	  this.el.addEventListener("click", () => {  
 		var screenScale = this.el.parentElement;
-		let butcolor = screenScale.getAttribute("buttoncolor");
+		let butcolor = screenScale.getAttribute("button-color");
 		let scaleX = screenScale.object3D.scale.x;
 		let scaleY = screenScale.object3D.scale.y;
 		switch (this.data.size) {
@@ -567,7 +568,7 @@ function addfirescreenpart22() {
 	init: function () {
 	  this.el.addEventListener("click", () => {
 		let browserRotation = this.el.parentElement;
-		let butcolor = browserRotation.getAttribute("buttoncolor");
+		let butcolor = browserRotation.getAttribute("button-color");
 		let x = browserRotation.object3D.rotation.x;
 		let y = browserRotation.object3D.rotation.y;
 		let z = browserRotation.object3D.rotation.z;
@@ -590,7 +591,7 @@ function addfirescreenpart22() {
 	  this.el.addEventListener("click", () => {
 		const rotats = this.el;
 		const browserElement = this.el.parentElement;
-		let butcolor = browserElement.getAttribute("buttoncolor");
+		let butcolor = browserElement.getAttribute("button-color");
 		const rotatebutton = rotats.parentElement.children[6];
 		var els = document.getElementsByClassName("tilt");
 		if (rotatebutton.getAttribute("visible")) {
@@ -612,7 +613,7 @@ function addfirescreenpart22() {
 	  this.el.addEventListener("click", () => {
 		const hidebut = this.el;
 		const browserElement = this.el.parentElement;
-		let butcolor = browserElement.getAttribute("buttoncolor");
+		let butcolor = browserElement.getAttribute("button-color");
 		const somebutton = hidebut.parentElement.children[2];
 		var buttons = document.getElementsByClassName("buttons");
 		if (somebutton.getAttribute("visible")) {
@@ -636,7 +637,7 @@ function addfirescreenpart22() {
 	  this.el.addEventListener("click", () => {  
 		var screenVolume = this.el.parentElement;
 		let volume = parseFloat(screenVolume.getAttribute("volumelevel"));
-		let butcolor = screenVolume.getAttribute("buttoncolor");
+		let butcolor = screenVolume.getAttribute("button-color");
 		console.log("The button color is: " + butcolor);
 		if (butcolor === null) {
 			console.log("The button color is null")
@@ -662,7 +663,7 @@ function addfirescreenpart22() {
   },
   init: function () {
     const browserElement = this.el.parentElement;
-	let butcolor = browserElement.getAttribute("buttoncolor");
+	let butcolor = browserElement.getAttribute("button-color");
     this.el.addEventListener("click", () => {
       const actionType = this.data.action;
       this.el.setAttribute("color", "#AAAAAA");
