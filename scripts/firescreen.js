@@ -640,7 +640,7 @@ console.log("keepsoundlevel");
   },
   init: function () {
     const browserElement = this.el.parentElement;
-	let buttoncolor = browserElement.getAttribute("button-color");
+	let buttoncolor = this.el.getAttribute("color");
     this.el.addEventListener("click", () => {
       const actionType = this.data.action;
       this.el.setAttribute("color", "#AAAAAA");
