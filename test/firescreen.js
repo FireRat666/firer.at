@@ -504,11 +504,9 @@ class handButtonCrap{
 		document.querySelectorAll('.firemutebutc')
 		.forEach((firemutebutc) => {
 			if(handbuttonmutestate) {
-				firemutebutc.setAttribute("color","#00FF00");
-				console.log("setAttribute Color Green for buttons");
+				firemutebutc.setAttribute("color","#FFFFFF");
 			} else {
 				firemutebutc.setAttribute("color","#FF0000");
-				console.log("setAttribute Color Red for buttons");
 			}
 		});
 	console.log("test mute button clicked")
@@ -545,6 +543,7 @@ class handButtonCrap{
 			position: "-1 0.2 -0.4", 
 			testthing: "0.05", 
 			colour: volupcolor, 
+			class: "firevolupbutc", 
 			callback: () => this.volumecontrol("0.05")
 			},
 			{
@@ -552,13 +551,15 @@ class handButtonCrap{
 			position: "-1 0.2 0", 
 			testthing: "-0.05", 
 			colour: voldowncolor, 
+			class: "firevoldownbutc", 
 			callback: () => this.volumecontrol("-0.05")
 			},
 			{
 			image: "https://firer.at/files/VolumeMute.png",
 			position: "-1 0.2 0.4", 
 			testthing: "stuff", 
-			colour: buttoncolor, 
+			colour: "#FFFFFF", 
+			class: "firemutebutc", 
 			callback: () => this.mute()
 			}
 		].forEach(item => {
@@ -572,6 +573,7 @@ class handButtonCrap{
 			button.setAttribute("transparent", true);
 			button.setAttribute("position", item.position);
 			button.setAttribute("handthing", item.testthing);
+			button.setAttribute("class", item.class);
 			button.addEventListener("click", () => item.callback());
 			handControlsContainer.appendChild(button);
 		})
