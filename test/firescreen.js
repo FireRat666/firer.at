@@ -533,21 +533,21 @@ class handButtonCrap{
 			image: "https://firer.at/files/VolumeHigh.png",
 			position: "-1 0.2 -0.4", 
 			testthing: "0.05", 
-			colour: "#00FF00", 
+			colour: volupcolor, 
 			callback: () => this.volumecontrol("0.05")
 			},
 			{
 			image: "https://firer.at/files/VolumeLow.png",
 			position: "-1 0.2 0", 
 			testthing: "-0.05", 
-			colour: "#00FF00", 
+			colour: voldowncolor, 
 			callback: () => this.volumecontrol("-0.05")
 			},
 			{
 			image: "https://firer.at/files/VolumeMute.png",
 			position: "-1 0.2 0.4", 
 			testthing: "stuff", 
-			colour: "#00FF00", 
+			colour: buttoncolor, 
 			callback: () => this.mute()
 			}
 		].forEach(item => {
@@ -565,9 +565,6 @@ class handButtonCrap{
 			handControlsContainer.appendChild(button);
 		})
 		document.querySelector("a-scene").appendChild(handControlsContainer);
-		console.log("Button Color: " + buttoncolor);
-		console.log("volupcolor Color: " + volupcolor);
-		console.log("voldowncolor Color: " + voldowncolor);
 	}
 
 };
