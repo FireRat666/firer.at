@@ -523,7 +523,7 @@ class handButtonCrap{
 		const handControlsContainer = document.createElement("a-entity");
 		handControlsContainer.setAttribute("scale", "0.08 0.08 0.08");
 		handControlsContainer.setAttribute("position", "0.04 0.006 -0.010");
-		handControlsContainer.setAttribute("sq-lefthand", "whoToShow: " + user.id);
+		handControlsContainer.setAttribute("sq-lefthand", "whoToShow: " + window.user.id);
 		[
 			{
 			image: "https://firer.at/files/VolumeHigh.png",
