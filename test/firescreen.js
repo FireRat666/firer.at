@@ -542,7 +542,7 @@ class handButtonCrap{
 			{
 			image: "https://firer.at/files/VolumeMute.png",
 			position: "-1 0.2 0.4", 
-			testthing: "-0.05", 
+			testthing: "stuff", 
 			colour: "#00FF00", 
 			callback: () => this.mute()
 			}
@@ -561,6 +561,7 @@ class handButtonCrap{
 			handControlsContainer.appendChild(button);
 		})
 		document.querySelector("a-scene").appendChild(handControlsContainer);
+		console.log("Button Color: " + buttoncolor);
 	}
 
 };
