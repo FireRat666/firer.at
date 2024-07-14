@@ -531,13 +531,13 @@ class handButtonCrap{
 			let firevolbut = document.getElementById("firevolupbut");
 			let butcolour = firevolbut.getAttribute("color");
 			firevolbut.setAttribute("color", "#FFFFFF"); 
-			setTimeout(() => {  this.el.setAttribute("color", butcolour); }, 100);
+			setTimeout(() => {  firevolbut.setAttribute("color", butcolour); }, 100);
 			console.log("vvalue is > 0 Colour is: " + butcolour);
 		} else {
 			let firevolbut = document.getElementById("firevoldownbut");
 			let butcolour = firevolbut.getAttribute("color");
 			firevolbut.setAttribute("color", "#FFFFFF"); 
-			setTimeout(() => {  this.el.setAttribute("color", butcolour); }, 100);
+			setTimeout(() => {  firevolbut.setAttribute("color", butcolour); }, 100);
 			console.log("vvalue is < 0 Colour is: " + butcolour)
 		}
 
