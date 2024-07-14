@@ -526,6 +526,19 @@ class handButtonCrap{
 			firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
 			"document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
 		});
+
+		if (parseFloat(vvalue) > 0){
+			let firevolbut = document.getElementById("firevolupbut");
+			let colour = firevolbut.getAttribute("color");
+			console.log("vvalue is > 0 Colour is: " colour)
+		} else {
+			let firevolbut = document.getElementById("firevoldownbut");
+			let colour = firevolbut.getAttribute("color");
+			console.log("vvalue is < 0 Colour is: " colour)
+		}
+
+
+
 	console.log("testbut button clicked")
 	}
 
@@ -540,26 +553,26 @@ class handButtonCrap{
 		[
 			{
 			image: "https://firer.at/files/VolumeHigh.png",
-			position: "-1 0.2 -0.4", 
-			testthing: "0.05", 
+			position: "-1 0.2 -0.4",
 			colour: volupcolor, 
-			class: "firevolupbutc", 
+			class: "firevolbutc", 
+			id: "firevolupbut", 
 			callback: () => this.volumecontrol("0.05")
 			},
 			{
 			image: "https://firer.at/files/VolumeLow.png",
-			position: "-1 0.2 0", 
-			testthing: "-0.05", 
-			colour: voldowncolor, 
-			class: "firevoldownbutc", 
+			position: "-1 0.2 0",
+			colour: voldowncolor,
+			class: "firevolbutc",
+			id: "firevoldownbut", 
 			callback: () => this.volumecontrol("-0.05")
 			},
 			{
 			image: "https://firer.at/files/VolumeMute.png",
 			position: "-1 0.2 0.4", 
-			testthing: "stuff", 
 			colour: "#FFFFFF", 
 			class: "firemutebutc", 
+			id: "firemutebut", 
 			callback: () => this.mute()
 			}
 		].forEach(item => {
@@ -572,7 +585,6 @@ class handButtonCrap{
 			button.setAttribute("color", item.colour);
 			button.setAttribute("transparent", true);
 			button.setAttribute("position", item.position);
-			button.setAttribute("handthing", item.testthing);
 			button.setAttribute("class", item.class);
 			button.addEventListener("click", () => item.callback());
 			handControlsContainer.appendChild(button);
