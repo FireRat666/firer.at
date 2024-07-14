@@ -518,7 +518,7 @@ class handButtonCrap{
 
 
 	setupHandControls() {
-		console.log("Setting up Test Hand Controls")
+		console.log("Setting up Hand Controls for the firescreen(s)")
 		// This was a great innovation by HBR, who wanted Skizot to also get credit for the original idea. 
 		const handControlsContainer = document.createElement("a-entity");
 		handControlsContainer.setAttribute("scale", "0.08 0.08 0.08");
