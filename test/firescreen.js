@@ -472,7 +472,7 @@ class handButtonCrap{
 	  if(window.isBanter) { 
 		setTimeout(() => { 
 		  this.setupHandControls();
-		}, 14000); 
+		}, 10000); 
 	  };
 	}
 
