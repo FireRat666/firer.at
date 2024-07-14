@@ -570,7 +570,7 @@ console.log("keepsoundlevel");
 		setTimeout(() => {  this.el.setAttribute("color", buttoncolor); }, 100); 
 		});        },      });
 
-	// Toggle for hiding and showing the scale buttons By Fire with help from HBR
+	// Toggle for hiding and showing the rotation buttons By Fire with help from HBR
   AFRAME.registerComponent("enablerot", {
 	init: function () {
 	  this.el.addEventListener("click", () => {
