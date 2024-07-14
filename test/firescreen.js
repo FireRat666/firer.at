@@ -334,6 +334,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firemutebut.setAttribute("class", "buttons");
 	firemutebut.setAttribute("src", p_iconmuteurl);
 	firemutebut.setAttribute("toggle-mute");
+	firemutebut.setAttribute("class", "firemutebutc");
 	firescreen.appendChild(firemutebut);
 	// Volume Up Button
 	let volupbutpos = "0.5 0.38 0";
@@ -479,7 +480,7 @@ class handButtonCrap{
 		}, 15000); 
 	  };
 	}
-
+// firemutebutc
 	mute() {
 		if (handbuttonmutestate) {
 		handbuttonmutestate = false;
@@ -498,6 +499,16 @@ class handButtonCrap{
 			firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
 			"document.querySelectorAll('video, audio').forEach((elem) => elem.muted=true); ", }, ]);
 			console.log("Browser Muted Set to True")
+			}
+		});
+		document.querySelectorAll('.firemutebutc')
+		.forEach((firemutebutc) => {
+			if(handbuttonmutestate) {
+				firemutebutc.setAttribute("color","#00FF00");
+				console.log("setAttribute Color Green for buttons");
+			} else {
+				firemutebutc.setAttribute("color","#FF0000");
+				console.log("setAttribute Color Red for buttons");
 			}
 		});
 	console.log("test mute button clicked")
