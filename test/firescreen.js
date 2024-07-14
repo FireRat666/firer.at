@@ -527,14 +527,14 @@ class handButtonCrap{
 			"document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
 		});
 
-		if (parseFloat(vvalue) > 0){
+		if (parseFloat(vvalue) > 0) {
 			let firevolbut = document.getElementById("firevolupbut");
-			let colour = firevolbut.getAttribute("color");
-			console.log("vvalue is > 0 Colour is: " colour)
+			let butcolour = firevolbut.getAttribute("color");
+			console.log("vvalue is > 0 Colour is: " + butcolour);
 		} else {
 			let firevolbut = document.getElementById("firevoldownbut");
-			let colour = firevolbut.getAttribute("color");
-			console.log("vvalue is < 0 Colour is: " colour)
+			let butcolour = firevolbut.getAttribute("color");
+			console.log("vvalue is < 0 Colour is: " + butcolour)
 		}
 
 
