@@ -586,6 +586,7 @@ class handButtonCrap{
 			button.setAttribute("transparent", true);
 			button.setAttribute("position", item.position);
 			button.setAttribute("class", item.class);
+			button.setAttribute("id", item.id);
 			button.addEventListener("click", () => item.callback());
 			handControlsContainer.appendChild(button);
 		})
