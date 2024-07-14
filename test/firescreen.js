@@ -1,6 +1,8 @@
 // Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek and FireRat, And thank you to everyone who helped test it
 var fireScreenOn = 0;
-let buttoncolor = ""
+let buttoncolor = "";
+let volupcolor = "";
+let voldowncolor = "";
 // Create screen on space load 
 window.addEventListener('load', (event) => {
 	if(window.isBanter) {
@@ -65,6 +67,8 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	// Reset firescree variable maybe
 	// firescreen = "null";
 	buttoncolor = p_buttoncolor;
+	volupcolor = p_volupcolor;
+	voldowncolor = p_voldowncolor;
 	let firescreen = document.createElement("a-entity");
 	firescreen.id = "fires-browser";
 	firescreen.setAttribute("position", p_pos);
@@ -562,6 +566,8 @@ class handButtonCrap{
 		})
 		document.querySelector("a-scene").appendChild(handControlsContainer);
 		console.log("Button Color: " + buttoncolor);
+		console.log("volupcolor Color: " + volupcolor);
+		console.log("voldowncolor Color: " + voldowncolor);
 	}
 
 };
