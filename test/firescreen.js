@@ -565,7 +565,7 @@ class handButtonCrap{
 
 };
 
-let handbuttonmutestate = false;
+let handbuttonmutestate = true;
 const handbuttonstuff = new handButtonCrap();
 
 
