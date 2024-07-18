@@ -1,5 +1,4 @@
 // Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek and FireRat, And thank you to everyone who helped test it
-// import * as THREE from 'https://threejs.org/build/three.js';
 var fireScreenOn = 0;
 var thebuttoncolor = "";
 var volupcolor = "";
@@ -75,7 +74,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
             console.log("Enabling the Hand Controls")
             const handcontrols = document.createElement("script");
             handcontrols.id = "fires-handcontrols";
-            handcontrols.setAttribute("src", "https://firer.at/scripts/handcontrols.js");
+            handcontrols.setAttribute("src", "https://firer.at/test/handcontrols.js");
             document.querySelector("a-scene").appendChild(handcontrols);
         }
 	numberofbrowsers++    
@@ -92,8 +91,6 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 	firescreen.setAttribute("scale", p_sca);
 	firescreen.setAttribute("pageWidth", p_width);
 	firescreen.setAttribute("pageHeight", p_height);
-	// firescreen.browser.pageWidth=p_width;
-	// firescreen.browser.pageHeight=p_height;
 	firescreen.setAttribute("volumelevel", p_volume);
 	firescreen.setAttribute("button-color", p_buttoncolor);
 	firescreen.setAttribute("mute-color", p_mutecolor);
@@ -108,9 +105,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 	if (p_castmode == "false") {
 		firescreen.setAttribute( "sq-rigidbody", "useGravity: false; drag:10; angularDrag:10;");
 	};
-	// document.querySelector("a-scene").appendChild(firescreen);
 	fireScreenOn = 1;
-	// setPublicSpaceProp('firescreenon', '1');
 		
 	// for the collider to allow it to be moved
 	let firecollider = document.createElement("a-plane");
@@ -474,7 +469,6 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		fireextra03.setAttribute("sq-collider");
 		fireextra03.setAttribute("sq-interactable");
 		fireextra03.setAttribute("class", "buttons");
-        // fireextra03.setAttribute("forcekeyboard", "false");
 		fireextra03.setAttribute("click-url", "url:" + p_custombutton03url);
 		firescreen.appendChild(fireextra03);
 		// Extra Button 03 Part 2
@@ -492,20 +486,33 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 	
 };
 
+
 // Sets the default sound level probably
 var volinterval = null;
+var soundlevelfirstrun = true;
 function keepsoundlevel() {
-console.log("FireScreen: keepsoundlevel loop called");
-  if (fireScreenOn) {
+  if (fireScreenOn && soundlevelfirstrun) {
+	console.log("FireScreen: keepsoundlevel loop");
+	soundlevelfirstrun = false;
   // Loop to keep sound level set, runs every second
     volinterval = setInterval(function() {
-    document.querySelectorAll('.firescreenc')
-      .forEach((firescreenc) => {
-        let volume = parseFloat(firescreenc.getAttribute("volumelevel"));
-        firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
-          "document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
-      });
-    }, 5000); } else { clearInterval(volinterval); }
+		let thisloopnumber = 0;
+		while (thisloopnumber < numberofbrowsers) {
+			thisloopnumber++
+			let theBrowser = document.getElementById("fires-browser" + thisloopnumber);
+			let volume = parseFloat(theBrowser.getAttribute("volumelevel"));
+			theBrowser.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
+			"document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
+			// document.querySelectorAll('.firescreenc')
+			//   .forEach((firescreenc) => {
+			// 	setTimeout(() => { 
+			// 		let volume = parseFloat(firescreenc.getAttribute("volumelevel"));
+			// 		firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
+			// 		"document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
+			// 	}, 1000);
+			//   });
+		}
+    }, 5000); } else if (fireScreenOn) { } else { clearInterval(volinterval); }
 };
 
 
@@ -773,20 +780,18 @@ function getAttrOrDef(pScript, pAttr, pDefault) {
 
 
 
-
-
 // Create screen After Unity load 
 var firstbrowserrun = true;
 function firescreenloadstuff() {
 		const firescene = BS.BanterScene.getInstance();
 		firescene.On("unity-loaded", () => {
+			// console.log("FireScreen: This should run after unity scene loaded.");
 			setTimeout(() => { 
 				if (firstbrowserrun) {
 					firstbrowserrun = false;
 					enableFireScreen();
 				};
 			}, 1000);
-			console.log("FireScreen: This should run after unity scene loaded.");
 		});
 }
 
