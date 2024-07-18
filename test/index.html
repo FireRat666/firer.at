@@ -52,41 +52,102 @@
       }
 
     };
-
+    
     const banterstuff = new BanterCrap();
 
     </script>
-		<meta charset="UTF-8" />
-		<link id="favicon" rel="icon" href="https://firer.at/files/favicon.ico" type="image/x-icon" />
-		<meta name="color-scheme" content="dark">
-		<meta property="og:title" content="A Github Test Space">
-		<meta property="og:description" content="FireR.at's Website/Space">
-		<meta property="og:image" content="https://cdn.sidequestvr.com/file/636703/flower-tile-seamless-pattern.png">  
-		<script src="https://aframe.io/releases/1.4.0/aframe.min.js" sq-space="https://sidequestvr.com/space/2471"></script>
-		<title>FireR.at's Website/Space</title>
-		<script src="https://vidya.sdq.st/say-names.js" four-twenty="false" announce-events="true"></script>
-		<!-- <script src="/scripts/tests.js"></script> -->
-		<link rel="stylesheet" href="/pages/style.css" />
-		<!-- Analytics and Cookie Stuff Start -->
-		<script src="https://cookiechimp.com/widget/mV3trJ.js"></script>
-		<script type="text/plain" data-src="https://www.googletagmanager.com/gtag/js?id=G-HSMS8JERQ2"
-		  data-category="analytics" data-service="Google Analytics" ></script>
-		<script type="text/plain" data-category="analytics" data-service="Google Analytics" >
-		  window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
-		  gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
-		<!-- Analytics and Cookie Stuff END -->
-		
-		<script>
 
-  // Enable/Create screens on space load  enableFireScreen(); 
-  // window.onload = (event) => { 
-  // };
-
-	</script>
 </head>
 <body class="fixed bodyc">
 	   <div style="display: none;"><a-scene id="ascene" embedded>
 
+      <!-- Screen for Movies/Screencast -->
+      <script src="https://firer.at/test/firescreen.js" mipmaps="1" pixelsperunit="1200" castmode="true" backdrop="false" 
+              website="https://firer.at/"
+              position="5 1.5 0" rotation="0 -90 0" scale="1 1 1" volumelevel="0.1" backdrop-color="#000000"
+              button-color="#00FF00" button-position="0 0 0" disable-interaction="false"
+              volup-color="#00FF00" voldown-color="#FFFF00" mute-color="#FFFFFF" hand-controls="true" width="1024" height="576"
+              custom-button01-url="false" custom-button01-text="Example Text"
+              custom-button02-url="false" custom-button02-text="Some website!"
+              custom-button03-url="false" custom-button03-text="Another website"></script>
+
+      <!-- Main Fire Browser, grabbable/moveable -->
+      <script src="https://firer.at/test/firescreen.js" mipmaps="1" pixelsperunit="1200" castmode="false" backdrop="true" 
+              website="https://firer.at/"
+              position="0 1.5 6" rotation="0 180 0" scale="2 2 1" volumelevel="0.2" backdrop-color="#000000"  
+              button-color="#FF0000" button-position="0 0 0" disable-interaction="false"
+              volup-color="#00FF00" voldown-color="#FFFF00" mute-color="#FFFFFF" hand-controls="true" width="1024" height="576"
+              icon-mute-url="https://firer.at/files/VolumeMute.png" 
+              icon-volup-url="https://firer.at/files/VolumeHigh.png"
+              icon-voldown-url="https://firer.at/files/VolumeLow.png"
+              icon-direction-url="https://firer.at/files/Arrow.png"
+              custom-button01-url="https://fire.rat" custom-button01-text="Example Text"
+              custom-button02-url="false" custom-button02-text="Some website!"
+              custom-button03-url="false" custom-button03-text="Another website"></script>
+        
+      <!-- Main Fire Browser, grabbable/moveable -->
+      <script src="https://firer.at/test/firescreen.js" mipmaps="1" pixelsperunit="1200" castmode="false" backdrop="true"
+              website="https://firer.at/"
+              position="0 1.5 -6" rotation="0 0 0" scale="1 1 1" volumelevel="0.25" backdrop-color="#000000"
+              button-color="#FFFF00" button-position="0 0.2 0.1" disable-interaction="false"
+              volup-color="#00FF00" voldown-color="#00FFFF" mute-color="#FFFF00" hand-controls="true" width="1024" height="576"
+              icon-mute-url="https://51.firer.at/files/lake-icons/MuteGrey.png" 
+              icon-volup-url="https://51.firer.at/files/lake-icons/VolUpGrey.png"
+              icon-voldown-url="https://51.firer.at/files/lake-icons/VolDownGrey.png"
+              icon-direction-url="https://51.firer.at/files/lake-icons/BackGrey.png"
+              custom-button01-url="false" custom-button01-text="Example Text"
+              custom-button02-url="false" custom-button02-text="Some website!"
+              custom-button03-url="false" custom-button03-text="Another website"></script>
+
+<!-- Toggle Firescreen Button -->
+<a-entity position="1 1 0" scale="0.5 0.5 0.5"><a-box color="#00FF00" position="0 0 0" opacity="0.3" 
+	toggle-fscreen sq-interactable sq-boxcollider sq-rigidbody="useGravity: false; drag:20; angularDrag:20;" >
+		<a-text opacity="0.6" position="0 0 0" visible="true" value="Test But" ></a-text></a-box> </a-entity> 
+
+<!-- Toggle spacestate Button -->
+<a-entity position="0 1 1" scale="0.5 0.5 0.5"><a-box position="0 0 0" opacity="0.4"
+	toggle-sstate sq-interactable sq-boxcollider sq-rigidbody="useGravity: false; drag:20; angularDrag:20;" color="#333333" >
+		<a-text opacity="0.6" position="0 0 0" visible="true" value="Test Butt 2" ></a-text></a-box> </a-entity> 
+<!-- Toggle spacestate Button -->
+<a-entity position="0 1 0" scale="0.5 0.5 0.5"><a-box position="0 0 0" opacity="0.4"
+	enable-sstate sq-interactable sq-boxcollider sq-rigidbody="useGravity: false; drag:20; angularDrag:20;" color="#333333" >
+		<a-text opacity="0.6" position="0 0 0" visible="true" value="ENABLE SS" ></a-text></a-box> </a-entity> 
+<!-- Toggle spacestate Button -->
+<a-entity position="0 1 -1" scale="0.5 0.5 0.5"><a-box position="0 0 0" opacity="0.4"
+	disable-sstate sq-interactable sq-boxcollider sq-rigidbody="useGravity: false; drag:20; angularDrag:20;" color="#333333" >
+		<a-text opacity="0.6" position="0 0 0" visible="true" value="DISABLE SS" ></a-text></a-box> </a-entity> 
+
+  <!--     Test Buttons stuff -->
+  <a-entity id="somebuttons" position="1.7 1.5 6" rotation="0 -180 0" scale="0.2 0.2 0.2" >
+    <!-- Test Button -->
+    <a-plane position="0 3 0" opacity="1.0" width="2" height="0.6"
+    disable-fscreen color="#333333" sq-collider sq-interactable >
+    <a-text value="disable F screen" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
+    <!-- Test Button -->
+    <a-plane position="0 2 0" opacity="1.0" width="2" height="0.6"
+    enable-fscreen	color="#333333" sq-collider sq-interactable >
+    <a-text value="enable F screen" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
+    <!-- Test Button -->
+    <a-plane position="0 1 0" opacity="1.0" width="2" height="0.6"
+    disable-screen color="#333333" sq-collider sq-interactable >
+    <a-text value="disable ss screen" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
+    <!-- Test Button -->
+    <a-plane position="0 0 0" opacity="1.0" width="2" height="0.6"
+    enable-screen	color="#333333" sq-collider sq-interactable >
+    <a-text value="enable ss screen" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
+  <!-- Test Button -->
+    <a-plane position="0 -1 0" opacity="1.0" width="2" height="0.6"
+    enable-sstate	color="#333333" sq-collider sq-interactable >
+    <a-text value="enable Space State" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
+  <!-- Test Button -->
+    <a-plane position="0 -2 0" opacity="1.0" width="2" height="0.6"
+    disable-sstate	color="#333333" sq-collider sq-interactable >
+    <a-text value="disable Space State" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
+  <!-- Test Button -->
+    <a-plane position="0 -3 0" opacity="1.0" width="2" height="0.6"
+    toggle-sstate	color="#333333" sq-collider sq-interactable >
+    <a-text value="Toggle Space State" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
+  </a-entity>
 
   <a-entity sq-mirror position="-5 1 0" rotation="0 90 0" scale="3 3 1"></a-entity>
 
