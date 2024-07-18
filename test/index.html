@@ -1,5 +1,61 @@
 <html lang="en">
-	<head>
+	<head>    
+    <script>
+    class BanterCrap{
+      constructor() {
+        console.log("Index.html: Constructor Loading.");
+        if(window.isBanter) { 
+          this.LoadAssetBundle();
+          this.setSceneSettings();
+        };
+      }
+      async LoadAssetBundle() {
+        console.log("Index.html: Asset Bundle Loading...");
+        const windowsUrl = "https://firer.at/windows.banter";
+        const osxUrl = null; // Not implemented yet...
+        const linuxUrl = null; // Not implemented yet...
+        const androidUrl = "https://firer.at/android.banter";
+        const iosUrl = null; // Not implemented yet...
+        const vosUrl = null; // Not implemented yet...
+        const isScene = true;
+        const legacyShaderFix = false;
+        const gameObject = new BS.GameObject("MyAssetBundle"); 
+            console.log("Index.html: Asset Bundle Loading go...");
+        const assetBundle = await gameObject.AddComponent(new BS.BanterAssetBundle(windowsUrl, osxUrl, linuxUrl, androidUrl, iosUrl, vosUrl, isScene, legacyShaderFix));
+            console.log("Index.html: Asset Bundle Loaded");
+      }
+
+      async setSceneSettings() {
+        console.log("Index.html: setSceneSettings Loading...");
+        // To get a reference to the scene from anywhere
+        const scene = BS.BanterScene.getInstance();
+        console.log("Index.html: set scene constant");
+        // SetSettings - Set settings for the current space like spawn position, portals, guest access etc.
+        const settings = new BS.SceneSettings();
+        settings.EnableDevTools = true;
+        settings.EnableTeleport = true;
+        settings.EnableForceGrab = false;
+        settings.EnableSpiderMan = false;
+        settings.EnablePortals = true;
+        settings.EnableGuests = true;
+        settings.EnableQuaternionPose = false;
+        settings.EnableControllerExtras = false;
+        settings.EnableFriendPositionJoin = false;
+        settings.EnableDefaultTextures = true;
+        settings.EnableAvatars = true;
+        settings.MaxOccupancy = 30;
+        settings.RefreshRate = 90;
+        // settings.ClippingPlane = new Vector2(0.02, 1500);
+        // settings.SpawnPoint = new Vector4(0, 0.1, 0, 90);
+        await scene.SetSettings(settings);
+        console.log("Index.html: finish setting settings for scene");
+      }
+
+    };
+    
+    const banterstuff = new BanterCrap();
+
+    </script>
 		<meta charset="UTF-8" />
 		<link id="favicon" rel="icon" href="https://firer.at/files/favicon.ico" type="image/x-icon" />
 		<meta name="color-scheme" content="dark">
@@ -29,11 +85,7 @@
 	</script>
 </head>
 <body class="fixed bodyc">
-	   <div style="display: none;"><a-scene id="ascene"
-            sq-friendpositionjoinallowed="enabled: false" sq-portalsenabled="enabled: true" sq-refreshrate="rate:90" sq-spawnpoint="position: 0 0 0;" sq-maxoccupancy="number: 20"
-             sq-assetbundle="
-				android: https://firer.at/android.banter;
-				desktop: https://firer.at/windows.banter;"    >
+	   <div style="display: none;"><a-scene id="ascene" embedded>
 
       <!-- Screen for Movies/Screencast -->
       <script src="https://firer.at/test/firescreen.js" mipmaps="1" pixelsperunit="1200" castmode="true" backdrop="false" 
