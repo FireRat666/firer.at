@@ -52,7 +52,7 @@
       }
 
     };
-    
+
     const banterstuff = new BanterCrap();
 
     </script>
@@ -125,55 +125,6 @@
               custom-button02-url="false" custom-button02-text="Some website!"
               custom-button03-url="false" custom-button03-text="Another website"></script>
 
-<!-- Toggle Firescreen Button -->
-<a-entity position="1 1 0" scale="0.5 0.5 0.5"><a-box color="#00FF00" position="0 0 0" opacity="0.3" 
-	toggle-fscreen sq-interactable sq-boxcollider sq-rigidbody="useGravity: false; drag:20; angularDrag:20;" >
-		<a-text opacity="0.6" position="0 0 0" visible="true" value="Test But" ></a-text></a-box> </a-entity> 
-
-<!-- Toggle spacestate Button -->
-<a-entity position="0 1 1" scale="0.5 0.5 0.5"><a-box position="0 0 0" opacity="0.4"
-	toggle-sstate sq-interactable sq-boxcollider sq-rigidbody="useGravity: false; drag:20; angularDrag:20;" color="#333333" >
-		<a-text opacity="0.6" position="0 0 0" visible="true" value="Test Butt 2" ></a-text></a-box> </a-entity> 
-<!-- Toggle spacestate Button -->
-<a-entity position="0 1 0" scale="0.5 0.5 0.5"><a-box position="0 0 0" opacity="0.4"
-	enable-sstate sq-interactable sq-boxcollider sq-rigidbody="useGravity: false; drag:20; angularDrag:20;" color="#333333" >
-		<a-text opacity="0.6" position="0 0 0" visible="true" value="ENABLE SS" ></a-text></a-box> </a-entity> 
-<!-- Toggle spacestate Button -->
-<a-entity position="0 1 -1" scale="0.5 0.5 0.5"><a-box position="0 0 0" opacity="0.4"
-	disable-sstate sq-interactable sq-boxcollider sq-rigidbody="useGravity: false; drag:20; angularDrag:20;" color="#333333" >
-		<a-text opacity="0.6" position="0 0 0" visible="true" value="DISABLE SS" ></a-text></a-box> </a-entity> 
-
-  <!--     Test Buttons stuff -->
-  <a-entity id="somebuttons" position="1.7 1.5 6" rotation="0 -180 0" scale="0.2 0.2 0.2" >
-    <!-- Test Button -->
-    <a-plane position="0 3 0" opacity="1.0" width="2" height="0.6"
-    disable-fscreen color="#333333" sq-collider sq-interactable >
-    <a-text value="disable F screen" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
-    <!-- Test Button -->
-    <a-plane position="0 2 0" opacity="1.0" width="2" height="0.6"
-    enable-fscreen	color="#333333" sq-collider sq-interactable >
-    <a-text value="enable F screen" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
-    <!-- Test Button -->
-    <a-plane position="0 1 0" opacity="1.0" width="2" height="0.6"
-    disable-screen color="#333333" sq-collider sq-interactable >
-    <a-text value="disable ss screen" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
-    <!-- Test Button -->
-    <a-plane position="0 0 0" opacity="1.0" width="2" height="0.6"
-    enable-screen	color="#333333" sq-collider sq-interactable >
-    <a-text value="enable ss screen" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
-  <!-- Test Button -->
-    <a-plane position="0 -1 0" opacity="1.0" width="2" height="0.6"
-    enable-sstate	color="#333333" sq-collider sq-interactable >
-    <a-text value="enable Space State" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
-  <!-- Test Button -->
-    <a-plane position="0 -2 0" opacity="1.0" width="2" height="0.6"
-    disable-sstate	color="#333333" sq-collider sq-interactable >
-    <a-text value="disable Space State" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
-  <!-- Test Button -->
-    <a-plane position="0 -3 0" opacity="1.0" width="2" height="0.6"
-    toggle-sstate	color="#333333" sq-collider sq-interactable >
-    <a-text value="Toggle Space State" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
-  </a-entity>
 
   <a-entity sq-mirror position="-5 1 0" rotation="0 90 0" scale="3 3 1"></a-entity>
 
