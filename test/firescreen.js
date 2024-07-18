@@ -1,5 +1,5 @@
 // Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek and FireRat, And thank you to everyone who helped test it
-import * as THREE from 'https://threejs.org/build/three.js';
+// import * as THREE from 'https://threejs.org/build/three.js';
 var fireScreenOn = 0;
 var thebuttoncolor = "";
 var volupcolor = "";
