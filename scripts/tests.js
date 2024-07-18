@@ -31,11 +31,11 @@ document.addEventListener("DOMContentLoaded", () => {
                      }
                      if (firesscreenon == "1") {
                       console.log("Fire Screen: 1");
-                      enableFireScreen();
+                      // enableFireScreen();
                      }
                      if (firesscreenon == "0") {
                       console.log("Fire Screen: 0");
-                      disableFireScreen();
+                      // disableFireScreen();
                      }
                   console.log("SpaceStateValue: " + firesscreenon);
                  break; 
