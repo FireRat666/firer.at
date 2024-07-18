@@ -783,7 +783,6 @@ function firescreenloadstuff() {
 			setTimeout(() => { 
 				if (firstbrowserrun) {
 					firstbrowserrun = false;
-					console.log("enableFireScreen");
 					enableFireScreen();
 				};
 			}, 1000);
