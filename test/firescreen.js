@@ -1,24 +1,16 @@
 // Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek and FireRat, And thank you to everyone who helped test it
 var fireScreenOn = 0;
-let thebuttoncolor = "";
-let volupcolor = "";
-let voldowncolor = "";
-let IconVolUpUrl = "";
-let IconVolDownUrl = "";
-let IconMuteUrl = "";
-let firstrunhandcontrols = true;
-// Create screen on space load 
-window.addEventListener('load', (event) => {
-	if(window.isBanter) {
-		console.log("Window is Banter, Loading FireScreen");
-		setTimeout(() => { 
-			enableFireScreen();
-		}, 3000);
-	} else { console.log("Window is Not Banter, Not Starting Script");};
-});
+var thebuttoncolor = "";
+var volupcolor = "";
+var voldowncolor = "";
+var IconVolUpUrl = "";
+var IconVolDownUrl = "";
+var IconMuteUrl = "";
+var firstrunhandcontrols = true;
+var numberofbrowsers = 0;
 
 function enableFireScreen() {
-  console.log("Enabling Fire Screen");
+  console.log("Enabling Fire Screen(s)");
   // window.enableControllerExtras(); // CAN REMOVE THIS LINE
   const scripts = document.getElementsByTagName("script");
   for (let i = 0; i < scripts.length; i++) {
@@ -30,9 +22,10 @@ function enableFireScreen() {
       const pVolume = getAttrOrDef(scripts[i], "volumelevel", "0.25");
       const pWebsite = getAttrOrDef(scripts[i], "website", "https://firer.at/pages/games.html");
       const pMipmaps = getAttrOrDef(scripts[i], "mipmaps", "1");
-      const pPixelsperunit = getAttrOrDef(scripts[i], "pixelsperunit", "1600");
+      const pPixelsperunit = getAttrOrDef(scripts[i], "pixelsperunit", "1200");
+      const pWidth = getAttrOrDef(scripts[i], "width", "1024");
+      const pHeight = getAttrOrDef(scripts[i], "height", "576");
       const pBackdrop = getAttrOrDef(scripts[i], "backdrop", "true");
-      const pExtras = getAttrOrDef(scripts[i], "extras", "false");
       const pCastMode = getAttrOrDef(scripts[i], "castmode", "false");
       const pHandButtons = getAttrOrDef(scripts[i], "hand-controls", "false");
       const pDisableInteraction = getAttrOrDef(scripts[i], "disable-interaction", "false");
@@ -40,15 +33,23 @@ function enableFireScreen() {
       const pBackDropColor = getAttrOrDef(scripts[i], "backdrop-color", "#000000");
       const pVolUpColor = getAttrOrDef(scripts[i], "volup-color", "null");
       const pVolDownColor = getAttrOrDef(scripts[i], "voldown-color", "null");
+      const pMuteColor = getAttrOrDef(scripts[i], "mute-color", "#FFFFFF");
       const pButtonPos = getAttrOrDef(scripts[i], "button-position", "0 0 0");
       const pIconMuteUrl = getAttrOrDef(scripts[i], "icon-mute-url", "https://firer.at/files/VolumeMute.png");
       const pIconVolUpUrl = getAttrOrDef(scripts[i], "icon-volup-url", "https://firer.at/files/VolumeHigh.png");
       const pIconVolDownUrl = getAttrOrDef(scripts[i], "icon-voldown-url", "https://firer.at/files/VolumeLow.png");
       const pIconDirectionUrl = getAttrOrDef(scripts[i], "icon-direction-url", "https://firer.at/files/Arrow.png");
-      const pURL = "url: " + pWebsite + "; mipMaps: " + pMipmaps + "; pixelsPerUnit: " + pPixelsperunit + "; mode: local;";
-      createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pExtras, pCastMode, pWebsite, pButtonColor, 
-		pBackDropColor, pIconMuteUrl, pIconVolUpUrl, pIconVolDownUrl, pIconDirectionUrl, pVolUpColor, pVolDownColor,
-		pDisableInteraction, pButtonPos, pHandButtons);
+      const pCustomButton01Url = getAttrOrDef(scripts[i], "custom-button01-url", "false");
+      const pCustomButton01Text = getAttrOrDef(scripts[i], "custom-button01-text", "Custom Button 01");
+      const pCustomButton02Url = getAttrOrDef(scripts[i], "custom-button02-url", "false");
+      const pCustomButton02Text = getAttrOrDef(scripts[i], "custom-button02-text", "Custom Button 02");
+      const pCustomButton03Url = getAttrOrDef(scripts[i], "custom-button03-url", "false");
+      const pCustomButton03Text = getAttrOrDef(scripts[i], "custom-button03-text", "Custom Button 03");
+      const pURL = "url: " + pWebsite + "; mipMaps: " + pMipmaps + "; pixelsPerUnit: " + pPixelsperunit + "; pageWidth: " + pWidth + "; pageHeight: " + pHeight + "; mode: local;";
+      createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pCastMode, pWebsite, pButtonColor, 
+		pBackDropColor, pIconMuteUrl, pIconVolUpUrl, pIconVolDownUrl, pIconDirectionUrl, pVolUpColor, pVolDownColor, pMuteColor,
+		pDisableInteraction, pButtonPos, pHandButtons, pWidth, pHeight, pCustomButton01Url, pCustomButton01Text, 
+		pCustomButton02Url, pCustomButton02Text, pCustomButton03Url, pCustomButton03Text);
     }
   };
 }
@@ -64,9 +65,10 @@ function disableFireScreen() {
 	keepsoundlevel();
 };
 
-function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_extras, p_castmode, p_website, p_buttoncolor, 
-	p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor,
-	p_disableinteraction, p_buttonpos, p_handbuttons) {
+function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_castmode, p_website, p_buttoncolor, 
+	p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor, p_mutecolor,
+	p_disableinteraction, p_buttonpos, p_handbuttons, p_width, p_height, p_custombutton01url, p_custombutton01text, 
+	p_custombutton02url, p_custombutton02text, p_custombutton03url, p_custombutton03text) {
         if (p_handbuttons == "true" && firstrunhandcontrols === true) {
             firstrunhandcontrols = false;
             console.log("Enabling the Hand Controls")
@@ -75,7 +77,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
             handcontrols.setAttribute("src", "https://firer.at/scripts/handcontrols.js");
             document.querySelector("a-scene").appendChild(handcontrols);
         }
-        
+	numberofbrowsers++    
 	thebuttoncolor = p_buttoncolor;
 	volupcolor = p_volupcolor;
 	voldowncolor = p_voldowncolor;
@@ -83,12 +85,17 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
     IconVolDownUrl = p_iconvoldownurl;
     IconMuteUrl = p_iconmuteurl;
 	let firescreen = document.createElement("a-entity");
-	firescreen.id = "fires-browser";
+	firescreen.id = "fires-browser" + numberofbrowsers;
 	firescreen.setAttribute("position", p_pos);
 	firescreen.setAttribute("rotation", p_rot);
 	firescreen.setAttribute("scale", p_sca);
+	firescreen.setAttribute("pageWidth", p_width);
+	firescreen.setAttribute("pageHeight", p_height);
+	// firescreen.browser.pageWidth=p_width;
+	// firescreen.browser.pageHeight=p_height;
 	firescreen.setAttribute("volumelevel", p_volume);
 	firescreen.setAttribute("button-color", p_buttoncolor);
+	firescreen.setAttribute("mute-color", p_mutecolor);
 	firescreen.setAttribute( "sq-browser", p_url);
 	if (p_disableinteraction === "false") {
 		firescreen.setAttribute("sq-browser-interaction");
@@ -235,6 +242,18 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 		firetogglerots.setAttribute("src", "https://firer.at/files/Rot.png");
 		firetogglerots.setAttribute("enablerot", "false");
 		firescreen.appendChild(firetogglerots);
+		// Hide/Show Keyboard Button
+		let firekeyboardtog = document.createElement("a-plane");
+		firekeyboardtog.setAttribute("position", "-0.6 -0.15 0");
+		firekeyboardtog.setAttribute("width", "0.1");
+		firekeyboardtog.setAttribute("height", "0.1");
+		firekeyboardtog.setAttribute("color", "#FFFFFF");
+		firekeyboardtog.setAttribute("material", "transparent: true");
+		firekeyboardtog.setAttribute("sq-collider");
+		firekeyboardtog.setAttribute("sq-interactable");
+		firekeyboardtog.setAttribute("src", "https://firer.at/files/Keyboard.png");
+		firekeyboardtog.setAttribute("forcekeyboard", "false");
+		firescreen.appendChild(firekeyboardtog);
 		// Hide/Show Buttons Button
 		let firevisibletog = document.createElement("a-plane");
 		firevisibletog.setAttribute("position", "-0.6 0 0");
@@ -340,7 +359,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firemutebut.setAttribute("position", mutebutpos);
 	firemutebut.setAttribute("width", "0.1");
 	firemutebut.setAttribute("height", "0.1");
-	firemutebut.setAttribute("color", "#FFFFFF");
+	firemutebut.setAttribute("color", p_mutecolor);
 	firemutebut.setAttribute("material", "transparent: true");
 	firemutebut.setAttribute("sq-collider");
 	firemutebut.setAttribute("sq-interactable");
@@ -373,8 +392,8 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	// Volume Down Button
 	let voldownbutpos = "0.35 0.38 0";
 	let firevoldown = document.createElement("a-plane");
-	const voldownArray = p_buttonpos.split(" ");
-	const voldownposArray = voldownbutpos.split(" ");
+	let voldownArray = p_buttonpos.split(" ");
+	let voldownposArray = voldownbutpos.split(" ");
 	voldownbutpos = (Number(voldownArray[0]) + Number(voldownposArray[0])) + " " + (Number(voldownArray[1]) + Number(voldownposArray[1])) + " " + (Number(voldownArray[2]) + Number(voldownposArray[2]));
 	firevoldown.setAttribute("position", voldownbutpos);
 	firevoldown.setAttribute("width", "0.1");
@@ -392,8 +411,10 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 	firevoldown.setAttribute("volume-level", "vvalue: -0.05");
 	firescreen.appendChild(firevoldown);
 
-	if (p_extras == "true") {
-		// Extra Button 01 Part 1
+
+	
+	if (p_custombutton01url != "false") {
+		// Custom Button 01 Part 1
 		let fireextra01 = document.createElement("a-plane");
 		fireextra01.id = "extra-button-1";
 		fireextra01.setAttribute("position", "0.68 0.3 0");
@@ -404,16 +425,20 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 		fireextra01.setAttribute("sq-collider");
 		fireextra01.setAttribute("sq-interactable");
 		fireextra01.setAttribute("class", "buttons");
-		fireextra01.setAttribute("click-url", "url: https://jackbox.tv/");
+		fireextra01.setAttribute("click-url", "url:" + p_custombutton01url);
 		firescreen.appendChild(fireextra01);
-		// Extra Button 01 Part 2
+		// Custom Button 01 Part 2
 		let fireextra01p2 = document.createElement("a-text");
-		fireextra01p2.setAttribute("value", "Jackbox.tv");
-		fireextra01p2.setAttribute("position", "0 0 0.01");
+		fireextra01p2.setAttribute("value", p_custombutton01text);
+		fireextra01p2.setAttribute("position", "0 0 0.005");
 		fireextra01p2.setAttribute("scale", "0.11 0.11 0.11");
 		fireextra01p2.setAttribute("color", "#FFFFFF");
 		fireextra01p2.setAttribute("align", "center");
 		fireextra01.appendChild(fireextra01p2);
+
+	};
+
+	if (p_custombutton02url != "false") {
 		// Extra Button 02 Part 1
 		let fireextra02 = document.createElement("a-plane");
 		fireextra02.id = "extra-button-2";
@@ -425,16 +450,18 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 		fireextra02.setAttribute("sq-collider");
 		fireextra02.setAttribute("sq-interactable");
 		fireextra02.setAttribute("class", "buttons");
-		fireextra02.setAttribute("click-url", "url: https://papas.tv/");
+		fireextra02.setAttribute("click-url", "url:" + p_custombutton02url);
 		firescreen.appendChild(fireextra02);
 		// Extra Button 02 Part 2
 		let fireextra02p2 = document.createElement("a-text");
-		fireextra02p2.setAttribute("value", "Papas.tv");
-		fireextra02p2.setAttribute("position", "0 0 0.01");
+		fireextra02p2.setAttribute("value", p_custombutton02text);
+		fireextra02p2.setAttribute("position", "0 0 0.005");
 		fireextra02p2.setAttribute("scale", "0.11 0.11 0.11");
 		fireextra02p2.setAttribute("color", "#FFFFFF");
 		fireextra02p2.setAttribute("align", "center");
 		fireextra02.appendChild(fireextra02p2);
+	};
+	if (p_custombutton03url != "false") {
 		// Extra Button 03 Part 1
 		let fireextra03 = document.createElement("a-plane");
 		fireextra03.id = "extra-button-3";
@@ -446,26 +473,28 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ex
 		fireextra03.setAttribute("sq-collider");
 		fireextra03.setAttribute("sq-interactable");
 		fireextra03.setAttribute("class", "buttons");
-		fireextra03.setAttribute("click-url", "url: https://bantervr.com/events");
+        // fireextra03.setAttribute("forcekeyboard", "false");
+		fireextra03.setAttribute("click-url", "url:" + p_custombutton03url);
 		firescreen.appendChild(fireextra03);
 		// Extra Button 03 Part 2
 		let fireextra03p2 = document.createElement("a-text");
-		fireextra03p2.setAttribute("value", "Banter Events");
-		fireextra03p2.setAttribute("position", "0 0 0.01");
+		fireextra03p2.setAttribute("value", p_custombutton03text);
+		fireextra03p2.setAttribute("position", "0 0 0.005");
 		fireextra03p2.setAttribute("scale", "0.11 0.11 0.11");
 		fireextra03p2.setAttribute("color", "#FFFFFF");
 		fireextra03p2.setAttribute("align", "center");
 		fireextra03.appendChild(fireextra03p2);
 	}; 
 	document.querySelector("a-scene").appendChild(firescreen);
-	setTimeout(() => { keepsoundlevel(); }, 1000);
-	console.log("Fire screen Enabled");
+	setTimeout(() => { keepsoundlevel();setBrowserWidths(); }, 1500);
+	console.log(numberofbrowsers + " Fire screen(s) Enabled");
+	
 };
 
 // Sets the default sound level probably
 var volinterval = null;
 function keepsoundlevel() {
-console.log("keepsoundlevel");
+console.log("FireScreen: keepsoundlevel loop called");
   if (fireScreenOn) {
   // Loop to keep sound level set, runs every second
     volinterval = setInterval(function() {
@@ -475,11 +504,37 @@ console.log("keepsoundlevel");
         firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
           "document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
       });
-    }, 2000); } else { clearInterval(volinterval); }
+    }, 5000); } else { clearInterval(volinterval); }
 };
 
 
 ////////////////////////////////////////////////////////////////
+
+
+var widthalreadyset = false;
+function setBrowserWidths() {
+	if (widthalreadyset === false) {
+		widthalreadyset = true;
+		let thisloopnumber = 0;
+		while (thisloopnumber < numberofbrowsers) {
+			thisloopnumber++
+			let theBrowser = document.getElementById("fires-browser" + thisloopnumber);
+			let browserpageWidth = theBrowser.getAttribute("pageWidth");
+			let browserpageHeight = theBrowser.getAttribute("pageHeight");
+			theBrowser.browser.pageWidth=browserpageWidth;
+			theBrowser.browser.pageHeight=browserpageHeight;
+			console.log("The browser " + thisloopnumber + " Width is: " + browserpageWidth + " and Height: " + browserpageHeight);
+			
+		};
+	};
+}
+
+
+
+
+
+
+
 
 
 // Everyone who helped make this possible, HBR, Vanquisher, DedZed, Sebek and FireRat, And thank you to everyone who helped test it
@@ -505,31 +560,58 @@ console.log("keepsoundlevel");
  // Toggle Button for locking and unlocking either screen By Fire with help from HBR
   AFRAME.registerComponent("lockbutton", {
 	init: function () {
-	  this.el.addEventListener("click", () => {
+	  this.el.addEventListener("click", () => {                         
+		const TheBrowser = this.el.parentElement;
 		const lockToggle = this.el;
 		const ColliderScreen = lockToggle.parentElement.children[0];
+		let thisbuttoncolor = TheBrowser.getAttribute("button-color");
 		if (ColliderScreen.getAttribute("visible")) {
-			  lockToggle.setAttribute("color","#FF0000");
-			  ColliderScreen.setAttribute("visible","false");
+			if (thisbuttoncolor === "#FF0000") {
+				lockToggle.setAttribute("color","#FFFF00");
+			} else { 
+				lockToggle.setAttribute("color","#FF0000");
+			};
+			ColliderScreen.setAttribute("visible","false");
 		} else {
-			  lockToggle.setAttribute("color","#00FF00");
-			  ColliderScreen.setAttribute("visible","true");
+			lockToggle.setAttribute("color", thisbuttoncolor);
+			ColliderScreen.setAttribute("visible","true");
 	  }		});  }, 	});
 
-		
+ // Toggle Button for Keyboard By Fire with help from HBR
+ AFRAME.registerComponent("forcekeyboard", {
+	init: function () {
+	  this.el.addEventListener("click", () => {                         
+    	const TheBrowser = this.el.parentElement;
+		let keyboardstate = this.el.getAttribute("forcekeyboard");
+		let thisbuttoncolor = TheBrowser.getAttribute("button-color");
+		if (keyboardstate == "true") {
+			TheBrowser.browser.ToggleKeyboard(0)
+			this.el.setAttribute("forcekeyboard", "false");
+			this.el.setAttribute("color","#FFFFFF");
+		} else {
+      TheBrowser.browser.ToggleKeyboard(1)
+      this.el.setAttribute("forcekeyboard", "true");
+      this.el.setAttribute("color", thisbuttoncolor);
+	  }		});  }, 	});
+
 // Toggle Sound for browser screen By Fire with help from HBR
 	AFRAME.registerComponent("toggle-mute", {
 	init: function () {
 		this.el.addEventListener("click", () => {
 		const TheBrowser = this.el.parentElement;
 		const MuteButton = this.el;
+		let thisbuttoncolor = TheBrowser.getAttribute("mute-color");
 		if(TheBrowser.getAttribute("datamuted")=="true") {
-			MuteButton.setAttribute("color","#FFFFFF");
+			MuteButton.setAttribute("color", thisbuttoncolor);
 			TheBrowser.setAttribute("datamuted", "false");
 			TheBrowser.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
 				"document.querySelectorAll('video, audio').forEach((elem) => elem.muted=false);", }, ]);
 		} else {
-			MuteButton.setAttribute("color","#FF0000");
+			if (thisbuttoncolor === "#FF0000") {
+				MuteButton.setAttribute("color", "#FFFF00");
+			} else {
+				MuteButton.setAttribute("color", "#FF0000");
+			}
 			TheBrowser.setAttribute("datamuted", "true")
 			TheBrowser.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
 				  "document.querySelectorAll('video, audio').forEach((elem) => elem.muted=true);",
@@ -687,3 +769,26 @@ function getAttrOrDef(pScript, pAttr, pDefault) {
     return pDefault;
   }
 }
+
+
+
+
+
+// Create screen After Unity load 
+var firstbrowserrun = true;
+function firescreenloadstuff() {
+		const firescene = BS.BanterScene.getInstance();
+		firescene.On("unity-loaded", () => {
+			setTimeout(() => { 
+				if (firstbrowserrun) {
+					firstbrowserrun = false;
+					console.log("enableFireScreen");
+					enableFireScreen();
+				} else { console.log("FireScreens Already Loading.") };
+			}, 1000);
+			console.log("FireScreen: This should run after unity scene loaded.");
+		});
+		console.log("firescreenloadstuff called");
+}
+
+firescreenloadstuff()
