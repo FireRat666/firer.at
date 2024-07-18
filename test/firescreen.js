@@ -74,7 +74,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
             console.log("Enabling the Hand Controls")
             const handcontrols = document.createElement("script");
             handcontrols.id = "fires-handcontrols";
-            handcontrols.setAttribute("src", "https://firer.at/test/handcontrols.js");
+            handcontrols.setAttribute("src", "https://firer.at/scripts/handcontrols.js");
             document.querySelector("a-scene").appendChild(handcontrols);
         }
 	numberofbrowsers++    
