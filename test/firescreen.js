@@ -487,7 +487,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		fireextra03.appendChild(fireextra03p2);
 	}; 
 	document.querySelector("a-scene").appendChild(firescreen);
-	setTimeout(() => { keepsoundlevel();setBrowserWidths(); }, 1500);
+	setTimeout(() => { setBrowserWidths(); keepsoundlevel(); }, 1500);
 	console.log(numberofbrowsers + " Fire screen(s) Enabled");
 	
 };
@@ -785,11 +785,10 @@ function firescreenloadstuff() {
 					firstbrowserrun = false;
 					console.log("enableFireScreen");
 					enableFireScreen();
-				} else { console.log("FireScreens Already Loading.") };
+				};
 			}, 1000);
 			console.log("FireScreen: This should run after unity scene loaded.");
 		});
-		console.log("firescreenloadstuff called");
 }
 
 firescreenloadstuff()
