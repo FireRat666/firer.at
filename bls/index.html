@@ -1,24 +1,24 @@
 <html>
   <head>
     <title>The Banter Late Show</title>
-    <link rel="icon" href="/images/logo-bls.png" />
+    <link rel="icon" href="./images/logo-bls.png" />
     <meta property="og:title" content="Banter Late Show">
     <meta property="og:description" content="A venue for talk shows">
-    <meta property="og:image" content="/images/banter-late-show.jpg">
+    <meta property="og:image" content="./images/banter-late-show.jpg">
     <meta charset="utf-8" />
     <meta http-equiv='cache-control' content='no-cache'> 
     <meta http-equiv='expires' content='0'> 
     <meta http-equiv='pragma' content='no-cache'>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="/stylesheet.css" />
+    <link rel="stylesheet" href="./stylesheet.css" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Barlow%20Condensed">
     <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
         <!--PWA requirements-->
     <meta name="theme-color" content="#000000" />
     <link
       rel="apple-touch-icon"
-      href="/images/appicon-bls.jpg" />
-    <link rel="manifest" href="/manifest.json" />
+      href="./images/appicon-bls.jpg" />
+    <link rel="manifest" href="./manifest.json" />
     
 <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-LHD80JCXPK"></script> -->
 <!-- <script>
@@ -34,11 +34,11 @@
         movePlayer({x: 0, y: 0.01, z: 0});
      };
     </script>
-    <script src="/bullshcript.js"></script>
+    <script src="./bullshcript.js"></script>
 
     <style>
       body {
-          background-image: url(/images/background-bls.jpg); /* The image used for background*/
+          background-image: url(./images/background-bls.jpg); /* The image used for background*/
           background-repeat: no-repeat; /* Do not repeat the image */
           background-position: center; /* Center the image */
           background-size: cover; /* Resize the background image to cover the entire container */
@@ -148,16 +148,16 @@
   <body>
     <!-- Banter Only Portion -->
             <div style="display: none;"> <!-- this is a hidden div on the website, this is ignored by Banter but hides the scene on the 2D page -->
-    <a-scene sq-assetbundle="android: /assetbundle/bls_v201aus_android; 
-                             desktop: /assetbundle/bls_v201aus_standalonewindows;" 
+    <a-scene sq-assetbundle="android: ./assetbundle/bls_v201aus_android; 
+                             desktop: ./assetbundle/bls_v201aus_standalonewindows;" 
 
-                             sq-kitbundle="android: /kitbundle/screens_kitbundle_android; 
-                           desktop: /kitbundle/screens_kitbundle_standalonewindows;"
+                             sq-kitbundle="android: ./kitbundle/screens_kitbundle_android; 
+                           desktop: ./kitbundle/screens_kitbundle_standalonewindows;"
                            
              sq-refreshrate="rate:72" sq-spawnpoint="position: 0 0.01 0 0;" sq-clippingplane="near: 0.05; far: 500;" sq-friendpositionjoinallowed="enabled: false" sq-disableteleport sq-devtoolsenabled="enabled: true" sq-maxoccupancy="number: 40" embedded> <!-- the embedded property stops the scene from taking up the whole page and allows the 2D page to be scrollable -->
 <!-- live stream sign -->
 <a-entity sq-generatemipmaps sq-boxcollider="size: 1.387 1.6 0.047; center: 0 -0.9 0" scale="1.2 1.2 1.2" position="-1.62 2.8 -1" rotation="0 5 0" 
-    gltf-model="/glbs/stremingsign_scifi.glb"></a-entity>      
+    gltf-model="./glbs/stremingsign_scifi.glb"></a-entity>      
       
      <!-- Posters -->
 <a-plane 
@@ -166,7 +166,7 @@
     width="2.2644" 
     height="2.7813"
     mip-maps="1"
-    material="src: /images/poster-echo2.jpg;">
+    material="src: ./images/poster-echo2.jpg;">
   </a-plane>
       
 <a-plane 
@@ -175,13 +175,13 @@
     width="1.8" 
     height="2.21089"
     mip-maps="1"
-    material="src: /images/poster-echo2.jpg;">
+    material="src: ./images/poster-echo2.jpg;">
   </a-plane>
 
      <!-- Outfits Poster --> 
 <a-box sq-collider sq-interactable sq-clickurl="url:https://ittrey.readyplayer.me" color="blue" opacity="0" position="2.8 1.5 -1" rotation="0 167 0" depth="0.05" width="1.3" height="1.3">
 <a-plane
-    src="/images/outfit-ittrey.jpg"
+    src="./images/outfit-ittrey.jpg"
                 rotation="0 180 0" scale="1.3 1.3 0" material="side: single"></a-plane>
 </a-box>
       
@@ -189,23 +189,23 @@
       <a-entity position="1.05 2.05 -1.25" rotation="0 -5.5 0" scale="1 1 1">
       <!-- Creator icon -->
       <a-box sq-collider color="green" opacity="0" position="0 0.33 0" rotation="0 0 0" depth="0.05" width="0.4" height="0.4">
-        <a-plane src="/images/logo-bls.png" rotation="0 0 0" scale="0.4 0.4 0" opacity="1.0" material="transparent: true"></a-plane> </a-box>
+        <a-plane src="./images/logo-bls.png" rotation="0 0 0" scale="0.4 0.4 0" opacity="1.0" material="transparent: true"></a-plane> </a-box>
       <!-- Support Us Text -->
       <a-text value="\n         Enjoying the show?\nWe're grateful for your support!" position="-0.7 0.07 0" rotation="0 0 0" align="centre" scale="0.5 0.5 1" color="#FFFFFF" text=""></a-text>
       <!-- PayPal.me -->
       <a-box sq-collider sq-interactable sq-clickurl="url:https://paypal.me/banterlateshow" color="green" opacity="0" position="-0.15 -0.23 0" rotation="0 0 0" depth="0.05" width="0.2" height="0.2">
-        <a-plane src="/images/icon-paypal.png" rotation="0 0 0" scale="0.2 0.2 0" opacity="1.0" material="transparent: true"></a-plane> </a-box>
+        <a-plane src="./images/icon-paypal.png" rotation="0 0 0" scale="0.2 0.2 0" opacity="1.0" material="transparent: true"></a-plane> </a-box>
       <!-- Ko-fi -->
       <a-box sq-collider sq-interactable sq-clickurl="url:https://ko-fi.com/banterlateshow" color="green" opacity="0" position="0.15 -0.23 0" rotation="0 0 0" depth="0.05" width="0.2" height="0.2">
-        <a-plane src="/images/icon-ko-fi.png" rotation="0 0 0" scale="0.2 0.2 0" opacity="1.0" material="transparent: true"></a-plane> </a-box>
+        <a-plane src="./images/icon-ko-fi.png" rotation="0 0 0" scale="0.2 0.2 0" opacity="1.0" material="transparent: true"></a-plane> </a-box>
       <!-- Socials Text -->
       <a-text value="Watch previous episodes\n         and Follow Us" position="-0.58 -0.5 0" rotation="0 0 0" align="centre" scale="0.5 0.5 1" color="#FFFFFF" text=""></a-text>
       <!-- Youtube -->
       <a-box sq-collider sq-interactable sq-clickurl="url:https://www.youtube.com/@BanterLateShow" color="green" opacity="0" position="-0.15 -0.75 0" rotation="0 0 0" depth="0.05" width="0.2" height="0.2">
-        <a-plane src="/images/icon-youtube.png" rotation="0 0 0" scale="0.2 0.2 0" opacity="1.0" material="transparent: true"></a-plane> </a-box>
+        <a-plane src="./images/icon-youtube.png" rotation="0 0 0" scale="0.2 0.2 0" opacity="1.0" material="transparent: true"></a-plane> </a-box>
       <!-- Instagram -->
       <a-box sq-collider sq-interactable sq-clickurl="url:https://www.instagram.com/banterlateshow" color="green" opacity="0" position="0.15 -0.75 0" rotation="0 0 0" depth="0.05" width="0.2" height="0.2">
-        <a-plane src="/images/icon-instagram.png" rotation="0 0 0" scale="0.2 0.2 0" opacity="1.0" material="transparent: true"></a-plane> </a-box>
+        <a-plane src="./images/icon-instagram.png" rotation="0 0 0" scale="0.2 0.2 0" opacity="1.0" material="transparent: true"></a-plane> </a-box>
       </a-entity>
       
       <!-- Selfie Camera -->
@@ -319,7 +319,7 @@
       <!-- Image and name container. Change to your picture here. -->
       <div class="image-container">
         <img
-          src="/images/logo-bls.png"
+          src="./images/logo-bls.png"
           class="margin"
           alt="Banter Late Show"
           max-width="100%"
