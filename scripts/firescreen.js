@@ -1,4 +1,6 @@
-// Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek and FireRat, And thank you to everyone who helped test it
+// Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
+// FireScreen Tablet for Screen Casts with volume controls or for a portable browser
+// VERSION: 1.0 Beta
 var fireScreenOn = 0;
 var thebuttoncolor = "";
 var volupcolor = "";
@@ -135,7 +137,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		firelockbutton.setAttribute("position", "0 0.38 0");
 		firelockbutton.setAttribute("width", "0.1");
 		firelockbutton.setAttribute("height", "0.1");
-		firelockbutton.setAttribute("color", "#FF0000");
+		firelockbutton.setAttribute("color", thebuttoncolor);
 		firelockbutton.setAttribute("material", "transparent: true");
 		firelockbutton.setAttribute("sq-collider");
 		firelockbutton.setAttribute("sq-interactable");
@@ -574,14 +576,19 @@ function setBrowserWidths() {
 		const ColliderScreen = lockToggle.parentElement.children[0];
 		let thisbuttoncolor = TheBrowser.getAttribute("button-color");
 		if (ColliderScreen.getAttribute("visible")) {
-			if (thisbuttoncolor === "#FF0000") {
-				lockToggle.setAttribute("color","#FFFF00");
-			} else { 
-				lockToggle.setAttribute("color","#FF0000");
-			};
+			// if (thisbuttoncolor === "#FF0000") {
+			// 	lockToggle.setAttribute("color","#FFFF00");
+			// } else { 
+				lockToggle.setAttribute("color", thisbuttoncolor);
+			// };
 			ColliderScreen.setAttribute("visible","false");
 		} else {
-			lockToggle.setAttribute("color", thisbuttoncolor);
+			if (thisbuttoncolor === "#00FF00") {
+				lockToggle.setAttribute("color","#FFFF00");
+			} else { 
+				lockToggle.setAttribute("color","#00FF00");
+				// lockToggle.setAttribute("color", thisbuttoncolor);
+			};
 			ColliderScreen.setAttribute("visible","true");
 	  }		});  }, 	});
 
