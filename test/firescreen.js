@@ -57,11 +57,15 @@ function enableFireScreen() {
 }
 
 function disableFireScreen() {
-	let firescreen = document.getElementById("fires-browser");
-	if (firescreen) {
-		// Browser is on, remove it
-		firescreen.parentElement.removeChild(firescreen);
-		console.log("Fire screen Disabled"); 
+	let thisloopnumber = 0;
+	while (thisloopnumber < numberofbrowsers) {
+		thisloopnumber++
+		let firescreen = document.getElementById("fires-browser" + thisloopnumber);
+		if (firescreen) {
+			// Browser is on, remove it
+			firescreen.parentElement.removeChild(firescreen);
+			console.log("Fire screen Disabled"); 
+		}
 	}
 	fireScreenOn = 0;
 	keepsoundlevel();
