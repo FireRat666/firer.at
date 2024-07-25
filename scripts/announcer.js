@@ -35,11 +35,8 @@ if(window.isBanter) {
       timevariable = hours + "" + minutes + "" + second;
       let psudorandomvar = PRNGF(timevariable, welcomeMessages.length);
       let randommessage = welcomeMessages[psudorandomvar];
-      console.log("prnv:" + psudorandomvar)
-      // let randommessage = welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)];
       const message = randommessage; 
       await speak(message);
-      console.log("The Time Variable Currently is: " + timevariable);
     };
   }
 };
