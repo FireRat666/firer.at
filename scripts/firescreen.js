@@ -10,6 +10,7 @@ var IconVolDownUrl = "";
 var IconMuteUrl = "";
 var firstrunhandcontrols = true;
 var numberofbrowsers = 0;
+var announcerenabled = false;
 
 function enableFireScreen() {
   console.log("Enabling Fire Screen(s)");
@@ -31,6 +32,7 @@ function enableFireScreen() {
       const pCastMode = getAttrOrDef(scripts[i], "castmode", "false");
       const pHandButtons = getAttrOrDef(scripts[i], "hand-controls", "false");
       const pDisableInteraction = getAttrOrDef(scripts[i], "disable-interaction", "false");
+      const pAnnouncer = getAttrOrDef(scripts[i], "announcer", "false");
       const pButtonColor = getAttrOrDef(scripts[i], "button-color", "#00FF00");
       const pBackDropColor = getAttrOrDef(scripts[i], "backdrop-color", "#000000");
       const pVolUpColor = getAttrOrDef(scripts[i], "volup-color", "null");
@@ -48,7 +50,7 @@ function enableFireScreen() {
       const pCustomButton03Url = getAttrOrDef(scripts[i], "custom-button03-url", "false");
       const pCustomButton03Text = getAttrOrDef(scripts[i], "custom-button03-text", "Custom Button 03");
       const pURL = "url: " + pWebsite + "; mipMaps: " + pMipmaps + "; pixelsPerUnit: " + pPixelsperunit + "; pageWidth: " + pWidth + "; pageHeight: " + pHeight + "; mode: local;";
-      createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pCastMode, pWebsite, pButtonColor, 
+      createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pCastMode, pWebsite, pButtonColor, pAnnouncer,
 		pBackDropColor, pIconMuteUrl, pIconVolUpUrl, pIconVolDownUrl, pIconDirectionUrl, pVolUpColor, pVolDownColor, pMuteColor,
 		pDisableInteraction, pButtonPos, pHandButtons, pWidth, pHeight, pCustomButton01Url, pCustomButton01Text, 
 		pCustomButton02Url, pCustomButton02Text, pCustomButton03Url, pCustomButton03Text);
@@ -71,7 +73,7 @@ function disableFireScreen() {
 	keepsoundlevel();
 };
 
-function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_castmode, p_website, p_buttoncolor, 
+function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_castmode, p_website, p_buttoncolor, p_announcer,
 	p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor, p_mutecolor,
 	p_disableinteraction, p_buttonpos, p_handbuttons, p_width, p_height, p_custombutton01url, p_custombutton01text, 
 	p_custombutton02url, p_custombutton02text, p_custombutton03url, p_custombutton03text) {
@@ -489,6 +491,15 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 	document.querySelector("a-scene").appendChild(firescreen);
 	setTimeout(() => { setBrowserWidths(); keepsoundlevel(); }, 1500);
 	console.log(numberofbrowsers + " Fire screen(s) Enabled");
+
+	if (p_announcer && announcerenabled === false) {
+		announcerenabled = true;
+		console.log("Enabling the Announcer Script")
+		const announcerscript = document.createElement("script");
+		announcerscript.id = "fires-announcer";
+		announcerscript.setAttribute("src", "https://firer.at/scripts/announcer.js");
+		document.querySelector("a-scene").appendChild(announcerscript);
+	};
 	
 };
 
