@@ -415,8 +415,6 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 	firevoldown.setAttribute("volume-level", "vvalue: -0.05");
 	firescreen.appendChild(firevoldown);
 
-
-	
 	if (p_custombutton01url != "false") {
 		// Custom Button 01 Part 1
 		let fireextra01 = document.createElement("a-plane");
