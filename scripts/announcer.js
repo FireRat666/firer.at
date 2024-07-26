@@ -88,7 +88,7 @@ function announcerloadtest() {
       if (theusersid === "f87c37aad5d82ac9faea3a2cae55934d") {username = "Discordia Kitty"}; // Discord Kitty
       if (theusersid === "d20dc72cdbb562479089c6c5263815a8") {username = "A Banter Ghost"}; // Ghost Droid
       if (theusersid === "d20dc72cdbb562479089c6c5263815a8") {username = "Kah Gey knee ko"}; // Kageneko
-
+      if (theusersid === "f67ed8a5ca07764685a64c7fef073ab9") {username = "Fire Rat"}; // FireRat
       const joinMessages = [
         username + ", What the hell, you broke everything, it was just working, what did you do? ",
         "Hello, Welcome to the space " + username,
@@ -109,7 +109,7 @@ function announcerloadtest() {
       let randommessage = joinMessages[Math.floor(Math.random() * joinMessages.length)];
       speak(randommessage);
     } else {
-      if(Date.now() - now > 8000) {
+      if(Date.now() - now > 10000) {
 
         if (username === "Gravxton") {username = "Graviton What The Hell"};
         if (theusersid === "7e778ab53e504bed1d995bf9148b98c2") {username = "Vanquisher"}; // Vanquisher
@@ -122,6 +122,7 @@ function announcerloadtest() {
         if (theusersid === "f87c37aad5d82ac9faea3a2cae55934d") {username = "Discordia Kitty"}; // Discord Kitty
         if (theusersid === "d20dc72cdbb562479089c6c5263815a8") {username = "A Banter Ghost"}; // Ghost Droid
         if (theusersid === "d20dc72cdbb562479089c6c5263815a8") {username = "Kah Gey knee ko"}; // Kageneko
+        if (theusersid === "f67ed8a5ca07764685a64c7fef073ab9") {username = "Fire Rat"}; // FireRat
   
         const welcomeMessages = [
           username + " welcome message blah blah!",
