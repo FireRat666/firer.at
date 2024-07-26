@@ -8,11 +8,13 @@ var voldowncolor = "";
 var IconVolUpUrl = "";
 var IconVolDownUrl = "";
 var IconMuteUrl = "";
-var firstrunhandcontrols = true;
 var numberofbrowsers = 0;
+var announcerenabled = false;
+var firstrunhandcontrols = true;
+var handcontrolsdisabled = true;
 
 function enableFireScreen() {
-  console.log("Enabling Fire Screen(s)");
+  console.log("FIRESCREEN: Enabling Screen(s)");
   // window.enableControllerExtras(); // CAN REMOVE THIS LINE
   const scripts = document.getElementsByTagName("script");
   for (let i = 0; i < scripts.length; i++) {
@@ -31,6 +33,8 @@ function enableFireScreen() {
       const pCastMode = getAttrOrDef(scripts[i], "castmode", "false");
       const pHandButtons = getAttrOrDef(scripts[i], "hand-controls", "false");
       const pDisableInteraction = getAttrOrDef(scripts[i], "disable-interaction", "false");
+      const pAnnouncer = getAttrOrDef(scripts[i], "announcer", "false");
+      const pAnnounce = getAttrOrDef(scripts[i], "announce", "false");
       const pButtonColor = getAttrOrDef(scripts[i], "button-color", "#00FF00");
       const pBackDropColor = getAttrOrDef(scripts[i], "backdrop-color", "#000000");
       const pVolUpColor = getAttrOrDef(scripts[i], "volup-color", "null");
@@ -48,7 +52,7 @@ function enableFireScreen() {
       const pCustomButton03Url = getAttrOrDef(scripts[i], "custom-button03-url", "false");
       const pCustomButton03Text = getAttrOrDef(scripts[i], "custom-button03-text", "Custom Button 03");
       const pURL = "url: " + pWebsite + "; mipMaps: " + pMipmaps + "; pixelsPerUnit: " + pPixelsperunit + "; pageWidth: " + pWidth + "; pageHeight: " + pHeight + "; mode: local;";
-      createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pCastMode, pWebsite, pButtonColor, 
+      createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pCastMode, pWebsite, pButtonColor, pAnnouncer, pAnnounce,
 		pBackDropColor, pIconMuteUrl, pIconVolUpUrl, pIconVolDownUrl, pIconDirectionUrl, pVolUpColor, pVolDownColor, pMuteColor,
 		pDisableInteraction, pButtonPos, pHandButtons, pWidth, pHeight, pCustomButton01Url, pCustomButton01Text, 
 		pCustomButton02Url, pCustomButton02Text, pCustomButton03Url, pCustomButton03Text);
@@ -64,20 +68,20 @@ function disableFireScreen() {
 		if (firescreen) {
 			// Browser is on, remove it
 			firescreen.parentElement.removeChild(firescreen);
-			console.log("Fire screen Disabled"); 
+			console.log("FIRESCREEN: Fire screen Disabled"); 
 		}
 	}
 	fireScreenOn = 0;
 	keepsoundlevel();
 };
 
-function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_castmode, p_website, p_buttoncolor, 
+function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_castmode, p_website, p_buttoncolor, p_announcer, p_announce,
 	p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor, p_mutecolor,
 	p_disableinteraction, p_buttonpos, p_handbuttons, p_width, p_height, p_custombutton01url, p_custombutton01text, 
 	p_custombutton02url, p_custombutton02text, p_custombutton03url, p_custombutton03text) {
         if (p_handbuttons == "true" && firstrunhandcontrols === true) {
             firstrunhandcontrols = false;
-            console.log("Enabling the Hand Controls")
+            console.log("FIRESCREEN: Enabling Hand Controls")
             const handcontrols = document.createElement("script");
             handcontrols.id = "fires-handcontrols";
             handcontrols.setAttribute("src", "https://firer.at/scripts/handcontrols.js");
@@ -488,7 +492,23 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 	}; 
 	document.querySelector("a-scene").appendChild(firescreen);
 	setTimeout(() => { setBrowserWidths(); keepsoundlevel(); }, 1500);
-	console.log(numberofbrowsers + " Fire screen(s) Enabled");
+	console.log("FIRESCREEN: " + numberofbrowsers + " screen(s) Enabled");
+	// The announcer stuff
+	if (p_announcer === "true" && announcerenabled === false) {
+		announcerenabled = true;
+		console.log("FIRESCREEN: Enabling the Announcer Script")
+		const announcerscript = document.createElement("script");
+		announcerscript.id = "fires-announcer";
+		announcerscript.setAttribute("src", "https://firer.at/scripts/announcer.js");
+		document.querySelector("a-scene").appendChild(announcerscript);
+	} else if (p_announce === "true" && announcerenabled === false) {
+		announcerenabled = true;
+		console.log("FIRESCREEN: Enabling the Announcer Script")
+		const announcerscript = document.createElement("script");
+		announcerscript.id = "fires-announcer";
+		announcerscript.setAttribute("src", "https://firer.at/scripts/announcer.js");
+		document.querySelector("a-scene").appendChild(announcerscript);
+	};
 	
 };
 
@@ -498,7 +518,7 @@ var volinterval = null;
 var soundlevelfirstrun = true;
 function keepsoundlevel() {
   if (fireScreenOn && soundlevelfirstrun) {
-	console.log("FireScreen: keepsoundlevel loop");
+	console.log("FIRESCREEN: keepsoundlevel loop");
 	soundlevelfirstrun = false;
   // Loop to keep sound level set, runs every second
     volinterval = setInterval(function() {
@@ -521,10 +541,7 @@ function keepsoundlevel() {
     }, 5000); } else if (fireScreenOn) { } else { clearInterval(volinterval); }
 };
 
-
-////////////////////////////////////////////////////////////////
-
-
+// Set the width and height of the screen(s)
 var widthalreadyset = false;
 function setBrowserWidths() {
 	if (widthalreadyset === false) {
@@ -537,25 +554,16 @@ function setBrowserWidths() {
 			let browserpageHeight = theBrowser.getAttribute("pageHeight");
 			theBrowser.browser.pageWidth=browserpageWidth;
 			theBrowser.browser.pageHeight=browserpageHeight;
-			console.log("The browser " + thisloopnumber + " Width is: " + browserpageWidth + " and Height: " + browserpageHeight);
-			
+			console.log("FIRESCREEN: " + thisloopnumber + " Width is: " + browserpageWidth + " and Height: " + browserpageHeight);
 		};
 	};
 }
 
 
-
-
-
-
-
-
-
-// Everyone who helped make this possible, HBR, Vanquisher, DedZed, Sebek and FireRat, And thank you to everyone who helped test it
 // Enables Interaction for all the browser windows by HBR
 
-	  AFRAME.registerComponent("enable-interaction", { init: async function() { await window.AframeInjection.waitFor(this.el, "browser");
-			this.el.browser.ToggleInteraction(true) 			} });
+	AFRAME.registerComponent("enable-interaction", { init: async function() { await window.AframeInjection.waitFor(this.el, "browser");
+		this.el.browser.ToggleInteraction(true) 			} });
 			
 // Listens for button clicks to open the urls on either Screen by HBR
   AFRAME.registerComponent("click-url", {
@@ -794,16 +802,23 @@ function getAttrOrDef(pScript, pAttr, pDefault) {
 // Create screen After Unity load 
 var firstbrowserrun = true;
 function firescreenloadstuff() {
-		const firescene = BS.BanterScene.getInstance();
-		firescene.On("unity-loaded", () => {
-			// console.log("FireScreen: This should run after unity scene loaded.");
-			setTimeout(() => { 
-				if (firstbrowserrun) {
-					firstbrowserrun = false;
-					enableFireScreen();
-				};
-			}, 1000);
-		});
+	console.log("FIRESCREEN: Waiting");
+	const firescene = BS.BanterScene.getInstance();
+	firescene.On("unity-loaded", () => {
+		console.log("FIRESCREEN: unity-loaded");
+		setTimeout(() => { 
+			if (firstbrowserrun) {
+				firstbrowserrun = false;
+				enableFireScreen();
+			} else {
+				console.log("FIRESCREEN: Should already be enabled/loading");
+			};
+		}, 1000);
+	});
+	
+	// firescene.On("loaded", () => {
+	// 	console.log("FIRESCREEN: scene loaded");
+	// 	})
 }
 
 firescreenloadstuff()

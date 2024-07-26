@@ -84,7 +84,7 @@ function announcerloadtest() {
     if (theusersid === "f14cd0a7c028d9e8f1756d76ff450c73") {username = "The Slayer"}; // Divine
     if (theusersid === "c81d8333f83208a6124370282b992a45") {username = "echo phase"}; // Echo Mental
     if (theusersid === "2cd40305e0a4b04bf0242ad0d9fa352d") {username = "Zeph e e e e e"}; // Zephii
-    if (theusersid === "f7d3e8a05224e3954bdc6f4b4ec47708") {username = "Nist X"}; // Nystx
+    if (theusersid === "f7d3e8a05224e3954bdc6f4b4ec47708") {username = "Nisstyx"}; // Nystx
     if (theusersid === "f87c37aad5d82ac9faea3a2cae55934d") {username = "Discordia Kitty"}; // Discord Kitty
     if (theusersid === "d20dc72cdbb562479089c6c5263815a8") {username = "A Banter Ghost"}; // Ghost Droid
     if (theusersid === "2fa5290b268076d98aa078e1cc2ce3e2") {username = "Kah Gey knee ko"}; // Kageneko
