@@ -106,7 +106,7 @@ function announcerloadtest() {
 
         theusersid = e.detail.uid;
   
-        if (username === "Gravxton") {username = "Graviton Fucking Hell"};
+        if (username === "Gravxton") {username = "Graviton What The Hell"};
         if (theusersid === "7e778ab53e504bed1d995bf9148b98c2") {username = "Vanquisher"}; // Vanquisher
         if (theusersid === "2567af4ddce8000b887527097fd5bf8a") {username = "The Fishiest Overlord of them all"}; // Dedzed
         if (theusersid === "4c67af8ae899ea5b8dd6da25566ff3f3") {username = "Boob Works"}; // BobWorks 
