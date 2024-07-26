@@ -87,7 +87,7 @@ function announcerloadtest() {
       if (theusersid === "f7d3e8a05224e3954bdc6f4b4ec47708") {username = "Nist X"}; // Nystx
       if (theusersid === "f87c37aad5d82ac9faea3a2cae55934d") {username = "Discordia Kitty"}; // Discord Kitty
       if (theusersid === "d20dc72cdbb562479089c6c5263815a8") {username = "A Banter Ghost"}; // Ghost Droid
-      if (theusersid === "d20dc72cdbb562479089c6c5263815a8") {username = "Kah Gey knee ko"}; // Kageneko
+      if (theusersid === "2fa5290b268076d98aa078e1cc2ce3e2") {username = "Kah Gey knee ko"}; // Kageneko
       if (theusersid === "f67ed8a5ca07764685a64c7fef073ab9") {username = "Fire Rat"}; // FireRat
       const joinMessages = [
         username + ", What the hell, you broke everything, it was just working, what did you do? ",
@@ -121,7 +121,7 @@ function announcerloadtest() {
         if (theusersid === "f7d3e8a05224e3954bdc6f4b4ec47708") {username = "Nist X"}; // Nystx
         if (theusersid === "f87c37aad5d82ac9faea3a2cae55934d") {username = "Discordia Kitty"}; // Discord Kitty
         if (theusersid === "d20dc72cdbb562479089c6c5263815a8") {username = "A Banter Ghost"}; // Ghost Droid
-        if (theusersid === "d20dc72cdbb562479089c6c5263815a8") {username = "Kah Gey knee ko"}; // Kageneko
+        if (theusersid === "2fa5290b268076d98aa078e1cc2ce3e2") {username = "Kah Gey knee ko"}; // Kageneko
         if (theusersid === "f67ed8a5ca07764685a64c7fef073ab9") {username = "Fire Rat"}; // FireRat
   
         const welcomeMessages = [
