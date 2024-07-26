@@ -100,7 +100,7 @@ function announcerloadtest() {
       let randommessage = joinMessages[Math.floor(Math.random() * joinMessages.length)];
       speak(randommessage);
     } else {
-      if(Date.now() - now > 5000) {
+      if(Date.now() - now > 8000) {
 
         username = e.detail.name;
 
