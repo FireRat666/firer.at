@@ -70,7 +70,9 @@ const announcerscene = BS.BanterScene.getInstance();
 var now = Date.now();
 // Welcome message for user entering the space
 function announcerloadtest() {
-  now = Date.now(); // Sets Now to after unity scene load is done
+  announcerscene.On("unity-loaded", () => {
+    now = Date.now(); // Sets Now to after unity scene load is done
+  });
   announcerscene.On("user-joined", e => {
     username = e.detail.name;
     theusersid = e.detail.uid;
