@@ -87,6 +87,7 @@ function announcerloadtest() {
       if (theusersid === "f7d3e8a05224e3954bdc6f4b4ec47708") {username = "Nist X"}; // Nystx
       if (theusersid === "f87c37aad5d82ac9faea3a2cae55934d") {username = "Discordia Kitty"}; // Discord Kitty
       if (theusersid === "d20dc72cdbb562479089c6c5263815a8") {username = "A Banter Ghost"}; // Ghost Droid
+      if (theusersid === "d20dc72cdbb562479089c6c5263815a8") {username = "Kah Gey knee ko"}; // Kageneko
 
       const joinMessages = [
         username + ", What the hell, you broke everything, it was just working, what did you do? ",
@@ -120,8 +121,8 @@ function announcerloadtest() {
         if (theusersid === "f7d3e8a05224e3954bdc6f4b4ec47708") {username = "Nist X"}; // Nystx
         if (theusersid === "f87c37aad5d82ac9faea3a2cae55934d") {username = "Discordia Kitty"}; // Discord Kitty
         if (theusersid === "d20dc72cdbb562479089c6c5263815a8") {username = "A Banter Ghost"}; // Ghost Droid
+        if (theusersid === "d20dc72cdbb562479089c6c5263815a8") {username = "Kah Gey knee ko"}; // Kageneko
   
-        // d20dc72cdbb562479089c6c5263815a8 
         const welcomeMessages = [
           username + " welcome message blah blah!",
           username + " Joined your party",
