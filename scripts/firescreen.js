@@ -1,6 +1,6 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.0 Beta 3
+// VERSION: 1.0 Beta 3.1
 var fireScreenOn = 0;
 var thebuttoncolor = "";
 var volupcolor = "";
@@ -90,14 +90,14 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
         };
 		
 		// Setup the Announcer only on the first run if enabled
-		if (p_announcer && announcerfirstrun) {
+		if (p_announcer === true && announcerfirstrun === true ) {
 			announcerfirstrun = false;
 			console.log("FIRESCREEN: Enabling the Announcer Script")
 			const announcerscript = document.createElement("script");
 			announcerscript.id = "fires-announcer";
 			announcerscript.setAttribute("src", "https://firer.at/scripts/announcer.js");
 			document.querySelector("a-scene").appendChild(announcerscript);
-		} else if (p_announce && announcerfirstrun) {
+		} else if (p_announce === true && announcerfirstrun === true ) {
 			announcerfirstrun = false;
 			console.log("FIRESCREEN: Enabling the Announcer Script")
 			const announcerscript = document.createElement("script");

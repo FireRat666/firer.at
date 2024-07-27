@@ -1,6 +1,6 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.0 Beta 3
+// VERSION: 1.0 Beta 3.1
 var fireScreenOn = 0;
 var thebuttoncolor = "";
 var volupcolor = "";
@@ -90,14 +90,14 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
         };
 		
 		// Setup the Announcer only on the first run if enabled
-		if (p_announcer && announcerfirstrun) {
+		if (p_announcer === true && announcerfirstrun === true ) {
 			announcerfirstrun = false;
 			console.log("FIRESCREEN: Enabling the Announcer Script")
 			const announcerscript = document.createElement("script");
 			announcerscript.id = "fires-announcer";
 			announcerscript.setAttribute("src", "https://firer.at/scripts/announcer.js");
 			document.querySelector("a-scene").appendChild(announcerscript);
-		} else if (p_announce && announcerfirstrun) {
+		} else if (p_announce === true && announcerfirstrun === true ) {
 			announcerfirstrun = false;
 			console.log("FIRESCREEN: Enabling the Announcer Script")
 			const announcerscript = document.createElement("script");
@@ -139,7 +139,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 	// for the collider to allow it to be moved
 	let firecollider = document.createElement("a-plane");
 	firecollider.setAttribute("opacity", "0");
-	firecollider.setAttribute("position", "0 0 0");
+	firecollider.setAttribute("position", "0 0 -0.005");
 	firecollider.setAttribute("scale", "1.0 0.55 0.05");
 	firecollider.setAttribute("color", "#ff0000");
 	firecollider.setAttribute("sq-boxcollider");
@@ -164,7 +164,11 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		firelockbutton.setAttribute("position", "0 0.38 0");
 		firelockbutton.setAttribute("width", "0.1");
 		firelockbutton.setAttribute("height", "0.1");
-		firelockbutton.setAttribute("color", thebuttoncolor);
+		if (thebuttoncolor === "#00FF00") {
+			firelockbutton.setAttribute("color", "#FFFF00");
+		} else {
+			firelockbutton.setAttribute("color", thebuttoncolor);
+		}
 		firelockbutton.setAttribute("material", "transparent: true");
 		firelockbutton.setAttribute("sq-collider");
 		firelockbutton.setAttribute("sq-interactable");
@@ -661,19 +665,18 @@ function setBrowserWidths() {
 		const ColliderScreen = lockToggle.parentElement.children[0];
 		let thisbuttoncolor = TheBrowser.getAttribute("button-color");
 		if (ColliderScreen.getAttribute("visible")) {
-			// if (thisbuttoncolor === "#FF0000") {
-			// 	lockToggle.setAttribute("color","#FFFF00");
-			// } else { 
-				lockToggle.setAttribute("color", thisbuttoncolor);
-			// };
-			ColliderScreen.setAttribute("visible","false");
-		} else {
 			if (thisbuttoncolor === "#00FF00") {
 				lockToggle.setAttribute("color","#FFFF00");
 			} else { 
-				lockToggle.setAttribute("color","#00FF00");
-				// lockToggle.setAttribute("color", thisbuttoncolor);
+				lockToggle.setAttribute("color", thisbuttoncolor);
 			};
+			ColliderScreen.setAttribute("visible","false");
+		} else {
+			// if (thisbuttoncolor === "#00FF00") {
+			// 	lockToggle.setAttribute("color","#FFFF00");
+			// } else { 
+				lockToggle.setAttribute("color","#00FF00");
+			// };
 			ColliderScreen.setAttribute("visible","true");
 	  }		});  }, 	});
 
