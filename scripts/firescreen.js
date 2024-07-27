@@ -139,7 +139,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 	// for the collider to allow it to be moved
 	let firecollider = document.createElement("a-plane");
 	firecollider.setAttribute("opacity", "0");
-	firecollider.setAttribute("position", "0 0 0");
+	firecollider.setAttribute("position", "0 0 -0.005");
 	firecollider.setAttribute("scale", "1.0 0.55 0.05");
 	firecollider.setAttribute("color", "#ff0000");
 	firecollider.setAttribute("sq-boxcollider");
@@ -164,7 +164,11 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		firelockbutton.setAttribute("position", "0 0.38 0");
 		firelockbutton.setAttribute("width", "0.1");
 		firelockbutton.setAttribute("height", "0.1");
-		firelockbutton.setAttribute("color", thebuttoncolor);
+		if (thebuttoncolor === "#00FF00") {
+			firelockbutton.setAttribute("color", "#FFFF00");
+		} else {
+			firelockbutton.setAttribute("color", thebuttoncolor);
+		}
 		firelockbutton.setAttribute("material", "transparent: true");
 		firelockbutton.setAttribute("sq-collider");
 		firelockbutton.setAttribute("sq-interactable");
@@ -661,19 +665,18 @@ function setBrowserWidths() {
 		const ColliderScreen = lockToggle.parentElement.children[0];
 		let thisbuttoncolor = TheBrowser.getAttribute("button-color");
 		if (ColliderScreen.getAttribute("visible")) {
-			// if (thisbuttoncolor === "#FF0000") {
-			// 	lockToggle.setAttribute("color","#FFFF00");
-			// } else { 
-				lockToggle.setAttribute("color", thisbuttoncolor);
-			// };
-			ColliderScreen.setAttribute("visible","false");
-		} else {
 			if (thisbuttoncolor === "#00FF00") {
 				lockToggle.setAttribute("color","#FFFF00");
 			} else { 
-				lockToggle.setAttribute("color","#00FF00");
-				// lockToggle.setAttribute("color", thisbuttoncolor);
+				lockToggle.setAttribute("color", thisbuttoncolor);
 			};
+			ColliderScreen.setAttribute("visible","false");
+		} else {
+			// if (thisbuttoncolor === "#00FF00") {
+			// 	lockToggle.setAttribute("color","#FFFF00");
+			// } else { 
+				lockToggle.setAttribute("color","#00FF00");
+			// };
 			ColliderScreen.setAttribute("visible","true");
 	  }		});  }, 	});
 
