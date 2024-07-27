@@ -1,6 +1,6 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.0 Beta 2
+// VERSION: 1.0 Beta 3
 var fireScreenOn = 0;
 var thebuttoncolor = "";
 var volupcolor = "";
@@ -79,6 +79,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 	p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor, p_mutecolor,
 	p_disableinteraction, p_buttonpos, p_handbuttons, p_width, p_height, p_custombutton01url, p_custombutton01text, 
 	p_custombutton02url, p_custombutton02text, p_custombutton03url, p_custombutton03text) {
+		// Setup Hand Controls only on the first run if enabled
         if (p_handbuttons == "true" && firstrunhandcontrols === true) {
             firstrunhandcontrols = false;
             console.log("FIRESCREEN: Enabling Hand Controls")
@@ -86,7 +87,25 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
             handcontrols.id = "fires-handcontrols";
             handcontrols.setAttribute("src", "https://firer.at/scripts/handcontrols.js");
             document.querySelector("a-scene").appendChild(handcontrols);
-        }
+        };
+		
+		// Setup the Announcer only on the first run if enabled
+		if (p_announcer && announcerfirstrun) {
+			announcerfirstrun = false;
+			console.log("FIRESCREEN: Enabling the Announcer Script")
+			const announcerscript = document.createElement("script");
+			announcerscript.id = "fires-announcer";
+			announcerscript.setAttribute("src", "https://firer.at/scripts/announcer.js");
+			document.querySelector("a-scene").appendChild(announcerscript);
+		} else if (p_announce && announcerfirstrun) {
+			announcerfirstrun = false;
+			console.log("FIRESCREEN: Enabling the Announcer Script")
+			const announcerscript = document.createElement("script");
+			announcerscript.id = "fires-announcer";
+			announcerscript.setAttribute("src", "https://firer.at/scripts/announcer.js");
+			document.querySelector("a-scene").appendChild(announcerscript);
+		};
+
 	numberofbrowsers++    
 	thebuttoncolor = p_buttoncolor;
 	volupcolor = p_volupcolor;
@@ -145,11 +164,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		firelockbutton.setAttribute("position", "0 0.38 0");
 		firelockbutton.setAttribute("width", "0.1");
 		firelockbutton.setAttribute("height", "0.1");
-		if (thebuttoncolor === "#00FF00") {
-			firelockbutton.setAttribute("color", "#FFFF00");
-		} else {
-			firelockbutton.setAttribute("color", thebuttoncolor);
-		}
+		firelockbutton.setAttribute("color", thebuttoncolor);
 		firelockbutton.setAttribute("material", "transparent: true");
 		firelockbutton.setAttribute("sq-collider");
 		firelockbutton.setAttribute("sq-interactable");
@@ -192,10 +207,10 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		firerotleft.setAttribute("material", "transparent: true");
 		firerotleft.setAttribute("sq-collider");
 		firerotleft.setAttribute("sq-interactable");
-		firerotleft.setAttribute("class", "tilt buttons");
+		firerotleft.setAttribute("class", "tilt");
 		firerotleft.setAttribute("src", "https://firer.at/files/RL.png");
 		firerotleft.setAttribute("visible", "false");
-		firerotleft.setAttribute("rotate", "axis: y; amount: -10");
+		firerotleft.setAttribute("rotate", "axis: y; amount: 5");
 		firescreen.appendChild(firerotleft);
 		// Rotate Right Button
 		let firerotright = document.createElement("a-plane");
@@ -206,10 +221,10 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		firerotright.setAttribute("material", "transparent: true");
 		firerotright.setAttribute("sq-collider");
 		firerotright.setAttribute("sq-interactable");
-		firerotright.setAttribute("class", "tilt buttons");
+		firerotright.setAttribute("class", "tilt");
 		firerotright.setAttribute("src", "https://firer.at/files/RR.png");
 		firerotright.setAttribute("visible", "false");
-		firerotright.setAttribute("rotate", "axis: y; amount: 10");
+		firerotright.setAttribute("rotate", "axis: y; amount: -5");
 		firescreen.appendChild(firerotright);
 		// Tilt Forwards Button
 		let firetiltforward = document.createElement("a-plane");
@@ -220,7 +235,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		firetiltforward.setAttribute("material", "transparent: true");
 		firetiltforward.setAttribute("sq-collider");
 		firetiltforward.setAttribute("sq-interactable");
-		firetiltforward.setAttribute("class", "tilt buttons");
+		firetiltforward.setAttribute("class", "tilt");
 		firetiltforward.setAttribute("src", "https://firer.at/files/TF.png");
 		firetiltforward.setAttribute("visible", "false");
 		firetiltforward.setAttribute("rotate", "axis: x; amount: 5");
@@ -234,11 +249,69 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		firetiltbackward.setAttribute("material", "transparent: true");
 		firetiltbackward.setAttribute("sq-collider");
 		firetiltbackward.setAttribute("sq-interactable");
-		firetiltbackward.setAttribute("class", "tilt buttons");
+		firetiltbackward.setAttribute("class", "tilt");
 		firetiltbackward.setAttribute("src", "https://firer.at/files/TB.png");
 		firetiltbackward.setAttribute("visible", "false");
 		firetiltbackward.setAttribute("rotate", "axis: x; amount: -5");
 		firescreen.appendChild(firetiltbackward);
+
+		// // Rotate Left Button test
+		// let firerotlefttest = document.createElement("a-plane");
+		// firerotlefttest.setAttribute("position", "-0.5 -0.47 0");
+		// firerotlefttest.setAttribute("width", "0.1");
+		// firerotlefttest.setAttribute("height", "0.1");
+		// firerotlefttest.setAttribute("color", thebuttoncolor);
+		// firerotlefttest.setAttribute("material", "transparent: true");
+		// firerotlefttest.setAttribute("sq-collider");
+		// firerotlefttest.setAttribute("sq-interactable");
+		// firerotlefttest.setAttribute("class", "tilt");
+		// firerotlefttest.setAttribute("src", "https://firer.at/files/icons/+Z.png");
+		// firerotlefttest.setAttribute("visible", "false");
+		// firerotlefttest.setAttribute("rotate", "axis: z; amount: 0.1");
+		// firescreen.appendChild(firerotlefttest);
+		// // Rotate Right Button test
+		// let firerotrighttest = document.createElement("a-plane");
+		// firerotrighttest.setAttribute("position", "0.5 -0.47 0");
+		// firerotrighttest.setAttribute("width", "0.1");
+		// firerotrighttest.setAttribute("height", "0.1");
+		// firerotrighttest.setAttribute("color", thebuttoncolor);
+		// firerotrighttest.setAttribute("material", "transparent: true");
+		// firerotrighttest.setAttribute("sq-collider");
+		// firerotrighttest.setAttribute("sq-interactable");
+		// firerotrighttest.setAttribute("class", "tilt");
+		// firerotrighttest.setAttribute("src", "https://firer.at/files/icons/-Z.png");
+		// firerotrighttest.setAttribute("visible", "false");
+		// firerotrighttest.setAttribute("rotate", "axis: z; amount: -0.1");
+		// firescreen.appendChild(firerotrighttest);
+		// // Tilt Forwards Button test
+		// let firetiltforwardtest = document.createElement("a-plane");
+		// firetiltforwardtest.setAttribute("position", "-0.4 -0.47 0");
+		// firetiltforwardtest.setAttribute("width", "0.1");
+		// firetiltforwardtest.setAttribute("height", "0.1");
+		// firetiltforwardtest.setAttribute("color", thebuttoncolor);
+		// firetiltforwardtest.setAttribute("material", "transparent: true");
+		// firetiltforwardtest.setAttribute("sq-collider");
+		// firetiltforwardtest.setAttribute("sq-interactable");
+		// firetiltforwardtest.setAttribute("class", "tilt");
+		// firetiltforwardtest.setAttribute("src", "https://firer.at/files/icons/+W.png");
+		// firetiltforwardtest.setAttribute("visible", "false");
+		// firetiltforwardtest.setAttribute("rotate", "axis: w; amount: 0.1");
+		// firescreen.appendChild(firetiltforwardtest);
+		// // Tilt Backwards Button test
+		// let firetiltbackwardtest = document.createElement("a-plane");
+		// firetiltbackwardtest.setAttribute("position", "0.4 -0.47 0");
+		// firetiltbackwardtest.setAttribute("width", "0.1");
+		// firetiltbackwardtest.setAttribute("height", "0.1");
+		// firetiltbackwardtest.setAttribute("color", thebuttoncolor);
+		// firetiltbackwardtest.setAttribute("material", "transparent: true");
+		// firetiltbackwardtest.setAttribute("sq-collider");
+		// firetiltbackwardtest.setAttribute("sq-interactable");
+		// firetiltbackwardtest.setAttribute("class", "tilt");
+		// firetiltbackwardtest.setAttribute("src", "https://firer.at/files/icons/-W.png");
+		// firetiltbackwardtest.setAttribute("visible", "false");
+		// firetiltbackwardtest.setAttribute("rotate", "axis: w; amount: -0.1");
+		// firescreen.appendChild(firetiltbackwardtest);
+
 		// Toggle Rotations Button
 		let firetogglerots = document.createElement("a-plane");
 		firetogglerots.setAttribute("position", "-0.6 -0.3 0");
@@ -261,6 +334,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		firekeyboardtog.setAttribute("material", "transparent: true");
 		firekeyboardtog.setAttribute("sq-collider");
 		firekeyboardtog.setAttribute("sq-interactable");
+		firekeyboardtog.setAttribute("class", "buttons");
 		firekeyboardtog.setAttribute("src", "https://firer.at/files/Keyboard.png");
 		firekeyboardtog.setAttribute("forcekeyboard", "false");
 		firescreen.appendChild(firekeyboardtog);
@@ -376,7 +450,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 	firemutebut.setAttribute("class", "buttons");
 	firemutebut.setAttribute("src", p_iconmuteurl);
 	firemutebut.setAttribute("toggle-mute");
-	firemutebut.setAttribute("class", "firemutebutc");
+	firemutebut.setAttribute("class", "firemutebutc buttons");
 	firescreen.appendChild(firemutebut);
 	// Volume Up Button
 	let volupbutpos = "0.5 0.38 0";
@@ -497,22 +571,6 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 	document.querySelector("a-scene").appendChild(firescreen);
 	setTimeout(() => { setBrowserWidths(); keepsoundlevel(); }, 1500);
 	console.log("FIRESCREEN: " + numberofbrowsers + " screen(s) Enabled");
-	// The announcer stuff
-	if (p_announcer && announcerfirstrun) {
-		announcerfirstrun = false;
-		console.log("FIRESCREEN: Enabling the Announcer Script")
-		const announcerscript = document.createElement("script");
-		announcerscript.id = "fires-announcer";
-		announcerscript.setAttribute("src", "https://firer.at/scripts/announcer.js");
-		document.querySelector("a-scene").appendChild(announcerscript);
-	} else if (p_announce && announcerfirstrun) {
-		announcerfirstrun = false;
-		console.log("FIRESCREEN: Enabling the Announcer Script")
-		const announcerscript = document.createElement("script");
-		announcerscript.id = "fires-announcer";
-		announcerscript.setAttribute("src", "https://firer.at/scripts/announcer.js");
-		document.querySelector("a-scene").appendChild(announcerscript);
-	};
 	
 };
 
@@ -541,6 +599,7 @@ function keepsoundlevel() {
 			// 		"document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
 			// 	}, 1000);
 			//   });
+
 		}
     }, 5000); } else if (fireScreenOn) { } else { clearInterval(volinterval); }
 };
@@ -558,6 +617,16 @@ function setBrowserWidths() {
 			let browserpageHeight = theBrowser.getAttribute("pageHeight");
 			theBrowser.browser.pageWidth=browserpageWidth;
 			theBrowser.browser.pageHeight=browserpageHeight;
+			
+			theBrowser.transform.WatchProperties([BS.PropertyName.position, BS.PropertyName.eulerAngles]); // Test Watch Properties
+			// console.log(`FIRESCREEN: Position: ${JSON.stringify(theBrowser.transform.position)} Rotation: ${JSON.stringify(theBrowser.transform.rotation)}`);
+
+			let x = theBrowser.object3D.rotation.x;
+			let y = theBrowser.object3D.rotation.y;
+			let z = theBrowser.object3D.rotation.z;
+			// theBrowser.transform.lerpRotation = true;
+			theBrowser.transform.eulerAngles = new BS.Vector3(x, y, z); 
+
 			console.log("FIRESCREEN: " + thisloopnumber + " Width is: " + browserpageWidth + " and Height: " + browserpageHeight);
 		};
 	};
@@ -689,19 +758,34 @@ function setBrowserWidths() {
 	  this.el.addEventListener("click", () => {
 		let browserRotation = this.el.parentElement;
 		let thisbuttoncolor = browserRotation.getAttribute("button-color");
-		let x = browserRotation.object3D.rotation.x;
-		let y = browserRotation.object3D.rotation.y;
-		let z = browserRotation.object3D.rotation.z;
+		// let x = browserRotation.object3D.rotation.x;
+		// let y = browserRotation.object3D.rotation.y;
+		// let z = browserRotation.object3D.rotation.z;
+		// let w = browserRotation.transform.rotation.w;
+		let x = browserRotation.transform.eulerAngles.x;
+		let y = browserRotation.transform.eulerAngles.y;
+		let z = browserRotation.transform.eulerAngles.z;
+		console.log("X:" + x + " Y:" + y + " Z:" + z);
 		switch (this.data.axis) {
-		  case "x":
-			x += this.data.amount;
+			case "x":
+				x += this.data.amount;
 			break;
-		  case "y":
-			y += this.data.amount;
+			case "y":
+				y += this.data.amount;
+			break;
+			case "z":
+				z += this.data.amount;
+			break;
+			case "w":
+				w += this.data.amount;
 			break;
 		}
 		this.el.setAttribute("color","#AAAAAA");
-		browserRotation.setAttribute("rotation", x + " " + y + " " + z);  
+		// browserRotation.setAttribute("rotation", x + " " + y + " " + z); 
+		// browserRotation.transform.rotation = new BS.Vector3(x, y, z); 
+		// browserRotation.transform.rotation = new BS.Quaternion(x, y, z, w); 
+		browserRotation.transform.eulerAngles = new BS.Vector3(x, y, 0); 
+		console.log("SET X:" + x + " Y:" + y + " Z:" + z);
 		setTimeout(() => {  this.el.setAttribute("color", thisbuttoncolor); }, 100); 
 		});        },      });
 

@@ -1,4 +1,5 @@
 const handscene = BS.BanterScene.getInstance();
+var playerislocked = false;
 class handButtonCrap{
 	
 	constructor() {
@@ -89,6 +90,23 @@ class handButtonCrap{
 
 	}
 
+	lockplayerfunc() {
+		let firelockbut = document.getElementById("firelockpbut");
+		if (playerislocked) {
+			playerislocked = false;
+			unlockPlayer();
+			firelockbut.setAttribute("color", thebuttoncolor); 
+		} else {
+			playerislocked = true;
+			lockPlayer();
+			if (thebuttoncolor === "#00FF00") {
+				firelockbut.setAttribute("color", "#FFFF00"); 
+			} else {
+			firelockbut.setAttribute("color", "#00FF00"); 
+			}
+		};
+	};
+
 	setupHandControls() {
 		console.log("HAND-CONTROLS: Setting up Hand Controls")
 		// This was a great innovation by HBR, who wanted Skizot to also get credit for the original idea. 
@@ -112,6 +130,14 @@ class handButtonCrap{
 			class: "firevolbutc",
 			id: "firevoldownbut", 
 			callback: () => this.volumecontrol("-0.05")
+			},
+			{
+			image: "https://firer.at/files/lock.png",
+			position: "-1 -0.4 0",
+			colour: thebuttoncolor,
+			class: "firelockpbutc",
+			id: "firelockpbut", 
+			callback: () => this.lockplayerfunc()
 			},
 			{
 			image: IconMuteUrl,
