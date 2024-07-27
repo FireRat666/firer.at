@@ -489,7 +489,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 	firevoldown.setAttribute("height", "0.1");
 	if (p_voldowncolor === "null") {
 		firevoldown.setAttribute("color", thebuttoncolor);
-		p_voldowncolor = "#FFFF00";
+		voldowncolor = "#FFFF00";
 	} else {
 		firevoldown.setAttribute("color", p_voldowncolor);
 	}
