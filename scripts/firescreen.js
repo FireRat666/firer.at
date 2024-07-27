@@ -90,14 +90,14 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
         };
 		
 		// Setup the Announcer only on the first run if enabled
-		if (p_announcer === true && announcerfirstrun === true ) {
+		if (p_announcer === "true" && announcerfirstrun === true ) {
 			announcerfirstrun = false;
 			console.log("FIRESCREEN: Enabling the Announcer Script")
 			const announcerscript = document.createElement("script");
 			announcerscript.id = "fires-announcer";
 			announcerscript.setAttribute("src", "https://firer.at/scripts/announcer.js");
 			document.querySelector("a-scene").appendChild(announcerscript);
-		} else if (p_announce === true && announcerfirstrun === true ) {
+		} else if (p_announce === "true" && announcerfirstrun === true ) {
 			announcerfirstrun = false;
 			console.log("FIRESCREEN: Enabling the Announcer Script")
 			const announcerscript = document.createElement("script");
