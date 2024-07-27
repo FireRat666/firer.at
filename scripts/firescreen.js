@@ -470,6 +470,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		volupcolor = "#00FF00";
 	} else {
 		firevolup.setAttribute("color", p_volupcolor);
+		volupcolor = p_volupcolor;
 	}
 	firevolup.setAttribute("material", "transparent: true");
 	firevolup.setAttribute("sq-collider");
@@ -492,6 +493,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		voldowncolor = "#FFFF00";
 	} else {
 		firevoldown.setAttribute("color", p_voldowncolor);
+		voldowncolor = p_voldowncolor;
 	}
 	firevoldown.setAttribute("material", "transparent: true");
 	firevoldown.setAttribute("sq-collider");
