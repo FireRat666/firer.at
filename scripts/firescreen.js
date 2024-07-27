@@ -145,7 +145,11 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		firelockbutton.setAttribute("position", "0 0.38 0");
 		firelockbutton.setAttribute("width", "0.1");
 		firelockbutton.setAttribute("height", "0.1");
-		firelockbutton.setAttribute("color", thebuttoncolor);
+		if (thebuttoncolor === "#00FF00") {
+			firelockbutton.setAttribute("color", "#FFFF00");
+		} else {
+			firelockbutton.setAttribute("color", thebuttoncolor);
+		}
 		firelockbutton.setAttribute("material", "transparent: true");
 		firelockbutton.setAttribute("sq-collider");
 		firelockbutton.setAttribute("sq-interactable");
