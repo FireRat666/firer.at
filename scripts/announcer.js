@@ -1,5 +1,5 @@
 // This script was taken from https://vidya.sdq.st/say-names.js and https://best-v-player.glitch.me/say-names.js
-let username = "";
+let theusersname = "";
 let timevariable = 0;
 let theusersid = "";
 
@@ -67,45 +67,45 @@ if(window.isBanter && announceevents === true) {
 };
 
 const announcerscene = BS.BanterScene.getInstance();
-var now = 9999999999999; // Set Now to a Really Big Number, so if user-joined is called before unity-loaded, it wont spam user joined messages for users that were already in the space
+var timenow = 9999999999999; // Set Now to a Really Big Number, so if user-joined is called before unity-loaded, it wont spam user joined messages for users that were already in the space
 // Welcome message for user entering the space
 function announcerloadtest() {
   announcerscene.On("unity-loaded", () => {
-    now = Date.now(); // Sets Now to after unity scene load is done
+    timenow = Date.now(); // Sets Now to after unity scene load is done
   });
   announcerscene.On("user-joined", e => {
-    username = e.detail.name;
+    theusersname = e.detail.name;
     theusersid = e.detail.uid;
 
-    if (username === "Gravxton") {username = "Graviton What The Hell"};
-    if (theusersid === "7e778ab53e504bed1d995bf9148b98c2") {username = "Vanquisher"}; // Vanquisher
-    if (theusersid === "2567af4ddce8000b887527097fd5bf8a") {username = "The Fishiest Overlord of them all"}; // Dedzed
-    if (theusersid === "4c67af8ae899ea5b8dd6da25566ff3f3") {username = "Boob Works"}; // BobWorks 
-    if (theusersid === "f14cd0a7c028d9e8f1756d76ff450c73") {username = "The Slayer"}; // Divine
-    if (theusersid === "c81d8333f83208a6124370282b992a45") {username = "echo phase"}; // Echo Mental
-    if (theusersid === "2cd40305e0a4b04bf0242ad0d9fa352d") {username = "Zeph e e e e e"}; // Zephii
-    if (theusersid === "f7d3e8a05224e3954bdc6f4b4ec47708") {username = "Nisstyx"}; // Nystx
-    if (theusersid === "f87c37aad5d82ac9faea3a2cae55934d") {username = "Discordia Kitty"}; // Discord Kitty
-    if (theusersid === "d20dc72cdbb562479089c6c5263815a8") {username = "A Banter Ghost"}; // Ghost Droid
-    if (theusersid === "2fa5290b268076d98aa078e1cc2ce3e2") {username = "Kah Gey knee ko"}; // Kageneko
-    if (theusersid === "f67ed8a5ca07764685a64c7fef073ab9") {username = "Fire Rat"}; // FireRat
+    if (theusersname === "Gravxton") {theusersname = "Graviton What The Hell"};
+    if (theusersid === "7e778ab53e504bed1d995bf9148b98c2") {theusersname = "Vanquisher"}; // Vanquisher
+    if (theusersid === "2567af4ddce8000b887527097fd5bf8a") {theusersname = "The Fishiest Overlord of them all"}; // Dedzed
+    if (theusersid === "4c67af8ae899ea5b8dd6da25566ff3f3") {theusersname = "Boob Works"}; // BobWorks 
+    if (theusersid === "f14cd0a7c028d9e8f1756d76ff450c73") {theusersname = "The Slayer"}; // Divine
+    if (theusersid === "c81d8333f83208a6124370282b992a45") {theusersname = "echo phase"}; // Echo Mental
+    if (theusersid === "2cd40305e0a4b04bf0242ad0d9fa352d") {theusersname = "Zeph e e e e e"}; // Zephii
+    if (theusersid === "f7d3e8a05224e3954bdc6f4b4ec47708") {theusersname = "Nisstyx"}; // Nystx
+    if (theusersid === "f87c37aad5d82ac9faea3a2cae55934d") {theusersname = "Discordia Kitty"}; // Discord Kitty
+    if (theusersid === "d20dc72cdbb562479089c6c5263815a8") {theusersname = "A Banter Ghost"}; // Ghost Droid
+    if (theusersid === "2fa5290b268076d98aa078e1cc2ce3e2") {theusersname = "Kah Gey knee ko"}; // Kageneko
+    if (theusersid === "f67ed8a5ca07764685a64c7fef073ab9") {theusersname = "Fire Rat"}; // FireRat
 
     if (e.detail.isLocal) {
       const joinMessages = [
-        username + ", What the hell, you broke everything, it was just working, what did you do? ",
-        "Hello, Welcome to the space " + username,
-        "What are you doing here " + username,
-        "Welcome to [Space Name]! " + username +  " We're never letting you go. Quick, lock the doors!",
-        "Welcome to [Space Name] Zoo! " + username +  " Please, don't feed the animals. ",
-        "Welcome aboard! " + username + " We’re so excited to have you with us",
-        "Welcome " + username + " we Hope you brought your sense of humor!",
-        "Glad you could join us " + username + " now let’s have some fun!",
-        "Fasten your seatbelt " + username + " it’s going to be a wild ride.",
-        "Hi there! It’s great to meet you " + username + " , wait a sec I am not sentient",
-        "Welcome " + username + " We’re a little weird, a little wacky, but we’re pretty sure you’ll fit right in.",
-        "Welcome your Highness " + username,
-        "Hello " + username + " " + username + " " + username + " " + username + " Failure detected, shutting down",
-        "Enjoy your stay " + username
+        theusersname + ", What the hell, you broke everything, it was just working, what did you do? ",
+        "Hello, Welcome to the space " + theusersname,
+        "What are you doing here " + theusersname,
+        "Welcome to [Space Name]! " + theusersname +  " We're never letting you go. Quick, lock the doors!",
+        "Welcome to [Space Name] Zoo! " + theusersname +  " Please, don't feed the animals. ",
+        "Welcome aboard! " + theusersname + " We’re so excited to have you with us",
+        "Welcome " + theusersname + " we Hope you brought your sense of humor!",
+        "Glad you could join us " + theusersname + " now let’s have some fun!",
+        "Fasten your seatbelt " + theusersname + " it’s going to be a wild ride.",
+        "Hi there! It’s great to meet you " + theusersname + ", wait a sec I am not sentient",
+        "Welcome " + theusersname + " We’re a little weird, a little wacky, but we’re pretty sure you’ll fit right in.",
+        "Welcome your Highness " + theusersname,
+        "Hello " + theusersname + " " + theusersname + " " + theusersname + " " + theusersname + " Failure detected, shutting down",
+        "Enjoy your stay " + theusersname
       ];
   
       let randommessage = joinMessages[Math.floor(Math.random() * joinMessages.length)];
@@ -113,41 +113,41 @@ function announcerloadtest() {
       console.log("ANNOUNCER: Local-UID: " + e.detail.uid)
 
     } else {
-      if(Date.now() - now > 10000) {
+      if(Date.now() - timenow > 10000) {
         const welcomeMessages = [
-          username + " welcome message blah blah!",
-          username + " Joined your party",
-          username + " has spawned into reality",
-          username + " just showed up, Hold my Head Set",
-          username + " just showed up, Don't let them leave",
-          username + " just showed up, Quick call the police",
-          username + " just showed up, Everyone act normal",
-          username + ", What the hell, you broke everything, it was just working, what did you do?!",
-          username + " has joined, what will they do now?",
-          username + " might be an alien, watch them carefully",
-          username + " just stumbled over their charger",
-          username + " Arrived, Everyone go say hi",
-          "Oh No! " + username + " has spawned into reality",
-          "Oh No! " + username + " Left their toilet seat up",
-          "Oh No! " + username + " is about to run out of battery",
-          "Oh No! " + username + " Has forgotten their own name",
-          "Oh No! " + username + " is running out of gas",
-          "Oh No! " + username + " just farted into reality",
-          "Knock Knock " + username + " is here",
-          "Nobody tell " + username + " Their still in their pyjamas",
-          "Oh No! Hide your sheep " + username + " has joined the space",
-          "Oh No! " + username + " needs a recharge, grab the defib",
-          "Your King " + username + " has joined the space.",
-          "Your Queen " + username + " has joined the space.",
-          "Your Magesty " + username + " has joined the space.",
-          "About time " + username + " has joined the space.",
-          "The rumours are true " + username + " has joined the space",
-          "Bow to your King " + username,
-          "Bow to your Queen " + username,
-          "Here we go again, " + username + " has joined the space.",
-          username + " Has Joined the space, And wants to know if you are hungry girl",
-          username + " was pushed into a portal, quick call the police",
-          username + ", be careful of DedZed the fish overlord"
+          theusersname + " welcome message blah blah!",
+          theusersname + " Joined your party",
+          theusersname + " has spawned into reality",
+          theusersname + " just showed up, Hold my Head Set",
+          theusersname + " just showed up, Don't let them leave",
+          theusersname + " just showed up, Quick call the police",
+          theusersname + " just showed up, Everyone act normal",
+          theusersname + ", What the hell, you broke everything, it was just working, what did you do?!",
+          theusersname + " has joined, what will they do now?",
+          theusersname + " might be an alien, watch them carefully",
+          theusersname + " just stumbled over their charger",
+          theusersname + " Arrived, Everyone go say hi",
+          "Oh No! " + theusersname + " has spawned into reality",
+          "Oh No! " + theusersname + " Left their toilet seat up",
+          "Oh No! " + theusersname + " is about to run out of battery",
+          "Oh No! " + theusersname + " Has forgotten their own name",
+          "Oh No! " + theusersname + " is running out of gas",
+          "Oh No! " + theusersname + " just farted into reality",
+          "Knock Knock " + theusersname + " is here",
+          "Nobody tell " + theusersname + " Their still in their pyjamas",
+          "Oh No! Hide your sheep " + theusersname + " has joined the space",
+          "Oh No! " + theusersname + " needs a recharge, grab the defib",
+          "Your King " + theusersname + " has joined the space.",
+          "Your Queen " + theusersname + " has joined the space.",
+          "Your Magesty " + theusersname + " has joined the space.",
+          "About time " + theusersname + " has joined the space.",
+          "The rumours are true " + theusersname + " has joined the space",
+          "Bow to your King " + theusersname,
+          "Bow to your Queen " + theusersname,
+          "Here we go again, " + theusersname + " has joined the space.",
+          theusersname + " Has Joined the space, And wants to know if you are hungry girl",
+          theusersname + " was pushed into a portal, quick call the police",
+          theusersname + ", be careful of DedZed the fish overlord"
           ];
 
         let psudorandomvar = GETPRNGF(welcomeMessages.length);
