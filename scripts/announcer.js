@@ -89,7 +89,13 @@ function announcerloadtest() {
     if (theusersid === "d20dc72cdbb562479089c6c5263815a8") {theusersname = "A Banter Ghost"}; // Ghost Droid
     if (theusersid === "2fa5290b268076d98aa078e1cc2ce3e2") {theusersname = "Kah Gey knee ko"}; // Kageneko
     if (theusersid === "f67ed8a5ca07764685a64c7fef073ab9") {theusersname = "Fire Rat"}; // FireRat
-
+    if (theusersid === "2ea1396b49294e396113f4f1ca5d9a9e") {theusersname = "Chicky Chicky Gem Gem"}; // Gemchick
+    if (theusersid === "a3de45107d96ec8ec9857f9111eca6e0") {theusersname = "Fae Fae"}; // Fae
+    if (theusersid === "462b9ba6d7bff70e963f76c7b3ef978a") {theusersname = "tokraaaaaa"}; // Tokra
+    if (theusersid === "e2ea44863eb547aecc1f9bc94f7b5c30") {theusersname = "Older Chris, Not Young Chris"}; // Chris
+    if (theusersid === "e9412ffa5ca2970f3b9de7b87258e712") {theusersname = "Aziz"}; // Aziz
+    if (theusersid === "ada674dac0d26556244bf61c2b97184e") {theusersname = "Yunjiverse"}; // Yunjiverse
+    
     if (e.detail.isLocal) {
       timenow = Date.now(); // Sets Now to after first user has joined
       const joinMessages = [
