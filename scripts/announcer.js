@@ -2,6 +2,7 @@
 let theusersname = "";
 let timevariable = 0;
 let theusersid = "";
+let announcefirstrun = true;
 
 // Main Speak Function, Thank you Elin and everyone
 async function speak(text) {
@@ -97,6 +98,7 @@ function announcerloadtest() {
     if (theusersid === "ada674dac0d26556244bf61c2b97184e") {theusersname = "Yunji verse"}; // Yunjiverse
 
     if (e.detail.isLocal) {
+      announcefirstrun = false;
       timenow = Date.now(); // Sets Now to after first user has joined
       const joinMessages = [
         theusersname + ", What the hell, you broke everything, it was just working, what did you do? ",
@@ -161,6 +163,9 @@ function announcerloadtest() {
         const message = welcomeMessages[GETPRNGF(welcomeMessages.length)]; 
         speak(message);
         console.log("USERNAME: " + e.detail.name + " USERID: " + theusersid + " PRVAR: " + psudorandomvar);
+      } else if (announcefirstrun) {
+        announcefirstrun = false;
+        timenow = Date.now(); // Sets Now to after a user has joined if first run is still true
       };
     };
   });
