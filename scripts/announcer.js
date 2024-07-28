@@ -91,6 +91,7 @@ function announcerloadtest() {
     if (theusersid === "f67ed8a5ca07764685a64c7fef073ab9") {theusersname = "Fire Rat"}; // FireRat
 
     if (e.detail.isLocal) {
+      timenow = Date.now(); // Sets Now to after first user has joined
       const joinMessages = [
         theusersname + ", What the hell, you broke everything, it was just working, what did you do? ",
         "Hello, Welcome to the space " + theusersname,
@@ -113,7 +114,7 @@ function announcerloadtest() {
       console.log("ANNOUNCER: Local-UID: " + e.detail.uid)
 
     } else {
-      if(Date.now() - timenow > 10000) {
+      if(Date.now() - timenow > 5000) {
         const welcomeMessages = [
           theusersname + " welcome message blah blah!",
           theusersname + " Joined your party",
