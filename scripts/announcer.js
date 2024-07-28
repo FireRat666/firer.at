@@ -97,7 +97,9 @@ function announcerloadtest() {
     if (theusersid === "e2ea44863eb547aecc1f9bc94f7b5c30") {theusersname = "Older Chris, Not Young Chris"}; // Chris
     if (theusersid === "e9412ffa5ca2970f3b9de7b87258e712") {theusersname = "Aziz"}; // Aziz
     if (theusersid === "ada674dac0d26556244bf61c2b97184e") {theusersname = "Yunji verse"}; // Yunjiverse
+    if (theusersid === "220a4b971b3edb376cbc956f5539b8a5") {theusersname = "Big John"}; // Big John
 
+    // 220a4b971b3edb376cbc956f5539b8a5 
     if (e.detail.isLocal) {
       announcefirstrun = false;
       timenow = Date.now(); // Sets Now to after first user has joined
