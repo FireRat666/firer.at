@@ -101,10 +101,10 @@ class handButtonCrap{
 		} else {
 			playerislocked = true;
 			lockPlayer();
-			if (thebuttoncolor === "#00FF00") {
+			if (thebuttoncolor === "#FF0000") {
 				firelockbut.setAttribute("color", "#FFFF00"); 
 			} else {
-			firelockbut.setAttribute("color", "#00FF00"); 
+			firelockbut.setAttribute("color", "#FF0000"); 
 			}
 		};
 	};
