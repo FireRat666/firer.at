@@ -95,12 +95,24 @@ function announcerloadtest() {
     if (theusersid === "a3de45107d96ec8ec9857f9111eca6e0") {theusersname = "Fay Fay"}; // Fae
     if (theusersid === "462b9ba6d7bff70e963f76c7b3ef978a") {theusersname = "tokra ah ah ah"}; // Tokra
     if (theusersid === "e2ea44863eb547aecc1f9bc94f7b5c30") {theusersname = "Older Chris, Not Young Chris"}; // Chris
-    if (theusersid === "e9412ffa5ca2970f3b9de7b87258e712") {theusersname = "Aziz"}; // Aziz
+    if (theusersid === "e9412ffa5ca2970f3b9de7b87258e712") {theusersname = "Aziz z z"}; // Aziz
     if (theusersid === "ada674dac0d26556244bf61c2b97184e") {theusersname = "Yunji verse"}; // Yunjiverse
     if (theusersid === "220a4b971b3edb376cbc956f5539b8a5") {theusersname = "Big John"}; // Big John
     if (theusersid === "94acdf9d5887ce8fb4a5c9c605f906a5") {theusersname = "Fear Psycho"}; // "Psycho"
     if (theusersid === "3682ea489f043657d09811dd042bfa83") {theusersname = "ProcksCyde"}; // ProxCyde
+    if (theusersid === "52ac3e6e222a72ade6cbde376c27a6c3") {theusersname = "I.T.Trey"}; // I.T.Trey
+    if (theusersid === "19f104073c0da250138d67be9634d842") {theusersname = "Jaeger 7 4 5"}; // Jaeger_745
+    // if (theusersid === "597c64d0037631df4ec9d73ad381f634 ") {theusersname = "Someone you don't know"}; // Gooch Monkey
+    if (theusersid === "4255792aebfae3cea1086f2963c33fdc") {theusersname = "Rabbit"}; // Rabbit
+    if (theusersid === "ee95ee1ae0cd0d67066a4519e665911e") {theusersname = "Zelrainer"}; //  Zelrainer
+    if (theusersid === "f90d43718f190161c2fa2d0879218686") {theusersname = "CaptnDaN"}; //  "CaptnDaN"
+    if (theusersid === "32c3e6ac83b78872be370cb10f0c9729") {theusersname = "Cast Casey Away"}; //  "caseycastaway"
+    if (theusersid === "f8e9b8eed97623712f77f318fa35d7ce") {theusersname = "Pancake Man"}; //  "WaffleMan"
+    if (theusersid === "3dbca1090fad5dff35543697ca007066") {theusersname = "Sebek"}; //  "Sebek"
+    if (theusersid === "f3da86e3752aa16d8f574777cc5ed842") {theusersname = "Irish Jesus"}; //  "Scottish.Jesus"
+    if (theusersid === "89c3abbe6d16e057035cc35ad7492cf7") {theusersname = "Static Threat"}; //  "staticthreat"
 
+    // 89c3abbe6d16e057035cc35ad7492cf7
     if (e.detail.isLocal) {
       announcefirstrun = false;
       timenow = Date.now(); // Sets Now to after first user has joined
@@ -146,6 +158,7 @@ function announcerloadtest() {
           "Oh No! " + theusersname + " Has forgotten their own name",
           "Oh No! " + theusersname + " is running out of gas",
           "Oh No! " + theusersname + " just farted into reality",
+          "Oh No! " + theusersname + " Locked their keys in their car",
           "Knock Knock " + theusersname + " is here",
           "Nobody tell " + theusersname + " Their still in their pyjamas",
           "Oh No! Hide your sheep " + theusersname + " has joined the space",
