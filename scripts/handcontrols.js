@@ -1,5 +1,6 @@
 const handscene = BS.BanterScene.getInstance();
 var playerislocked = false;
+var playersuserid = true;
 class handButtonCrap{
 	
 	constructor() {
@@ -18,6 +19,7 @@ class handButtonCrap{
 				console.log("HAND-CONTROLS: Local User Joined");
 				if (handcontrolsdisabled) {
 					handcontrolsdisabled = false;
+					playersuserid = e.detail.uid;
 					this.setupHandControls();
 				}
 			}
@@ -113,7 +115,12 @@ class handButtonCrap{
 		const handControlsContainer = document.createElement("a-entity");
 		handControlsContainer.setAttribute("scale", "0.1 0.1 0.1");
 		handControlsContainer.setAttribute("position", "0.04 0.006 -0.010");
-		handControlsContainer.setAttribute("sq-lefthand", "whoToShow: " + window.user.id);
+		if (playersuserid) {
+			handControlsContainer.setAttribute("sq-lefthand", "whoToShow: " + window.user.id);
+			
+		} else {
+			handControlsContainer.setAttribute("sq-lefthand", "whoToShow: " + playersuserid);
+		};
 		[
 			{
 			image: IconVolUpUrl,
