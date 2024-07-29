@@ -134,6 +134,9 @@ function announcerloadtest() {
       ];
   
       let randommessage = joinMessages[Math.floor(Math.random() * joinMessages.length)];
+
+      if (theusersid === "3dbca1090fad5dff35543697ca007066") {randommessage = "Welcome, King Seb eck, the Mirror Creator"}; //  "Sebek"
+
       speak(randommessage);
       console.log("ANNOUNCER: Local-UID: " + e.detail.uid)
 
