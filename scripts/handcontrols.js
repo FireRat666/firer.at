@@ -10,7 +10,7 @@ class handButtonCrap{
 				handcontrolsdisabled = false;
 				this.setupHandControls();
 			}
-		}, 8000); 
+		}, 15000); 
 		};
 	  
 		handscene.On("user-joined", e => {
