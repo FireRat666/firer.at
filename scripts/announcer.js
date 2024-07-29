@@ -178,6 +178,9 @@ function announcerloadtest() {
 
         let psudorandomvar = GETPRNGF(welcomeMessages.length);
         const message = welcomeMessages[GETPRNGF(welcomeMessages.length)]; 
+
+        if (theusersid === "3dbca1090fad5dff35543697ca007066") {message = "Bow to your King Seb eck the Mirror Creator"}; //  "Sebek"
+
         speak(message);
         console.log("USERNAME: " + e.detail.name + " USERID: " + theusersid + " PRVAR: " + psudorandomvar);
       } else if (announcefirstrun) {
