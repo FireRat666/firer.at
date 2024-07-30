@@ -6,7 +6,7 @@ let announcefirstrun = true;
 
 // Main Speak Function, Thank you Elin and everyone
 async function speak(text) {
-  console.log("saying:", text);
+  console.log("ANNOUNCER: saying:", text);
   let audio = new Audio('https://speak.firer.at/?text=' + text);
   audio.autoplay = true;
   audio.play();
@@ -111,8 +111,9 @@ function announcerloadtest() {
     if (theusersid === "3dbca1090fad5dff35543697ca007066") {theusersname = "Sebek"}; //  "Sebek"
     if (theusersid === "f3da86e3752aa16d8f574777cc5ed842") {theusersname = "Irish Jesus"}; //  "Scottish.Jesus"
     if (theusersid === "89c3abbe6d16e057035cc35ad7492cf7") {theusersname = "Static Threat"}; //  "staticthreat"
+    if (theusersid === "89c3abbe6d16e057035cc35ad7492cf7") {theusersname = "anka"}; //  "anka"
 
-    // 89c3abbe6d16e057035cc35ad7492cf7
+    // 447d5ce016676fa2b39795efa6fcf8da 
     if (e.detail.isLocal) {
       announcefirstrun = false;
       timenow = Date.now(); // Sets Now to after first user has joined
@@ -145,6 +146,7 @@ function announcerloadtest() {
         const welcomeMessages = [
           theusersname + " welcome message blah blah!",
           theusersname + " Joined your party",
+          "Oh No, the announcer is stoned, oh well, " + theusersname + " Joined the space.&lang=en&pitch=0.7&speed=1.7",
           theusersname + " has spawned into reality",
           theusersname + " just showed up, Hold my Head Set",
           theusersname + " just showed up, Don't let them leave",
@@ -155,6 +157,7 @@ function announcerloadtest() {
           theusersname + " might be an alien, watch them carefully",
           theusersname + " just stumbled over their charger",
           theusersname + " Arrived, Everyone go say hi",
+          theusersname + " Just took a hit of laughing gas&lang=en&pitch=1.3&speed=1.1",
           "Oh No! " + theusersname + " has spawned into reality",
           "Oh No! " + theusersname + " Left their toilet seat up",
           "Oh No! " + theusersname + " is about to run out of battery",
@@ -185,13 +188,20 @@ function announcerloadtest() {
         if (theusersid === "3dbca1090fad5dff35543697ca007066") {message = "Bow to your King Seb eck the Mirror Creator"}; //  "Sebek"
 
         speak(message);
-        console.log("USERNAME: " + e.detail.name + " USERID: " + theusersid + " PRVAR: " + psudorandomvar);
+        console.log("ANNOUNCER: USER: " + e.detail.name + " UID: " + theusersid + " PRVAR: " + psudorandomvar);
       } else if (announcefirstrun) {
         announcefirstrun = false;
         timenow = Date.now(); // Sets Now to after a user has joined if first run is still true
       };
     };
   });
+  
+  // announcerscene.On("user-left", e => {
+  //   theusersname = e.detail.name;
+  //   theusersid = e.detail.uid;
+  //   console.log("ANNOUNCER: USER: " + e.detail.name + " LEFT UID: " + theusersid);
+
+  // });
 }
 
 announcerloadtest();
