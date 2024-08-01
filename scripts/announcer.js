@@ -249,8 +249,8 @@ function announcerloadtest() {
         announce420 = getAttrOrDefAgain(thescripts[i], "announce-420", "false");
       };
     };
-    load420();
     loadevents();
+    setTimeout(() => { load420(); }, 20000);
 
 };
 
