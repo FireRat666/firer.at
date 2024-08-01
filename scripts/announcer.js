@@ -1,5 +1,5 @@
 // This script was taken from https://vidya.sdq.st/say-names.js and https://best-v-player.glitch.me/say-names.js
-let scriptsource = "https://51.firer.at/scripts/announcer.js";
+let scriptsource = "https://firer.at/scripts/announcer.js";
 let theusersname = "";
 let timevariable = 0;
 let theusersid = "";
