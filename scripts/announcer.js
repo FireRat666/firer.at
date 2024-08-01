@@ -1,8 +1,11 @@
 // This script was taken from https://vidya.sdq.st/say-names.js and https://best-v-player.glitch.me/say-names.js
+let scriptsource = "https://51.firer.at/scripts/announcer.js";
 let theusersname = "";
 let timevariable = 0;
 let theusersid = "";
 let announcefirstrun = true;
+let announceevents = "true";
+let announce420 = "false";
 
 // Main Speak Function, Thank you Elin and everyone
 async function speak(text) {
@@ -52,25 +55,57 @@ function loop(interval, callback) {
 };
 
 // This function is for the events announcements
-let announceevents = true;
-if(window.isBanter && announceevents === true) {
-  let lastEventsId = 0;
-  loop(20, async () => {
-    let event = await (await fetch("https://api.sidequestvr.com/v2/events?limit=1")).json();
-    if(event.length) {
-      const difference = Math.abs(new Date(event[0].start_time) - new Date());
-      if(difference < 60 * 1000 && lastEventsId !== event[0].events_v2_id) {
-        lastEventsId = event[0].events_v2_id;
-        await speak("Oh Shit " + event[0].name + ", is starting now! Drop your shit and hussle");
+function loadevents() {
+  if(window.isBanter && announceevents === "true") {
+    console.log("ANNOUNCER: Event Announcer Enabled");
+    let lastEventsId = 0;
+    loop(20, async () => {
+      let event = await (await fetch("https://api.sidequestvr.com/v2/events?limit=1")).json();
+      if(event.length) {
+        const difference = Math.abs(new Date(event[0].start_time) - new Date());
+        if(difference < 60 * 1000 && lastEventsId !== event[0].events_v2_id) {
+          lastEventsId = event[0].events_v2_id;
+          await speak("Oh Shit " + event[0].name + ", is starting now! Drop your shit and hussle");
+        };
       };
-    };
-  })
+    })
+  };
 };
 
+
+// This function is for the 420 events announcements
+function load420() {
+  if(window.isBanter && announce420 === "true") {
+    let keepAlive;
+    function connect() {
+      const ws = new WebSocket('wss://calicocut.glitch.me');
+      ws.onmessage = (msg) => {
+        speak(msg.data);
+      };
+      ws.onopen = (msg) => {
+        console.log("ANNOUNCER: connected to 420 announcer.");
+      };
+      ws.onerror = (msg) => {
+        console.log("ANNOUNCER: error", msg);
+      };
+      ws.onclose = (e) => {
+        console.log('ANNOUNCER: Disconnected 420!');
+        clearInterval(keepAlive);
+        setTimeout(()=>connect(), 3000);
+      };
+      keepAlive = setInterval(()=>{ws.send("keep-alive")}, 120000)
+    }
+    connect();
+  };
+};
+
+
+const thescripts = document.getElementsByTagName("script");
 const announcerscene = BS.BanterScene.getInstance();
 var timenow = 9999999999999; // Set Now to a Really Big Number, so if user-joined is called before unity-loaded, it wont spam user joined messages for users that were already in the space
 // Welcome message for user entering the space
 function announcerloadtest() {
+
   announcerscene.On("unity-loaded", () => {
     announcefirstrun = false;
     timenow = Date.now(); // Sets Now to after unity scene load is done
@@ -112,8 +147,10 @@ function announcerloadtest() {
     if (theusersid === "f3da86e3752aa16d8f574777cc5ed842") {theusersname = "Irish Jesus"}; //  "Scottish.Jesus"
     if (theusersid === "89c3abbe6d16e057035cc35ad7492cf7") {theusersname = "Static Threat"}; //  "staticthreat"
     if (theusersid === "89c3abbe6d16e057035cc35ad7492cf7") {theusersname = "anka"}; //  "anka"
+    // if (theusersid === "452267f713cf815aab6f8e6a2548ff93") {theusersname = "Ben"}; //  "Ben"
+    // if (theusersid === "d1bdc33ac0fcfc061728b2e11c740ac7") {theusersname = "Mika"}; //  "Mika"
 
-    // 447d5ce016676fa2b39795efa6fcf8da 
+    // d1bdc33ac0fcfc061728b2e11c740ac7   
     if (e.detail.isLocal) {
       announcefirstrun = false;
       timenow = Date.now(); // Sets Now to after first user has joined
@@ -202,6 +239,27 @@ function announcerloadtest() {
   //   console.log("ANNOUNCER: USER: " + e.detail.name + " LEFT UID: " + theusersid);
 
   // });
-}
+
+  const scripts = document.getElementsByTagName("script");
+  for (let i = 0; i < scripts.length; i++) {
+    if (getAttrOrDefAgain(thescripts[i], "src", "") === scriptsource ) { 
+        // const pAnnounce420 = getAttrOrDef(thescripts[i], "announce-420", "false");
+        const pAnnounceEvents = getAttrOrDefAgain(thescripts[i], "announce-events", "true");
+        announceevents = pAnnounceEvents;
+        announce420 = getAttrOrDefAgain(thescripts[i], "announce-420", "false");
+      };
+    };
+    load420();
+    loadevents();
+
+};
+
+function getAttrOrDefAgain (pScript, pAttr, pDefault) {
+  if (pScript.hasAttribute(pAttr)) {
+    return pScript.getAttribute(pAttr);
+  } else {
+    return pDefault;
+  }
+};
 
 announcerloadtest();
