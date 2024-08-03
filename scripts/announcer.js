@@ -176,7 +176,7 @@ function announcerloadtest() {
       let randommessage = joinMessages[Math.floor(Math.random() * joinMessages.length)];
 
       if (theusersid === "3dbca1090fad5dff35543697ca007066") {randommessage = "Welcome, King Seb eck, the Mirror Creator"}; //  "Sebek"
-      if (theusersid === "220a4b971b3edb376cbc956f5539b8a5") {randommessage = "Big John is here everybody hide your snack packs"}; // Big John
+      if (theusersid === "220a4b971b3edb376cbc956f5539b8a5") {randommessage = "Big John, Big John. More like Tiny John, ag le we re ae ze te pe qu al er fa Fuck."}; // Big John
 
       speak(randommessage);
       console.log("ANNOUNCER: Local-UID: " + e.detail.uid)
@@ -226,6 +226,7 @@ function announcerloadtest() {
         const message = welcomeMessages[GETPRNGF(welcomeMessages.length)]; 
 
         if (theusersid === "3dbca1090fad5dff35543697ca007066") {message = "Bow to your King Seb eck the Mirror Creator"}; //  "Sebek"
+        if (theusersid === "220a4b971b3edb376cbc956f5539b8a5") {message = "Big John is here everybody hide your snack packs"}; // Big John
 
         speak(message);
         console.log("ANNOUNCER: USER: " + e.detail.name + " UID: " + theusersid + " PRVAR: " + psudorandomvar);
