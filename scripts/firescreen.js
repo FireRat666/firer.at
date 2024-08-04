@@ -1,10 +1,10 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.0 Beta 4.0
-var thisscriptsurl = "https://firer.at/scripts/firescreen.js"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT
-var handcontrolscripturl = "https://firer.at/scripts/handcontrols.js"; // CHANGE THIS URL YOU CHANGE THE HAND CONTROL SCRIPT
-var announcerscripturl = "https://firer.at/scripts/announcer.js"; // CHANGE THIS URL YOU CHANGE THE ANNOUNCER SCRIPT
-var fireScreenOn = 0;
+// VERSION: 1.0 Beta 4.1
+var thisscriptsurl = "https://" + location.hostname + "/scripts/firescreen.js"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE 2 BELOW
+var handcontrolscripturl = "https://" + location.hostname + "/scripts/handcontrols.js"; // CHANGE THIS URL
+var announcerscripturl = "https://" + location.hostname + "/scripts/announcer.js"; // CHANGE THIS URL
+var fireScreenOn = false;
 var thebuttoncolor = "";
 var volupcolor = "";
 var voldowncolor = "";
@@ -75,7 +75,7 @@ function disableFireScreen() {
 			console.log("FIRESCREEN: Fire screen Disabled"); 
 		}
 	}
-	fireScreenOn = 0;
+	fireScreenOn = false;
 	keepsoundlevel();
 };
 
@@ -142,7 +142,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 	if (p_castmode == "false") {
 		firescreen.setAttribute( "sq-rigidbody", "useGravity: false; drag:10; angularDrag:10;");
 	};
-	fireScreenOn = 1;
+	fireScreenOn = true;
 		
 	// for the collider to allow it to be moved
 	let firecollider = document.createElement("a-plane");
