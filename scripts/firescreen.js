@@ -1,9 +1,10 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.0 Beta 4.1
-var thisscriptsurl = "https://firer.at/scripts/firescreen.js"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE 2 BELOW
-var handcontrolscripturl = "https://firer.at/scripts/handcontrols.js"; // CHANGE THIS URL
-var announcerscripturl = "https://firer.at/scripts/announcer.js"; // CHANGE THIS URL
+// VERSION: 1.0 Beta 4.1.1
+var thishostnameurl = "https://firer.at/scripts/"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
+var thisscriptsurl = thishostnameurl + "firescreen.js"; // CHANGE THIS
+var handcontrolscripturl = thishostnameurl + "handcontrols.js"; // CHANGE THIS
+var announcerscripturl = thishostnameurl + "announcer.js"; // CHANGE THIS
 var fireScreenOn = false;
 var thebuttoncolor = "";
 var volupcolor = "";
@@ -250,7 +251,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		firetiltforward.setAttribute("class", "tilt");
 		firetiltforward.setAttribute("src", "https://firer.at/files/TF.png");
 		firetiltforward.setAttribute("visible", "false");
-		firetiltforward.setAttribute("rotate", "axis: x; amount: 5");
+		firetiltforward.setAttribute("rotate", "axis: x; amount: -5");
 		firescreen.appendChild(firetiltforward);
 		// Tilt Backwards Button
 		let firetiltbackward = document.createElement("a-plane");
@@ -264,7 +265,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		firetiltbackward.setAttribute("class", "tilt");
 		firetiltbackward.setAttribute("src", "https://firer.at/files/TB.png");
 		firetiltbackward.setAttribute("visible", "false");
-		firetiltbackward.setAttribute("rotate", "axis: x; amount: -5");
+		firetiltbackward.setAttribute("rotate", "axis: x; amount: 5");
 		firescreen.appendChild(firetiltbackward);
 
 		// // Rotate Left Button test
