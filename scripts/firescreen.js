@@ -1,6 +1,6 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.0 Beta 4.1.1
+// VERSION: 1.0 Beta 4.2.0
 var thishostnameurl = "https://firer.at/scripts/"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var thisscriptsurl = thishostnameurl + "firescreen.js"; // CHANGE THIS
 var handcontrolscripturl = thishostnameurl + "handcontrols.js"; // CHANGE THIS
@@ -16,6 +16,7 @@ var numberofbrowsers = 0;
 var announcerfirstrun = true;
 var firstrunhandcontrols = true;
 var handcontrolsdisabled = true;
+var aframedetected = false;
 
 function enableFireScreen() {
   console.log("FIRESCREEN: Enabling Screen(s)");
@@ -91,7 +92,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
             const handcontrols = document.createElement("script");
             handcontrols.id = "fires-handcontrols";
             handcontrols.setAttribute("src", handcontrolscripturl);
-            document.querySelector("a-scene").appendChild(handcontrols);
+            document.querySelector("body").appendChild(handcontrols);
         };
 		
 		// Setup the Announcer only on the first run if enabled
@@ -103,7 +104,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 			announcerscript.setAttribute("src", announcerscripturl);
 			announcerscript.setAttribute("announce-420", p_announce420);
 			announcerscript.setAttribute("announce-events", p_announceevents);
-			document.querySelector("a-scene").appendChild(announcerscript);
+			document.querySelector("body").appendChild(announcerscript);
 		} else if (p_announce === "true" && announcerfirstrun === true ) {
 			announcerfirstrun = false;
 			console.log("FIRESCREEN: Enabling the Announcer Script")
@@ -112,7 +113,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 			announcerscript.setAttribute("src", announcerscripturl);
 			announcerscript.setAttribute("announce-420", p_announce420);
 			announcerscript.setAttribute("announce-events", p_announceevents);
-			document.querySelector("a-scene").appendChild(announcerscript);
+			document.querySelector("body").appendChild(announcerscript);
 		};
 
 	numberofbrowsers++    
@@ -586,7 +587,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		fireextra03.appendChild(fireextra03p2);
 	}; 
 	document.querySelector("a-scene").appendChild(firescreen);
-	setTimeout(() => { setBrowserWidths(); keepsoundlevel(); }, 1500);
+	setTimeout(() => { setupBrowsers(); keepsoundlevel(); }, 1000);
 	console.log("FIRESCREEN: " + numberofbrowsers + " screen(s) Enabled");
 	
 };
@@ -622,10 +623,10 @@ function keepsoundlevel() {
 };
 
 // Set the width and height of the screen(s)
-var widthalreadyset = false;
-function setBrowserWidths() {
-	if (widthalreadyset === false) {
-		widthalreadyset = true;
+var notalreadysetup = true;
+function setupBrowsers() {
+	if (notalreadysetup) {
+		notalreadysetup = false;
 		let thisloopnumber = 0;
 		while (thisloopnumber < numberofbrowsers) {
 			thisloopnumber++
@@ -913,6 +914,70 @@ var firstbrowserrun = true;
 function firescreenloadstuff() {
 	console.log("FIRESCREEN: Waiting");
 	const firescene = BS.BanterScene.getInstance();
+  // Check if A Frame already exists on the page, if not, Add it
+  const thesescripts = document.getElementsByTagName("script");
+  for (let i = 0; i < thesescripts.length; i++) {
+    if (getAttrOrDef(thesescripts[i], "src", "") === "https://aframe.io/releases/1.6.0/aframe.min.js" ) { 
+      console.log("FIRESCREEN: AFrame 1.6.0 Detected")
+      aframedetected = true;
+    } else if (getAttrOrDef(thesescripts[i], "src", "") === "https://aframe.io/releases/1.5.0/aframe.min.js" ) { 
+      console.log("FIRESCREEN: AFrame 1.5.0 Detected")
+      aframedetected = true;
+    } else if (getAttrOrDef(thesescripts[i], "src", "") === "https://aframe.io/releases/1.4.2/aframe.min.js" ) { 
+      console.log("FIRESCREEN: AFrame 1.4.2 Detected")
+      aframedetected = true;
+    } else if (getAttrOrDef(thesescripts[i], "src", "") === "https://aframe.io/releases/1.4.1/aframe.min.js" ) { 
+      console.log("FIRESCREEN: AFrame 1.4.1 Detected")
+      aframedetected = true;
+    } else if (getAttrOrDef(thesescripts[i], "src", "") === "https://aframe.io/releases/1.4.0/aframe.min.js" ) { 
+      console.log("FIRESCREEN: AFrame 1.4.0 Detected")
+      aframedetected = true;
+    } else if (getAttrOrDef(thesescripts[i], "src", "") === "https://aframe.io/releases/1.3.0/aframe.min.js" ) { 
+      console.log("FIRESCREEN: AFrame 1.3.0 Detected")
+      aframedetected = true;
+    } else if (getAttrOrDef(thesescripts[i], "src", "") === "https://aframe.io/releases/1.2.0/aframe.min.js" ) { 
+      console.log("FIRESCREEN: AFrame 1.2.0 Detected")
+      aframedetected = true;
+    } else if (getAttrOrDef(thesescripts[i], "src", "") === "https://aframe.io/releases/1.1.0/aframe.min.js" ) { 
+      console.log("FIRESCREEN: AFrame 1.1.0 Detected")
+      aframedetected = true;
+    };
+  };
+
+  if (aframedetected) {
+    console.log("FIRESCREEN: AFrame Was Detected");
+  } else if (aframedetected === false) {
+    aframedetected = true
+    console.log("FIRESCREEN: AFrame Was NOT Detected, Adding AFrame 1.6.0");
+    const aframescript = document.createElement("script");
+    aframescript.id = "aframe-script";
+    aframescript.setAttribute("src", "https://aframe.io/releases/1.6.0/aframe.min.js");
+    document.querySelector("head").appendChild(aframescript);
+
+  };
+
+  // Check if html body is present, if Not, Add it
+  let abodything = document.querySelector("body");
+  if (abodything === null) {
+    console.log("FIRESCREEN: Body NOT Detected, Adding Body");
+    const abodytag = document.createElement("body");
+    abodytag.id = "body";
+    document.querySelector("head").appendChild(abodytag);
+  } else {
+    console.log("FIRESCREEN: Body Detected, NOT Adding Body");
+  };
+
+  // Check if A-Scene is present, if Not, Add it
+  let ascenething = document.querySelector("a-scene");
+  if (ascenething === null) {
+    console.log("FIRESCREEN: A Scene NOT Detected, Adding A Scene");
+    const ascenetag = document.createElement("a-scene");
+    ascenetag.id = "ascene";
+    document.querySelector("body").appendChild(ascenetag);
+  } else {
+    console.log("FIRESCREEN: A Scene Detected, NOT Adding A Scene");
+  };
+
 	firescene.On("unity-loaded", () => {
 		console.log("FIRESCREEN: unity-loaded");
 		setTimeout(() => { 
