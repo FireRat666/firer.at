@@ -19,7 +19,7 @@ async function speak(text) {
     audio.volume = 0.08;
     setTimeout(() => { readytospeak = true; }, 4000);
   } else {
-    console.log("ANNOUNCER: Not Ready to Speak");
+    console.log("ANNOUNCER: Not Ready to Speak:", text);
   };
 
 };
