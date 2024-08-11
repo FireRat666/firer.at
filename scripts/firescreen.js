@@ -1,6 +1,6 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.0 Beta 4.2.0
+// VERSION: 1.0 Beta 4.2.1
 var thishostnameurl = "https://firer.at/scripts/"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var thisscriptsurl = thishostnameurl + "firescreen.js"; // CHANGE THIS
 var handcontrolscripturl = thishostnameurl + "handcontrols.js"; // CHANGE THIS
@@ -896,7 +896,9 @@ function setupBrowsers() {
 });
 
 function getV3FromStr(strVector3) {
-  return new THREE.Vector3().fromArray(strVector3.split(" ").map(parseFloat));
+  var aresult = strVector3.split(" ");
+  let X = aresult[0]; let Y = aresult[1]; let Z = aresult[2];
+  return new BS.Vector3(X,Y,Z);
 }
 
 function getAttrOrDef(pScript, pAttr, pDefault) {
