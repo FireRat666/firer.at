@@ -912,8 +912,16 @@ function getAttrOrDef(pScript, pAttr, pDefault) {
 // Create screen After Unity load 
 var firstbrowserrun = true;
 function firescreenloadstuff() {
-	console.log("FIRESCREEN: Waiting");
+
 	const firescene = BS.BanterScene.getInstance();
+
+  let afirething = document.querySelector("firething");
+  if (afirething === null) {
+    console.log("FIRESCREEN: Setting up.");
+    const afiretag = document.createElement("firething");
+    afiretag.id = "firething";
+    document.querySelector("head").appendChild(afiretag);
+
   // Check if A Frame already exists on the page, if not, Add it
   const thesescripts = document.getElementsByTagName("script");
   for (let i = 0; i < thesescripts.length; i++) {
@@ -943,39 +951,45 @@ function firescreenloadstuff() {
       aframedetected = true;
     };
   };
+      
+    if (aframedetected) {
+      console.log("FIRESCREEN: AFrame Was Detected");
+    } else if (aframedetected === false) {
+      aframedetected = true
+      console.log("FIRESCREEN: AFrame Was NOT Detected, Adding AFrame 1.4.0");
+      const aframescript = document.createElement("script");
+      aframescript.id = "aframe-script";
+      aframescript.setAttribute("src", "https://aframe.io/releases/1.4.0/aframe.min.js");
+      document.querySelector("head").appendChild(aframescript);
 
-  if (aframedetected) {
-    console.log("FIRESCREEN: AFrame Was Detected");
-  } else if (aframedetected === false) {
-    aframedetected = true
-    console.log("FIRESCREEN: AFrame Was NOT Detected, Adding AFrame 1.6.0");
-    const aframescript = document.createElement("script");
-    aframescript.id = "aframe-script";
-    aframescript.setAttribute("src", "https://aframe.io/releases/1.6.0/aframe.min.js");
-    document.querySelector("head").appendChild(aframescript);
+    };
 
-  };
+    // Check if html body is present, if Not, Add it
+    let abodything = document.querySelector("body");
+    if (abodything === null) {
+      console.log("FIRESCREEN: Body NOT Detected, Adding Body");
+      const abodytag = document.createElement("body");
+      abodytag.id = "body";
+      document.querySelector("head").appendChild(abodytag);
+    } else {
+      console.log("FIRESCREEN: Body Detected, NOT Adding Body");
+    };
 
-  // Check if html body is present, if Not, Add it
-  let abodything = document.querySelector("body");
-  if (abodything === null) {
-    console.log("FIRESCREEN: Body NOT Detected, Adding Body");
-    const abodytag = document.createElement("body");
-    abodytag.id = "body";
-    document.querySelector("head").appendChild(abodytag);
+    // Check if A-Scene is present, if Not, Add it
+    let ascenething = document.querySelector("a-scene");
+    if (ascenething === null) {
+      console.log("FIRESCREEN: A Scene NOT Detected, Adding A Scene");
+      const ascenetag = document.createElement("a-scene");
+      ascenetag.id = "ascene";
+      document.querySelector("body").appendChild(ascenetag);
+    } else {
+      console.log("FIRESCREEN: A Scene Detected, NOT Adding A Scene");
+    };
+    
+    console.log("FIRESCREEN: Waiting for Unity-Loaded Event");
+
   } else {
-    console.log("FIRESCREEN: Body Detected, NOT Adding Body");
-  };
-
-  // Check if A-Scene is present, if Not, Add it
-  let ascenething = document.querySelector("a-scene");
-  if (ascenething === null) {
-    console.log("FIRESCREEN: A Scene NOT Detected, Adding A Scene");
-    const ascenetag = document.createElement("a-scene");
-    ascenetag.id = "ascene";
-    document.querySelector("body").appendChild(ascenetag);
-  } else {
-    console.log("FIRESCREEN: A Scene Detected, NOT Adding A Scene");
+    // console.log("FIRESCREEN: Thing Detected, NOT Adding Thing");
   };
 
 	firescene.On("unity-loaded", () => {

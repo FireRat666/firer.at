@@ -8,6 +8,36 @@ let announceevents = "true";
 let announce420 = "false";
 let readytospeak = true;
 
+// // Main Speak Function, Thank you Elin and everyone
+// async function speak(text) {
+//   if (readytospeak) {
+//     readytospeak = false
+
+//     const volume = 0;
+//     const pitch = 0.5;
+//     const mute = false;
+//     const sloop = false;
+//     const bypassEffects = true;
+//     const bypassListenerEffects = true;
+//     const bypassReverbZones = true;
+//     const playOnAwake = false;
+
+//     const audioObject = new BS.GameObject("MyAudioSource"); 
+//     const audioSource = await audioObject.AddComponent(new BS.BanterAudioSource(volume, pitch, mute, sloop, bypassEffects, bypassListenerEffects, bypassReverbZones, playOnAwake));
+
+//     audioSource.volume = 0.01; // I didn't expect this to work and it's not working
+    
+//     console.log("ANNOUNCER: saying:", text);
+//     audioSource.PlayOneShotFromUrl('https://speak.firer.at/?text=' + text + "&.mp3");
+
+//     setTimeout(() => { readytospeak = true; }, 4000);
+//   } else {
+//     console.log("ANNOUNCER: Not Ready to Speak:", text);
+//   };
+
+// };
+
+
 // Main Speak Function, Thank you Elin and everyone
 async function speak(text) {
   if (readytospeak) {
@@ -148,7 +178,6 @@ function announcerloadtest() {
     // if (theusersid === "597c64d0037631df4ec9d73ad381f634 ") {theusersname = "Someone you don't know"}; // Gooch Monkey
     if (theusersid === "4255792aebfae3cea1086f2963c33fdc") {theusersname = "Rabbit"}; // Rabbit
     if (theusersid === "ee95ee1ae0cd0d67066a4519e665911e") {theusersname = "Zelrainer"}; //  Zelrainer
-    if (theusersid === "f90d43718f190161c2fa2d0879218686") {theusersname = "CaptnDaN"}; //  "CaptnDaN"
     if (theusersid === "32c3e6ac83b78872be370cb10f0c9729") {theusersname = "Cast Casey Away"}; //  "caseycastaway"
     if (theusersid === "f8e9b8eed97623712f77f318fa35d7ce") {theusersname = "Pancake Man"}; //  "WaffleMan"
     if (theusersid === "3dbca1090fad5dff35543697ca007066") {theusersname = "Sebek"}; //  "Sebek"

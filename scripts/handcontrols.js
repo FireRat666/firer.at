@@ -24,6 +24,14 @@ class handButtonCrap{
 				}
 			}
 		});
+
+		handscene.On("user-left", e => {
+			if (e.detail.isLocal) {
+				handcontrolsdisabled = true;
+				console.log("HAND-CONTROLS: Local User Left, Resetting variable to maybe setup hand controls again on rejoin");
+			};
+		});
+
 	}
 
 	mute() {
