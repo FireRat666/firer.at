@@ -1,6 +1,6 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.0 Beta 4.2.1
+// VERSION: 1.0 Beta 4.2.2
 var thishostnameurl = "https://firer.at/scripts/"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var thisscriptsurl = thishostnameurl + "firescreen.js"; // CHANGE THIS
 var handcontrolscripturl = thishostnameurl + "handcontrols.js"; // CHANGE THIS
@@ -39,8 +39,9 @@ function enableFireScreen() {
       const pDisableInteraction = getAttrOrDef(scripts[i], "disable-interaction", "false");
       const pAnnouncer = getAttrOrDef(scripts[i], "announcer", "false");
       const pAnnounce = getAttrOrDef(scripts[i], "announce", "false");
-	  const pAnnounce420 = getAttrOrDef(scripts[i], "announce-420", "false");
-	  const pAnnounceEvents = getAttrOrDef(scripts[i], "announce-events", "true");
+	    const pAnnounce420 = getAttrOrDef(scripts[i], "announce-420", "false");
+	    const pAnnounceEvents = getAttrOrDef(scripts[i], "announce-events", "true");
+	    const pAnnounceEvents2 = getAttrOrDef(scripts[i], "announce-events", "notset");
       const pButtonColor = getAttrOrDef(scripts[i], "button-color", "#00FF00");
       const pBackDropColor = getAttrOrDef(scripts[i], "backdrop-color", "#000000");
       const pVolUpColor = getAttrOrDef(scripts[i], "volup-color", "null");
@@ -60,7 +61,7 @@ function enableFireScreen() {
       const pURL = "url: " + pWebsite + "; mipMaps: " + pMipmaps + "; pixelsPerUnit: " + pPixelsperunit + "; pageWidth: " + pWidth + "; pageHeight: " + pHeight + "; mode: local;";
       createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pCastMode, pWebsite, pButtonColor, pAnnouncer, pAnnounce, pAnnounce420, pAnnounceEvents,
 		pBackDropColor, pIconMuteUrl, pIconVolUpUrl, pIconVolDownUrl, pIconDirectionUrl, pVolUpColor, pVolDownColor, pMuteColor,
-		pDisableInteraction, pButtonPos, pHandButtons, pWidth, pHeight, pCustomButton01Url, pCustomButton01Text, 
+		pDisableInteraction, pButtonPos, pHandButtons, pWidth, pHeight, pCustomButton01Url, pCustomButton01Text, pAnnounceEvents2,
 		pCustomButton02Url, pCustomButton02Text, pCustomButton03Url, pCustomButton03Text);
     }
   };
@@ -83,7 +84,7 @@ function disableFireScreen() {
 
 function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_castmode, p_website, p_buttoncolor, p_announcer, p_announce, p_announce420, p_announceevents,
 	p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor, p_mutecolor,
-	p_disableinteraction, p_buttonpos, p_handbuttons, p_width, p_height, p_custombutton01url, p_custombutton01text, 
+	p_disableinteraction, p_buttonpos, p_handbuttons, p_width, p_height, p_custombutton01url, p_custombutton01text, p_announceevents2,
 	p_custombutton02url, p_custombutton02text, p_custombutton03url, p_custombutton03text) {
 		// Setup Hand Controls only on the first run if enabled
         if (p_handbuttons == "true" && firstrunhandcontrols === true) {
@@ -98,23 +99,37 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		// Setup the Announcer only on the first run if enabled
 		if (p_announcer === "true" && announcerfirstrun === true ) {
 			announcerfirstrun = false;
-			console.log("FIRESCREEN: Enabling the Announcer Script")
+			console.log("FIRESCREEN: Enabling the Announcer Script");
 			const announcerscript = document.createElement("script");
 			announcerscript.id = "fires-announcer";
 			announcerscript.setAttribute("src", announcerscripturl);
+			announcerscript.setAttribute("announce", p_announcer);
 			announcerscript.setAttribute("announce-420", p_announce420);
 			announcerscript.setAttribute("announce-events", p_announceevents);
 			document.querySelector("body").appendChild(announcerscript);
 		} else if (p_announce === "true" && announcerfirstrun === true ) {
 			announcerfirstrun = false;
-			console.log("FIRESCREEN: Enabling the Announcer Script")
+			console.log("FIRESCREEN: Enabling the Announcer Script");
 			const announcerscript = document.createElement("script");
 			announcerscript.id = "fires-announcer";
 			announcerscript.setAttribute("src", announcerscripturl);
+			announcerscript.setAttribute("announce", p_announce);
 			announcerscript.setAttribute("announce-420", p_announce420);
 			announcerscript.setAttribute("announce-events", p_announceevents);
 			document.querySelector("body").appendChild(announcerscript);
 		};
+    if (p_announceevents2 === "true" && announcerfirstrun === true && p_announcer === "false" && p_announce === "false" ) {
+			announcerfirstrun = false;
+			console.log("FIRESCREEN: Enabling the Announce-Events Script");
+			const announcerscript = document.createElement("script");
+			announcerscript.id = "fires-announcer";
+			announcerscript.setAttribute("src", announcerscripturl);
+			announcerscript.setAttribute("announce", p_announce);
+			announcerscript.setAttribute("announce-420", p_announce420);
+			announcerscript.setAttribute("announce-events", p_announceevents2);
+			document.querySelector("body").appendChild(announcerscript);
+
+    };
 
 	numberofbrowsers++    
 	thebuttoncolor = p_buttoncolor;

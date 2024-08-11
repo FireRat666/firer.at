@@ -4,6 +4,7 @@ let theusersname = "";
 let timevariable = 0;
 let theusersid = "";
 let announcefirstrun = true;
+let announce = "true";
 let announceevents = "true";
 let announce420 = "false";
 let readytospeak = true;
@@ -149,6 +150,9 @@ function announcerloadtest() {
     timenow = Date.now(); // Sets Now to after unity scene load is done
   });
   announcerscene.On("user-joined", e => {
+    if (announce) {
+
+    }
     theusersname = e.detail.name;
     theusersid = e.detail.uid;
 
@@ -190,7 +194,7 @@ function announcerloadtest() {
     if (theusersid === "f90d43718f190161c2fa2d0879218686") {theusersname = "Captain Dan"}; //  CaptnDaN 
 
     // "f90d43718f190161c2fa2d0879218686"   
-    if (e.detail.isLocal) {
+    if (e.detail.isLocal && announce === "true") {
       announcefirstrun = false;
       timenow = Date.now(); // Sets Now to after first user has joined
       const joinMessages = [
@@ -219,7 +223,7 @@ function announcerloadtest() {
       console.log("ANNOUNCER: Local-UID: " + e.detail.uid)
 
     } else {
-      if(Date.now() - timenow > 5000) {
+      if(Date.now() - timenow > 5000 && announce === "true") {
         const welcomeMessages = [
           theusersname + " welcome message blah blah!",
           theusersname + " Joined your party",
@@ -275,9 +279,8 @@ function announcerloadtest() {
   });
   
   announcerscene.On("user-left", e => {
-    theusersname = e.detail.name;
-    theusersid = e.detail.uid;
-    console.log("ANNOUNCER: USER: " + e.detail.name + " LEFT UID: " + theusersid);
+
+    console.log("ANNOUNCER: USER: " + e.detail.name + " LEFT UID: " + e.detail.uid);
     if (e.detail.isLocal) {
 
     };
@@ -288,8 +291,8 @@ function announcerloadtest() {
   for (let i = 0; i < scripts.length; i++) {
     if (getAttrOrDefAgain(thescripts[i], "src", "") === scriptsource ) { 
         // const pAnnounce420 = getAttrOrDef(thescripts[i], "announce-420", "false");
-        const pAnnounceEvents = getAttrOrDefAgain(thescripts[i], "announce-events", "true");
-        announceevents = pAnnounceEvents;
+        announce = getAttrOrDefAgain(thescripts[i], "announce", "true");
+        announceevents = getAttrOrDefAgain(thescripts[i], "announce-events", "true");
         announce420 = getAttrOrDefAgain(thescripts[i], "announce-420", "false");
       };
     };
