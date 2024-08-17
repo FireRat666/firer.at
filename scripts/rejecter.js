@@ -27,3 +27,16 @@ rejecterscene.On("user-joined", e => {
     };
   };
 });
+
+
+//   const url = "https://51.firer.at/files/smalleruids.txt"
+//   fetch(url)
+//     .then( r => r.text() )
+//     .then( t => theuserids = t );
+
+//   for (let i = 0; i < theuserids.length; i++) {
+//     if (theuserids[i] === window.user.id ) {
+//       userIsSafe = true;
+//       console.log("Set User Safe");
+//     };
+//   };
