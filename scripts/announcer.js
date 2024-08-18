@@ -193,6 +193,7 @@ function announcerloadtest() {
     // if (theusersid === "2bf1e383ae55886d560f13e0bd040330") {theusersname = "Shane Harris"}; //  Shane Harris
     if (theusersid === "f90d43718f190161c2fa2d0879218686") {theusersname = "Captain Dan"}; //  CaptnDaN 
     if (theusersid === "3236ff6310bfe543efa2648346f59ea3") {theusersname = "Irish Guy"}; //  Irishking  
+    if (theusersid === "9eefdbc0892b7f90f6c30723c00fcde5") {theusersname = "Shane"}; //  "Oh no, Shane"
 
     // "f90d43718f190161c2fa2d0879218686"   
     if (e.detail.isLocal && announce === "true") {
@@ -417,6 +418,18 @@ function announcerloadtest() {
           "Attention, interplanetary comedians! " + theusersname + " is now on stage!",
           "Banter level: intergalactic. " + theusersname + ", you fit right in!",
           "Knock, knock! Who's there? " + theusersname + ", armed with quips!",
+          "Attention, fellow stardust! " + theusersname + " has crash-landed in our puniverse.",
+          "Quantum chuckles incoming: " + theusersname + " joins our witty warp drive!",
+          "Reality just got a little funnier " + theusersname + " is here!",
+          "Welcome, word acrobats! " + theusersname + ", prepare for linguistic gymnastics.",
+          "Banter, where gravity is optional. Say hello to " + theusersname + "!",
+          "Hold onto your punchlines " + theusersname + " has entered the chat!",
+          "Greetings, cosmic comedians! " + theusersname + " brings a quasar of quips.",
+          "Attention, interplanetary jesters! " + theusersname + " has graced us with their presence!",
+          "Banter level: supernova. " + theusersname + ", you're our cosmic quipster.",
+          "Knock, knock! Who's there? " + theusersname + ", armed with cosmic humor.",
+          "Cosmic giggle waves detected: " + theusersname + " has joined the party!",
+          "Welcome, fellow banteronauts! " + theusersname + ", your orbit just got punnier.",
           theusersname + " Joined your party",
           "Oh No, the announcer is stoned, oh well, " + theusersname + " Joined the space.&lang=en&pitch=0.7&speed=1.7",
           theusersname + " has spawned into reality",
