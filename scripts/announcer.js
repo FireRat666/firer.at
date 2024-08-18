@@ -287,8 +287,8 @@ function announcerloadtest() {
   
       let randommessage = joinMessages[Math.floor(Math.random() * joinMessages.length)];
 
-      if (theusersid === "3dbca1090fad5dff35543697ca007066") {randommessage = "Welcome, King Seb eck, the Mirror Creator"} //  "Sebek"
-      else if (theusersid === "220a4b971b3edb376cbc956f5539b8a5") {randommessage = "Big John, Big John. More like Tiny John, ag le we re ae ze te pe qu al er fa Fuck."}; // Big John
+      if (theusersid === "replace") {randommessage = "replace"} //  replace
+      else if (theusersid === "replace") {randommessage = "replace"}; // replace
 
       speak(randommessage);
       console.log("ANNOUNCER: Local-UID: " + e.detail.uid)
