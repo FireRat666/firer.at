@@ -1,6 +1,6 @@
 let userIsSafe = false;
 let theUserIds = null;
-const rejecterscene = BS.BanterScene.getInstance();
+const rejecterscene = BS.BanterScene.GetInstance();
 
 async function getuserids(){
   theUserIds = (await (await fetch("https://51.firer.at/files/smalleruids.txt")).text());
