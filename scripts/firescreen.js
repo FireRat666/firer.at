@@ -930,7 +930,7 @@ function getAttrOrDef(pScript, pAttr, pDefault) {
 var firstbrowserrun = true;
 function firescreenloadstuff() {
 
-	const firescene = BS.BanterScene.getInstance();
+	const firescene = BS.BanterScene.GetInstance();
 
   let afirething = document.querySelector("firething");
   if (afirething === null) {
