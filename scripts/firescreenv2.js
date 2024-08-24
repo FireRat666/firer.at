@@ -1,5 +1,5 @@
 // create a reference to the banter scene
-const firescenev2 = BS.BanterScene.getInstance();
+const firescenev2 = BS.BanterScene.GetInstance();
 
 let firescreenurlv2 = "https://firer.at/scripts/firescreenv2.js";
 let announcerscripturlv2 = "https://firer.at/scripts/announcer.js";
@@ -183,7 +183,8 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_volume, p_mipmaps, p_pixelsperun
   // geometry Transform Stuff
   geometrytransform = await geometryObject.AddComponent(new BS.Transform());
   geometrytransform.position = p_pos;
-  geometrytransform.rotation = p_rot;
+  // geometrytransform.rotation = p_rot;
+  geometrytransform.eulerAngles = p_rot;
   // geometrytransform.localPosition = new BS.Vector3(1,2,1);
   // geometrytransform.localScale = new BS.Vector3(1,1,1);
 
