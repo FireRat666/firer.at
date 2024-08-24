@@ -9,51 +9,42 @@ let announceevents = "true";
 let announce420 = "false";
 let readytospeak = true;
 
+const audiovolume = 0.08;
+const announcerAudioObject = new BS.GameObject("MyAudioSource"); 
+
 // // Main Speak Function, Thank you Elin and everyone
-// async function speak(text) {
-//   if (readytospeak) {
-//     readytospeak = false
-
-//     const volume = 0;
-//     const pitch = 0.5;
-//     const mute = false;
-//     const sloop = false;
-//     const bypassEffects = true;
-//     const bypassListenerEffects = true;
-//     const bypassReverbZones = true;
-//     const playOnAwake = false;
-
-//     const audioObject = new BS.GameObject("MyAudioSource"); 
-//     const audioSource = await audioObject.AddComponent(new BS.BanterAudioSource(volume, pitch, mute, sloop, bypassEffects, bypassListenerEffects, bypassReverbZones, playOnAwake));
-
-//     audioSource.volume = 0.01; // I didn't expect this to work and it's not working
-    
-//     console.log("ANNOUNCER: saying:", text);
-//     audioSource.PlayOneShotFromUrl('https://speak.firer.at/?text=' + text + "&.mp3");
-
-//     setTimeout(() => { readytospeak = true; }, 4000);
-//   } else {
-//     console.log("ANNOUNCER: Not Ready to Speak:", text);
-//   };
-
-// };
-
-
-// Main Speak Function, Thank you Elin and everyone
 async function speak(text) {
   if (readytospeak) {
     readytospeak = false
+
+    const announcerAudioSource = await announcerAudioObject.AddComponent(new BS.BanterAudioSource(audiovolume, 1, false, false, true, true, true, false));
+    // audioSource.volume = 0.01;
     console.log("ANNOUNCER: saying:", text);
-    let audio = new Audio('https://speak.firer.at/?text=' + text);
-    audio.autoplay = true;
-    audio.play();
-    audio.volume = 0.08;
+    announcerAudioSource.PlayOneShotFromUrl('https://speak.firer.at/?text=' + text + "#.mp3");
+
     setTimeout(() => { readytospeak = true; }, 4000);
   } else {
     console.log("ANNOUNCER: Not Ready to Speak:", text);
   };
 
 };
+
+
+// Main Speak Function, Thank you Elin and everyone
+// async function speak(text) {
+//   if (readytospeak) {
+//     readytospeak = false
+//     console.log("ANNOUNCER: saying:", text);
+//     let audio = new Audio('https://speak.firer.at/?text=' + text);
+//     audio.autoplay = true;
+//     audio.play();
+//     audio.volume = 0.08;
+//     setTimeout(() => { readytospeak = true; }, 4000);
+//   } else {
+//     console.log("ANNOUNCER: Not Ready to Speak:", text);
+//   };
+
+// };
 
 // This function uses the current time as an input for the psuedo random number generator
 function GETPRNGF(modulo) {
@@ -140,7 +131,7 @@ function load420() {
 
 
 const thescripts = document.getElementsByTagName("script");
-const announcerscene = BS.BanterScene.getInstance();
+const announcerscene = BS.BanterScene.GetInstance();
 var timenow = 9999999999999; // Set Now to a Really Big Number, so if user-joined is called before unity-loaded, it wont spam user joined messages for users that were already in the space
 // Welcome message for user entering the space
 function announcerloadtest() {
