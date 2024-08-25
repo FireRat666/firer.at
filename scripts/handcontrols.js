@@ -117,6 +117,22 @@ class handButtonCrap{
 		};
 	};
 
+	homefunc() {
+		let firehomebut = document.getElementById("firehomepbut");
+
+		document.querySelectorAll('.firescreenc')
+		.forEach((firescreenc) => {
+      let ThisHomePage = firescreenc.getAttribute("sq-browser");
+      console.log(ThisHomePage);
+      firescreenc.setAttribute("sq-browser", ThisHomePage);
+
+		});
+    firehomebut.setAttribute("color", "#FFFFFF"); 
+    setTimeout(() => {  firehomebut.setAttribute("color", thebuttoncolor); }, 100);
+
+
+	};
+
 	setupHandControls() {
 		console.log("HAND-CONTROLS: Setting up Hand Controls")
 		// This was a great innovation by HBR, who wanted Skizot to also get credit for the original idea. 
@@ -153,6 +169,14 @@ class handButtonCrap{
 			class: "firelockpbutc",
 			id: "firelockpbut", 
 			callback: () => this.lockplayerfunc()
+			},
+			{
+			image: "https://firer.at/files/Home.png",
+			position: "-1 -0.4 -0.4",
+			colour: thebuttoncolor,
+			class: "firehomepbutc",
+			id: "firehomepbut", 
+			callback: () => this.homefunc()
 			},
 			{
 			image: IconMuteUrl,
