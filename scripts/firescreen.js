@@ -1035,7 +1035,7 @@ function firescreenloadstuff() {
 
 firescreenloadstuff()
 
-const handscene = BS.BanterScene.GetInstance();
+var handscene = BS.BanterScene.GetInstance();
 
 class handButtonCrap{
 	
