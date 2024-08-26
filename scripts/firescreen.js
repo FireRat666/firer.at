@@ -1018,7 +1018,7 @@ function firescreenloadstuff() {
 			} else {
 				console.log("FIRESCREEN: Should already be enabled/loading");
 			};
-		}, 2000);
+		}, 3000);
 	});
 	  
   firescene.On("user-joined", e => {
