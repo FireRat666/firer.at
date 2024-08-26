@@ -1,4 +1,4 @@
-const handscene = BS.BanterScene.getInstance();
+const handscene = BS.BanterScene.GetInstance();
 var playerislocked = false;
 var playersuserid = true;
 class handButtonCrap{
