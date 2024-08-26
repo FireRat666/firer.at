@@ -1,6 +1,6 @@
 const handscene = BS.BanterScene.GetInstance();
 var playerislocked = false;
-var playersuserid = true;
+var playersuserid = false;
 class handButtonCrap{
 	
 	constructor() {
@@ -139,11 +139,11 @@ class handButtonCrap{
 		const handControlsContainer = document.createElement("a-entity");
 		handControlsContainer.setAttribute("scale", "0.1 0.1 0.1");
 		handControlsContainer.setAttribute("position", "0.04 0.006 -0.010");
-		if (playersuserid) {
-			handControlsContainer.setAttribute("sq-lefthand", "whoToShow: " + window.user.id);
+		if (playersuserid != false) {
+			handControlsContainer.setAttribute("sq-lefthand", "whoToShow: " + playersuserid);
 			
 		} else {
-			handControlsContainer.setAttribute("sq-lefthand", "whoToShow: " + playersuserid);
+			handControlsContainer.setAttribute("sq-lefthand", "whoToShow: " + window.user.id);
 		};
 		[
 			{
