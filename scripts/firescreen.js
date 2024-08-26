@@ -1068,7 +1068,7 @@ class handButtonCrap{
 			};
 		});
 
-		if (playersuserid != false) {
+		if (playersuserid != false && handcontrolsdisabled) {
       handcontrolsdisabled = false;
       this.setupHandControls();
 		};
