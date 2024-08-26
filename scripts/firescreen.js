@@ -932,6 +932,13 @@ function firescreenloadstuff() {
 
 	const firescene = BS.BanterScene.GetInstance();
 
+  firescene.On("user-joined", e => {
+    if (e.detail.isLocal) {
+      console.log("HAND-CONTROLS: Local User Joined");
+        playersuserid = e.detail.uid;
+    };
+  });
+
   let afirething = document.querySelector("firething");
   if (afirething === null) {
     console.log("FIRESCREEN: Setting up.");
@@ -1020,13 +1027,6 @@ function firescreenloadstuff() {
 			};
 		}, 3000);
 	});
-	  
-  firescene.On("user-joined", e => {
-    if (e.detail.isLocal) {
-      console.log("HAND-CONTROLS: Local User Joined");
-        playersuserid = e.detail.uid;
-    };
-  });
 	
 	// firescene.On("loaded", () => {
 	// 	console.log("FIRESCREEN: scene loaded");
