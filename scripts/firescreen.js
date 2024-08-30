@@ -1044,14 +1044,12 @@ class handButtonCrap{
 	
 	constructor() {
 		console.log("HAND-CONTROLS: Delay Loading to avoid error");
-		if(window.isBanter) { 
 		setTimeout(() => { 
 			if (handcontrolsdisabled) {
 				handcontrolsdisabled = false;
 				this.setupHandControls();
 			}
 		}, 20000); 
-		};
 	  
 		handscene.On("user-joined", e => {
 			if (e.detail.isLocal) {
@@ -1072,6 +1070,7 @@ class handButtonCrap{
 		});
 
 		if (playersuserid != false && handcontrolsdisabled) {
+      console.log("HAND-CONTROLS: Enabling");
       handcontrolsdisabled = false;
       this.setupHandControls();
 		};
