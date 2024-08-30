@@ -625,7 +625,7 @@ function keepsoundlevel() {
       let firepercent = parseInt(volume*100).toFixed(0);
 			theBrowser.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
 			"document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
-			firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
+			theBrowser.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
 			"document.querySelector('.html5-video-player').setVolume(" + firepercent + ");", }, ]);
 			// document.querySelectorAll('.firescreenc')
 			//   .forEach((firescreenc) => {
