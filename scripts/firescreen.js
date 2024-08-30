@@ -1046,6 +1046,7 @@ class handButtonCrap{
 		console.log("HAND-CONTROLS: Delay Loading to avoid error");
 		setTimeout(() => { 
 			if (handcontrolsdisabled) {
+				console.log("HAND-CONTROLS: handcontrolsdisabled still true");
 				handcontrolsdisabled = false;
 				this.setupHandControls();
 			}
@@ -1053,7 +1054,7 @@ class handButtonCrap{
 	  
 		handscene.On("user-joined", e => {
 			if (e.detail.isLocal) {
-				console.log("HAND-CONTROLS: Local User Joined");
+				console.log("HAND-CONTROLS: Local User Joined 2");
 				if (handcontrolsdisabled) {
 					handcontrolsdisabled = false;
 					playersuserid = e.detail.uid;
@@ -1073,7 +1074,9 @@ class handButtonCrap{
       console.log("HAND-CONTROLS: Enabling");
       handcontrolsdisabled = false;
       this.setupHandControls();
-		};
+		} else {
+      console.log("HAND-CONTROLS: Too Early, Waiting.");
+    }
 
 	}
 
