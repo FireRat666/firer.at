@@ -81,9 +81,12 @@ class handButtonCrap{
 			console.log("HAND-CONTROLS: FireScreen " + thisloopnumber + "'s Volume is: " + volume)
 			if (volume > 1) {volume = 1};
 			if (volume < 0) {volume = 0};
+      let firepercent = parseInt(volume*100).toFixed(0);
 			firescreenc.setAttribute("volumelevel", volume);
 			firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
 			"document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
+			firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
+			"document.querySelector('.html5-video-player').setVolume(" + firepercent + ");", }, ]);
 		});
 
 		if (parseFloat(vvalue) > 0) {
@@ -141,7 +144,6 @@ class handButtonCrap{
 		handControlsContainer.setAttribute("position", "0.04 0.006 -0.010");
 		if (playersuserid != false) {
 			handControlsContainer.setAttribute("sq-lefthand", "whoToShow: " + playersuserid);
-			
 		} else {
 			handControlsContainer.setAttribute("sq-lefthand", "whoToShow: " + window.user.id);
 		};
