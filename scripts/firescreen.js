@@ -1112,21 +1112,27 @@ class handButtonCrap{
 				} else { 
 					firemutebutc.setAttribute("color","#FF0000");
 				};
-			}
+			};
 		});
-	}
+	};
 
-	volumecontrol(vvalue) {
+	volumecontrolup() {
 		let thisloopnumber = 0;
 		document.querySelectorAll('.firescreenc')
 		.forEach((firescreenc) => {
 			thisloopnumber++
 			let volume = parseFloat(firescreenc.getAttribute("volumelevel"));
-			volume += parseFloat(vvalue);
-			volume = volume.toFixed(2);
-			console.log("HAND-CONTROLS: FireScreen " + thisloopnumber + "'s Volume is: " + volume)
-			if (volume > 1) {volume = 1};
-			if (volume < 0) {volume = 0};
+      volume = Number(volume);
+      if (volume < 0.1) {
+        volume += Number(0.01);
+      } else if (volume < 0.5) {
+        volume += Number(0.02);
+      } else {
+        volume += Number(0.05);
+      };
+      volume = parseFloat(volume).toFixed(2);
+      if (volume > 1) {volume = 1};
+			console.log("HAND-CONTROLS: FireScreen " + thisloopnumber + "'s Volume is: " + volume);
       let firepercent = parseInt(volume*100).toFixed(0);
 			firescreenc.setAttribute("volumelevel", volume);
 			firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
@@ -1135,17 +1141,42 @@ class handButtonCrap{
 			"document.querySelector('.html5-video-player').setVolume(" + firepercent + ");", }, ]);
 		});
 
-		if (parseFloat(vvalue) > 0) {
-			let firevolbut = document.getElementById("firevolupbut");
-			let butcolour = firevolbut.getAttribute("color");
-			firevolbut.setAttribute("color", "#FFFFFF"); 
-			setTimeout(() => {  firevolbut.setAttribute("color", butcolour); }, 100);
-		} else {
 			let firevolbut = document.getElementById("firevoldownbut");
 			let butcolour = firevolbut.getAttribute("color");
 			firevolbut.setAttribute("color", "#FFFFFF"); 
 			setTimeout(() => {  firevolbut.setAttribute("color", butcolour); }, 100);
-		}
+
+	}
+
+	volumecontroldown() {
+		let thisloopnumber = 0;
+		document.querySelectorAll('.firescreenc')
+		.forEach((firescreenc) => {
+			thisloopnumber++
+			let volume = parseFloat(firescreenc.getAttribute("volumelevel"));
+      volume = Number(volume);
+      if (volume < 0.1) {
+        volume += Number(-0.01);
+      } else if (volume < 0.5) {
+        volume += Number(-0.02);
+      } else {
+        volume += Number(-0.05);
+      };
+      volume = parseFloat(volume).toFixed(2);
+			if (volume < 0) {volume = 0};
+			console.log("HAND-CONTROLS: FireScreen " + thisloopnumber + "'s Volume is: " + volume);
+      let firepercent = parseInt(volume*100).toFixed(0);
+			firescreenc.setAttribute("volumelevel", volume);
+			firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
+			"document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
+			firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
+			"document.querySelector('.html5-video-player').setVolume(" + firepercent + ");", }, ]);
+		});
+
+			let firevolbut = document.getElementById("firevolupbut");
+			let butcolour = firevolbut.getAttribute("color");
+			firevolbut.setAttribute("color", "#FFFFFF"); 
+			setTimeout(() => {  firevolbut.setAttribute("color", butcolour); }, 100);
 
 	}
 
@@ -1200,7 +1231,7 @@ class handButtonCrap{
 			colour: volupcolor, 
 			class: "firevolbutc", 
 			id: "firevolupbut", 
-			callback: () => this.volumecontrol("0.05")
+			callback: () => this.volumecontrolup()
 			},
 			{
 			image: IconVolDownUrl,
@@ -1208,7 +1239,7 @@ class handButtonCrap{
 			colour: voldowncolor,
 			class: "firevolbutc",
 			id: "firevoldownbut", 
-			callback: () => this.volumecontrol("-0.05")
+			callback: () => this.volumecontroldown()
 			},
 			{
 			image: "https://firer.at/files/lock.png",
