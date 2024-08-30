@@ -1,6 +1,6 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.1 Beta 1
+// VERSION: 1.1 Beta 1.3
 var thishostnameurl = "https://firer.at/scripts/"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var thisscriptsurl = thishostnameurl + "firescreen.js"; // CHANGE THIS
 var handcontrolscripturl = thishostnameurl + "handcontrols.js"; // CHANGE THIS
@@ -622,8 +622,11 @@ function keepsoundlevel() {
 			thisloopnumber++
 			let theBrowser = document.getElementById("fires-browser" + thisloopnumber);
 			let volume = parseFloat(theBrowser.getAttribute("volumelevel"));
+      let firepercent = parseInt(volume*100).toFixed(0);
 			theBrowser.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
 			"document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
+			firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
+			"document.querySelector('.html5-video-player').setVolume(" + firepercent + ");", }, ]);
 			// document.querySelectorAll('.firescreenc')
 			//   .forEach((firescreenc) => {
 			// 	setTimeout(() => { 
