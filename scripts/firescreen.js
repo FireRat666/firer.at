@@ -997,17 +997,32 @@ function firescreenloadstuff() {
     // console.log("FIRESCREEN: Thing Detected, NOT Adding Thing");
   };
 
-	firescene.On("unity-loaded", () => {
-		console.log("FIRESCREEN: unity-loaded");
-		setTimeout(() => { 
-			if (firstbrowserrun) {
-				firstbrowserrun = false;
-				enableFireScreen();
-			} else {
+
+  let waitingforunity = true;
+  if (waitingforunity) {
+
+  fscreeninterval = setInterval(function() {
+    if (firescenev2.unityLoaded) {
+      waitingforunity = false;
+      clearInterval(fscreeninterval);
+      if (firstbrowserrun) { firstbrowserrun = false; console.log("FIRESCREEN: unity-loaded"); enableFireScreen(); } else {
 				console.log("FIRESCREEN: Should already be enabled/loading");
 			};
-		}, 3000);
-	});
+    };
+  }, 500); };
+
+
+	// firescene.On("unity-loaded", () => {
+	// 	console.log("FIRESCREEN: unity-loaded");
+	// 	setTimeout(() => { 
+	// 		if (firstbrowserrun) {
+	// 			firstbrowserrun = false;
+	// 			enableFireScreen();
+	// 		} else {
+	// 			console.log("FIRESCREEN: Should already be enabled/loading");
+	// 		};
+	// 	}, 3000);
+	// });
 	
 	// firescene.On("loaded", () => {
 	// 	console.log("FIRESCREEN: scene loaded");
