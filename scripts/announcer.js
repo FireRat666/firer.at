@@ -732,6 +732,33 @@ function announcerloadtest() {
     loadevents();
     setTimeout(() => { load420(); }, 20000);
 
+
+    
+
+
+announcerscene.On("one-shot", e => {
+  console.log(e.detail);
+  currentshot = e.detail;
+  currentshotuser = e.detail.fromId;
+  currentshotdata = JSON.parse(e.detail.data);
+  if (e.detail.fromAdmin) {
+    console.log("Current Shot From Admin Is True");
+
+    if (currentshotdata.message) {
+      console.log("currentshotdata.message Is True");
+      let thismessage = currentshotdata.message;
+      speak(thismessage);
+
+    } else {
+      console.log("currentshotdata.message Is False");
+    };
+
+  } else {
+    console.log("Current Shot From Admin Is False");
+    console.log(e.detail.fromId);
+  };
+});
+
 };
 
 function getAttrOrDefAgain (pScript, pAttr, pDefault) {
