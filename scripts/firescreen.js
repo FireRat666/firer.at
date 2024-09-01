@@ -1,6 +1,6 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.1 Beta 1.3
+// VERSION: 1.1 Beta 1.4
 var thishostnameurl = "https://firer.at/scripts/"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var thisscriptsurl = thishostnameurl + "firescreen.js"; // CHANGE THIS
 var handcontrolscripturl = thishostnameurl + "handcontrols.js"; // CHANGE THIS
@@ -97,17 +97,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
         };
 		
 		// Setup the Announcer only on the first run if enabled
-		if (p_announcer === "true" && announcerfirstrun === true ) {
-			announcerfirstrun = false;
-			console.log("FIRESCREEN: Enabling the Announcer Script");
-			const announcerscript = document.createElement("script");
-			announcerscript.id = "fires-announcer";
-			announcerscript.setAttribute("src", announcerscripturl);
-			announcerscript.setAttribute("announce", p_announcer);
-			announcerscript.setAttribute("announce-420", p_announce420);
-			announcerscript.setAttribute("announce-events", p_announceevents);
-			document.querySelector("body").appendChild(announcerscript);
-		} else if (p_announce === "true" && announcerfirstrun === true ) {
+		if (announcerfirstrun === true) {
 			announcerfirstrun = false;
 			console.log("FIRESCREEN: Enabling the Announcer Script");
 			const announcerscript = document.createElement("script");
@@ -118,18 +108,6 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 			announcerscript.setAttribute("announce-events", p_announceevents);
 			document.querySelector("body").appendChild(announcerscript);
 		};
-    if (p_announceevents2 === "true" && announcerfirstrun === true && p_announcer === "false" && p_announce === "false" ) {
-			announcerfirstrun = false;
-			console.log("FIRESCREEN: Enabling the Announce-Events Script");
-			const announcerscript = document.createElement("script");
-			announcerscript.id = "fires-announcer";
-			announcerscript.setAttribute("src", announcerscripturl);
-			announcerscript.setAttribute("announce", p_announce);
-			announcerscript.setAttribute("announce-420", p_announce420);
-			announcerscript.setAttribute("announce-events", p_announceevents2);
-			document.querySelector("body").appendChild(announcerscript);
-
-    };
 
 	numberofbrowsers++    
 	thebuttoncolor = p_buttoncolor;
