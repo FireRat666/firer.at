@@ -1002,7 +1002,7 @@ function firescreenloadstuff() {
   if (waitingforunity) {
 
   fscreeninterval = setInterval(function() {
-    if (firescenev2.unityLoaded) {
+    if (firescene.unityLoaded) {
       waitingforunity = false;
       clearInterval(fscreeninterval);
       if (firstbrowserrun) { firstbrowserrun = false; console.log("FIRESCREEN: unity-loaded"); enableFireScreen(); } else {
