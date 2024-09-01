@@ -145,6 +145,7 @@ function announcerloadtest() {
     }
     theusersname = e.detail.name;
     theusersid = e.detail.uid;
+    console.log("ANNOUNCER: USER: " + e.detail.name + " UID: " + theusersid);
 
     if (theusersname === "Gravxton") {theusersname = "Graviton What The Hell"};
     if (theusersid === "7e778ab53e504bed1d995bf9148b98c2") {theusersname = "Vanquisher"}; // Vanquisher
@@ -703,7 +704,6 @@ function announcerloadtest() {
         else if (theusersid === "no-220a4b971b3edb376cbc956f5539b8a5") {message = "Big John is here everybody hide your snack packs"}; // Big John
 
         speak(message);
-        console.log("ANNOUNCER: USER: " + e.detail.name + " UID: " + theusersid + " PRVAR: " + psudorandomvar);
       } else if (announcefirstrun) {
         announcefirstrun = false;
         timenow = Date.now(); // Sets Now to after a user has joined if first run is still true
