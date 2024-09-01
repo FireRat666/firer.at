@@ -9,7 +9,7 @@ let announceevents = "true";
 let announce420 = "false";
 let readytospeak = true;
 
-const audiovolume = 0.08;
+let audiovolume = 0.08;
 const announcerAudioObject = new BS.GameObject("MyAudioSource"); 
 
 // // Main Speak Function, Thank you Elin and everyone
@@ -747,7 +747,9 @@ announcerscene.On("one-shot", e => {
     if (currentshotdata.message) {
       console.log("currentshotdata.message Is True");
       let thismessage = currentshotdata.message;
+      audiovolume = 0.2;
       speak(thismessage);
+      setTimeout(() => { audiovolume = 0.08; }, 1000);
 
     } else {
       console.log("currentshotdata.message Is False");
