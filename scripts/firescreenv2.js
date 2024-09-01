@@ -1,62 +1,23 @@
 // create a reference to the banter scene
 const firescenev2 = BS.BanterScene.GetInstance();
 
-let firescreenurlv2 = "https://firer.at/scripts/firescreenv2.js";
+let firescreenurlv2 = "https://firer.at/scripts/firescreenv2.js"; // "https://51.firer.at/scripts/firescreenv2.js";
 let announcerscripturlv2 = "https://firer.at/scripts/announcer.js";
 let fireScreen2On = false;
 let firstrunhandcontrolsv2 = true;
-let screenObject = null;
-let browser = null;
-let geometryObject = null;
-let geometry = null;
-let geometrytransform = null;
-let boxCollider = null;
-let firerigidBody = null;
-let material = null;
-let browsertransform = null;
-let detailpoint = null;
-let detailnormal = null;
-let keyboardstate = false;
-let buttonsvisible = true;
-let isbillboarded = true;
-let firevolume = 1;
-let browsermuted = false;
-let plane11material = null;
-let thebuttonscolor = null;
 let announcerfirstrunv2 = true;
-let plane16Object = null;
-let plane17Object = null;
-let plane18Object = null;
-let plane19Object = null;
-let plane20Object = null;
-let plane21Object = null;
-let plane22Object = null;
-let plane23Object = null;
-let plane24Object = null;
-let plane16material = null;
-let plane17material = null;
-let plane18material = null;
-let plane19material = null;
-let plane20material = null;
-let plane21material = null;
-let plane22material = null;
-let plane23material = null;
-let plane24material = null;
-let plane16color = null;
-let plane17color = null;
-let plane18color = null;
-let plane19color = null;
-let plane20color = null;
-let plane21color = null;
-let plane22color = null;
-let plane23color = null;
-let plane24color = null;
-let textgameObject01 = null;
-let textgameObject02 = null;
-let textgameObject03 = null;
-let textgameObject04 = null;
+let firevolume = 1;
 let playersuseridv2 = null;
-let playerislockedv2 = false;
+
+let the_announce = null;
+let the_announcer = null;
+let the_announce420 = null;
+let the_announceevents = null;
+let the_announceevents2 = null;
+
+
+
+
 
 function setupfirescreen2() {
   console.log("FIRESCREEN2: Setting up");
@@ -115,10 +76,38 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_volume, p_mipmaps, p_pixelsperun
 	p_disableinteraction, p_buttonpos, p_handbuttons, p_width, p_height, p_custombutton01url, p_custombutton01text, p_announceevents, p_announceevents2,
 	p_custombutton02url, p_custombutton02text, p_custombutton03url, p_custombutton03text, p_custombutton04url, p_custombutton04text) {
 
+    the_announce = p_announce;
+    the_announcer = p_announcer;
+    the_announce420 = p_announce420;
+    the_announceevents = p_announceevents;
+    the_announceevents2 = p_announceevents2;
     firevolume = p_volume;
     fireScreen2On = true;
-	  thebuttonscolor = p_buttoncolor;
+	  let thebuttonscolor = p_buttoncolor;
 
+    let plane16color = null;
+    let plane17color = null;
+    let plane18color = null;
+    let plane19color = null;
+    let plane16Object = null;
+    let plane17Object = null;
+    let plane18Object = null;
+    let plane19Object = null;
+    let plane16material = null;
+    let plane17material = null;
+    let plane18material = null;
+    let plane19material = null;
+    let textgameObject01 = null;
+    let textgameObject02 = null;
+    let textgameObject03 = null;
+    let textgameObject04 = null;
+
+
+    let isbillboarded = true;
+    let keyboardstate = false;
+    let buttonsvisible = true;
+    let playerislockedv2 = false;
+    let browsermuted = false;
 
     const url = p_website;
     const mipMaps = p_mipmaps;
@@ -126,9 +115,9 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_volume, p_mipmaps, p_pixelsperun
     const pageWidth = p_width;
     const pageHeight = p_height;
     const actions = null;
-    screenObject = await new BS.GameObject("MyBrowser"); 
+    const screenObject = await new BS.GameObject("MyBrowser"); 
     // const screenObject = await new BS.CreateGameObject("MyBrowser");
-    browser = await screenObject.AddComponent(new BS.BanterBrowser(url, mipMaps, pixelsPerUnit, pageWidth, pageHeight, actions));
+    const browser = await screenObject.AddComponent(new BS.BanterBrowser(url, mipMaps, pixelsPerUnit, pageWidth, pageHeight, actions));
 
     if (p_disableinteraction === "false") {
     browser.ToggleInteraction(true);
@@ -175,16 +164,16 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_volume, p_mipmaps, p_pixelsperun
     const detail = 0;
     const parametricPoints = "";
     geometryObject = new BS.GameObject("MyGeometry");
-    geometry = await geometryObject.AddComponent(new BS.BanterGeometry(geometryType, parametricType, width, height, depth, widthSegments, heightSegments, depthSegments, radius, segments, thetaStart, thetaLength, phiStart, phiLength, radialSegments, openEnded, radiusTop, radiusBottom, innerRadius, outerRadius, thetaSegments, phiSegments, tube, tubularSegments, arc, p, q, stacks, slices, detail, parametricPoints));
+    const geometry = await geometryObject.AddComponent(new BS.BanterGeometry(geometryType, parametricType, width, height, depth, widthSegments, heightSegments, depthSegments, radius, segments, thetaStart, thetaLength, phiStart, phiLength, radialSegments, openEnded, radiusTop, radiusBottom, innerRadius, outerRadius, thetaSegments, phiSegments, tube, tubularSegments, arc, p, q, stacks, slices, detail, parametricPoints));
 
 
   // await geometry.gameObject.SetParent(screenObject, false);
 
   // geometry Transform Stuff
-  geometrytransform = await geometryObject.AddComponent(new BS.Transform());
+  const geometrytransform = await geometryObject.AddComponent(new BS.Transform());
   geometrytransform.position = p_pos;
-  // geometrytransform.rotation = p_rot;
   geometrytransform.eulerAngles = p_rot;
+  // geometrytransform.rotation = p_rot;
   // geometrytransform.localPosition = new BS.Vector3(1,2,1);
   // geometrytransform.localScale = new BS.Vector3(1,1,1);
 
@@ -193,7 +182,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_volume, p_mipmaps, p_pixelsperun
   const center = new BS.Vector3(0,0,0);
   const size = new BS.Vector3(1.09,0.64,0.01);
   // const boxcolObject = new BS.GameObject("MyBoxCollider"); 
-  boxCollider = await geometryObject.AddComponent(new BS.BoxCollider(isTrigger, center, size));
+  const boxCollider = await geometryObject.AddComponent(new BS.BoxCollider(isTrigger, center, size));
   // const boxGameObject = boxCollider.gameObject;
 
   // screenboxCollider.gameObject.parent = await firescenev2.Find("MyBrowser");
@@ -221,7 +210,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_volume, p_mipmaps, p_pixelsperun
   const angularVelocity = new BS.Vector3(0,0,0);
   // const gameObject = new BS.GameObject("MyRigidbody");
   // Add a Rigid Body to the geometry
-  firerigidBody = await geometryObject.AddComponent(new BS.BanterRigidbody(mass, drag, angularDrag, isKinematic, useGravity, centerOfMass, collisionDetectionMode, freezePositionX, freezePositionY, freezePositionZ, freezeRotationX, freezeRotationY, freezeRotationZ, velocity, angularVelocity));
+  const firerigidBody = await geometryObject.AddComponent(new BS.BanterRigidbody(mass, drag, angularDrag, isKinematic, useGravity, centerOfMass, collisionDetectionMode, freezePositionX, freezePositionY, freezePositionZ, freezeRotationX, freezeRotationY, freezeRotationZ, velocity, angularVelocity));
 
   // firerigidBody.freezePositionX = false;
   // firerigidBody.freezePositionY = false;
@@ -238,11 +227,11 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_volume, p_mipmaps, p_pixelsperun
   const side = 0;
   const generateMipMaps = false;
 
-  material = await geometryObject.AddComponent(new BS.BanterMaterial(shaderName, texture, p_backdropcolor, side, generateMipMaps));
+  const material = await geometryObject.AddComponent(new BS.BanterMaterial(shaderName, texture, p_backdropcolor, side, generateMipMaps));
 
 
   // Browser Transform Stuff
-  browsertransform = await screenObject.AddComponent(new BS.Transform());
+  const browsertransform = await screenObject.AddComponent(new BS.Transform());
   browsertransform.position = new BS.Vector3(0,0,-0.01);
   // browsertransform.localPosition = new BS.Vector3(1,2,1);
   browsertransform.localScale = new BS.Vector3(1,1,1);
@@ -381,7 +370,7 @@ const physicMaterial = await geometryObject.AddComponent(new BS.BanterPhysicMate
   const plane11size = new BS.Vector3(0.1,0.1,0);
   const plane11color = thebuttonscolor;
   const plane11Collider = await plane11Object.AddComponent(new BS.BoxCollider(true, center, plane11size));
-  plane11material = await plane11Object.AddComponent(new BS.BanterMaterial("Unlit/DiffuseTransparent", "https://firer.at/files/HG2.png", plane11color, side, generateMipMaps));
+  const plane11material = await plane11Object.AddComponent(new BS.BanterMaterial("Unlit/DiffuseTransparent", "https://firer.at/files/HG2.png", plane11color, side, generateMipMaps));
   const plane11transform = await plane11Object.AddComponent(new BS.Transform());
   await plane11Object.SetLayer(5); // UI Layer
   plane11transform.position = new BS.Vector3(0,0.38,0);
@@ -468,7 +457,11 @@ const physicMaterial = await geometryObject.AddComponent(new BS.BanterPhysicMate
   const richText = true;
   const enableWordWrapping = true;
   const rectTransformSizeDelta = new BS.Vector2(2,1);
-  if (p_custombutton01url != "false") {
+  if (p_custombutton01url === "false") { 
+    console.log("p_custombutton01url is false")
+  } else {
+    console.log("p_custombutton01url is true")
+    console.log(p_custombutton01url)
   // THE EXTRA BUTTON 01 - CURRENTLY
   plane16Object = new BS.GameObject("MyGeometry16");
   const plane16geometry = await plane16Object.AddComponent(new BS.BanterGeometry(geometryType, parametricType, 1, 1, depth, widthSegments, heightSegments, depthSegments, radius, segments, thetaStart, thetaLength, phiStart, phiLength, radialSegments, openEnded, radiusTop, radiusBottom, innerRadius, outerRadius, thetaSegments, phiSegments, tube, tubularSegments, arc, p, q, stacks, slices, detail, parametricPoints));
@@ -492,7 +485,11 @@ const physicMaterial = await geometryObject.AddComponent(new BS.BanterPhysicMate
   await textgameObject01.SetParent(screenObject, false);
   };
 
-  if (p_custombutton02url != "false") {
+  if (p_custombutton02url === "false") { 
+    console.log("p_custombutton02url is false")
+  } else {
+    console.log("p_custombutton02url is true")
+    console.log(p_custombutton02url)
   // THE EXTRA BUTTON 02 - CURRENTLY
   plane17Object = new BS.GameObject("MyGeometry17");
   const plane17geometry = await plane17Object.AddComponent(new BS.BanterGeometry(geometryType, parametricType, 1, 1, depth, widthSegments, heightSegments, depthSegments, radius, segments, thetaStart, thetaLength, phiStart, phiLength, radialSegments, openEnded, radiusTop, radiusBottom, innerRadius, outerRadius, thetaSegments, phiSegments, tube, tubularSegments, arc, p, q, stacks, slices, detail, parametricPoints));
@@ -516,7 +513,11 @@ const physicMaterial = await geometryObject.AddComponent(new BS.BanterPhysicMate
   await textgameObject02.SetParent(screenObject, false);
 };
 
-if (p_custombutton03url != "false") {
+if (p_custombutton03url === "false") { 
+  console.log("p_custombutton03url is false")
+} else {
+  console.log("p_custombutton03url is true")
+  console.log(p_custombutton03url)
   // THE EXTRA BUTTON 03 - CURRENTLY
   plane18Object = new BS.GameObject("MyGeometry18");
   const plane18geometry = await plane18Object.AddComponent(new BS.BanterGeometry(geometryType, parametricType, 1, 1, depth, widthSegments, heightSegments, depthSegments, radius, segments, thetaStart, thetaLength, phiStart, phiLength, radialSegments, openEnded, radiusTop, radiusBottom, innerRadius, outerRadius, thetaSegments, phiSegments, tube, tubularSegments, arc, p, q, stacks, slices, detail, parametricPoints));
@@ -541,7 +542,11 @@ if (p_custombutton03url != "false") {
   await textgameObject03.SetParent(screenObject, false);
 };
 
-if (p_custombutton04url != "false") {
+if (p_custombutton04url === "false") { 
+  console.log("p_custombutton04url is false")
+} else {
+  console.log("p_custombutton04url is true")
+  console.log(p_custombutton04url)
   // THE EXTRA BUTTON 04 - CURRENTLY
   plane19Object = new BS.GameObject("MyGeometry19");
   const plane19geometry = await plane19Object.AddComponent(new BS.BanterGeometry(geometryType, parametricType, 1, 1, depth, widthSegments, heightSegments, depthSegments, radius, segments, thetaStart, thetaLength, phiStart, phiLength, radialSegments, openEnded, radiusTop, radiusBottom, innerRadius, outerRadius, thetaSegments, phiSegments, tube, tubularSegments, arc, p, q, stacks, slices, detail, parametricPoints));
@@ -609,8 +614,6 @@ if (p_custombutton04url != "false") {
     // Do something with e.detail.point and e.detail.normal.
     console.log("points: X:" + e.detail.point.x + " Y:" + e.detail.point.y + " Z:" + e.detail.point.z);
     console.log("normals: X:" + e.detail.normal.x + " Y:" + e.detail.normal.y + " Z:" + e.detail.normal.z);
-    detailpoint = e.detail.point;
-    detailnormal = e.detail.normal;
     browser.url = "https://firer.at/pages/Info.html";
     plane03material.color = new BS.Vector4(1,1,1,0.8);
     setTimeout(() => { plane03material.color = plane03color; }, 100);
@@ -786,8 +789,6 @@ if (p_custombutton04url != "false") {
     // Do something with e.detail.point and e.detail.normal.
     console.log("points: X:" + e.detail.point.x + " Y:" + e.detail.point.y + " Z:" + e.detail.point.z);
     console.log("normals: X:" + e.detail.normal.x + " Y:" + e.detail.normal.y + " Z:" + e.detail.normal.z);
-    detailpoint = e.detail.point;
-    detailnormal = e.detail.normal;
     plane11material.color = new BS.Vector4(1,1,1,1);
     setTimeout(() => { plane11material.color = plane11color; }, 100);
   });
@@ -824,9 +825,12 @@ if (p_custombutton04url != "false") {
     };
 		firevolume = parseFloat(firevolume).toFixed(2);
 		if (firevolume < 0) {firevolume = 0};
+    let firepercent = parseInt(firevolume*100).toFixed(0);
     console.log("The Volume: " + firevolume);
     browser.RunActions(JSON.stringify(
       {"actions":[{"actionType": "runscript","strparam1": "document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + firevolume + ");"}]}));
+    browser.RunActions(JSON.stringify( {"actions":[{"actionType": "runscript","strparam1": "document.querySelector('.html5-video-player').setVolume(" + firepercent + ");"}]}));
+
     plane13material.color = new BS.Vector4(1,1,1,0.8);
     setTimeout(() => { plane13material.color = plane13color; }, 100);
     
@@ -846,9 +850,11 @@ if (p_custombutton04url != "false") {
     };
 		firevolume = parseFloat(firevolume).toFixed(2);
 		if (firevolume > 1) {firevolume = 1};
+    let firepercent = parseInt(firevolume*100).toFixed(0);
     console.log("The Volume: " + firevolume);
     browser.RunActions(JSON.stringify(
       {"actions":[{"actionType": "runscript","strparam1": "document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + firevolume + ");"}]}));
+      browser.RunActions(JSON.stringify( {"actions":[{"actionType": "runscript","strparam1": "document.querySelector('.html5-video-player').setVolume(" + firepercent + ");"}]}));
       plane14material.color = new BS.Vector4(1,1,1,0.8);
       setTimeout(() => { plane14material.color = plane14color; }, 100);
   });
@@ -873,7 +879,6 @@ if (p_custombutton04url != "false") {
 
 
   // EXTRA Button Thing 01
-  
   if (p_custombutton01url != "false") {
       plane16Object.On('click', () => {
       console.log("CLICKED01!");
@@ -913,9 +918,6 @@ if (p_custombutton04url != "false") {
     });
   };
 
-  // plane09Object.SetActive(0)
-  // browser.RunActions({actionType: click2d,150,150});
-
 
 
 // browser-message - Fired when a message is received from a browser in the space.  
@@ -930,9 +932,46 @@ if (p_custombutton04url != "false") {
   });
 
   firescenev2.On("one-shot", e => {
-    // Do something with e.detail.fromId, e.detail.fromAdmin and e.detail.data which is the ID and admin status of the user who sent the one-shot message, and the message itself.
     console.log(e)
+    console.log(e.detail);
+    let currentshotdata = JSON.parse(e.detail.data);
+    if (e.detail.fromAdmin) {
+      console.log("Current Shot From Admin Is True");
+  
+      if (currentshotdata.fireurl) {
+        console.log("currentshotdata.fireurl Is True");
+        browser.url = currentshotdata.fireurl;
+      } else {
+        console.log("currentshotdata.fireurl Is False");
+      };
+  
+      if (currentshotdata.firevolume) {
+        console.log("currentshotdata.firevolume Is True");
+        console.log(currentshotdata.firevolume);
+        let thisfirevolume = Number(parseFloat(currentshotdata.firevolume).toFixed(2));
+        let firepercent = parseInt(thisfirevolume*100).toFixed(0);
+        browser.RunActions(JSON.stringify(
+          {"actions":[{"actionType": "runscript","strparam1": "document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + thisfirevolume + ");"}]}));
+        browser.RunActions(JSON.stringify( {"actions":[{"actionType": "runscript","strparam1": "document.querySelector('.html5-video-player').setVolume(" + firepercent + ");"}]}));
+    
+      } else {
+        console.log("currentshotdata.firevolume Is False");
+      };
+  
+    } else {
+      console.log("Current Shot From Admin Is False");
+      console.log(e.detail.fromId);
+    };
   });
+
+  // await firescenev2.OneShot(data: any, allInstances = true);
+  // await firescenev2.OneShot({videovolume: "0.5"});
+  // await firescenev2.OneShot(JSON.stringify({firevolume: "0.5"}));
+  // await firescenev2.OneShot(JSON.stringify({fireurl: "https://firer.at/"}));
+
+  // oneShot({fireurl: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_5MB.mp4"});
+  // oneShot({firevolume: "0.5"});
+  // oneShot({firevolume: "0"});
 
 
   firescenev2.On("user-joined", e => {
@@ -990,13 +1029,13 @@ if (p_custombutton04url != "false") {
     const slices = 5;
     const detail = 0;
     const parametricPoints = "";
-    plane20Object = new BS.GameObject("MyGeometry20");
+    const plane20Object = new BS.GameObject("MyGeometry20");
     const plane20geometry = await plane20Object.AddComponent(new BS.BanterGeometry(geometryType, parametricType, 1, 1, depth, widthSegments, heightSegments, depthSegments, radius, segments, thetaStart, thetaLength, phiStart, phiLength, radialSegments, openEnded, radiusTop, radiusBottom, innerRadius, outerRadius, thetaSegments, phiSegments, tube, tubularSegments, arc, p, q, stacks, slices, detail, parametricPoints));
     const plane20size = new BS.Vector3(1,1,1);
     plane20color = new BS.Vector4(0,0,0,0);
     const center = new BS.Vector3(0,0,0);
     const plane20Collider = await plane20Object.AddComponent(new BS.BoxCollider(true, center, plane20size));
-    plane20material = await plane20Object.AddComponent(new BS.BanterMaterial("Unlit/DiffuseTransparent", null, plane20color, 1, false));
+    const plane20material = await plane20Object.AddComponent(new BS.BanterMaterial("Unlit/DiffuseTransparent", null, plane20color, 1, false));
     const plane20transform = await plane20Object.AddComponent(new BS.Transform());
     // await plane20Object.SetLayer(5); // UI Layer
     // firescenev2.localUser.Attach(plane20Object,BS.LegacyAttachmentPosition.LEFT_HAND);
@@ -1010,11 +1049,11 @@ if (p_custombutton04url != "false") {
 
 
     // HAND VOLUME UP BUTTON
-    plane21Object = new BS.GameObject("MyGeometry21");
+    const plane21Object = new BS.GameObject("MyGeometry21");
     const plane21geometry = await plane21Object.AddComponent(new BS.BanterGeometry(geometryType, parametricType, 1, 1, depth, widthSegments, heightSegments, depthSegments, radius, segments, thetaStart, thetaLength, phiStart, phiLength, radialSegments, openEnded, radiusTop, radiusBottom, innerRadius, outerRadius, thetaSegments, phiSegments, tube, tubularSegments, arc, p, q, stacks, slices, detail, parametricPoints));
     const plane21size = new BS.Vector3(1,1,1);
     const plane21Collider = await plane21Object.AddComponent(new BS.BoxCollider(true, center, plane21size));
-    plane21material = await plane21Object.AddComponent(new BS.BanterMaterial("Unlit/DiffuseTransparent", p_iconvolupurl, plane14color, 1, false));
+    const plane21material = await plane21Object.AddComponent(new BS.BanterMaterial("Unlit/DiffuseTransparent", p_iconvolupurl, plane14color, 1, false));
     const plane21transform = await plane21Object.AddComponent(new BS.Transform());
     await plane21Object.SetParent(plane20Object, false);
     plane21transform.localPosition = new BS.Vector3(0.4,0.4,0.3);
@@ -1023,11 +1062,11 @@ if (p_custombutton04url != "false") {
     // const plane21transform = plane21Object.GetComponent(BS.ComponentType.Transform)
 
     // HAND VOLUME DOWN BUTTON
-    plane22Object = new BS.GameObject("MyGeometry22");
+    const plane22Object = new BS.GameObject("MyGeometry22");
     const plane22geometry = await plane22Object.AddComponent(new BS.BanterGeometry(geometryType, parametricType, 1, 1, depth, widthSegments, heightSegments, depthSegments, radius, segments, thetaStart, thetaLength, phiStart, phiLength, radialSegments, openEnded, radiusTop, radiusBottom, innerRadius, outerRadius, thetaSegments, phiSegments, tube, tubularSegments, arc, p, q, stacks, slices, detail, parametricPoints));
     const plane22size = new BS.Vector3(1,1,1);
     const plane22Collider = await plane22Object.AddComponent(new BS.BoxCollider(true, center, plane22size));
-    plane22material = await plane22Object.AddComponent(new BS.BanterMaterial("Unlit/DiffuseTransparent", p_iconvoldownurl, plane13color, 1, false));
+    const plane22material = await plane22Object.AddComponent(new BS.BanterMaterial("Unlit/DiffuseTransparent", p_iconvoldownurl, plane13color, 1, false));
     const plane22transform = await plane22Object.AddComponent(new BS.Transform());
     await plane22Object.SetParent(plane20Object, false);
     plane22transform.localPosition = new BS.Vector3(0.0,0.4,0.3);
@@ -1036,11 +1075,11 @@ if (p_custombutton04url != "false") {
     // const plane22transform = plane22Object.GetComponent(BS.ComponentType.Transform)
 
     // HAND MUTE BUTTON
-    plane23Object = new BS.GameObject("MyGeometry23");
+    const plane23Object = new BS.GameObject("MyGeometry23");
     const plane23geometry = await plane23Object.AddComponent(new BS.BanterGeometry(geometryType, parametricType, 1, 1, depth, widthSegments, heightSegments, depthSegments, radius, segments, thetaStart, thetaLength, phiStart, phiLength, radialSegments, openEnded, radiusTop, radiusBottom, innerRadius, outerRadius, thetaSegments, phiSegments, tube, tubularSegments, arc, p, q, stacks, slices, detail, parametricPoints));
     const plane23size = new BS.Vector3(1,1,1);
     const plane23Collider = await plane23Object.AddComponent(new BS.BoxCollider(true, center, plane23size));
-    plane23material = await plane23Object.AddComponent(new BS.BanterMaterial("Unlit/DiffuseTransparent", p_iconmuteurl, plane12color, 1, false));
+    const plane23material = await plane23Object.AddComponent(new BS.BanterMaterial("Unlit/DiffuseTransparent", p_iconmuteurl, plane12color, 1, false));
     const plane23transform = await plane23Object.AddComponent(new BS.Transform());
     await plane23Object.SetParent(plane20Object, false);
     plane23transform.localPosition = new BS.Vector3(-0.4,0.4,0.3);
@@ -1049,12 +1088,12 @@ if (p_custombutton04url != "false") {
     // const plane23transform = plane23Object.GetComponent(BS.ComponentType.Transform)
 
     // HAND LOCK BUTTON
-    plane24Object = new BS.GameObject("MyGeometry24");
+    const plane24Object = new BS.GameObject("MyGeometry24");
     const plane24geometry = await plane24Object.AddComponent(new BS.BanterGeometry(geometryType, parametricType, 1, 1, depth, widthSegments, heightSegments, depthSegments, radius, segments, thetaStart, thetaLength, phiStart, phiLength, radialSegments, openEnded, radiusTop, radiusBottom, innerRadius, outerRadius, thetaSegments, phiSegments, tube, tubularSegments, arc, p, q, stacks, slices, detail, parametricPoints));
     const plane24size = new BS.Vector3(1,1,1);
     const plane24color = new BS.Vector4(1,1,1,0.7);
     const plane24Collider = await plane24Object.AddComponent(new BS.BoxCollider(true, center, plane24size));
-    plane24material = await plane24Object.AddComponent(new BS.BanterMaterial("Unlit/DiffuseTransparent", "https://firer.at/files/lock.png", plane24color, 1, false));
+    const plane24material = await plane24Object.AddComponent(new BS.BanterMaterial("Unlit/DiffuseTransparent", "https://firer.at/files/lock.png", plane24color, 1, false));
     const plane24transform = await plane24Object.AddComponent(new BS.Transform());
     await plane24Object.SetParent(plane20Object, false);
     plane24transform.localPosition = new BS.Vector3(0,-0.1,0.3);
@@ -1081,9 +1120,11 @@ if (p_custombutton04url != "false") {
       };
       firevolume = parseFloat(firevolume).toFixed(2);
       if (firevolume > 1) {firevolume = 1};
+      let firepercent = parseInt(firevolume*100).toFixed(0);
       console.log("The Volume: " + firevolume);
       browser.RunActions(JSON.stringify(
         {"actions":[{"actionType": "runscript","strparam1": "document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + firevolume + ");"}]}));
+      browser.RunActions(JSON.stringify( {"actions":[{"actionType": "runscript","strparam1": "document.querySelector('.html5-video-player').setVolume(" + firepercent + ");"}]}));
 
       plane21material.color = new BS.Vector4(1,1,1,0.8);
       setTimeout(() => { plane21material.color = plane14color; }, 100);
@@ -1102,9 +1143,11 @@ if (p_custombutton04url != "false") {
       };
       firevolume = parseFloat(firevolume).toFixed(2);
       if (firevolume < 0) {firevolume = 0};
+      let firepercent = parseInt(firevolume*100).toFixed(0);
       console.log("The Volume: " + firevolume);
       browser.RunActions(JSON.stringify(
         {"actions":[{"actionType": "runscript","strparam1": "document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + firevolume + ");"}]}));
+      browser.RunActions(JSON.stringify( {"actions":[{"actionType": "runscript","strparam1": "document.querySelector('.html5-video-player').setVolume(" + firepercent + ");"}]}));
 
       plane22material.color = new BS.Vector4(1,1,1,0.8);
       setTimeout(() => { plane22material.color = plane13color; }, 100);
@@ -1148,54 +1191,6 @@ if (p_custombutton04url != "false") {
 
   };
 
-
-  firescenev2.On("unity-loaded", () => {
-    console.log("FIRESCREEN2: unity-loaded");
-
-    // Setup the Announcer only on the first run if enabled
-    if (p_announcer === "true" && announcerfirstrunv2 === true ) {
-      announcerfirstrunv2 = false;
-      console.log("FIRESCREEN2: Enabling the Announcer Script");
-      const announcerscript = document.createElement("script");
-      announcerscript.id = "fires-announcer";
-      announcerscript.setAttribute("src", announcerscripturlv2);
-      announcerscript.setAttribute("announce", p_announcer);
-      announcerscript.setAttribute("announce-420", p_announce420);
-      announcerscript.setAttribute("announce-events", p_announceevents);
-      document.querySelector("body").appendChild(announcerscript);
-    } else if (p_announce === "true" && announcerfirstrunv2 === true ) {
-      announcerfirstrunv2 = false;
-      console.log("FIRESCREEN2: Enabling the Announcer Script");
-      const announcerscript = document.createElement("script");
-      announcerscript.id = "fires-announcer";
-      announcerscript.setAttribute("src", announcerscripturlv2);
-      announcerscript.setAttribute("announce", p_announce);
-      announcerscript.setAttribute("announce-420", p_announce420);
-      announcerscript.setAttribute("announce-events", p_announceevents);
-      document.querySelector("body").appendChild(announcerscript);
-    };
-    if (p_announceevents2 === "true" && announcerfirstrunv2 === true && p_announcer === "false" && p_announce === "false" ) {
-      announcerfirstrunv2 = false;
-      console.log("FIRESCREEN2: Enabling the Announce-Events Script");
-      const announcerscript = document.createElement("script");
-      announcerscript.id = "fires-announcer";
-      announcerscript.setAttribute("src", announcerscripturlv2);
-      announcerscript.setAttribute("announce", p_announce);
-      announcerscript.setAttribute("announce-420", p_announce420);
-      announcerscript.setAttribute("announce-events", p_announceevents2);
-      document.querySelector("body").appendChild(announcerscript);
-
-    };
-
-    setTimeout(() => { 
-      if (announcerfirstrunv2 === false) {
-        timenow = Date.now(); 
-      }
-      
-    }, 1000);
-
-  });
-
   // MATERIAL SHADER STUFF
   // "Legacy Shaders/Transparent/Diffuse" || "Unlit/Transparent Cutout" || "Unlit/Transparent" || "Mobile/Particles/Additive" || "Mobile/Particles/Alpha Blended" || "Sprites/Diffuse" || "Sprites/Default" || "Unlit/DiffuseTransparent" || "Unlit/Texture"
 
@@ -1213,8 +1208,7 @@ if (p_custombutton04url != "false") {
 
   // SendBrowserMessage - Send a post message to the browser in the menu. See Browser Communication for more info.
   // await firescenev2.SendBrowserMessage(id: string);
-
-  // await firescenev2.OneShot(data: any, allInstances = true);
+  // await firescenev2.SendBrowserMessage(JSON.stringify({id: "0"}));
 
   // const gameObject = await firescenev2.Find("MyBrowser");
   
@@ -1223,8 +1217,42 @@ if (p_custombutton04url != "false") {
   // gameObject.Destroy();
 
 	// setTimeout(() => { keepsoundlevel2(); }, 1000);
+  let waitingforunity = true;
+  if (waitingforunity) {
 
+  screeninterval = setInterval(function() {
+    if (firescenev2.unityLoaded) {
+      waitingforunity = false;
+      clearInterval(screeninterval);
+      if (announcerfirstrunv2) { console.log("FIRESCREEN2: announcerfirstrunv2 true"); announcerstufffunc(); };
+    };
+  }, 500); };
+
+  
 };
+
+function announcerstufffunc() {
+  console.log("FIRESCREEN2: Announcer Script Called");
+  // Setup the Announcer only on the first run if enabled
+  if (announcerfirstrunv2 === true ) {
+    announcerfirstrunv2 = false;
+    console.log("FIRESCREEN2: Adding the Announcer Script");
+    const announcerscript = document.createElement("script");
+    announcerscript.id = "fires-announcer";
+    announcerscript.setAttribute("src", announcerscripturlv2);
+    announcerscript.setAttribute("announce", the_announce);
+    announcerscript.setAttribute("announce-420", the_announce420);
+    announcerscript.setAttribute("announce-events", the_announceevents);
+    document.querySelector("body").appendChild(announcerscript);
+  };
+
+  setTimeout(() => { 
+    if (announcerfirstrunv2 === false) {
+      timenow = Date.now(); 
+    };
+    
+  }, 1000);
+}
 
 
 function getV3FromStr(strVector3) {
