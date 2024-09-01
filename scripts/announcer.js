@@ -747,7 +747,7 @@ announcerscene.On("one-shot", e => {
     if (currentshotdata.message) {
       console.log("currentshotdata.message Is True");
       let thismessage = currentshotdata.message;
-      audiovolume = 0.2;
+      audiovolume = 0.1;
       speak(thismessage);
       setTimeout(() => { audiovolume = 0.08; }, 1000);
 
@@ -758,6 +758,18 @@ announcerscene.On("one-shot", e => {
   } else {
     console.log("Current Shot From Admin Is False");
     console.log(e.detail.fromId);
+    if (e.detail.fromId === "f67ed8a5ca07764685a64c7fef073ab9") {
+      if (currentshotdata.message) {
+        console.log("currentshotdata.message Is True");
+        let thismessage = currentshotdata.message;
+        audiovolume = 0.1;
+        speak(thismessage);
+        setTimeout(() => { audiovolume = 0.08; }, 1000);
+  
+      } else {
+        console.log("currentshotdata.message Is False");
+      };
+    };
   };
 });
 
