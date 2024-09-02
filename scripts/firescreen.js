@@ -97,21 +97,30 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		
 		// Setup the Announcer only on the first run if enabled
 		if (announcerfirstrun === true) {
-			announcerfirstrun = false;
-			console.log("FIRESCREEN: Enabling the Announcer Script");
-			const announcerscript = document.createElement("script");
-			announcerscript.id = "fires-announcer";
-			announcerscript.setAttribute("src", announcerscripturl);
-			announcerscript.setAttribute("announce", p_announce);
-			announcerscript.setAttribute("announce-420", p_announce420);
-      if (p_announceevents === "undefined" && p_announce === "true") {
-        announcerscript.setAttribute("announce-events", "true");
-      } else if (p_announceevents === "undefined") {
-        announcerscript.setAttribute("announce-events", "false");
+      
+    if (typeof announcerscene === 'undefined') {
+      console.log('announcerscene is not defined, Setting up');
+
+        announcerfirstrun = false;
+        console.log("FIRESCREEN: Enabling the Announcer Script");
+        const announcerscript = document.createElement("script");
+        announcerscript.id = "fires-announcer";
+        announcerscript.setAttribute("src", announcerscripturl);
+        announcerscript.setAttribute("announce", p_announce);
+        announcerscript.setAttribute("announce-420", p_announce420);
+        if (p_announceevents === "undefined" && p_announce === "true") {
+          announcerscript.setAttribute("announce-events", "true");
+        } else if (p_announceevents === "undefined") {
+          announcerscript.setAttribute("announce-events", "false");
+        } else {
+          announcerscript.setAttribute("announce-events", p_announceevents);
+        };
+        document.querySelector("body").appendChild(announcerscript);
+
       } else {
-        announcerscript.setAttribute("announce-events", p_announceevents);
+        console.log('announcerscene is defined, Moving on');
       };
-			document.querySelector("body").appendChild(announcerscript);
+
 		};
 
 	numberofbrowsers++    
