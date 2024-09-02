@@ -1230,21 +1230,30 @@ function announcerstufffunc() {
   console.log("FIRESCREEN2: Announcer Script Called");
   // Setup the Announcer only on the first run if enabled
   if (announcerfirstrunv2 === true ) {
-    announcerfirstrunv2 = false;
-    console.log("FIRESCREEN2: Adding the Announcer Script");
-    const announcerscript = document.createElement("script");
-    announcerscript.id = "fires-announcer";
-    announcerscript.setAttribute("src", announcerscripturlv2);
-    announcerscript.setAttribute("announce", the_announce);
-    announcerscript.setAttribute("announce-420", the_announce420);
-    if (the_announceevents === "undefined" && the_announce === "true") {
-      announcerscript.setAttribute("announce-events", "true");
-    } else if (the_announceevents === "undefined") {
-      announcerscript.setAttribute("announce-events", "false");
+    
+    if (typeof announcerscene === 'undefined') {
+      console.log('Scene is not defined');
+
+      announcerfirstrunv2 = false;
+      console.log("FIRESCREEN2: Adding the Announcer Script");
+      const announcerscript = document.createElement("script");
+      announcerscript.id = "fires-announcer";
+      announcerscript.setAttribute("src", announcerscripturlv2);
+      announcerscript.setAttribute("announce", the_announce);
+      announcerscript.setAttribute("announce-420", the_announce420);
+      if (the_announceevents === "undefined" && the_announce === "true") {
+        announcerscript.setAttribute("announce-events", "true");
+      } else if (the_announceevents === "undefined") {
+        announcerscript.setAttribute("announce-events", "false");
+      } else {
+        announcerscript.setAttribute("announce-events", the_announceevents);
+      };
+      document.querySelector("body").appendChild(announcerscript);
+
     } else {
-      announcerscript.setAttribute("announce-events", the_announceevents);
+      console.log('Scene is defined');
     };
-    document.querySelector("body").appendChild(announcerscript);
+
   };
 
   setTimeout(() => { 
@@ -1301,3 +1310,8 @@ function keepsoundlevel2() {
 
 setupfirescreen2()
 
+// if (typeof firescenev2 === 'undefined') {
+//   console.log('Scene is not defined');
+// } else {
+//   console.log('Scene is defined');
+// };
