@@ -1230,30 +1230,30 @@ function announcerstufffunc() {
   console.log("FIRESCREEN2: Announcer Script Called");
   // Setup the Announcer only on the first run if enabled
   if (announcerfirstrunv2 === true ) {
-    
-    if (typeof announcerscene === 'undefined') {
-      console.log('announcerscene is not defined, Setting up');
+    setTimeout(() => { 
+      if (typeof announcerscene === 'undefined') {
+        console.log('FIRESCREEN2: announcerscene is not defined, Setting up');
 
-      announcerfirstrunv2 = false;
-      console.log("FIRESCREEN2: Adding the Announcer Script");
-      const announcerscript = document.createElement("script");
-      announcerscript.id = "fires-announcer";
-      announcerscript.setAttribute("src", announcerscripturlv2);
-      announcerscript.setAttribute("announce", the_announce);
-      announcerscript.setAttribute("announce-420", the_announce420);
-      if (the_announceevents === "undefined" && the_announce === "true") {
-        announcerscript.setAttribute("announce-events", "true");
-      } else if (the_announceevents === "undefined") {
-        announcerscript.setAttribute("announce-events", "false");
+        announcerfirstrunv2 = false;
+        console.log("FIRESCREEN2: Adding the Announcer Script");
+        const announcerscript = document.createElement("script");
+        announcerscript.id = "fires-announcer";
+        announcerscript.setAttribute("src", announcerscripturlv2);
+        announcerscript.setAttribute("announce", the_announce);
+        announcerscript.setAttribute("announce-420", the_announce420);
+        if (the_announceevents === "undefined" && the_announce === "true") {
+          announcerscript.setAttribute("announce-events", "true");
+        } else if (the_announceevents === "undefined") {
+          announcerscript.setAttribute("announce-events", "false");
+        } else {
+          announcerscript.setAttribute("announce-events", the_announceevents);
+        };
+        document.querySelector("body").appendChild(announcerscript);
+
       } else {
-        announcerscript.setAttribute("announce-events", the_announceevents);
+        console.log('FIRESCREEN2: announcerscene is defined, Moving on');
       };
-      document.querySelector("body").appendChild(announcerscript);
-
-    } else {
-      console.log('announcerscene is defined, Moving on');
-    };
-
+    }, 1000);
   };
 
   setTimeout(() => { 
