@@ -9,16 +9,16 @@ let announceevents = "true";
 let announce420 = "false";
 let readytospeak = true;
 
-let audiovolume = 0.08;
+let announceraudiovolume = 0.08;
 const announcerAudioObject = new BS.GameObject("MyAudioSource"); 
+const announcerAudioSource = await announcerAudioObject.AddComponent(new BS.BanterAudioSource(announceraudiovolume, 1, false, false, true, true, true, false));
 
 // // Main Speak Function, Thank you Elin and everyone
 async function speak(text) {
   if (readytospeak) {
     readytospeak = false
 
-    const announcerAudioSource = await announcerAudioObject.AddComponent(new BS.BanterAudioSource(audiovolume, 1, false, false, true, true, true, false));
-    // audioSource.volume = 0.01;
+    audioSource.volume = announceraudiovolume;
     console.log("ANNOUNCER: saying:", text);
     announcerAudioSource.PlayOneShotFromUrl('https://speak.firer.at/?text=' + text + "#.mp3");
 
@@ -747,9 +747,9 @@ announcerscene.On("one-shot", e => {
     if (currentshotdata.message) {
       console.log("currentshotdata.message Is True");
       let thismessage = currentshotdata.message;
-      audiovolume = 0.1;
+      announceraudiovolume = 0.1;
       speak(thismessage);
-      setTimeout(() => { audiovolume = 0.08; }, 1000);
+      setTimeout(() => { announceraudiovolume = 0.08; }, 1000);
 
     } else {
       console.log("currentshotdata.message Is False");
@@ -762,9 +762,9 @@ announcerscene.On("one-shot", e => {
       if (currentshotdata.message) {
         console.log("currentshotdata.message Is True");
         let thismessage = currentshotdata.message;
-        audiovolume = 0.1;
+        announceraudiovolume = 0.1;
         speak(thismessage);
-        setTimeout(() => { audiovolume = 0.08; }, 1000);
+        setTimeout(() => { announceraudiovolume = 0.08; }, 1000);
   
       } else {
         console.log("currentshotdata.message Is False");
