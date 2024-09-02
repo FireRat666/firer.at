@@ -18,7 +18,7 @@ async function speak(text) {
   if (readytospeak) {
     readytospeak = false
 
-    audioSource.volume = announceraudiovolume;
+    announcerAudioSource.volume = announceraudiovolume;
     console.log("ANNOUNCER: saying:", text);
     announcerAudioSource.PlayOneShotFromUrl('https://speak.firer.at/?text=' + text + "#.mp3");
 
