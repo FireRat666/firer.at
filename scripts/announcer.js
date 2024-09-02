@@ -135,7 +135,6 @@ var timenow = 9999999999999; // Set Now to a Really Big Number, so if user-joine
 // Welcome message for user entering the space
 function announcerloadtest() {
   
-announcerAudioSource = await announcerAudioObject.AddComponent(new BS.BanterAudioSource(announceraudiovolume, 1, false, false, true, true, true, false));
 
   announcerscene.On("unity-loaded", () => {
     announcefirstrun = false;
@@ -785,4 +784,8 @@ function getAttrOrDefAgain (pScript, pAttr, pDefault) {
   }
 };
 
+async function announcerobjectthing() {
+announcerAudioSource = await announcerAudioObject.AddComponent(new BS.BanterAudioSource(announceraudiovolume, 1, false, false, true, true, true, false));
+};
+announcerobjectthing();
 announcerloadtest();
