@@ -748,9 +748,10 @@ announcerscene.On("one-shot", e => {
     if (currentshotdata.message) {
       console.log("currentshotdata.message Is True");
       let thismessage = currentshotdata.message;
-      announceraudiovolume = 0.1;
+      let thiscurrentaduiovolume = announceraudiovolume;
+      announceraudiovolume = 0.15;
       speak(thismessage);
-      setTimeout(() => { announceraudiovolume = 0.08; }, 4000);
+      setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
 
     } else {
       console.log("currentshotdata.message Is False");
@@ -763,9 +764,10 @@ announcerscene.On("one-shot", e => {
       if (currentshotdata.message) {
         console.log("currentshotdata.message Is True");
         let thismessage = currentshotdata.message;
-        announceraudiovolume = 0.1;
+        let thiscurrentaduiovolume = announceraudiovolume;
+        announceraudiovolume = 0.15;
         speak(thismessage);
-        setTimeout(() => { announceraudiovolume = 0.08; }, 4000);
+        setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
   
       } else {
         console.log("currentshotdata.message Is False");
