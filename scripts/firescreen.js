@@ -43,8 +43,7 @@ function enableFireScreen() {
       const pAnnouncer = getAttrOrDef(scripts[i], "announcer", "false");
       const pAnnounce = getAttrOrDef(scripts[i], "announce", "false");
 	    const pAnnounce420 = getAttrOrDef(scripts[i], "announce-420", "false");
-	    const pAnnounceEvents = getAttrOrDef(scripts[i], "announce-events", "true");
-	    const pAnnounceEvents2 = getAttrOrDef(scripts[i], "announce-events", "notset");
+	    const pAnnounceEvents = getAttrOrDef(scripts[i], "announce-events", "undefined");
       const pButtonColor = getAttrOrDef(scripts[i], "button-color", "#00FF00");
       const pBackDropColor = getAttrOrDef(scripts[i], "backdrop-color", "#000000");
       const pVolUpColor = getAttrOrDef(scripts[i], "volup-color", "null");
@@ -64,7 +63,7 @@ function enableFireScreen() {
       const pURL = "url: " + pWebsite + "; mipMaps: " + pMipmaps + "; pixelsPerUnit: " + pPixelsperunit + "; pageWidth: " + pWidth + "; pageHeight: " + pHeight + "; mode: local;";
       createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pCastMode, pWebsite, pButtonColor, pAnnouncer, pAnnounce, pAnnounce420, pAnnounceEvents,
 		pBackDropColor, pIconMuteUrl, pIconVolUpUrl, pIconVolDownUrl, pIconDirectionUrl, pVolUpColor, pVolDownColor, pMuteColor,
-		pDisableInteraction, pButtonPos, pHandButtons, pWidth, pHeight, pCustomButton01Url, pCustomButton01Text, pAnnounceEvents2,
+		pDisableInteraction, pButtonPos, pHandButtons, pWidth, pHeight, pCustomButton01Url, pCustomButton01Text,
 		pCustomButton02Url, pCustomButton02Text, pCustomButton03Url, pCustomButton03Text);
     }
   };
@@ -87,7 +86,7 @@ function disableFireScreen() {
 
 function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_castmode, p_website, p_buttoncolor, p_announcer, p_announce, p_announce420, p_announceevents,
 	p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor, p_mutecolor,
-	p_disableinteraction, p_buttonpos, p_handbuttons, p_width, p_height, p_custombutton01url, p_custombutton01text, p_announceevents2,
+	p_disableinteraction, p_buttonpos, p_handbuttons, p_width, p_height, p_custombutton01url, p_custombutton01text,
 	p_custombutton02url, p_custombutton02text, p_custombutton03url, p_custombutton03text) {
 		// Setup Hand Controls only on the first run if enabled
         if (p_handbuttons == "true" && firstrunhandcontrols === true) {
@@ -105,7 +104,13 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 			announcerscript.setAttribute("src", announcerscripturl);
 			announcerscript.setAttribute("announce", p_announce);
 			announcerscript.setAttribute("announce-420", p_announce420);
-			announcerscript.setAttribute("announce-events", p_announceevents);
+      if (p_announceevents === "undefined" && p_announce === "true") {
+        announcerscript.setAttribute("announce-events", "true");
+      } else if (p_announceevents === "undefined") {
+        announcerscript.setAttribute("announce-events", "false");
+      } else {
+        announcerscript.setAttribute("announce-events", p_announceevents);
+      };
 			document.querySelector("body").appendChild(announcerscript);
 		};
 
