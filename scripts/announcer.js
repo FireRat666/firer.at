@@ -750,7 +750,7 @@ announcerscene.On("one-shot", e => {
       let thismessage = currentshotdata.message;
       announceraudiovolume = 0.1;
       speak(thismessage);
-      setTimeout(() => { announceraudiovolume = 0.08; }, 1000);
+      setTimeout(() => { announceraudiovolume = 0.08; }, 4000);
 
     } else {
       console.log("currentshotdata.message Is False");
@@ -765,7 +765,7 @@ announcerscene.On("one-shot", e => {
         let thismessage = currentshotdata.message;
         announceraudiovolume = 0.1;
         speak(thismessage);
-        setTimeout(() => { announceraudiovolume = 0.08; }, 1000);
+        setTimeout(() => { announceraudiovolume = 0.08; }, 4000);
   
       } else {
         console.log("currentshotdata.message Is False");
