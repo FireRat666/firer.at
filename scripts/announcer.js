@@ -146,7 +146,7 @@ function announcerloadtest() {
     }
     theusersname = e.detail.name;
     theusersid = e.detail.uid;
-    console.log("ANNOUNCER: USER: " + e.detail.name + " UID: " + theusersid);
+    console.log("ANNOUNCER: JOINED USER: " + e.detail.name + " UID: " + theusersid);
 
     if (theusersname === "Gravxton") {theusersname = "Graviton What The Hell"};
     if (theusersid === "7e778ab53e504bed1d995bf9148b98c2") {theusersname = "Vanquisher"}; // Vanquisher
@@ -714,7 +714,7 @@ function announcerloadtest() {
   
   announcerscene.On("user-left", e => {
 
-    console.log("ANNOUNCER: USER: " + e.detail.name + " LEFT UID: " + e.detail.uid);
+    console.log("ANNOUNCER: LEFT USER: " + e.detail.name + " UID: " + e.detail.uid);
     if (e.detail.isLocal) {
 
     };
