@@ -13,7 +13,6 @@ let the_announce = null;
 let the_announcer = null;
 let the_announce420 = null;
 let the_announceevents = null;
-let the_announceevents2 = null;
 
 
 
@@ -38,11 +37,9 @@ function setupfirescreen2() {
       const pBackdrop = getAttrOrDef(allscripts[i], "backdrop", "true");
       const pHandButtons = getAttrOrDef(allscripts[i], "hand-controls", "false");
       const pDisableInteraction = getAttrOrDef(allscripts[i], "disable-interaction", "false");
-      const pAnnouncer = getAttrOrDef(allscripts[i], "announcer", "false");
       const pAnnounce = getAttrOrDef(allscripts[i], "announce", "false");
 	    const pAnnounce420 = getAttrOrDef(allscripts[i], "announce-420", "false");
-	    const pAnnounceEvents = getAttrOrDef(allscripts[i], "announce-events", "true");
-	    const pAnnounceEvents2 = getAttrOrDef(allscripts[i], "announce-events", "notset");
+	    const pAnnounceEvents = getAttrOrDef(allscripts[i], "announce-events", "undefined");
       const pButtonColor = getV4FromStr(getAttrOrDef(allscripts[i], "button-color", "0 1 0 1"));
       const pBackDropColor = getV4FromStr(getAttrOrDef(allscripts[i], "backdrop-color", "0 0 0 0.9"));
       const pVolUpColor = getV4FromStr(getAttrOrDef(allscripts[i], "volup-color", "false"));
@@ -62,25 +59,23 @@ function setupfirescreen2() {
       const pCustomButton04Url = getAttrOrDef(allscripts[i], "custom-button04-url", "false");
       const pCustomButton04Text = getAttrOrDef(allscripts[i], "custom-button04-text", "Custom Button 04");
       const pURL = "url: " + pWebsite + "; mipMaps: " + pMipmaps + "; pixelsPerUnit: " + pPixelsperunit + "; pageWidth: " + pWidth + "; pageHeight: " + pHeight + "; mode: local;";
-      sdk2tests(pPos, pRot, pSca, pVolume, pMipmaps, pPixelsperunit, pBackdrop, pWebsite, pButtonColor, pAnnouncer, pAnnounce, pAnnounce420,
+      sdk2tests(pPos, pRot, pSca, pVolume, pMipmaps, pPixelsperunit, pBackdrop, pWebsite, pButtonColor, pAnnounce, pAnnounce420,
       pBackDropColor, pIconMuteUrl, pIconVolUpUrl, pIconVolDownUrl, pIconDirectionUrl, pVolUpColor, pVolDownColor, pMuteColor,
-      pDisableInteraction, pButtonPos, pHandButtons, pWidth, pHeight, pCustomButton01Url, pCustomButton01Text, pAnnounceEvents, pAnnounceEvents2,
+      pDisableInteraction, pButtonPos, pHandButtons, pWidth, pHeight, pCustomButton01Url, pCustomButton01Text, pAnnounceEvents,
       pCustomButton02Url, pCustomButton02Text, pCustomButton03Url, pCustomButton03Text, pCustomButton04Url, pCustomButton04Text);
     };
   };
 
 }
 
-async function sdk2tests(p_pos, p_rot, p_sca, p_volume, p_mipmaps, p_pixelsperunit, p_backdrop, p_website, p_buttoncolor, p_announcer, p_announce, p_announce420,
+async function sdk2tests(p_pos, p_rot, p_sca, p_volume, p_mipmaps, p_pixelsperunit, p_backdrop, p_website, p_buttoncolor, p_announce, p_announce420,
 	p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor, p_mutecolor,
-	p_disableinteraction, p_buttonpos, p_handbuttons, p_width, p_height, p_custombutton01url, p_custombutton01text, p_announceevents, p_announceevents2,
+	p_disableinteraction, p_buttonpos, p_handbuttons, p_width, p_height, p_custombutton01url, p_custombutton01text, p_announceevents,
 	p_custombutton02url, p_custombutton02text, p_custombutton03url, p_custombutton03text, p_custombutton04url, p_custombutton04text) {
 
     the_announce = p_announce;
-    the_announcer = p_announcer;
     the_announce420 = p_announce420;
     the_announceevents = p_announceevents;
-    the_announceevents2 = p_announceevents2;
     firevolume = p_volume;
     fireScreen2On = true;
 	  let thebuttonscolor = p_buttoncolor;
@@ -1242,7 +1237,12 @@ function announcerstufffunc() {
     announcerscript.setAttribute("src", announcerscripturlv2);
     announcerscript.setAttribute("announce", the_announce);
     announcerscript.setAttribute("announce-420", the_announce420);
-    announcerscript.setAttribute("announce-events", the_announceevents);
+    if (the_announceevents === "undefined") {
+      announcerscript.setAttribute("announce-events", "false");
+
+    } else {
+      announcerscript.setAttribute("announce-events", the_announceevents);
+    };
     document.querySelector("body").appendChild(announcerscript);
   };
 
