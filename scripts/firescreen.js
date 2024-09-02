@@ -869,18 +869,47 @@ function setupBrowsers() {
 	},
 	init: function () {
 	  this.el.addEventListener("click", () => {  
+
 		var screenVolume = this.el.parentElement;
 		let thisbuttoncolor = this.el.getAttribute("color");
 		let volume = parseFloat(screenVolume.getAttribute("volumelevel"));
-		volume += this.data.vvalue;
-		volume = volume.toFixed(2);
-		if (volume > 1) {volume = 1};
-		if (volume < 0) {volume = 0};
+
+
+    if (this.data.vvalue > 0) {
+      volume = Number(volume);
+      if (volume < 0.1) {
+        volume += Number(0.01);
+      } else if (volume < 0.5) {
+        volume += Number(0.02);
+      } else {
+        volume += Number(0.05);
+      };
+      volume = parseFloat(volume).toFixed(2);
+      if (volume > 1) {volume = 1};
+
+    } else {
+      volume = Number(volume);
+      if (volume < 0.1) {
+        volume += Number(-0.01);
+      } else if (volume < 0.5) {
+        volume += Number(-0.02);
+      } else {
+        volume += Number(-0.05);
+      };
+      volume = parseFloat(volume).toFixed(2);
+      if (volume < 0) {volume = 0};
+    };
+
+		// volume += this.data.vvalue;
+		// volume = volume.toFixed(2);
+		// if (volume > 1) {volume = 1};
+
 		screenVolume.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
 	"document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
 		this.el.setAttribute("color","#AAAAAA");
 		screenVolume.setAttribute("volumelevel", volume);
 		setTimeout(() => {  this.el.setAttribute("color", thisbuttoncolor); }, 100);
+
 		});		},		});
 		
 	
