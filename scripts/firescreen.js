@@ -99,10 +99,10 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		if (announcerfirstrun === true) {
       
     if (typeof announcerscene === 'undefined') {
-      console.log('announcerscene is not defined, Setting up');
+      console.log('FIRESCREEN: announcerscene is not defined, Setting up');
 
         announcerfirstrun = false;
-        console.log("FIRESCREEN: Enabling the Announcer Script");
+        console.log("FIRESCREEN: Adding the Announcer Script");
         const announcerscript = document.createElement("script");
         announcerscript.id = "fires-announcer";
         announcerscript.setAttribute("src", announcerscripturl);
@@ -118,7 +118,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
         document.querySelector("body").appendChild(announcerscript);
 
       } else {
-        console.log('announcerscene is defined, Moving on');
+        console.log('FIRESCREEN: announcerscene is defined, Moving on');
       };
 
 		};
