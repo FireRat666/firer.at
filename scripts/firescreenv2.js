@@ -1237,9 +1237,10 @@ function announcerstufffunc() {
     announcerscript.setAttribute("src", announcerscripturlv2);
     announcerscript.setAttribute("announce", the_announce);
     announcerscript.setAttribute("announce-420", the_announce420);
-    if (the_announceevents === "undefined") {
+    if (the_announceevents === "undefined" && the_announce === "true") {
+      announcerscript.setAttribute("announce-events", "true");
+    } else if (the_announceevents === "undefined") {
       announcerscript.setAttribute("announce-events", "false");
-
     } else {
       announcerscript.setAttribute("announce-events", the_announceevents);
     };
