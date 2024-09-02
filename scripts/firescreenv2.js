@@ -1232,7 +1232,7 @@ function announcerstufffunc() {
   if (announcerfirstrunv2 === true ) {
     
     if (typeof announcerscene === 'undefined') {
-      console.log('Scene is not defined');
+      console.log('announcerscene is not defined, Setting up');
 
       announcerfirstrunv2 = false;
       console.log("FIRESCREEN2: Adding the Announcer Script");
@@ -1251,7 +1251,7 @@ function announcerstufffunc() {
       document.querySelector("body").appendChild(announcerscript);
 
     } else {
-      console.log('Scene is defined');
+      console.log('announcerscene is defined, Moving on');
     };
 
   };
