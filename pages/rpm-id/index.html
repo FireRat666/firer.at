@@ -40,8 +40,7 @@
 	<p>Sign in Then Click NEXT.</p>
   <!-- <p id="avatarUrl">Avatar URL:</p> -->
   <p id="avatarID">Avatar ID:</p>
-  <p id="usersID" hidden>Users ID:</p>
-  <p id="tusersID">RPM ID:</p>
+  <p id="tusersID">RPM User ID:</p>
   <input type="button" class="button button1" value="Open Ready Player Me" onClick="displayIframe()" /><br/>
 
   <iframe id="frame" class="frame" allow="clipboard-write"  width="100%" height="700" hidden></iframe>
@@ -74,7 +73,7 @@
               console.log(`Avatar URL: ${json.data.url}`);
               // document.getElementById('avatarUrl').innerHTML = `Avatar URL: ${json.data.url}`;
               document.getElementById('avatarID').innerHTML = `Avatar ID: ${json.data.avatarId}`;
-              document.getElementById('tusersID').innerHTML = `RPM ID: ${json.data.userId}`;
+              document.getElementById('tusersID').innerHTML = `RPM User ID: ${json.data.userId}`;
               // document.getElementById('frame').hidden = true;
           };
       };
