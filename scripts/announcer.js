@@ -787,6 +787,8 @@ announcerscene.On("one-shot", e => {
     };
   };
 });
+// await scene.OneShot(JSON.stringify({message: "Example"}));
+// await announcerscene.OneShot(JSON.stringify({message: "Words go here"}));
 
 };
 
