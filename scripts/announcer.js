@@ -757,6 +757,18 @@ announcerscene.On("one-shot", e => {
       console.log("currentshotdata.message Is False");
     };
 
+  } else if (e.detail.fromId === announcerscene.localUser.uid) {
+    console.log("Current Shot is from Local User");
+    console.log(e.detail);
+      if (currentshotdata.message) {
+        console.log("currentshotdata.message Is True");
+        let thiscurrentaduiovolume = announceraudiovolume;
+        speak(currentshotdata.message);
+        announceraudiovolume = 0.15;
+        setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
+      } else {
+        console.log("currentshotdata.message Is False");
+      };
   } else {
     console.log("Current Shot From Admin Is False");
     console.log(e.detail.fromId);
