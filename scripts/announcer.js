@@ -856,10 +856,10 @@ let audiofilemuted = false
 async function muteaudiofile(text) {
   if (audiofilemuted) {
     audiofilemuted = false
-    announcerAudioSource.mute = true
+    announcerAudioSource.mute = false
   } else {
     audiofilemuted = true
-    announcerAudioSource.mute = false
+    announcerAudioSource.mute = true
   };
 
 };
