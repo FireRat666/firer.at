@@ -855,9 +855,11 @@ async function playaudiofile(text) {
 let audiofilemuted = false
 async function muteaudiofile(text) {
   if (audiofilemuted) {
+    console.log("ANNOUNCER: UN-MUTED");
     audiofilemuted = false
     announcerAudioSource.mute = false
   } else {
+    console.log("ANNOUNCER: MUTED");
     audiofilemuted = true
     announcerAudioSource.mute = true
   };
