@@ -752,7 +752,6 @@ announcerscene.On("one-shot", e => {
       announceraudiovolume = 0.15;
       speak(thismessage);
       setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
-
     };
 
     if (currentshotdata.audiofile) {
@@ -762,7 +761,6 @@ announcerscene.On("one-shot", e => {
       announceraudiovolume = 0.10;
       playaudiofile(thismessage);
       setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
-
     };
 
     if (currentshotdata.muteaudio) {
@@ -788,7 +786,6 @@ announcerscene.On("one-shot", e => {
         announceraudiovolume = 0.10;
         playaudiofile(thismessage);
         setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
-  
       };
 
       if (currentshotdata.muteaudio) {
@@ -797,7 +794,6 @@ announcerscene.On("one-shot", e => {
       };
 
   } else {
-    console.log("Current Shot From Admin Is False");
     console.log(e.detail.fromId);
     if (e.detail.fromId === "f67ed8a5ca07764685a64c7fef073ab9") {
       if (currentshotdata.message) {
@@ -807,16 +803,27 @@ announcerscene.On("one-shot", e => {
         announceraudiovolume = 0.15;
         speak(thismessage);
         setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
-  
-      } else {
-        console.log("currentshotdata.message Is False");
       };
+    };
+
+    if (currentshotdata.audiofile) {
+      console.log("currentshotdata.audiofile Is True");
+      let thismessage = currentshotdata.audiofile;
+      let thiscurrentaduiovolume = announceraudiovolume;
+      announceraudiovolume = 0.10;
+      playaudiofile(thismessage);
+      setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
+    };
+
+    if (currentshotdata.muteaudio) {
+      console.log("currentshotdata.muteaudio Is True");
+      muteaudiofile();
     };
   };
 });
 // await scene.OneShot(JSON.stringify({message: "Example"}));
 // await announcerscene.OneShot(JSON.stringify({message: "Words go here"}));
-// await announcerscene.OneShot(JSON.stringify({audiofile: "https://speak.firer.at/?text=hi#.mp3"}));
+// await announcerscene.OneShot(JSON.stringify({audiofile: "http://firer.at/files/audio/BigJohn.wav"}));
 // await announcerscene.OneShot(JSON.stringify({muteaudio: true}));
 // await announcerscene.OneShot(JSON.stringify({muteaudio: false}));
 
@@ -840,14 +847,14 @@ announcerloadtest();
 async function playaudiofile(text) {
   if (readytospeak) {
     readytospeak = false
+    announcerobjectthing();
 
-    announcerAudioSource.volume = announceraudiovolume;
-    console.log("ANNOUNCER: saying:", text);
+    console.log("ANNOUNCER: Playing:", text);
     announcerAudioSource.PlayOneShotFromUrl(text);
 
     setTimeout(() => { readytospeak = true; }, 5000);
   } else {
-    console.log("ANNOUNCER: Not Ready to Speak:", text);
+    console.log("ANNOUNCER: Not Ready to Play:", text);
   };
 
 };
