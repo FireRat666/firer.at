@@ -769,6 +769,14 @@ announcerscene.On("one-shot", e => {
       console.log("currentshotdata.audiofile Is False");
     };
 
+    if (currentshotdata.muteaudio) {
+      console.log("currentshotdata.muteaudio Is True");
+      let thismessage = currentshotdata.muteaudio;
+      muteaudiofile(thismessage);
+    } else {
+      console.log("currentshotdata.muteaudio Is False");
+    };
+
   } else if (e.detail.fromId === announcerscene.localUser.uid) {
     console.log("Current Shot is from Local User");
     console.log(e.detail);
@@ -793,6 +801,15 @@ announcerscene.On("one-shot", e => {
       } else {
         console.log("currentshotdata.audiofile Is False");
       };
+
+      if (currentshotdata.muteaudio) {
+        console.log("currentshotdata.muteaudio Is True");
+        let thismessage = currentshotdata.muteaudio;
+        muteaudiofile(thismessage);
+      } else {
+        console.log("currentshotdata.muteaudio Is False");
+      };
+
   } else {
     console.log("Current Shot From Admin Is False");
     console.log(e.detail.fromId);
@@ -813,6 +830,8 @@ announcerscene.On("one-shot", e => {
 });
 // await scene.OneShot(JSON.stringify({message: "Example"}));
 // await announcerscene.OneShot(JSON.stringify({message: "Words go here"}));
+// await announcerscene.OneShot(JSON.stringify({audiofile: "https://speak.firer.at/?text=hi#.mp3"}));
+// await announcerscene.OneShot(JSON.stringify({muteaudio: "true"}));
 
 };
 
@@ -844,4 +863,8 @@ async function playaudiofile(text) {
     console.log("ANNOUNCER: Not Ready to Speak:", text);
   };
 
+};
+
+async function muteaudiofile(text) {
+  announcerAudioSource.mute = text
 };
