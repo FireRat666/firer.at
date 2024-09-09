@@ -757,6 +757,18 @@ announcerscene.On("one-shot", e => {
       console.log("currentshotdata.message Is False");
     };
 
+    if (currentshotdata.audiofile) {
+      console.log("currentshotdata.audiofile Is True");
+      let thismessage = currentshotdata.audiofile;
+      let thiscurrentaduiovolume = announceraudiovolume;
+      announceraudiovolume = 0.15;
+      playaudiofile(thismessage);
+      setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
+
+    } else {
+      console.log("currentshotdata.audiofile Is False");
+    };
+
   } else if (e.detail.fromId === announcerscene.localUser.uid) {
     console.log("Current Shot is from Local User");
     console.log(e.detail);
@@ -768,6 +780,18 @@ announcerscene.On("one-shot", e => {
         setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
       } else {
         console.log("currentshotdata.message Is False");
+      };
+
+      if (currentshotdata.audiofile) {
+        console.log("currentshotdata.audiofile Is True");
+        let thismessage = currentshotdata.audiofile;
+        let thiscurrentaduiovolume = announceraudiovolume;
+        announceraudiovolume = 0.15;
+        playaudiofile(thismessage);
+        setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
+  
+      } else {
+        console.log("currentshotdata.audiofile Is False");
       };
   } else {
     console.log("Current Shot From Admin Is False");
@@ -805,3 +829,19 @@ announcerAudioSource = await announcerAudioObject.AddComponent(new BS.BanterAudi
 };
 announcerobjectthing();
 announcerloadtest();
+
+
+async function playaudiofile(text) {
+  if (readytospeak) {
+    readytospeak = false
+
+    announcerAudioSource.volume = announceraudiovolume;
+    console.log("ANNOUNCER: saying:", text);
+    announcerAudioSource.PlayOneShotFromUrl(text);
+
+    setTimeout(() => { readytospeak = true; }, 5000);
+  } else {
+    console.log("ANNOUNCER: Not Ready to Speak:", text);
+  };
+
+};
