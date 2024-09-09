@@ -753,61 +753,47 @@ announcerscene.On("one-shot", e => {
       speak(thismessage);
       setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
 
-    } else {
-      console.log("currentshotdata.message Is False");
     };
 
     if (currentshotdata.audiofile) {
       console.log("currentshotdata.audiofile Is True");
       let thismessage = currentshotdata.audiofile;
       let thiscurrentaduiovolume = announceraudiovolume;
-      announceraudiovolume = 0.15;
+      announceraudiovolume = 0.10;
       playaudiofile(thismessage);
       setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
 
-    } else {
-      console.log("currentshotdata.audiofile Is False");
     };
 
     if (currentshotdata.muteaudio) {
       console.log("currentshotdata.muteaudio Is True");
-      let thismessage = currentshotdata.muteaudio;
-      muteaudiofile(thismessage);
-    } else {
-      console.log("currentshotdata.muteaudio Is False");
+      muteaudiofile();
     };
 
   } else if (e.detail.fromId === announcerscene.localUser.uid) {
     console.log("Current Shot is from Local User");
-    console.log(e.detail);
+
       if (currentshotdata.message) {
         console.log("currentshotdata.message Is True");
         let thiscurrentaduiovolume = announceraudiovolume;
         speak(currentshotdata.message);
         announceraudiovolume = 0.15;
         setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
-      } else {
-        console.log("currentshotdata.message Is False");
       };
 
       if (currentshotdata.audiofile) {
         console.log("currentshotdata.audiofile Is True");
         let thismessage = currentshotdata.audiofile;
         let thiscurrentaduiovolume = announceraudiovolume;
-        announceraudiovolume = 0.15;
+        announceraudiovolume = 0.10;
         playaudiofile(thismessage);
         setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
   
-      } else {
-        console.log("currentshotdata.audiofile Is False");
       };
 
       if (currentshotdata.muteaudio) {
         console.log("currentshotdata.muteaudio Is True");
-        let thismessage = currentshotdata.muteaudio;
-        muteaudiofile(thismessage);
-      } else {
-        console.log("currentshotdata.muteaudio Is False");
+        muteaudiofile();
       };
 
   } else {
@@ -831,7 +817,8 @@ announcerscene.On("one-shot", e => {
 // await scene.OneShot(JSON.stringify({message: "Example"}));
 // await announcerscene.OneShot(JSON.stringify({message: "Words go here"}));
 // await announcerscene.OneShot(JSON.stringify({audiofile: "https://speak.firer.at/?text=hi#.mp3"}));
-// await announcerscene.OneShot(JSON.stringify({muteaudio: "true"}));
+// await announcerscene.OneShot(JSON.stringify({muteaudio: true}));
+// await announcerscene.OneShot(JSON.stringify({muteaudio: false}));
 
 };
 
@@ -865,6 +852,14 @@ async function playaudiofile(text) {
 
 };
 
+let audiofilemuted = false
 async function muteaudiofile(text) {
-  announcerAudioSource.mute = text
+  if (audiofilemuted) {
+    audiofilemuted = false
+    announcerAudioSource.mute = true
+  } else {
+    audiofilemuted = true
+    announcerAudioSource.mute = false
+  };
+
 };
