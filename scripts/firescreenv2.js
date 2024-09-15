@@ -327,7 +327,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_volume, p_mipmaps, p_pixelsperun
 	} else { plane14color = thebuttonscolor; };
   const plane14Object = await createUIButton("MyGeometry14", p_iconvolupurl, new BS.Vector3(0.495,0.38,0), plane14color, screenObject);
   createButtonAction(plane14Object, () => { adjustVolume(1)
-    updateButtonColor(plane14Object, new BS.Vector4(1,1,1,0.8), plane13color)
+    updateButtonColor(plane14Object, new BS.Vector4(1,1,1,0.8), plane14color)
   });
   // THE BILLBOARD/ROTATION BUTTON
   const plane15color = thebuttonscolor;
