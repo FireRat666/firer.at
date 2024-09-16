@@ -1,6 +1,6 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.1 Beta 1.4
+// VERSION: 1.1 Beta 1.5
 var thishostnameurl = "https://firer.at/scripts/"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var thisscriptsurl = thishostnameurl + "firescreen.js"; // CHANGE THIS
 var announcerscripturl = thishostnameurl + "announcer.js"; // CHANGE THIS
@@ -1176,7 +1176,7 @@ class handButtonCrap{
 			"document.querySelector('.html5-video-player').setVolume(" + firepercent + ");", }, ]);
 		});
 
-			let firevolupbut = document.getElementById("firevoldownbut");
+			let firevolupbut = document.getElementById("firevolupbut");
 			let butcolour = firevolupbut.getAttribute("color");
 			firevolupbut.setAttribute("color", "#FFFFFF"); 
 			setTimeout(() => {  firevolupbut.setAttribute("color", butcolour); }, 100);
@@ -1208,7 +1208,7 @@ class handButtonCrap{
 			"document.querySelector('.html5-video-player').setVolume(" + firepercent + ");", }, ]);
 		});
 
-			let firevolbut = document.getElementById("firevolupbut");
+			let firevolbut = document.getElementById("firevoldownbut");
 			let butcolour = firevolbut.getAttribute("color");
 			firevolbut.setAttribute("color", "#FFFFFF"); 
 			setTimeout(() => {  firevolbut.setAttribute("color", butcolour); }, 100);
