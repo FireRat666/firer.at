@@ -476,7 +476,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_volume, p_mipmaps, p_pixelsperun
     };
   });
 
-  async function setupHandControls() { // handControlsContainer.setAttribute("position", "0.04 0.006 -0.010");
+  async function setupHandControls() {
     // THE CONTAINER FOR THE HAND BUTTONS
     console.log("FIRESCREEN2: Hand Control Stuff");
     const plane20Object = new BS.GameObject("MyGeometry20");
@@ -489,18 +489,22 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_volume, p_mipmaps, p_pixelsperun
     plane20transform.localScale = new BS.Vector3(0.1,0.1,0.1);
     plane20transform.localEulerAngles = new BS.Vector3(5,-95,0);
     
-    const hvolUpButton = await createHandButton("hVolumeUpButton", p_iconvolupurl, new BS.Vector3(0.4,0.4,0.3), plane14color, plane20Object, () => adjustVolume(1));
-    const hvolDownButton = await createHandButton("hVolumeDownButton", p_iconvoldownurl, new BS.Vector3(0.0,0.4,0.3), plane13color, plane20Object, () => adjustVolume(-1));
+    const hvolUpButton = await createHandButton("hVolumeUpButton", p_iconvolupurl, new BS.Vector3(0.4,0.4,0.3), plane14color, plane20Object, () => { adjustVolume(1);
+      updateButtonColor(hvolUpButton, new BS.Vector4(1,1,1,0.8), plane14color);
+    });
+    const hvolDownButton = await createHandButton("hVolumeDownButton", p_iconvoldownurl, new BS.Vector3(0.0,0.4,0.3), plane13color, plane20Object, () => { adjustVolume(-1);
+      updateButtonColor(hvolDownButton, new BS.Vector4(1,1,1,0.8), plane13color);
+    });
     const hmuteButton = await createHandButton("hMuteButton", p_iconmuteurl, new BS.Vector3(-0.4,0.4,0.3), plane12color, plane20Object, () => {
       browsermuted = !browsermuted;
       runBrowserActions(`document.querySelectorAll('video, audio').forEach((elem) => elem.muted=${browsermuted});`);
-      let muteMaterial = hmuteButton.buttonObject.GetComponent(BS.ComponentType.BanterMaterial);
+      let muteMaterial = hmuteButton.GetComponent(BS.ComponentType.BanterMaterial);
       muteMaterial.color = browsermuted ? new BS.Vector4(1, 0, 0, 1) : plane12color;
     });
     const hlockButton = await createHandButton("hLockButton", 'https://firer.at/files/lock.png', new BS.Vector3(0,-0.1,0.3), new BS.Vector4(1, 1, 1, 0.7), plane20Object, () => {
       playerislockedv2 = !playerislockedv2;
       playerislockedv2 ? lockPlayer() : unlockPlayer();
-      let plane24material = hlockButton.buttonObject.GetComponent(BS.ComponentType.BanterMaterial);
+      let plane24material = hlockButton.GetComponent(BS.ComponentType.BanterMaterial);
       plane24material.color = playerislockedv2 ? new BS.Vector4(1,0,0,1) : new BS.Vector4(1, 1, 1, 0.7);
     });
     console.log("FIRESCREEN2: Hand Click Stuff END");
