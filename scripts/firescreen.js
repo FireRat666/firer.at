@@ -3,7 +3,6 @@
 // VERSION: 1.1 Beta 1.4
 var thishostnameurl = "https://firer.at/scripts/"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var thisscriptsurl = thishostnameurl + "firescreen.js"; // CHANGE THIS
-var handcontrolscripturl = thishostnameurl + "handcontrols.js"; // CHANGE THIS
 var announcerscripturl = thishostnameurl + "announcer.js"; // CHANGE THIS
 var fireScreenOn = false;
 var thebuttoncolor = "";
@@ -1177,10 +1176,10 @@ class handButtonCrap{
 			"document.querySelector('.html5-video-player').setVolume(" + firepercent + ");", }, ]);
 		});
 
-			let firevolbut = document.getElementById("firevoldownbut");
-			let butcolour = firevolbut.getAttribute("color");
-			firevolbut.setAttribute("color", "#FFFFFF"); 
-			setTimeout(() => {  firevolbut.setAttribute("color", butcolour); }, 100);
+			let firevolupbut = document.getElementById("firevoldownbut");
+			let butcolour = firevolupbut.getAttribute("color");
+			firevolupbut.setAttribute("color", "#FFFFFF"); 
+			setTimeout(() => {  firevolupbut.setAttribute("color", butcolour); }, 100);
 
 	}
 
