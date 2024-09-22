@@ -1,6 +1,6 @@
-// SDK2 Based FireScreen, V0.69 Beta 1
-var firescreenurlv2 = "https://firer.at/scripts/firescreenv2.js"; // "https://51.firer.at/scripts/firescreenv2.js";
-var announcerscripturlv2 = "https://firer.at/scripts/announcer.js";
+// SDK2 Based FireScreen, V0.69 Beta 2
+var firescreenurlv2 = "https://51.firer.at/scripts/firescreenv2.js"; // "https://51.firer.at/scripts/firescreenv2.js";
+var announcerscripturlv2 = "https://51.firer.at/scripts/announcer.js";
 var fireScreen2On = false;
 var firstrunhandcontrolsv2 = true;
 var firevolume = 1;
@@ -162,6 +162,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_volume, p_mipmaps, p_pixelsperun
   let announcerfirstrunv2 = true;
   let customButtonObjects = [];
   const screenObject = await new BS.GameObject(`MyBrowser${theNumberofBrowsers}`);
+  console.log(`FireScreen2: p_width:${p_width}, p_height:${p_height}`);
   let firebrowser = await screenObject.AddComponent(new BS.BanterBrowser(p_website, p_mipmaps, p_pixelsperunit, p_width, p_height, null));
 
   let isbillboarded;
@@ -188,41 +189,44 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_volume, p_mipmaps, p_pixelsperun
   const dynamicFriction = 100; const staticFriction = 100;  // ADD FRICTION
   const physicMaterial = await geometryObject.AddComponent(new BS.BanterPhysicMaterial(dynamicFriction, staticFriction));
 
-  let BUTTON_CONFIGS = { home: { icon: "https://firer.at/files/Home.png", position: new BS.Vector3(-0.2,0.38,0), color: thebuttonscolor,
+  let TButPos = 0.38; let LButPos = -0.6; let RButPos = 0.6;
+  if (Number(p_height) === 720) {TButPos += 0.07; LButPos += -0.14; RButPos += 0.14;} else if (Number(p_height) === 1080) {TButPos += 0.23; LButPos += -0.45; RButPos += 0.45;};
+
+  let BUTTON_CONFIGS = { home: { icon: "https://firer.at/files/Home.png", position: new BS.Vector3(-0.2,TButPos,0), color: thebuttonscolor,
       clickHandler: () => { console.log("Home Clicked!"); firebrowser.url = p_website;
       updateButtonColor(uiButtons.home, thebuttonscolor); }
-    }, info: { icon: "https://firer.at/files/Info.png", position: new BS.Vector3(-0.6,0.28,0), color: thebuttonscolor,
+    }, info: { icon: "https://firer.at/files/Info.png", position: new BS.Vector3(LButPos,0.28,0), color: thebuttonscolor,
       clickHandler: () => { console.log("Info Clicked!"); firebrowser.url = "https://firer.at/pages/Info.html";
       updateButtonColor(uiButtons.info, thebuttonscolor); }
-    }, google: { icon: "https://firer.at/files/Google.png", position: new BS.Vector3(-0.6,0.16,0), color: whiteColour,
+    }, google: { icon: "https://firer.at/files/Google.png", position: new BS.Vector3(LButPos,0.16,0), color: whiteColour,
       clickHandler: () => { console.log("Google Clicked!"); firebrowser.url = "https://google.com/";
       updateButtonColor(uiButtons.google, whiteColour); }
-    }, keyboard: { icon: "https://firer.at/files/Keyboard.png", position: new BS.Vector3(-0.6,-0.15,0), color: whiteColour,
+    }, keyboard: { icon: "https://firer.at/files/Keyboard.png", position: new BS.Vector3(LButPos,-0.15,0), color: whiteColour,
       clickHandler: () => { console.log("Keyboard Clicked!"); keyboardstate = !keyboardstate; firebrowser.ToggleKeyboard(keyboardstate ? 1 : 0);
         uiButtons.keyboard.GetComponent(BS.ComponentType.BanterMaterial).color = keyboardstate ? thebuttonscolor : whiteColour; }
-    }, mute: { icon: p_iconmuteurl, position: new BS.Vector3(0.167,0.38,0), color: p_mutecolor,
+    }, mute: { icon: p_iconmuteurl, position: new BS.Vector3(0.167,TButPos,0), color: p_mutecolor,
       clickHandler: () => { console.log("Mute Clicked!"); browsermuted = !browsermuted;
       runBrowserActions(firebrowser, `document.querySelectorAll('video, audio').forEach((elem) => elem.muted=${browsermuted});`);
       uiButtons.mute.GetComponent(BS.ComponentType.BanterMaterial).color = browsermuted ? new BS.Vector4(1,0,0,1) : (p_mutecolor ? p_mutecolor : thebuttonscolor); }
-    }, volDown: { icon: p_iconvoldownurl, position: new BS.Vector3(0.334,0.38,0), color: p_voldowncolor,
+    }, volDown: { icon: p_iconvoldownurl, position: new BS.Vector3(0.334,TButPos,0), color: p_voldowncolor,
       clickHandler: () => { console.log("Volume Down Clicked!"); adjustVolume(firebrowser, -1);
       updateButtonColor(uiButtons.volDown, p_voldowncolor ? p_voldowncolor : thebuttonscolor); }
-    }, pageBack: { icon: p_icondirectionurl, position: new BS.Vector3(-0.5,0.38,0), color: thebuttonscolor,
+    }, pageBack: { icon: p_icondirectionurl, position: new BS.Vector3(-0.5,TButPos,0), color: thebuttonscolor,
       clickHandler: () => { console.log("Back Clicked!"); firebrowser.RunActions(JSON.stringify({"actions":[{"actionType": "goback"}]}));
       updateButtonColor(uiButtons.pageBack, thebuttonscolor); }
-    }, sizeGrow: { icon: "https://firer.at/files/expand.png", position: new BS.Vector3(0.6,0.06,0), color: thebuttonscolor,
+    }, sizeGrow: { icon: "https://firer.at/files/expand.png", position: new BS.Vector3(RButPos,0.06,0), color: thebuttonscolor,
       clickHandler: () => { console.log("Grow Clicked!"); adjustScale(geometrytransform, "grow");
       updateButtonColor(uiButtons.sizeGrow, thebuttonscolor); }
-    }, sizeShrink: { icon: "https://firer.at/files/shrink.png", position: new BS.Vector3(0.6,-0.06,0), color: thebuttonscolor,
+    }, sizeShrink: { icon: "https://firer.at/files/shrink.png", position: new BS.Vector3(RButPos,-0.06,0), color: thebuttonscolor,
       clickHandler: () => { console.log("Shrink Clicked!"); adjustScale(geometrytransform, "shrink");
       updateButtonColor(uiButtons.sizeShrink, thebuttonscolor); }
-    }, pageForward: { icon: p_icondirectionurl, position: new BS.Vector3(-0.38,0.38,0), color: thebuttonscolor,
+    }, pageForward: { icon: p_icondirectionurl, position: new BS.Vector3(-0.38,TButPos,0), color: thebuttonscolor,
       clickHandler: () => { console.log("Forward Clicked!"); firebrowser.RunActions(JSON.stringify({"actions":[{"actionType": "goforward"}]}));
       updateButtonColor(uiButtons.pageForward, thebuttonscolor); }, rotation: new BS.Vector3(0,0,180)
-    }, volUp: { icon: p_iconvolupurl, position: new BS.Vector3(0.495,0.38,0), color: p_volupcolor,
+    }, volUp: { icon: p_iconvolupurl, position: new BS.Vector3(0.495,TButPos,0), color: p_volupcolor,
       clickHandler: () => { console.log("Volume Up Clicked!"); adjustVolume(firebrowser, 1);
       updateButtonColor(uiButtons.volUp, p_volupcolor ? p_volupcolor : thebuttonscolor); }
-    }, billboard: { icon: "https://firer.at/files/Rot.png", position: new BS.Vector3(-0.6,-0.3,0), color: isbillboarded ? thebuttonscolor : whiteColour,
+    }, billboard: { icon: "https://firer.at/files/Rot.png", position: new BS.Vector3(LButPos,-0.3,0), color: isbillboarded ? thebuttonscolor : whiteColour,
       clickHandler: () => {isbillboarded = !isbillboarded; console.log("Billboard Clicked!");
         firesbillBoard.enableXAxis = isbillboarded; firesbillBoard.enableYAxis = isbillboarded;
         uiButtons.billboard.GetComponent(BS.ComponentType.BanterMaterial).color = isbillboarded ? thebuttonscolor : whiteColour; }
@@ -241,22 +245,25 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_volume, p_mipmaps, p_pixelsperun
   let uiButtons = await createUIButtons(screenObject);
 
   let buttonsvisible = true;
-  const hideShowObject = await createUIButton("FireButton_hideShow", "https://firer.at/files/Eye.png", new BS.Vector3(-0.6,0,0), thebuttonscolor, screenObject);
+  const hideShowObject = await createUIButton("FireButton_hideShow", "https://firer.at/files/Eye.png", new BS.Vector3(LButPos,0,0), thebuttonscolor, screenObject);
   createButtonAction(hideShowObject, () => { console.log("HideShow Clicked!");buttonsvisible = !buttonsvisible; toggleButtonVisibility(Object.values(uiButtons), customButtonObjects, buttonsvisible ? 1 : 0)
     hideShowObject.GetComponent(BS.ComponentType.BanterMaterial).color = buttonsvisible ? thebuttonscolor : new BS.Vector4(1, 1, 1, 0.5);
   });
   
+  let RCButPos = 0.68; let RCTexPos = 1.59;
+  if (Number(p_height) === 720) {RCButPos += 0.14; RCTexPos += 0.14;} else if (Number(p_height) === 1080) {RCButPos += 0.4; RCTexPos += 0.4;};
+
   if (p_custombuttonurl01 !== "false") {  console.log("p_custombuttonurl01 is true");
-    await createCustomButton("CustomButton01", firebrowser, screenObject, customButtonObjects, new BS.Vector3(0.68,0.3,0), p_custombutton01text, new BS.Vector3(1.59,-0.188,-0.005), p_custombuttonurl01, () => {});
+    await createCustomButton("CustomButton01", firebrowser, screenObject, customButtonObjects, new BS.Vector3(RCButPos,0.3,0), p_custombutton01text, new BS.Vector3(RCTexPos,-0.188,-0.005), p_custombuttonurl01, () => {});
     console.log(p_custombuttonurl01); };
   if (p_custombuttonurl02 !== "false") { console.log("p_custombuttonurl02 is true");
-    await createCustomButton("CustomButton02", firebrowser, screenObject, customButtonObjects, new BS.Vector3(0.68,0.25,0), p_custombutton02text, new BS.Vector3(1.59,-0.237,-0.005), p_custombuttonurl02, () => {});
+    await createCustomButton("CustomButton02", firebrowser, screenObject, customButtonObjects, new BS.Vector3(RCButPos,0.25,0), p_custombutton02text, new BS.Vector3(RCTexPos,-0.237,-0.005), p_custombuttonurl02, () => {});
     console.log(p_custombuttonurl02); };
   if (p_custombuttonurl03 !== "false") { console.log("p_custombuttonurl03 is true");
-    await createCustomButton("CustomButton03", firebrowser, screenObject, customButtonObjects, new BS.Vector3(0.68,0.20,0), p_custombutton03text, new BS.Vector3(1.59,-0.287,-0.005), p_custombuttonurl03, () => {});
+    await createCustomButton("CustomButton03", firebrowser, screenObject, customButtonObjects, new BS.Vector3(RCButPos,0.20,0), p_custombutton03text, new BS.Vector3(RCTexPos,-0.287,-0.005), p_custombuttonurl03, () => {});
     console.log(p_custombuttonurl03); };
   if (p_custombuttonurl04 !== "false") { console.log("p_custombuttonurl04 is true");
-    await createCustomButton("CustomButton04", firebrowser, screenObject, customButtonObjects, new BS.Vector3(0.68,0.15,0), p_custombutton04text, new BS.Vector3(1.59,-0.336,-0.005), p_custombuttonurl04, () => {});
+    await createCustomButton("CustomButton04", firebrowser, screenObject, customButtonObjects, new BS.Vector3(RCButPos,0.15,0), p_custombutton04text, new BS.Vector3(RCTexPos,-0.336,-0.005), p_custombuttonurl04, () => {});
     console.log(p_custombuttonurl04); };
 
   const firesbillBoard = await geometryObject.AddComponent(new BS.BanterBillboard(0, isbillboarded, isbillboarded, true));  // Bill Board the geometryObject
