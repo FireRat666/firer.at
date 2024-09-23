@@ -1,6 +1,6 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.1 Beta 1.5
+// VERSION: 1.1 Beta 1.6
 var thishostnameurl = "https://firer.at/scripts/"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var thisscriptsurl = thishostnameurl + "firescreen.js"; // CHANGE THIS
 var announcerscripturl = thishostnameurl + "announcer.js"; // CHANGE THIS
@@ -49,6 +49,7 @@ function enableFireScreen() {
       const pVolDownColor = getAttrOrDef(scripts[i], "voldown-color", "null");
       const pMuteColor = getAttrOrDef(scripts[i], "mute-color", "#FFFFFF");
       const pButtonPos = getAttrOrDef(scripts[i], "button-position", "0 0 0");
+      const pButtonRot = getAttrOrDef(scripts[i], "button-rotation", "0 0 0");
       const pIconMuteUrl = getAttrOrDef(scripts[i], "icon-mute-url", "https://firer.at/files/VolumeMute.png");
       const pIconVolUpUrl = getAttrOrDef(scripts[i], "icon-volup-url", "https://firer.at/files/VolumeHigh.png");
       const pIconVolDownUrl = getAttrOrDef(scripts[i], "icon-voldown-url", "https://firer.at/files/VolumeLow.png");
@@ -62,7 +63,7 @@ function enableFireScreen() {
       const pURL = "url: " + pWebsite + "; mipMaps: " + pMipmaps + "; pixelsPerUnit: " + pPixelsperunit + "; pageWidth: " + pWidth + "; pageHeight: " + pHeight + "; mode: local;";
       createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pCastMode, pWebsite, pButtonColor, pAnnouncer, pAnnounce, pAnnounce420, pAnnounceEvents,
 		pBackDropColor, pIconMuteUrl, pIconVolUpUrl, pIconVolDownUrl, pIconDirectionUrl, pVolUpColor, pVolDownColor, pMuteColor,
-		pDisableInteraction, pButtonPos, pHandButtons, pWidth, pHeight, pCustomButton01Url, pCustomButton01Text,
+		pDisableInteraction, pButtonPos, pButtonRot, pHandButtons, pWidth, pHeight, pCustomButton01Url, pCustomButton01Text,
 		pCustomButton02Url, pCustomButton02Text, pCustomButton03Url, pCustomButton03Text);
     }
   };
@@ -85,7 +86,7 @@ function disableFireScreen() {
 
 function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_castmode, p_website, p_buttoncolor, p_announcer, p_announce, p_announce420, p_announceevents,
 	p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor, p_mutecolor,
-	p_disableinteraction, p_buttonpos, p_handbuttons, p_width, p_height, p_custombutton01url, p_custombutton01text,
+	p_disableinteraction, p_buttonpos, p_buttonrot, p_handbuttons, p_width, p_height, p_custombutton01url, p_custombutton01text,
 	p_custombutton02url, p_custombutton02text, p_custombutton03url, p_custombutton03text) {
 		// Setup Hand Controls only on the first run if enabled
         if (p_handbuttons == "true" && firstrunhandcontrols === true) {
@@ -174,6 +175,8 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		firescreen.appendChild(firebackdrop);
 	};
 
+  let [ButRotX, ButRotY, ButRotZ] = p_buttonrot.split(" ").map(Number);
+  let TheButRot = new BS.Vector3(ButRotX, ButRotY, ButRotZ);
 	if (p_castmode == "false") {
 		// lock/unlock button to toggle the screen collider 
 		let firelockbutton = document.createElement("a-plane");
@@ -274,64 +277,6 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		firetiltbackward.setAttribute("visible", "false");
 		firetiltbackward.setAttribute("rotate", "axis: x; amount: 5");
 		firescreen.appendChild(firetiltbackward);
-
-		// // Rotate Left Button test
-		// let firerotlefttest = document.createElement("a-plane");
-		// firerotlefttest.setAttribute("position", "-0.5 -0.47 0");
-		// firerotlefttest.setAttribute("width", "0.1");
-		// firerotlefttest.setAttribute("height", "0.1");
-		// firerotlefttest.setAttribute("color", thebuttoncolor);
-		// firerotlefttest.setAttribute("material", "transparent: true");
-		// firerotlefttest.setAttribute("sq-collider");
-		// firerotlefttest.setAttribute("sq-interactable");
-		// firerotlefttest.setAttribute("class", "tilt");
-		// firerotlefttest.setAttribute("src", "https://firer.at/files/icons/+Z.png");
-		// firerotlefttest.setAttribute("visible", "false");
-		// firerotlefttest.setAttribute("rotate", "axis: z; amount: 0.1");
-		// firescreen.appendChild(firerotlefttest);
-		// // Rotate Right Button test
-		// let firerotrighttest = document.createElement("a-plane");
-		// firerotrighttest.setAttribute("position", "0.5 -0.47 0");
-		// firerotrighttest.setAttribute("width", "0.1");
-		// firerotrighttest.setAttribute("height", "0.1");
-		// firerotrighttest.setAttribute("color", thebuttoncolor);
-		// firerotrighttest.setAttribute("material", "transparent: true");
-		// firerotrighttest.setAttribute("sq-collider");
-		// firerotrighttest.setAttribute("sq-interactable");
-		// firerotrighttest.setAttribute("class", "tilt");
-		// firerotrighttest.setAttribute("src", "https://firer.at/files/icons/-Z.png");
-		// firerotrighttest.setAttribute("visible", "false");
-		// firerotrighttest.setAttribute("rotate", "axis: z; amount: -0.1");
-		// firescreen.appendChild(firerotrighttest);
-		// // Tilt Forwards Button test
-		// let firetiltforwardtest = document.createElement("a-plane");
-		// firetiltforwardtest.setAttribute("position", "-0.4 -0.47 0");
-		// firetiltforwardtest.setAttribute("width", "0.1");
-		// firetiltforwardtest.setAttribute("height", "0.1");
-		// firetiltforwardtest.setAttribute("color", thebuttoncolor);
-		// firetiltforwardtest.setAttribute("material", "transparent: true");
-		// firetiltforwardtest.setAttribute("sq-collider");
-		// firetiltforwardtest.setAttribute("sq-interactable");
-		// firetiltforwardtest.setAttribute("class", "tilt");
-		// firetiltforwardtest.setAttribute("src", "https://firer.at/files/icons/+W.png");
-		// firetiltforwardtest.setAttribute("visible", "false");
-		// firetiltforwardtest.setAttribute("rotate", "axis: w; amount: 0.1");
-		// firescreen.appendChild(firetiltforwardtest);
-		// // Tilt Backwards Button test
-		// let firetiltbackwardtest = document.createElement("a-plane");
-		// firetiltbackwardtest.setAttribute("position", "0.4 -0.47 0");
-		// firetiltbackwardtest.setAttribute("width", "0.1");
-		// firetiltbackwardtest.setAttribute("height", "0.1");
-		// firetiltbackwardtest.setAttribute("color", thebuttoncolor);
-		// firetiltbackwardtest.setAttribute("material", "transparent: true");
-		// firetiltbackwardtest.setAttribute("sq-collider");
-		// firetiltbackwardtest.setAttribute("sq-interactable");
-		// firetiltbackwardtest.setAttribute("class", "tilt");
-		// firetiltbackwardtest.setAttribute("src", "https://firer.at/files/icons/-W.png");
-		// firetiltbackwardtest.setAttribute("visible", "false");
-		// firetiltbackwardtest.setAttribute("rotate", "axis: w; amount: -0.1");
-		// firescreen.appendChild(firetiltbackwardtest);
-
 		// Toggle Rotations Button
 		let firetogglerots = document.createElement("a-plane");
 		firetogglerots.setAttribute("position", "-0.6 -0.3 0");
@@ -387,6 +332,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		let forwardbutpos = "-0.4 0.38 0"
 		let fireforward = document.createElement("a-plane");
 		const forwardArray = p_buttonpos.split(" ");
+    let forwardButRot = new BS.Vector3(ButRotX, ButRotY, ButRotZ + 180);
 		const forwardposArray = forwardbutpos.split(" ");
 		forwardbutpos = (Number(forwardArray[0]) + Number(forwardposArray[0])) + " " + (Number(forwardArray[1]) + Number(forwardposArray[1])) + " " + (Number(forwardArray[2]) + Number(forwardposArray[2]));
 		fireforward.setAttribute("position", forwardbutpos);
@@ -399,7 +345,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 		fireforward.setAttribute("class", "buttons");
 		fireforward.setAttribute("src", p_icondirectionurl);
 		fireforward.setAttribute("navigate-browser", "action: goforward");
-		fireforward.setAttribute("rotation", "0 0 180");
+		fireforward.setAttribute("rotation", forwardButRot);
 		firescreen.appendChild(fireforward);
 		// Google Button
 		let firegooglebut = document.createElement("a-plane");
@@ -435,6 +381,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 	firehomebut.setAttribute("class", "buttons");
 	firehomebut.setAttribute("src", "https://firer.at/files/Home.png");
 	firehomebut.setAttribute("click-url", "url:" + p_website);
+  firehomebut.setAttribute("rotation", TheButRot);
 	firescreen.appendChild(firehomebut);
 
 	// Go Back Button
@@ -453,6 +400,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 	firebackward.setAttribute("class", "buttons");
 	firebackward.setAttribute("src", p_icondirectionurl);
 	firebackward.setAttribute("navigate-browser", "action: goback");
+  firebackward.setAttribute("rotation", TheButRot);
 	firescreen.appendChild(firebackward); 
 	// Mute/UnMute Button
 	let mutebutpos = "0.2 0.38 0";
@@ -471,6 +419,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 	firemutebut.setAttribute("src", p_iconmuteurl);
 	firemutebut.setAttribute("toggle-mute");
 	firemutebut.setAttribute("class", "firemutebutc buttons");
+  firemutebut.setAttribute("rotation", TheButRot);
 	firescreen.appendChild(firemutebut);
 	// Volume Up Button
 	let volupbutpos = "0.5 0.38 0";
@@ -494,6 +443,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 	firevolup.setAttribute("class", "buttons");
 	firevolup.setAttribute("src", p_iconvolupurl);
 	firevolup.setAttribute("volume-level", "vvalue: 0.05");
+  firevolup.setAttribute("rotation", TheButRot);
 	firescreen.appendChild(firevolup);
 	// Volume Down Button
 	let voldownbutpos = "0.35 0.38 0";
@@ -517,6 +467,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
 	firevoldown.setAttribute("class", "buttons");
 	firevoldown.setAttribute("src", p_iconvoldownurl);
 	firevoldown.setAttribute("volume-level", "vvalue: -0.05");
+  firevoldown.setAttribute("rotation", TheButRot);
 	firescreen.appendChild(firevoldown);
 
 
