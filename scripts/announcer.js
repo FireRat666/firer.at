@@ -1,17 +1,17 @@
 // This script was taken from https://vidya.sdq.st/say-names.js and https://best-v-player.glitch.me/say-names.js
-let scriptsource = "https://firer.at/scripts/announcer.js";
-let theusersname = "";
-let timevariable = 0;
-let theusersid = "";
-let announcefirstrun = true;
-let announce = "true";
-let announceevents = "true";
-let announce420 = "false";
-let readytospeak = true;
+var scriptsource = "https://firer.at/scripts/announcer.js";
+var theusersname = "";
+var timevariable = 0;
+var theusersid = "";
+var announcefirstrun = true;
+var announce = "true";
+var announceevents = "true";
+var announce420 = "false";
+var readytospeak = true;
 
-let announceraudiovolume = 0.08;
-const announcerAudioObject = new BS.GameObject("MyAudioSource"); 
-let announcerAudioSource = null;
+var announceraudiovolume = 0.08;
+var announcerAudioObject = new BS.GameObject("MyAudioSource"); 
+var announcerAudioSource = null;
 
 // // Main Speak Function, Thank you Elin and everyone
 async function speak(text) {
@@ -129,8 +129,8 @@ function load420() {
 };
 
 
-const thescripts = document.getElementsByTagName("script");
-const announcerscene = BS.BanterScene.GetInstance();
+var thescripts = document.getElementsByTagName("script");
+var announcerscene = BS.BanterScene.GetInstance();
 var timenow = 9999999999999; // Set Now to a Really Big Number, so if user-joined is called before unity-loaded, it wont spam user joined messages for users that were already in the space
 // Welcome message for user entering the space
 function announcerloadtest() {
@@ -175,7 +175,7 @@ function announcerloadtest() {
     if (theusersid === "4255792aebfae3cea1086f2963c33fdc") {theusersname = "Rabbit"}; // Rabbit
     if (theusersid === "ee95ee1ae0cd0d67066a4519e665911e") {theusersname = "Zelrainer"}; //  Zelrainer
     if (theusersid === "32c3e6ac83b78872be370cb10f0c9729") {theusersname = "Cast Casey Away"}; //  "caseycastaway"
-    if (theusersid === "f8e9b8eed97623712f77f318fa35d7ce") {theusersname = "Pancake Man"}; //  "WaffleMan"
+    if (theusersid === "f8e9b8eed97623712f77f318fa35d7ce") {theusersname = "Waffle Man"}; //  "WaffleMan"
     if (theusersid === "3dbca1090fad5dff35543697ca007066") {theusersname = "Sebek"}; //  "Sebek"
     if (theusersid === "f3da86e3752aa16d8f574777cc5ed842") {theusersname = "Irish Jesus"}; //  "Scottish.Jesus"
     if (theusersid === "89c3abbe6d16e057035cc35ad7492cf7") {theusersname = "Static Threat"}; //  "staticthreat"
@@ -701,8 +701,9 @@ function announcerloadtest() {
         let psudorandomvar = GETPRNGF(welcomeMessages.length);
         let message = welcomeMessages[GETPRNGF(welcomeMessages.length)]; 
 
-        if (theusersid === "3dbca1090fad5dff35543697ca007066") {message = "Bow to your King Seb eck the Mirror Creator"} //  "Sebek"
-        else if (theusersid === "no-220a4b971b3edb376cbc956f5539b8a5") {message = "Big John is here everybody hide your snack packs"}; // Big John
+        if (theusersid === "3dbca1090fad5dff35543697ca007066") {message = "Bow to your King Seb eck the Mirror Creator"}; //  "Sebek"
+        if (theusersid === "no-220a4b971b3edb376cbc956f5539b8a5") {message = "Big John is here everybody hide your snack packs"}; // Big John
+        if (theusersid === "f8e9b8eed97623712f77f318fa35d7ce") {message = "Don't Die it's bad for your health, Waffle Man is here"}; // WaffleMan
 
         speak(message);
       } else if (announcefirstrun) {
@@ -734,93 +735,52 @@ function announcerloadtest() {
     setTimeout(() => { load420(); }, 20000);
 
 
-    
-
-
-announcerscene.On("one-shot", e => {
-  console.log(e.detail);
-  currentshot = e.detail;
-  currentshotuser = e.detail.fromId;
-  currentshotdata = JSON.parse(e.detail.data);
-  if (e.detail.fromAdmin) {
-    console.log("Current Shot From Admin Is True");
-
-    if (currentshotdata.message) {
-      console.log("currentshotdata.message Is True");
-      let thismessage = currentshotdata.message;
-      let thiscurrentaduiovolume = announceraudiovolume;
-      announceraudiovolume = 0.15;
-      speak(thismessage);
-      setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
+  announcerscene.On("one-shot", e => {
+    console.log(e.detail);
+    currentshot = e.detail;
+    currentshotdata = JSON.parse(e.detail.data);
+  
+    const shotMessage = (message, volume) => {
+      if (message) {
+        console.log("shot message");
+        let currentVolume = announceraudiovolume;
+        announceraudiovolume = volume;
+        speak(message);
+        setTimeout(() => { announceraudiovolume = currentVolume; }, 4000);
+      }
     };
-
-    if (currentshotdata.audiofile) {
-      console.log("currentshotdata.audiofile Is True");
-      let thismessage = currentshotdata.audiofile;
-      let thiscurrentaduiovolume = announceraudiovolume;
-      announceraudiovolume = 0.10;
-      playaudiofile(thismessage);
-      setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
+  
+    const shotAudioFile = (audiofile, volume) => {
+      if (audiofile) {
+        console.log("shot audio file");
+        let currentVolume = announceraudiovolume;
+        announceraudiovolume = volume;
+        playaudiofile(audiofile);
+        setTimeout(() => { announceraudiovolume = currentVolume; }, 4000);
+      }
     };
-
-    if (currentshotdata.muteaudio) {
-      console.log("currentshotdata.muteaudio Is True");
-      muteaudiofile();
-    };
-
-  } else if (e.detail.fromId === announcerscene.localUser.uid) {
-    console.log("Current Shot is from Local User");
-
-      if (currentshotdata.message) {
-        console.log("currentshotdata.message Is True");
-        let thiscurrentaduiovolume = announceraudiovolume;
-        speak(currentshotdata.message);
-        announceraudiovolume = 0.15;
-        setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
-      };
-
-      if (currentshotdata.audiofile) {
-        console.log("currentshotdata.audiofile Is True");
-        let thismessage = currentshotdata.audiofile;
-        let thiscurrentaduiovolume = announceraudiovolume;
-        announceraudiovolume = 0.10;
-        playaudiofile(thismessage);
-        setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
-      };
-
+  
+    const shotMute = () => {
       if (currentshotdata.muteaudio) {
-        console.log("currentshotdata.muteaudio Is True");
+        console.log("shot mute");
         muteaudiofile();
-      };
-
-  } else {
-    console.log(e.detail.fromId);
-    if (e.detail.fromId === "f67ed8a5ca07764685a64c7fef073ab9") {
-      if (currentshotdata.message) {
-        console.log("currentshotdata.message Is True");
-        let thismessage = currentshotdata.message;
-        let thiscurrentaduiovolume = announceraudiovolume;
-        announceraudiovolume = 0.15;
-        speak(thismessage);
-        setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
-      };
+      }
     };
-
-    if (currentshotdata.audiofile) {
-      console.log("currentshotdata.audiofile Is True");
-      let thismessage = currentshotdata.audiofile;
-      let thiscurrentaduiovolume = announceraudiovolume;
-      announceraudiovolume = 0.10;
-      playaudiofile(thismessage);
-      setTimeout(() => { announceraudiovolume = thiscurrentaduiovolume; }, 4000);
+  
+    const isAdminOrLocalUser = e.detail.fromAdmin || e.detail.fromId === announcerscene.localUser.uid;
+  
+    if (isAdminOrLocalUser) {
+      console.log(isAdminOrLocalUser ? "Current Shot is from Admin" : "Current Shot is from Local User");
+      shotMessage(currentshotdata.message, 0.15);
+      shotAudioFile(currentshotdata.audiofile, 0.10);
+      shotMute();
+    } else if (e.detail.fromId === "f67ed8a5ca07764685a64c7fef073ab9") {
+        shotMessage(currentshotdata.message, 0.15);
+        shotAudioFile(currentshotdata.audiofile, 0.10);
+        shotMute();
     };
-
-    if (currentshotdata.muteaudio) {
-      console.log("currentshotdata.muteaudio Is True");
-      muteaudiofile();
-    };
-  };
-});
+  });
+    
 // await scene.OneShot(JSON.stringify({message: "Example"}));
 // await announcerscene.OneShot(JSON.stringify({message: "Words go here"}));
 // await announcerscene.OneShot(JSON.stringify({audiofile: "http://firer.at/files/audio/BigJohn.wav"}));
@@ -859,7 +819,7 @@ async function playaudiofile(text) {
 
 };
 
-let audiofilemuted = false
+var audiofilemuted = false
 async function muteaudiofile(text) {
   if (audiofilemuted) {
     console.log("ANNOUNCER: UN-MUTED");
