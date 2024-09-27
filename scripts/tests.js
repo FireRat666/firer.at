@@ -1,62 +1,47 @@
 
-let firesscreenon = 1;
-let teststateprop = "0";
-let i = 0;
 
 window.loadDoneCallback = () => {
   setTimeout(() => window.loaded = true, 3000);
 }
-
 // window.addEventListener('load', (event) => {
-document.addEventListener("DOMContentLoaded", () => {
-  i++;
-  console.log("AdventListener Load Event. " + i);
-  if(window.isBanter){
-  let isFirstRun = false;
-  console.log("set first run false");
-      }
-      AframeInjection.addEventListener('spaceStateChange', async e => {
-            console.log("Space State Listener. " + i)
-            i++;
-            await window.AframeInjection.waitFor(window, "loaded");
-            console.log("changes. " + i)
-            i++;
-            e.detail.changes.forEach(change => {
-                 switch(change.property) {
-                 case "firesscreenon":
-                     if (firesscreenon && firesscreenon !== change.newValue) {
-                      console.log(firesscreenon);
-                      console.log("Fire Screen change");
-                      firesscreenon = change.newValue;
-                     }
-                     if (firesscreenon == "1") {
-                      console.log("Fire Screen: 1");
-                      // enableFireScreen();
-                     }
-                     if (firesscreenon == "0") {
-                      console.log("Fire Screen: 0");
-                      // disableFireScreen();
-                     }
-                  console.log("SpaceStateValue: " + firesscreenon);
-                 break; 
-                 case "teststateprop":
-                     if (teststateprop && teststateprop !== change.newValue) {
-                      console.log(teststateprop);
-                      console.log("teststateprop change");
-                      teststateprop = change.newValue;
-                     }
-                     if (teststateprop == "1") {
-                      console.log("teststateprop: 1");
-                     }
-                     if (teststateprop == "0") {
-                      console.log("teststateprop: 0");
-                     }
-                  console.log("teststateprop value: " + teststateprop);
-                 break; 
-                 }
-                 })
-      });
-  
+// if(window.isBanter){
+//   AframeInjection.addEventListener('spaceStateChange', async e => {
+//     i++;
+//     console.log("Space State Listener. " + i)
+//     e.detail.changes.forEach(change => {
+//       switch(change.property) {
+//       case "zephitestprop":
+//         if (zephitestprop && zephitestprop !== change.newValue) {
+//         console.log(zephitestprop);
+//         console.log("Fire Screen change");
+//         zephitestprop = change.newValue;
+//         }
+//         console.log("zephitestprop: Change");
+//         console.log(change);
+//         console.log("zephitestprop: Change.property");
+//         console.log(change.property);
+//         console.log("zephitestprop: zephitestprop");
+//         console.log(zephitestprop);
+//         console.log("zephitestprop: " + zephitestprop);
+//       break; 
+//       case "teststateprop":
+//         if (teststateprop && teststateprop !== change.newValue) {
+//         console.log(teststateprop);
+//         console.log("teststateprop change");
+//         teststateprop = change.newValue;
+//         }
+//         console.log("teststateprop value: " + teststateprop);
+//       break; 
+//       }
+//       })
+//   });
+// };
+
+AframeInjection.addEventListener('spaceStateChange', async e => {
+  console.log("Space State Listener. ");
+  e.detail.changes.forEach(change => { 
+    console.log(change);
+  });
 });
 
 
