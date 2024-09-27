@@ -1,6 +1,6 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.1 Beta 1.6
+// VERSION: 1.1 Beta 1.7
 var thishostnameurl = "https://firer.at/scripts/"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var thisscriptsurl = thishostnameurl + "firescreen.js"; // CHANGE THIS
 var announcerscripturl = thishostnameurl + "announcer.js"; // CHANGE THIS
@@ -896,9 +896,7 @@ function getAttrOrDef(pScript, pAttr, pDefault) {
   } else {
     return pDefault;
   }
-}
-
-
+};
 
 // Create screen After Unity load 
 var firstbrowserrun = true;
@@ -1004,6 +1002,16 @@ function firescreenloadstuff() {
     };
   }, 500); };
 
+  firescene.On("one-shot", e => { console.log(e)
+    const data = JSON.parse(e.detail.data);
+    if (e.detail.fromAdmin) { console.log("Current Shot From Admin Is True");
+      if (data.fireurl) setfirepageurls(data.fireurl);
+    } else if (e.detail.fromId === "f67ed8a5ca07764685a64c7fef073ab9") {
+      if (data.fireurl) setfirepageurls(data.fireurl);
+    } else { console.log("Current Shot From Admin Is False");
+      console.log(e.detail.fromId);
+    };
+  });
 
 	// firescene.On("unity-loaded", () => {
 	// 	console.log("FIRESCREEN: unity-loaded");
@@ -1134,37 +1142,31 @@ class handButtonCrap{
 
 	}
 
-	volumecontroldown() {
-		let thisloopnumber = 0;
-		document.querySelectorAll('.firescreenc')
-		.forEach((firescreenc) => {
-			thisloopnumber++
-			let volume = parseFloat(firescreenc.getAttribute("volumelevel"));
-      volume = Number(volume);
-      if (volume < 0.1) {
-        volume += Number(-0.01);
-      } else if (volume < 0.5) {
-        volume += Number(-0.02);
-      } else {
-        volume += Number(-0.05);
-      };
-      volume = parseFloat(volume).toFixed(2);
-			if (volume < 0) {volume = 0};
-			console.log("HAND-CONTROLS: FireScreen " + thisloopnumber + "'s Volume is: " + volume);
-      let firepercent = parseInt(volume*100).toFixed(0);
-			firescreenc.setAttribute("volumelevel", volume);
-			firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
-			"document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
-			firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
-			"document.querySelector('.html5-video-player').setVolume(" + firepercent + ");", }, ]);
-		});
-
-			let firevolbut = document.getElementById("firevoldownbut");
-			let butcolour = firevolbut.getAttribute("color");
-			firevolbut.setAttribute("color", "#FFFFFF"); 
-			setTimeout(() => {  firevolbut.setAttribute("color", butcolour); }, 100);
-
-	}
+  volumecontroldown() {
+    const decreaseVolume = (volume) => {
+      if (volume < 0.1) return volume - 0.01;
+      if (volume < 0.5) return volume - 0.02;
+      return volume - 0.05;
+    };
+    document.querySelectorAll('.firescreenc').forEach((firescreenc, index) => {
+      let volume = Math.max(0, decreaseVolume(parseFloat(firescreenc.getAttribute("volumelevel"))));
+      volume = parseFloat(volume.toFixed(2));
+      console.log(`HAND-CONTROLS: FireScreen ${index + 1}'s Volume is: ${volume}`);
+      firescreenc.setAttribute("volumelevel", volume);
+      const percent = Math.round(volume * 100);
+      const browserComponent = firescreenc.components["sq-browser"];
+      browserComponent.runActions([{ actionType: "runscript",
+        strparam1: `document.querySelectorAll('video, audio').forEach(elem => elem.volume = ${volume});`
+      }]);
+      browserComponent.runActions([{ actionType: "runscript",
+        strparam1: `document.querySelector('.html5-video-player').setVolume(${percent});`
+      }]);
+    });
+    const firevolbut = document.getElementById("firevoldownbut");
+    const originalColor = firevolbut.getAttribute("color");
+    firevolbut.setAttribute("color", "#FFFFFF");
+    setTimeout(() => firevolbut.setAttribute("color", originalColor), 100);
+  };
 
 	lockplayerfunc() {
 		let firelockbut = document.getElementById("firelockpbut");
@@ -1195,77 +1197,52 @@ class handButtonCrap{
 		});
     firehomebut.setAttribute("color", "#FFFFFF"); 
     setTimeout(() => {  firehomebut.setAttribute("color", thebuttoncolor); }, 100);
-
-
 	};
 
-	setupHandControls() {
-		console.log("HAND-CONTROLS: Setting up Hand Controls")
+  setupHandControls() {
+    console.log("HAND-CONTROLS: Setting up Hand Controls");
 		// This was a great innovation by HBR, who wanted Skizot to also get credit for the original idea. 
-		const handControlsContainer = document.createElement("a-entity");
-		handControlsContainer.setAttribute("scale", "0.1 0.1 0.1");
-		handControlsContainer.setAttribute("position", "0.04 0.006 -0.010");
-		if (playersuserid != false) {
-			handControlsContainer.setAttribute("sq-lefthand", "whoToShow: " + playersuserid);
-		} else {
-			handControlsContainer.setAttribute("sq-lefthand", "whoToShow: " + window.user.id);
-		};
-		[
-			{
-			image: IconVolUpUrl,
-			position: "-1 0.2 -0.4",
-			colour: volupcolor, 
-			class: "firevolbutc", 
-			id: "firevolupbut", 
-			callback: () => this.volumecontrolup()
-			},
-			{
-			image: IconVolDownUrl,
-			position: "-1 0.2 0",
-			colour: voldowncolor,
-			class: "firevolbutc",
-			id: "firevoldownbut", 
-			callback: () => this.volumecontroldown()
-			},
-			{
-			image: "https://firer.at/files/lock.png",
-			position: "-1 -0.4 0",
-			colour: thebuttoncolor,
-			class: "firelockpbutc",
-			id: "firelockpbut", 
-			callback: () => this.lockplayerfunc()
-			},
-			{
-			image: "https://firer.at/files/Home.png",
-			position: "-1 -0.4 -0.4",
-			colour: thebuttoncolor,
-			class: "firehomepbutc",
-			id: "firehomepbut", 
-			callback: () => this.homefunc()
-			},
-			{
-			image: IconMuteUrl,
-			position: "-1 0.2 0.4", 
-			colour: "#FFFFFF", 
-			class: "firemutebutc", 
-			id: "firemutebut", 
-			callback: () => this.mute()
-			}
-		].forEach(item => {
-			const button = document.createElement("a-plane");
-			button.setAttribute("sq-interactable", "");
-			button.setAttribute("sq-collider", "");
-			button.setAttribute("scale", "0.4 0.4 0.4");
-			button.setAttribute("rotation", "0 -90 180");
-			button.setAttribute("src", item.image);
-			button.setAttribute("color", item.colour);
-			button.setAttribute("transparent", true);
-			button.setAttribute("position", item.position);
-			button.setAttribute("class", item.class);
-			button.setAttribute("id", item.id);
-			button.addEventListener("click", () => item.callback());
-			handControlsContainer.appendChild(button);
-		})
-		document.querySelector("a-scene").appendChild(handControlsContainer);
-	}
+    const handControlsContainer = document.createElement("a-entity");
+    handControlsContainer.setAttribute("scale", "0.1 0.1 0.1");
+    handControlsContainer.setAttribute("position", "0.04 0.006 -0.010");
+    handControlsContainer.setAttribute("sq-lefthand", `whoToShow: ${playersuserid || window.user.id}`);
+  
+    const buttons = [
+      { image: IconVolUpUrl, position: "-1 0.2 -0.4", colour: volupcolor, bclass: "firevolbutc", id: "firevolupbut", callback: this.volumecontrolup },
+      { image: IconVolDownUrl, position: "-1 0.2 0", colour: voldowncolor, bclass: "firevolbutc", id: "firevoldownbut", callback: this.volumecontroldown },
+      { image: "https://firer.at/files/lock.png", position: "-1 -0.4 0", colour: thebuttoncolor, bclass: "firelockpbutc", id: "firelockpbut", callback: this.lockplayerfunc },
+      { image: "https://firer.at/files/Home.png", position: "-1 -0.4 -0.4", colour: thebuttoncolor, bclass: "firehomepbutc", id: "firehomepbut", callback: this.homefunc },
+      { image: IconMuteUrl, position: "-1 0.2 0.4", colour: "#FFFFFF", bclass: "firemutebutc", id: "firemutebut", callback: this.mute }
+    ];
+  
+    buttons.forEach(({ image, position, colour, bclass, id, callback }) => {
+      const button = document.createElement("a-plane");
+      Object.assign(button, {
+        setAttribute: button.setAttribute.bind(button),
+        addEventListener: button.addEventListener.bind(button)
+      });
+      button.setAttribute("sq-interactable", "");
+      button.setAttribute("sq-collider", "");
+      button.setAttribute("scale", "0.4 0.4 0.4");
+      button.setAttribute("rotation", "0 -90 180");
+      button.setAttribute("src", image);
+      button.setAttribute("color", colour);
+      button.setAttribute("transparent", true);
+      button.setAttribute("position", position);
+      button.setAttribute("class", bclass);
+      button.setAttribute("id", id);
+      button.addEventListener("click", callback.bind(this));
+      handControlsContainer.appendChild(button);
+    });
+    document.querySelector("a-scene").appendChild(handControlsContainer);
+  };
+};
+
+function setfirepageurls(thedata) {
+  document.querySelectorAll('.firescreenc')
+  .forEach((firescreenc) => {
+    let ThisHomePage = firescreenc.getAttribute("sq-browser");
+    console.log(ThisHomePage);
+    firescreenc.setAttribute("sq-browser", { url: thedata, pixelsPerUnit: 1200, mipMaps: 0, mode: "local", });
+  });
 };
