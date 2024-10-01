@@ -1,4 +1,4 @@
-// SDK2 Based FireScreen, V0.69 Beta 3 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
+// SDK2 Based FireScreen, V0.69 Beta 3.1 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts / live streams with volume controls or a portable browser for any website.
 var thisScriptLocation = `https://firer.at/scripts/`; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var fireScriptName = `${thisScriptLocation}firescreenv2.js`;
@@ -123,7 +123,7 @@ function setupfirescreen2() {
     const defaultParams = { position: "0 2 0", rotation: "0 0 0", scale: "1 1 1", "screen-position": "0 0 -0.02", "screen-rotation": "0 0 0", volumelevel: "0.25",
       website: "https://firer.at/pages/games.html", mipmaps: "1", pixelsperunit: "1200", width: "1024", height: "576",
       backdrop: "true", "hand-controls": "false", "disable-interaction": "false", "disable-rotation": false, announce: "false", "announce-420": "false", "announce-events": "undefined",
-      "button-color": "0 1 0 1", "backdrop-color": "0 0 0 0.9", "volup-color": "0 1 0 1", "voldown-color": "1 1 0 1", "mute-color": "1 1 1 1", "button-position": "0 0 0",
+      "button-color": "0 1 0 1", "backdrop-color": "0 0 0 0.9", "volup-color": "0 1 0 1", "voldown-color": "1 1 0 1", "mute-color": "1 1 1 1", "space-sync": "false",
       "icon-mute-url": "https://firer.at/files/VolumeMute.png", "icon-volup-url": "https://firer.at/files/VolumeHigh.png",
       "icon-voldown-url": "https://firer.at/files/VolumeLow.png", "icon-direction-url": "https://firer.at/files/Arrow.png",
       "custom-button01-url": "false", "custom-button01-text": "Custom Button 01",
@@ -140,31 +140,31 @@ function setupfirescreen2() {
 
     const params = {}; Object.keys(defaultParams).forEach(key => { params[key] = getParam(key); });
     const {
-      position, rotation, scale, "screen-position": screenPosition, "screen-rotation": screenRotation, volumelevel, mipmaps, pixelsperunit, backdrop, website, "button-color": buttonColor, announce, "announce-420": announce420, "backdrop-color": backdropColor, "icon-mute-url": iconMuteUrl, "icon-volup-url": iconVolUpUrl, "icon-voldown-url": iconVolDownUrl, "icon-direction-url": iconDirectionUrl, "volup-color": volUpColor, "voldown-color": volDownColor, "mute-color": muteColor, "disable-interaction": disableInteraction, "disable-rotation": disableRotation, "button-position": buttonPosition, "hand-controls": handControls, width, height, "announce-events": announceEvents, "custom-button01-url": customButton01Url, "custom-button01-text": customButton01Text, "custom-button02-url": customButton02Url, "custom-button02-text": customButton02Text, "custom-button03-url": customButton03Url, "custom-button03-text": customButton03Text, "custom-button04-url": customButton04Url, "custom-button04-text": customButton04Text
+      position, rotation, scale, "screen-position": screenPosition, "screen-rotation": screenRotation, volumelevel, mipmaps, pixelsperunit, backdrop, website, "button-color": buttonColor, announce, "announce-420": announce420, "backdrop-color": backdropColor, "icon-mute-url": iconMuteUrl, "icon-volup-url": iconVolUpUrl, "icon-voldown-url": iconVolDownUrl, "icon-direction-url": iconDirectionUrl, "volup-color": volUpColor, "voldown-color": volDownColor, "mute-color": muteColor, "disable-interaction": disableInteraction, "disable-rotation": disableRotation, "space-sync": spaceSync, "hand-controls": handControls, width, height, "announce-events": announceEvents, "custom-button01-url": customButton01Url, "custom-button01-text": customButton01Text, "custom-button02-url": customButton02Url, "custom-button02-text": customButton02Text, "custom-button03-url": customButton03Url, "custom-button03-text": customButton03Text, "custom-button04-url": customButton04Url, "custom-button04-text": customButton04Text
     } = params;
 
     sdk2tests(position, rotation, scale, screenPosition, screenRotation, volumelevel, mipmaps, pixelsperunit, backdrop, website, buttonColor, announce, announce420,
       backdropColor, iconMuteUrl, iconVolUpUrl, iconVolDownUrl, iconDirectionUrl, volUpColor, volDownColor, muteColor,
-      disableInteraction, disableRotation, buttonPosition, handControls, width, height, announceEvents, thisBrowserNumber, customButton01Url, customButton01Text,
+      disableInteraction, disableRotation, spaceSync, handControls, width, height, announceEvents, thisBrowserNumber, customButton01Url, customButton01Text,
       customButton02Url, customButton02Text, customButton03Url, customButton03Text, customButton04Url, customButton04Text);
     });
 };
 
-async function sdk2tests(p_pos, p_rot, p_sca, p_screenposition, p_screenrotation, p_volume, p_mipmaps, p_pixelsperunit, p_backdrop, p_website, p_buttoncolor, p_announce, p_announce420, p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor, p_mutecolor, p_disableinteraction, p_disableRotation, p_buttonpos, p_handbuttons, p_width, p_height, p_announceevents, p_thisBrowserNumber, p_custombuttonurl01, p_custombutton01text, p_custombuttonurl02, p_custombutton02text, p_custombuttonurl03, p_custombutton03text, p_custombuttonurl04, p_custombutton04text) {
+async function sdk2tests(p_pos, p_rot, p_sca, p_screenposition, p_screenrotation, p_volume, p_mipmaps, p_pixelsperunit, p_backdrop, p_website, p_buttoncolor, p_announce, p_announce420, p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor, p_mutecolor, p_disableinteraction, p_disableRotation, p_spacesync, p_handbuttons, p_width, p_height, p_announceevents, p_thisBrowserNumber, p_custombuttonurl01, p_custombutton01text, p_custombuttonurl02, p_custombutton02text, p_custombuttonurl03, p_custombutton03text, p_custombuttonurl04, p_custombutton04text) {
   // create a reference to the banter scene
   const firescenev2 = BS.BanterScene.GetInstance();
   the_announce = p_announce;
   the_announce420 = p_announce420;
   the_announceevents = p_announceevents;
-  let firevolume = p_volume;
   fireScreen2On = true;
   let keyboardstate = false;
   let playerislockedv2 = false;
+  let customButtonObjects = [];
+  let firevolume = p_volume;
   let browsermuted = false;
   let announcerfirstrunv2 = true;
-  let customButtonObjects = [];
   const screenObject = await new BS.GameObject(`MyBrowser${p_thisBrowserNumber}`);
-  console.log(`FireScreen2: Width:${p_width}, Height:${p_height}, Number:${p_thisBrowserNumber}`);
+  console.log(`FireScreen2: Width:${p_width}, Height:${p_height}, Number:${p_thisBrowserNumber}, URL:${p_website}`);
   let firebrowser = await screenObject.AddComponent(new BS.BanterBrowser(p_website, p_mipmaps, p_pixelsperunit, p_width, p_height, null));
   firebrowser.homePage = p_website; // Set variable for default Home Page for later use
   firebrowser.volumeLevel = p_volume; // Set variable for Volume Level for later use
@@ -370,7 +370,13 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_screenposition, p_screenrotation
     }, 1000);
     setTimeout(() => { timenow = Date.now(); }, 1000);
   };
-  setTimeout(() => {  adjustVolume(firebrowser, 0) }, 5000); // attempt to set default sound level for the page
+  if (p_spacesync === 'true') {let syncedurl = await getSpaceStateStuff('fireurl'); firebrowser.url = syncedurl;
+    await createCustomButton("SpaceSyncButton", firebrowser, geometryObject, customButtonObjects, new BS.Vector3(RCButPos,0.35,0), "Synced Button", new BS.Vector3(RCTexPos,-0.139,-0.005), syncedurl, async () => {
+      firebrowser.url = await getSpaceStateStuff('fireurl');
+    });
+  };
+  setTimeout(async () => { adjustVolume(firebrowser, 0); // attempt to set default sound level for the page
+  }, 5000);
 };
 
 function getV3FromStrv2(strVector3) {
@@ -403,13 +409,6 @@ function keepsoundlevel2() {
     }, 5000); } else if (fireScreen2On) { console.log("FIRESCREEN2: ALREADY SET soundlevel loop"); } else { console.log("FIRESCREEN2: CLEAR soundlevel loop"); clearInterval(volinterval2); }
 };
 
-if (!window.fireScreenScriptInitialized) { window.fireScreenScriptInitialized = true;
-  console.log("FIRESCREEN2: Initializing the script");
-  setTimeout(() => { setupfirescreen2(); }, 500);
-} else {
-  setTimeout(() => { setupfirescreen2(); }, 1500);
-};
-
 async function adjustForAll(action, change) {
 	let thisloopnumber = 0;
 	while (thisloopnumber < window.theNumberofBrowsers) {
@@ -428,6 +427,39 @@ async function adjustForAll(action, change) {
 	};
 };
 
+async function getSpaceStateStuff(argument) {
+  return new Promise((resolve) => {
+    const thisintervalvar = setInterval(async () => {
+      if (window.user && window.user.id !== undefined) { clearInterval(thisintervalvar);
+        const result = await spaceStateStuff(argument); resolve(result); }
+    }, 100);
+  });
+};
+
+function spaceStateStuff(argument) {
+  let SpaceStateScene = BS.BanterScene.GetInstance().spaceState;
+  let ProtectedSpacestatethings = SpaceStateScene.protected;
+  let PublicSpacestatethings = SpaceStateScene.public;
+  for (const [key, value] of Object.entries(PublicSpacestatethings)) {
+    console.log(`Public Space State Key: ${key}, Value: ${value}`);
+    // if (key === argument) { console.log(`Return Public Space State Key ${key}`); return value; };
+  };
+  for (const [key, value] of Object.entries(ProtectedSpacestatethings)) {
+    console.log(`Protected Space State Key: ${key}, Value: ${value}`);
+    if (key === argument) { console.log(`Return Space State Key ${key}`); return value; };
+  }; 
+  console.log(`Return NULL State Key`);
+  return null;
+};
+
+if (!window.fireScreenScriptInitialized) { window.fireScreenScriptInitialized = true;
+  console.log("FIRESCREEN2: Initializing the script");
+  setTimeout(() => { setupfirescreen2(); }, 500);
+} else {
+  setTimeout(() => { setupfirescreen2(); }, 1500);
+};
+
+// setProtectedSpaceProp('fireurl', "https://firer.at/");
 // await firescenev2.OneShot(JSON.stringify({firevolume: "0.5"}));
 // await firescenev2.OneShot(JSON.stringify({fireurl: "https://firer.at/"}));
 
