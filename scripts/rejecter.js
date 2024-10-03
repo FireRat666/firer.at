@@ -41,6 +41,8 @@ rejecterscene.On("user-joined", e => {
 //     };
 //   };
 
+
+
 // const theuserids = [
 //   {
 //     "name": "Nystx",
@@ -62,7 +64,7 @@ rejecterscene.On("user-joined", e => {
 
 // let userIsSafe = false;
 // function checkUsersID(theUsersID) {
-//   if (theuserids.includes(theUsersID)) { userIsSafe = true; } else { userIsSafe = false; }
+//   for (let i = 0; i < theuserids.length; i++) { if (theuserids[i].userid === theUsersID ) { userIsSafe = true; } };
 //   if (!userIsSafe) { openPage("banter://crystal-lake.bant.ing/"); };
 // };
 
