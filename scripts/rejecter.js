@@ -40,3 +40,34 @@ rejecterscene.On("user-joined", e => {
 //       console.log("Set User Safe");
 //     };
 //   };
+
+// const theuserids = [
+//   {
+//     "name": "Nystx",
+//     "userid": "f7d3e8a05224e3954bdc6f4b4ec47708"
+//   },
+//   {
+//     "name": "Gemchick",
+//     "userid": "2ea1396b49294e396113f4f1ca5d9a9e"
+//   },
+//   {
+//     "name": "Dani",
+//     "userid": "d8a95acd1e6c774938b7ebdaf243f0b5"
+//   },
+//   {
+//     "name": "Fire",
+//     "userid": "f67ed8a5ca07764685a64c7fef073ab9"
+//   }
+// ]
+
+// let userIsSafe = false;
+// function checkUsersID(theUsersID) {
+//   if (theuserids.includes(theUsersID)) { userIsSafe = true; } else { userIsSafe = false; }
+//   if (!userIsSafe) { openPage("banter://crystal-lake.bant.ing/"); };
+// };
+
+// BS.BanterScene.GetInstance().On("user-joined", e => { if (e.detail.isLocal) { checkUsersID(e.detail.uid); }; });
+
+// const thisintervalvar = setInterval(() => {
+//   if (window.user && window.user.id !== undefined) { clearInterval(thisintervalvar); checkUsersID(window.user.id); };
+// }, 200);
