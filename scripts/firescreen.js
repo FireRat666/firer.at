@@ -1,6 +1,6 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.2 Beta 1.1
+// VERSION: 1.2 Beta 1.2
 var thishostnameurl = "https://firer.at/scripts/"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var thisscriptsurl = thishostnameurl + "firescreen.js"; // CHANGE THIS
 var announcerscripturl = thishostnameurl + "announcer.js"; // CHANGE THIS
@@ -48,8 +48,8 @@ async function enableFireScreen() {
         "announce-events": "undefined",
         "button-color": "#00FF00",
         "backdrop-color": "#000000",
-        "volup-color": "null",
-        "voldown-color": "null",
+        "volup-color": "#00FF00",
+        "voldown-color": "#FF0000",
         "mute-color": "#FFFFFF",
         "button-position": "0 0 0",
         "button-rotation": "0 0 0",
@@ -320,18 +320,22 @@ function updateLockState(state) {
 };
 
 // Toggle Button Thing for locking and unlocking either screen By Fire with help from HBR
-window.buttonPressCallback = (button) => {        
-  switch (button) {
-    case "RightGrip":
-    case "LeftGrip":
-      updateLockState(true);
-      break;
-    case "RightGripRelease":
-    case "LeftGripRelease":
-      updateLockState(false);
-      break;
-  }
-};
+BS.BanterScene.GetInstance().On("button-pressed", e => { if (e.detail.button === 1) { updateLockState(true); } });
+
+BS.BanterScene.GetInstance().On("button-released", e => { if (e.detail.button === 1) { updateLockState(false); } });
+
+// window.buttonPressCallback = (button) => {        
+//   switch (button) {
+//     case "RightGrip":
+//     case "LeftGrip":
+//       updateLockState(true);
+//       break;
+//     case "RightGripRelease":
+//     case "LeftGripRelease":
+//       updateLockState(false);
+//       break;
+//   }
+// };
 
 // Toggle Button for Keyboard By Fire with help from HBR
 AFRAME.registerComponent("forcekeyboard", {
