@@ -1,554 +1,242 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.1 Beta 1.7
+// VERSION: 1.2 Beta 1
 var thishostnameurl = "https://firer.at/scripts/"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var thisscriptsurl = thishostnameurl + "firescreen.js"; // CHANGE THIS
 var announcerscripturl = thishostnameurl + "announcer.js"; // CHANGE THIS
 var fireScreenOn = false;
 var thebuttoncolor = "";
-var volupcolor = "";
-var voldowncolor = "";
-var IconVolUpUrl = "";
-var IconVolDownUrl = "";
-var IconMuteUrl = "";
-var numberofbrowsers = 0;
-var announcerfirstrun = true;
-var firstrunhandcontrols = true;
-var handcontrolsdisabled = true;
-var aframedetected = false;
-var playerislocked = false;
 var playersuserid = false;
-var handbuttonmutestate = true;
 
-function enableFireScreen() {
-  console.log("FIRESCREEN: Enabling Screen(s)");
-  // window.enableControllerExtras(); // CAN REMOVE THIS LINE
-  const scripts = document.getElementsByTagName("script");
-  for (let i = 0; i < scripts.length; i++) {
-    if (getAttrOrDef(scripts[i], "src", "") === thisscriptsurl ) {
-      const pPos = getV3FromStr(getAttrOrDef(scripts[i], "position", "1 2 -1"));
-      const pRot = getV3FromStr(getAttrOrDef(scripts[i], "rotation", "0 0 0"));
-      const pSca = getV3FromStr(getAttrOrDef(scripts[i], "scale", "1 1 1"));
-      const pVolume = getAttrOrDef(scripts[i], "volumelevel", "0.25");
-      const pWebsite = getAttrOrDef(scripts[i], "website", "https://firer.at/pages/games.html");
-      const pMipmaps = getAttrOrDef(scripts[i], "mipmaps", "1");
-      const pPixelsperunit = getAttrOrDef(scripts[i], "pixelsperunit", "1200");
-      const pWidth = getAttrOrDef(scripts[i], "width", "1024");
-      const pHeight = getAttrOrDef(scripts[i], "height", "576");
-      const pBackdrop = getAttrOrDef(scripts[i], "backdrop", "true");
-      const pCastMode = getAttrOrDef(scripts[i], "castmode", "false");
-      const pHandButtons = getAttrOrDef(scripts[i], "hand-controls", "false");
-      const pDisableInteraction = getAttrOrDef(scripts[i], "disable-interaction", "false");
-      const pAnnouncer = getAttrOrDef(scripts[i], "announcer", "false");
-      const pAnnounce = getAttrOrDef(scripts[i], "announce", "false");
-	    const pAnnounce420 = getAttrOrDef(scripts[i], "announce-420", "false");
-	    const pAnnounceEvents = getAttrOrDef(scripts[i], "announce-events", "undefined");
-      const pButtonColor = getAttrOrDef(scripts[i], "button-color", "#00FF00");
-      const pBackDropColor = getAttrOrDef(scripts[i], "backdrop-color", "#000000");
-      const pVolUpColor = getAttrOrDef(scripts[i], "volup-color", "null");
-      const pVolDownColor = getAttrOrDef(scripts[i], "voldown-color", "null");
-      const pMuteColor = getAttrOrDef(scripts[i], "mute-color", "#FFFFFF");
-      const pButtonPos = getAttrOrDef(scripts[i], "button-position", "0 0 0");
-      const pButtonRot = getAttrOrDef(scripts[i], "button-rotation", "0 0 0");
-      const pIconMuteUrl = getAttrOrDef(scripts[i], "icon-mute-url", "https://firer.at/files/VolumeMute.png");
-      const pIconVolUpUrl = getAttrOrDef(scripts[i], "icon-volup-url", "https://firer.at/files/VolumeHigh.png");
-      const pIconVolDownUrl = getAttrOrDef(scripts[i], "icon-voldown-url", "https://firer.at/files/VolumeLow.png");
-      const pIconDirectionUrl = getAttrOrDef(scripts[i], "icon-direction-url", "https://firer.at/files/Arrow.png");
-      const pCustomButton01Url = getAttrOrDef(scripts[i], "custom-button01-url", "false");
-      const pCustomButton01Text = getAttrOrDef(scripts[i], "custom-button01-text", "Custom Button 01");
-      const pCustomButton02Url = getAttrOrDef(scripts[i], "custom-button02-url", "false");
-      const pCustomButton02Text = getAttrOrDef(scripts[i], "custom-button02-text", "Custom Button 02");
-      const pCustomButton03Url = getAttrOrDef(scripts[i], "custom-button03-url", "false");
-      const pCustomButton03Text = getAttrOrDef(scripts[i], "custom-button03-text", "Custom Button 03");
-      const pURL = "url: " + pWebsite + "; mipMaps: " + pMipmaps + "; pixelsPerUnit: " + pPixelsperunit + "; pageWidth: " + pWidth + "; pageHeight: " + pHeight + "; mode: local;";
-      createFireScreen(pPos, pRot, pSca, pVolume, pURL, pBackdrop, pCastMode, pWebsite, pButtonColor, pAnnouncer, pAnnounce, pAnnounce420, pAnnounceEvents,
-		pBackDropColor, pIconMuteUrl, pIconVolUpUrl, pIconVolDownUrl, pIconDirectionUrl, pVolUpColor, pVolDownColor, pMuteColor,
-		pDisableInteraction, pButtonPos, pButtonRot, pHandButtons, pWidth, pHeight, pCustomButton01Url, pCustomButton01Text,
-		pCustomButton02Url, pCustomButton02Text, pCustomButton03Url, pCustomButton03Text);
-    }
-  };
+const initialValues = {
+  announcerfirstrun: true,
+  firstrunhandcontrols: true,
+  handControlsDisabled: true,
+  NumberofBrowsers: 0,
+};
+
+for (const [key, value] of Object.entries(initialValues)) {
+  if (typeof window[key] === 'undefined') { window[key] = value; }; // Initialize Variables only once 
 }
 
+async function enableFireScreen() {
+  console.log("FIRESCREEN: Enabling Screen(s)");
+  const firescripts = document.querySelectorAll(`script[src^='${thisscriptsurl}']`);
+  console.log(`FIRESCREEN: Found ${firescripts.length} matching scripts`);
+  firescripts.forEach((script) => { if (script.dataset.processed) { return; }; 
+    window.NumberofBrowsers++; console.log(`FIRESCREEN: Loading browser ${window.NumberofBrowsers}`); script.dataset.processed = 'true';const thisBrowserNumber = window.NumberofBrowsers;
+
+      const defaults = {
+        position: "1 2 -1",
+        rotation: "0 0 0",
+        scale: "1 1 1",
+        volumelevel: "0.25",
+        website: "https://firer.at/pages/games.html",
+        mipmaps: "1",
+        pixelsperunit: "1200",
+        width: "1024",
+        height: "576",
+        backdrop: "true",
+        castmode: "false",
+        "hand-controls": "false",
+        "disable-interaction": "false",
+        announcer: "false",
+        announce: "false",
+        "announce-420": "false",
+        "announce-events": "undefined",
+        "button-color": "#00FF00",
+        "backdrop-color": "#000000",
+        "volup-color": "null",
+        "voldown-color": "null",
+        "mute-color": "#FFFFFF",
+        "button-position": "0 0 0",
+        "button-rotation": "0 0 0",
+        "icon-mute-url": "https://firer.at/files/VolumeMute.png",
+        "icon-volup-url": "https://firer.at/files/VolumeHigh.png",
+        "icon-voldown-url": "https://firer.at/files/VolumeLow.png",
+        "icon-direction-url": "https://firer.at/files/Arrow.png",
+        "custom-button01-url": "false",
+        "custom-button01-text": "Custom Button 01",
+        "custom-button02-url": "false",
+        "custom-button02-text": "Custom Button 02",
+        "custom-button03-url": "false",
+        "custom-button03-text": "Custom Button 03",
+      };
+      const params = Object.fromEntries( Object.entries(defaults).map(([key, defaultValue]) => [ key, getAttrOrDef(script, key, defaultValue), ]) );
+      const pPos = getV3FromStr(params.position); const pRot = getV3FromStr(params.rotation); const pSca = getV3FromStr(params.scale);
+      const pURL = `url: ${params.website}; mipMaps: ${params.mipmaps}; pixelsPerUnit: ${params.pixelsperunit}; pageWidth: ${params.width}; pageHeight: ${params.height}; mode: local;`;
+      createFireScreen(pPos, pRot, pSca, params.volumelevel, pURL, params.backdrop, params.castmode, params.website, params["button-color"], params.announcer, params.announce, params["announce-420"], params["announce-events"], params["backdrop-color"], params["icon-mute-url"], params["icon-volup-url"], params["icon-voldown-url"], params["icon-direction-url"], params["volup-color"], params["voldown-color"], params["mute-color"], params["disable-interaction"], params["button-position"], params["button-rotation"], params["hand-controls"], params.width, params.height, params["custom-button01-url"], params["custom-button01-text"], params["custom-button02-url"], params["custom-button02-text"], params["custom-button03-url"], params["custom-button03-text"],thisBrowserNumber);
+  })
+};
+
 function disableFireScreen() {
-	let thisloopnumber = 0;
-	while (thisloopnumber < numberofbrowsers) {
-		thisloopnumber++
-		let firescreen = document.getElementById("fires-browser" + thisloopnumber);
-		if (firescreen) {
-			// Browser is on, remove it
+  for (let i = 1; i <= window.NumberofBrowsers; i++) {
+		let firescreen = document.getElementById(`fires-browser${i}`);
+		if (firescreen) { // Browser is on, remove it
 			firescreen.parentElement.removeChild(firescreen);
-			console.log("FIRESCREEN: Fire screen Disabled"); 
+			console.log("FIRESCREEN: ${i} Fire Screen(s) Disabled"); 
 		}
 	}
-	fireScreenOn = false;
-	keepsoundlevel();
+	fireScreenOn = false; keepsoundlevel();
+};
+
+function createButton(position, width, height, color, src, attributes = {}, rotation = null, visible = true, buttonClass = "buttons") {
+  let button = document.createElement("a-plane");
+  button.setAttribute("position", position);
+  button.setAttribute("width", width);
+  button.setAttribute("height", height);
+  button.setAttribute("color", color || thebuttoncolor);
+  button.setAttribute("material", "transparent: true");
+  button.setAttribute("sq-collider");
+  button.setAttribute("sq-interactable");
+  button.setAttribute("class", buttonClass);
+  button.setAttribute("src", src);
+  button.setAttribute("visible", visible);
+  if (rotation) { button.setAttribute("rotation", rotation); };
+  for (let [key, value] of Object.entries(attributes)) { button.setAttribute(key, value); };
+  return button;
 };
 
 function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_castmode, p_website, p_buttoncolor, p_announcer, p_announce, p_announce420, p_announceevents,
-	p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor, p_mutecolor,
-	p_disableinteraction, p_buttonpos, p_buttonrot, p_handbuttons, p_width, p_height, p_custombutton01url, p_custombutton01text,
-	p_custombutton02url, p_custombutton02text, p_custombutton03url, p_custombutton03text) {
-		// Setup Hand Controls only on the first run if enabled
-        if (p_handbuttons == "true" && firstrunhandcontrols === true) {
-            firstrunhandcontrols = false;
-            console.log("FIRESCREEN: Enabling Hand Controls")
-            const handbuttonstuff = new handButtonCrap();
-        };
-		
-		// Setup the Announcer only on the first run if enabled
-		if (announcerfirstrun === true) {
-      
-    if (typeof announcerscene === 'undefined') {
-      console.log('FIRESCREEN: announcerscene is not defined, Setting up');
+  p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor, p_mutecolor,
+  p_disableinteraction, p_buttonpos, p_buttonrot, p_handbuttons, p_width, p_height, p_custombutton01url, p_custombutton01text,
+  p_custombutton02url, p_custombutton02text, p_custombutton03url, p_custombutton03text, p_thisBrowserNumber) {
+    
+    thebuttoncolor = p_buttoncolor;
+  // Setup the Announcer only on the first run if enabled
+  if (window.announcerfirstrun && typeof announcerscene === 'undefined') {
+    window.announcerfirstrun = false;
+    console.log("FIRESCREEN: Adding the Announcer Script");
+    const announcerscript = document.createElement("script");
+    announcerscript.id = "fires-announcer";
+    announcerscript.setAttribute("src", announcerscripturl);
+    announcerscript.setAttribute("announce", p_announce);
+    announcerscript.setAttribute("announce-420", p_announce420);
+    announcerscript.setAttribute("announce-events", p_announceevents === "undefined" ? (p_announce === "true" ? "true" : "false") : p_announceevents);
+    document.querySelector("body").appendChild(announcerscript);
+  };
 
-        announcerfirstrun = false;
-        console.log("FIRESCREEN: Adding the Announcer Script");
-        const announcerscript = document.createElement("script");
-        announcerscript.id = "fires-announcer";
-        announcerscript.setAttribute("src", announcerscripturl);
-        announcerscript.setAttribute("announce", p_announce);
-        announcerscript.setAttribute("announce-420", p_announce420);
-        if (p_announceevents === "undefined" && p_announce === "true") {
-          announcerscript.setAttribute("announce-events", "true");
-        } else if (p_announceevents === "undefined") {
-          announcerscript.setAttribute("announce-events", "false");
-        } else {
-          announcerscript.setAttribute("announce-events", p_announceevents);
-        };
-        document.querySelector("body").appendChild(announcerscript);
+  let firescreen = document.createElement("a-entity");
+  firescreen.id = `fires-browser${p_thisBrowserNumber}`;
+  firescreen.setAttribute("position", p_pos);
+  firescreen.setAttribute("rotation", p_rot);
+  firescreen.setAttribute("scale", p_sca);
+  firescreen.setAttribute("pageWidth", p_width);
+  firescreen.setAttribute("pageHeight", p_height);
+  firescreen.setAttribute("volumelevel", p_volume);
+  firescreen.setAttribute("button-color", p_buttoncolor);
+  firescreen.setAttribute("mute-color", p_mutecolor);
+  firescreen.setAttribute("sq-browser", p_url);
+  if (p_disableinteraction === "false") {
+      firescreen.setAttribute("sq-browser-interaction");
+      firescreen.setAttribute("enable-interaction");
+  };
+  firescreen.setAttribute("class", "firescreenc");
+  firescreen.setAttribute("name", "firescreenc");
 
-      } else {
-        console.log('FIRESCREEN: announcerscene is defined, Moving on');
-      };
+  if (p_castmode == "false") {
+      firescreen.setAttribute("sq-rigidbody", "useGravity: false; drag:10; angularDrag:10;");
+  };
 
-		};
+  let firecollider = createButton("0 0 -0.005", "1.0", "0.55", "#ff0000", null, {"sq-boxcollider": "", "sq-grabbable": "", "scale" : "1.0 0.55 0.05", "enableLock" : "false", "opacity" : "0"}, null, false, "collider");
+  firescreen.appendChild(firecollider);
 
-	numberofbrowsers++    
-	thebuttoncolor = p_buttoncolor;
-	// volupcolor = p_volupcolor;
-	// voldowncolor = p_voldowncolor;
-    IconVolUpUrl = p_iconvolupurl;
-    IconVolDownUrl = p_iconvoldownurl;
-    IconMuteUrl = p_iconmuteurl;
-	let firescreen = document.createElement("a-entity");
-	firescreen.id = "fires-browser" + numberofbrowsers;
-	firescreen.setAttribute("position", p_pos);
-	firescreen.setAttribute("rotation", p_rot);
-	firescreen.setAttribute("scale", p_sca);
-	firescreen.setAttribute("pageWidth", p_width);
-	firescreen.setAttribute("pageHeight", p_height);
-	firescreen.setAttribute("volumelevel", p_volume);
-	firescreen.setAttribute("button-color", p_buttoncolor);
-	firescreen.setAttribute("mute-color", p_mutecolor);
-	firescreen.setAttribute( "sq-browser", p_url);
-	if (p_disableinteraction === "false") {
-		firescreen.setAttribute("sq-browser-interaction");
-		firescreen.setAttribute("enable-interaction");
-	}
-	firescreen.setAttribute("class", "firescreenc");
-	firescreen.setAttribute("name", "firescreenc");
-  
-	if (p_castmode == "false") {
-		firescreen.setAttribute( "sq-rigidbody", "useGravity: false; drag:10; angularDrag:10;");
-	};
-	fireScreenOn = true;
-		
-	// for the collider to allow it to be moved
-	let firecollider = document.createElement("a-plane");
-	firecollider.setAttribute("opacity", "0");
-	firecollider.setAttribute("position", "0 0 -0.005");
-	firecollider.setAttribute("scale", "1.0 0.55 0.05");
-	firecollider.setAttribute("color", "#ff0000");
-	firecollider.setAttribute("sq-boxcollider");
-	firecollider.setAttribute("sq-grabbable");
-	firecollider.setAttribute("visible", "false");
-	firescreen.appendChild(firecollider);
-	if (p_backdrop == "true") {
-		// Backdrop for contrast
-		let firebackdrop = document.createElement("a-box");
-		firebackdrop.setAttribute("opacity", "0.9");
-		firebackdrop.setAttribute("position", "0 0 -0.015");
-		firebackdrop.setAttribute("depth", "0.01");
-		firebackdrop.setAttribute("width", "1.09");
-		firebackdrop.setAttribute("height", "0.64");
-		firebackdrop.setAttribute("color", p_backdropcolor);
-		firescreen.appendChild(firebackdrop);
-	};
+  if (p_backdrop == "true") {
+      let firebackdrop = document.createElement("a-box");
+      firebackdrop.setAttribute("opacity", "0.9");
+      firebackdrop.setAttribute("position", "0 0 -0.015");
+      firebackdrop.setAttribute("depth", "0.01");
+      firebackdrop.setAttribute("width", "1.09");
+      firebackdrop.setAttribute("height", "0.64");
+      firebackdrop.setAttribute("color", p_backdropcolor);
+      firescreen.appendChild(firebackdrop);
+  };
 
   let [ButRotX, ButRotY, ButRotZ] = p_buttonrot.split(" ").map(Number);
   let TheButRot = new BS.Vector3(ButRotX, ButRotY, ButRotZ);
-	if (p_castmode == "false") {
-		// lock/unlock button to toggle the screen collider 
-		let firelockbutton = document.createElement("a-plane");
-		firelockbutton.setAttribute("position", "0 0.38 0");
-		firelockbutton.setAttribute("width", "0.1");
-		firelockbutton.setAttribute("height", "0.1");
-		if (thebuttoncolor === "#00FF00") {
-			firelockbutton.setAttribute("color", "#FFFF00");
-		} else {
-			firelockbutton.setAttribute("color", thebuttoncolor);
-		}
-		firelockbutton.setAttribute("material", "transparent: true");
-		firelockbutton.setAttribute("sq-collider");
-		firelockbutton.setAttribute("sq-interactable");
-		firelockbutton.setAttribute("class", "buttons");
-		firelockbutton.setAttribute("src", "https://firer.at/files/HG2.png");
-		firelockbutton.setAttribute("lockbutton");
-		firescreen.appendChild(firelockbutton);
-		// Grow Button
-		let firegrowbutton = document.createElement("a-plane");
-		firegrowbutton.setAttribute("position", "0.6 0.06 0");
-		firegrowbutton.setAttribute("width", "0.1");
-		firegrowbutton.setAttribute("height", "0.1");
-		firegrowbutton.setAttribute("color", thebuttoncolor);
-		firegrowbutton.setAttribute("material", "transparent: true");
-		firegrowbutton.setAttribute("sq-collider");
-		firegrowbutton.setAttribute("sq-interactable");
-		firegrowbutton.setAttribute("class", "buttons");
-		firegrowbutton.setAttribute("src", "https://firer.at/files/expand.png");
-		firegrowbutton.setAttribute("scale-screen", "size: shrink; avalue: 0.1");
-		firescreen.appendChild(firegrowbutton);
-		// Shrink Button
-		let fireshrinkbutton = document.createElement("a-plane");
-		fireshrinkbutton.setAttribute("position", "0.6 -0.06 0");
-		fireshrinkbutton.setAttribute("width", "0.1");
-		fireshrinkbutton.setAttribute("height", "0.1");
-		fireshrinkbutton.setAttribute("color", thebuttoncolor);
-		fireshrinkbutton.setAttribute("material", "transparent: true");
-		fireshrinkbutton.setAttribute("sq-collider");
-		fireshrinkbutton.setAttribute("sq-interactable");
-		fireshrinkbutton.setAttribute("class", "buttons");
-		fireshrinkbutton.setAttribute("src", "https://firer.at/files/shrink.png");
-		fireshrinkbutton.setAttribute("scale-screen", "size: shrink; avalue: -0.1");
-		firescreen.appendChild(fireshrinkbutton);
-		// Rotate Left Button
-		let firerotleft = document.createElement("a-plane");
-		firerotleft.setAttribute("position", "-0.5 -0.37 0");
-		firerotleft.setAttribute("width", "0.1");
-		firerotleft.setAttribute("height", "0.1");
-		firerotleft.setAttribute("color", thebuttoncolor);
-		firerotleft.setAttribute("material", "transparent: true");
-		firerotleft.setAttribute("sq-collider");
-		firerotleft.setAttribute("sq-interactable");
-		firerotleft.setAttribute("class", "tilt");
-		firerotleft.setAttribute("src", "https://firer.at/files/RL.png");
-		firerotleft.setAttribute("visible", "false");
-		firerotleft.setAttribute("rotate", "axis: y; amount: 5");
-		firescreen.appendChild(firerotleft);
-		// Rotate Right Button
-		let firerotright = document.createElement("a-plane");
-		firerotright.setAttribute("position", "0.5 -0.37 0");
-		firerotright.setAttribute("width", "0.1");
-		firerotright.setAttribute("height", "0.1");
-		firerotright.setAttribute("color", thebuttoncolor);
-		firerotright.setAttribute("material", "transparent: true");
-		firerotright.setAttribute("sq-collider");
-		firerotright.setAttribute("sq-interactable");
-		firerotright.setAttribute("class", "tilt");
-		firerotright.setAttribute("src", "https://firer.at/files/RR.png");
-		firerotright.setAttribute("visible", "false");
-		firerotright.setAttribute("rotate", "axis: y; amount: -5");
-		firescreen.appendChild(firerotright);
-		// Tilt Forwards Button
-		let firetiltforward = document.createElement("a-plane");
-		firetiltforward.setAttribute("position", "-0.4 -0.37 0");
-		firetiltforward.setAttribute("width", "0.1");
-		firetiltforward.setAttribute("height", "0.1");
-		firetiltforward.setAttribute("color", thebuttoncolor);
-		firetiltforward.setAttribute("material", "transparent: true");
-		firetiltforward.setAttribute("sq-collider");
-		firetiltforward.setAttribute("sq-interactable");
-		firetiltforward.setAttribute("class", "tilt");
-		firetiltforward.setAttribute("src", "https://firer.at/files/TF.png");
-		firetiltforward.setAttribute("visible", "false");
-		firetiltforward.setAttribute("rotate", "axis: x; amount: -5");
-		firescreen.appendChild(firetiltforward);
-		// Tilt Backwards Button
-		let firetiltbackward = document.createElement("a-plane");
-		firetiltbackward.setAttribute("position", "0.4 -0.37 0");
-		firetiltbackward.setAttribute("width", "0.1");
-		firetiltbackward.setAttribute("height", "0.1");
-		firetiltbackward.setAttribute("color", thebuttoncolor);
-		firetiltbackward.setAttribute("material", "transparent: true");
-		firetiltbackward.setAttribute("sq-collider");
-		firetiltbackward.setAttribute("sq-interactable");
-		firetiltbackward.setAttribute("class", "tilt");
-		firetiltbackward.setAttribute("src", "https://firer.at/files/TB.png");
-		firetiltbackward.setAttribute("visible", "false");
-		firetiltbackward.setAttribute("rotate", "axis: x; amount: 5");
-		firescreen.appendChild(firetiltbackward);
-		// Toggle Rotations Button
-		let firetogglerots = document.createElement("a-plane");
-		firetogglerots.setAttribute("position", "-0.6 -0.3 0");
-		firetogglerots.setAttribute("width", "0.1");
-		firetogglerots.setAttribute("height", "0.1");
-		firetogglerots.setAttribute("color", "#FFFFFF");
-		firetogglerots.setAttribute("material", "transparent: true");
-		firetogglerots.setAttribute("sq-collider");
-		firetogglerots.setAttribute("sq-interactable");
-		firetogglerots.setAttribute("class", "buttons");
-		firetogglerots.setAttribute("src", "https://firer.at/files/Rot.png");
-		firetogglerots.setAttribute("enablerot", "false");
-		firescreen.appendChild(firetogglerots);
-		// Hide/Show Keyboard Button
-		let firekeyboardtog = document.createElement("a-plane");
-		firekeyboardtog.setAttribute("position", "-0.6 -0.15 0");
-		firekeyboardtog.setAttribute("width", "0.1");
-		firekeyboardtog.setAttribute("height", "0.1");
-		firekeyboardtog.setAttribute("color", "#FFFFFF");
-		firekeyboardtog.setAttribute("material", "transparent: true");
-		firekeyboardtog.setAttribute("sq-collider");
-		firekeyboardtog.setAttribute("sq-interactable");
-		firekeyboardtog.setAttribute("class", "buttons");
-		firekeyboardtog.setAttribute("src", "https://firer.at/files/Keyboard.png");
-		firekeyboardtog.setAttribute("forcekeyboard", "false");
-		firescreen.appendChild(firekeyboardtog);
-		// Hide/Show Buttons Button
-		let firevisibletog = document.createElement("a-plane");
-		firevisibletog.setAttribute("position", "-0.6 0 0");
-		firevisibletog.setAttribute("width", "0.1");
-		firevisibletog.setAttribute("height", "0.1");
-		firevisibletog.setAttribute("color", "#FFFFFF");
-		firevisibletog.setAttribute("material", "transparent: true");
-		firevisibletog.setAttribute("sq-collider");
-		firevisibletog.setAttribute("sq-interactable");
-		firevisibletog.setAttribute("src", "https://firer.at/files/Eye.png");
-		firevisibletog.setAttribute("hidebuttons");
-		firescreen.appendChild(firevisibletog);
-		// Info Button
-		let fireinfobut = document.createElement("a-plane");
-		fireinfobut.setAttribute("position", "-0.6 0.28 0");
-		fireinfobut.setAttribute("width", "0.1");
-		fireinfobut.setAttribute("height", "0.1");
-		fireinfobut.setAttribute("color", thebuttoncolor);
-		fireinfobut.setAttribute("material", "transparent: true");
-		fireinfobut.setAttribute("sq-collider");
-		fireinfobut.setAttribute("sq-interactable");
-		fireinfobut.setAttribute("class", "buttons");
-		fireinfobut.setAttribute("src", "https://firer.at/files/Info.png");
-		fireinfobut.setAttribute("click-url", "url: https://firer.at/pages/Info.html");
-		firescreen.appendChild(fireinfobut);
-		// Go Forwards Button
-		let forwardbutpos = "-0.4 0.38 0"
-		let fireforward = document.createElement("a-plane");
-		const forwardArray = p_buttonpos.split(" ");
-    let forwardButRot = new BS.Vector3(ButRotX, ButRotY, ButRotZ + 180);
-		const forwardposArray = forwardbutpos.split(" ");
-		forwardbutpos = (Number(forwardArray[0]) + Number(forwardposArray[0])) + " " + (Number(forwardArray[1]) + Number(forwardposArray[1])) + " " + (Number(forwardArray[2]) + Number(forwardposArray[2]));
-		fireforward.setAttribute("position", forwardbutpos);
-		fireforward.setAttribute("width", "0.1");
-		fireforward.setAttribute("height", "0.1");
-		fireforward.setAttribute("color", thebuttoncolor);
-		fireforward.setAttribute("material", "transparent: true");
-		fireforward.setAttribute("sq-collider");
-		fireforward.setAttribute("sq-interactable");
-		fireforward.setAttribute("class", "buttons");
-		fireforward.setAttribute("src", p_icondirectionurl);
-		fireforward.setAttribute("navigate-browser", "action: goforward");
-		fireforward.setAttribute("rotation", forwardButRot);
-		firescreen.appendChild(fireforward);
-		// Google Button
-		let firegooglebut = document.createElement("a-plane");
-		firegooglebut.setAttribute("position", "-0.6 0.16 0");
-		firegooglebut.setAttribute("width", "0.1");
-		firegooglebut.setAttribute("height", "0.1");
-		firegooglebut.setAttribute("material", "transparent: true");
-		firegooglebut.setAttribute("sq-collider");
-		firegooglebut.setAttribute("sq-interactable");
-		firegooglebut.setAttribute("class", "buttons");
-		firegooglebut.setAttribute("src", "https://firer.at/files/Google.png");
-		firegooglebut.setAttribute("click-url", "url:https://google.com/");
-		firescreen.appendChild(firegooglebut);
-	};
 
-	// Home Button
-	let homebutpos = "-0.27 0.38 0"
-	let firehomebut = document.createElement("a-plane");
-	const homeArray = p_buttonpos.split(" ");
-	const homeposArray = homebutpos.split(" ");
-	homebutpos = (Number(homeArray[0]) + Number(homeposArray[0])) + " " + (Number(homeArray[1]) + Number(homeposArray[1])) + " " + (Number(homeArray[2]) + Number(homeposArray[2]));
-	firehomebut.setAttribute("position", homebutpos);
-	firehomebut.setAttribute("width", "0.1");
-	firehomebut.setAttribute("height", "0.1");
-	if (thebuttoncolor === "#00FF00") {
-		firehomebut.setAttribute("color", "#FF0000");
-	} else {
-		firehomebut.setAttribute("color", thebuttoncolor);
-	}
-	firehomebut.setAttribute("material", "transparent: true");
-	firehomebut.setAttribute("sq-collider");
-	firehomebut.setAttribute("sq-interactable");
-	firehomebut.setAttribute("class", "buttons");
-	firehomebut.setAttribute("src", "https://firer.at/files/Home.png");
-	firehomebut.setAttribute("click-url", "url:" + p_website);
-  firehomebut.setAttribute("rotation", TheButRot);
-	firescreen.appendChild(firehomebut);
+  if (p_castmode == "false") {
+      // Lock/Unlock button
+      firescreen.appendChild(createButton("0 0.38 0", "0.1", "0.1", p_buttoncolor === "#00FF00" ? "#FFFF00" : p_buttoncolor, "https://firer.at/files/HG2.png", {"lockbutton": ""}, TheButRot));
+      // Google button
+      firescreen.appendChild(createButton("-0.6 0.16 0", "0.1", "0.1", "#FFFFFF", "https://firer.at/files/Google.png", {"click-url": "url:https://google.com/"}));
+      // Info button
+      firescreen.appendChild(createButton("-0.6 0.28 0", "0.1", "0.1", p_buttoncolor, "https://firer.at/files/Info.png", {"click-url": "url:https://firer.at/pages/Info.html"}));
+      // Grow and Shrink buttons
+      firescreen.appendChild(createButton("0.6 0.06 0", "0.1", "0.1", p_buttoncolor, "https://firer.at/files/expand.png", {"scale-screen": "size: shrink; avalue: 0.1"}, TheButRot));
+      firescreen.appendChild(createButton("0.6 -0.06 0", "0.1", "0.1", p_buttoncolor, "https://firer.at/files/shrink.png", {"scale-screen": "size: shrink; avalue: -0.1"}, TheButRot));
+      // Rotate and Tilt buttons
+      firescreen.appendChild(createButton("-0.5 -0.37 0", "0.1", "0.1", p_buttoncolor, "https://firer.at/files/RL.png", {"rotate": "axis: y; amount: 5"}, null, false, "tilt"));
+      firescreen.appendChild(createButton("0.5 -0.37 0", "0.1", "0.1", p_buttoncolor, "https://firer.at/files/RR.png", {"rotate": "axis: y; amount: -5"}, null, false, "tilt"));
+      firescreen.appendChild(createButton("-0.4 -0.37 0", "0.1", "0.1", p_buttoncolor, "https://firer.at/files/TF.png", {"rotate": "axis: x; amount: -5"}, null, false, "tilt"));
+      firescreen.appendChild(createButton("0.4 -0.37 0", "0.1", "0.1", p_buttoncolor, "https://firer.at/files/TB.png", {"rotate": "axis: x; amount: 5"}, null, false, "tilt"));
+      // Toggle rotation button
+      firescreen.appendChild(createButton("-0.6 -0.3 0", "0.1", "0.1", "#FFFFFF", "https://firer.at/files/Rot.png", {"enablerot": "false"}, TheButRot));
+      // Hide/Show keyboard button
+      firescreen.appendChild(createButton("-0.6 -0.15 0", "0.1", "0.1", "#FFFFFF", "https://firer.at/files/Keyboard.png", {"forcekeyboard": "false"}, TheButRot));
+      // Hide/Show buttons toggle
+      firescreen.appendChild(createButton("-0.6 0 0", "0.1", "0.1", "#FFFFFF", "https://firer.at/files/Eye.png", {"hidebuttons": ""}, TheButRot, true, ""));
+  };
 
-	// Go Back Button
-	let backbutpos = "-0.5 0.38 0";
-	let firebackward = document.createElement("a-plane");
-	const backArray = p_buttonpos.split(" ");
-	const backposArray = backbutpos.split(" ");
-	backbutpos = (Number(backArray[0]) + Number(backposArray[0])) + " " + (Number(backArray[1]) + Number(backposArray[1])) + " " + (Number(backArray[2]) + Number(backposArray[2]));
-	firebackward.setAttribute("position", backbutpos);
-	firebackward.setAttribute("width", "0.1");
-	firebackward.setAttribute("height", "0.1");
-	firebackward.setAttribute("color", thebuttoncolor);
-	firebackward.setAttribute("material", "transparent: true");
-	firebackward.setAttribute("sq-collider");
-	firebackward.setAttribute("sq-interactable");
-	firebackward.setAttribute("class", "buttons");
-	firebackward.setAttribute("src", p_icondirectionurl);
-	firebackward.setAttribute("navigate-browser", "action: goback");
-  firebackward.setAttribute("rotation", TheButRot);
-	firescreen.appendChild(firebackward); 
-	// Mute/UnMute Button
-	let mutebutpos = "0.2 0.38 0";
-	let firemutebut = document.createElement("a-plane");
-	const muteArray = p_buttonpos.split(" ");
-	const muteposArray = mutebutpos.split(" ");
-	mutebutpos = (Number(muteArray[0]) + Number(muteposArray[0])) + " " + (Number(muteArray[1]) + Number(muteposArray[1])) + " " + (Number(muteArray[2]) + Number(muteposArray[2]));
-	firemutebut.setAttribute("position", mutebutpos);
-	firemutebut.setAttribute("width", "0.1");
-	firemutebut.setAttribute("height", "0.1");
-	firemutebut.setAttribute("color", p_mutecolor);
-	firemutebut.setAttribute("material", "transparent: true");
-	firemutebut.setAttribute("sq-collider");
-	firemutebut.setAttribute("sq-interactable");
-	firemutebut.setAttribute("class", "buttons");
-	firemutebut.setAttribute("src", p_iconmuteurl);
-	firemutebut.setAttribute("toggle-mute");
-	firemutebut.setAttribute("class", "firemutebutc buttons");
-  firemutebut.setAttribute("rotation", TheButRot);
-	firescreen.appendChild(firemutebut);
-	// Volume Up Button
-	let volupbutpos = "0.5 0.38 0";
-	let firevolup = document.createElement("a-plane");
-	const volupArray = p_buttonpos.split(" ");
-	const volupposArray = volupbutpos.split(" ");
-	volupbutpos = (Number(volupArray[0]) + Number(volupposArray[0])) + " " + (Number(volupArray[1]) + Number(volupposArray[1])) + " " + (Number(volupArray[2]) + Number(volupposArray[2]));
-	firevolup.setAttribute("position", volupbutpos);
-	firevolup.setAttribute("width", "0.1");
-	firevolup.setAttribute("height", "0.1");
-	if (p_volupcolor === "null") {
-		firevolup.setAttribute("color", thebuttoncolor);
-		volupcolor = "#00FF00";
-	} else {
-		firevolup.setAttribute("color", p_volupcolor);
-		volupcolor = p_volupcolor;
-	}
-	firevolup.setAttribute("material", "transparent: true");
-	firevolup.setAttribute("sq-collider");
-	firevolup.setAttribute("sq-interactable");
-	firevolup.setAttribute("class", "buttons");
-	firevolup.setAttribute("src", p_iconvolupurl);
-	firevolup.setAttribute("volume-level", "vvalue: 0.05");
-  firevolup.setAttribute("rotation", TheButRot);
-	firescreen.appendChild(firevolup);
-	// Volume Down Button
-	let voldownbutpos = "0.35 0.38 0";
-	let firevoldown = document.createElement("a-plane");
-	let voldownArray = p_buttonpos.split(" ");
-	let voldownposArray = voldownbutpos.split(" ");
-	voldownbutpos = (Number(voldownArray[0]) + Number(voldownposArray[0])) + " " + (Number(voldownArray[1]) + Number(voldownposArray[1])) + " " + (Number(voldownArray[2]) + Number(voldownposArray[2]));
-	firevoldown.setAttribute("position", voldownbutpos);
-	firevoldown.setAttribute("width", "0.1");
-	firevoldown.setAttribute("height", "0.1");
-	if (p_voldowncolor === "null") {
-		firevoldown.setAttribute("color", thebuttoncolor);
-		voldowncolor = "#FFFF00";
-	} else {
-		firevoldown.setAttribute("color", p_voldowncolor);
-		voldowncolor = p_voldowncolor;
-	}
-	firevoldown.setAttribute("material", "transparent: true");
-	firevoldown.setAttribute("sq-collider");
-	firevoldown.setAttribute("sq-interactable");
-	firevoldown.setAttribute("class", "buttons");
-	firevoldown.setAttribute("src", p_iconvoldownurl);
-	firevoldown.setAttribute("volume-level", "vvalue: -0.05");
-  firevoldown.setAttribute("rotation", TheButRot);
-	firescreen.appendChild(firevoldown);
+  // Home button
+  let homeButtonPos = computeButtonPosition(p_buttonpos, "-0.27 0.38 0");
+  firescreen.appendChild(createButton(homeButtonPos, "0.1", "0.1", p_buttoncolor === "#00FF00" ? "#FF0000" : p_buttoncolor, "https://firer.at/files/Home.png", {"click-url": `url:${p_website}`}, TheButRot));
+  // Forward button
+  let forwardButtonPos = computeButtonPosition(p_buttonpos, "-0.4 0.38 0");
+  let forwardButtonRot = new BS.Vector3(ButRotX, ButRotY, ButRotZ + 180);
+  firescreen.appendChild(createButton(forwardButtonPos, "0.1", "0.1", p_buttoncolor, p_icondirectionurl, {"navigate-browser": "action: goforward"}, forwardButtonRot));
+  // Backward button
+  let backButtonPos = computeButtonPosition(p_buttonpos, "-0.5 0.38 0");
+  firescreen.appendChild(createButton(backButtonPos, "0.1", "0.1", p_buttoncolor, p_icondirectionurl, {"navigate-browser": "action: goback"}, TheButRot));
+  // Mute Toggle Button
+  let muteButtonPos = computeButtonPosition(p_buttonpos, "0.2 0.38 0");
+  let muteButton = createButton(muteButtonPos, "0.1", "0.1", p_mutecolor, p_iconmuteurl, {"toggle-mute": ""}, TheButRot, true, "firemutebutc buttons");
+  firescreen.appendChild(muteButton);
+  // volUp Button
+  let volUpButtonPos = computeButtonPosition(p_buttonpos, "0.5 0.38 0");
+  let volUpButton = createButton(volUpButtonPos, "0.1", "0.1", p_volupcolor || p_buttoncolor, p_iconvolupurl, {"volume-level": "vvalue: 1"}, TheButRot);
+  firescreen.appendChild(volUpButton);
+  // volDown Button
+  let volDownButtonPos = computeButtonPosition(p_buttonpos, "0.35 0.38 0");
+  let volDownButton = createButton(volDownButtonPos, "0.1", "0.1", p_voldowncolor || p_buttoncolor, p_iconvoldownurl, {"volume-level": "vvalue: -1"}, TheButRot);
+  firescreen.appendChild(volDownButton);
 
+  function addCustomButton(url, text, position) {
+      if (url !== "false") {
+          let button = createButton(position, "0.2", "0.04", "#000000", null, {"click-url": `url:${url}`});
+          let buttonText = document.createElement("a-text");
+          buttonText.setAttribute("value", text);
+          buttonText.setAttribute("position", "0 0 0.005");
+          buttonText.setAttribute("scale", "0.11 0.11 0.11");
+          buttonText.setAttribute("color", "#FFFFFF");
+          buttonText.setAttribute("align", "center");
+          button.appendChild(buttonText);
+          firescreen.appendChild(button);
+      };
+  };
 
-	
-	if (p_custombutton01url != "false") {
-		// Custom Button 01 Part 1
-		let fireextra01 = document.createElement("a-plane");
-		fireextra01.id = "extra-button-1";
-		fireextra01.setAttribute("position", "0.68 0.3 0");
-		fireextra01.setAttribute("width", "0.2");
-		fireextra01.setAttribute("height", "0.04");
-		fireextra01.setAttribute("material", "transparent: true");
-		fireextra01.setAttribute("color", "#000000");
-		fireextra01.setAttribute("sq-collider");
-		fireextra01.setAttribute("sq-interactable");
-		fireextra01.setAttribute("class", "buttons");
-		fireextra01.setAttribute("click-url", "url:" + p_custombutton01url);
-		firescreen.appendChild(fireextra01);
-		// Custom Button 01 Part 2
-		let fireextra01p2 = document.createElement("a-text");
-		fireextra01p2.setAttribute("value", p_custombutton01text);
-		fireextra01p2.setAttribute("position", "0 0 0.005");
-		fireextra01p2.setAttribute("scale", "0.11 0.11 0.11");
-		fireextra01p2.setAttribute("color", "#FFFFFF");
-		fireextra01p2.setAttribute("align", "center");
-		fireextra01.appendChild(fireextra01p2);
+  addCustomButton(p_custombutton01url, p_custombutton01text, "0.68 0.3 0");
+  addCustomButton(p_custombutton02url, p_custombutton02text, "0.68 0.25 0");
+  addCustomButton(p_custombutton03url, p_custombutton03text, "0.68 -0.3 0");
 
-	};
+  document.querySelector("a-scene").appendChild(firescreen);
+  setTimeout(() => {
+      setupBrowsers();
+      keepsoundlevel();
+  }, 2000);
 
-	if (p_custombutton02url != "false") {
-		// Extra Button 02 Part 1
-		let fireextra02 = document.createElement("a-plane");
-		fireextra02.id = "extra-button-2";
-		fireextra02.setAttribute("position", "0.68 0.25 0");
-		fireextra02.setAttribute("width", "0.2");
-		fireextra02.setAttribute("height", "0.04");
-		fireextra02.setAttribute("material", "transparent: true");
-		fireextra02.setAttribute("color", "#000000");
-		fireextra02.setAttribute("sq-collider");
-		fireextra02.setAttribute("sq-interactable");
-		fireextra02.setAttribute("class", "buttons");
-		fireextra02.setAttribute("click-url", "url:" + p_custombutton02url);
-		firescreen.appendChild(fireextra02);
-		// Extra Button 02 Part 2
-		let fireextra02p2 = document.createElement("a-text");
-		fireextra02p2.setAttribute("value", p_custombutton02text);
-		fireextra02p2.setAttribute("position", "0 0 0.005");
-		fireextra02p2.setAttribute("scale", "0.11 0.11 0.11");
-		fireextra02p2.setAttribute("color", "#FFFFFF");
-		fireextra02p2.setAttribute("align", "center");
-		fireextra02.appendChild(fireextra02p2);
-	};
-	if (p_custombutton03url != "false") {
-		// Extra Button 03 Part 1
-		let fireextra03 = document.createElement("a-plane");
-		fireextra03.id = "extra-button-3";
-		fireextra03.setAttribute("position", "0.68 -0.3 0");
-		fireextra03.setAttribute("width", "0.2");
-		fireextra03.setAttribute("height", "0.04");
-		fireextra03.setAttribute("material", "transparent: true");
-		fireextra03.setAttribute("color", "#000000");
-		fireextra03.setAttribute("sq-collider");
-		fireextra03.setAttribute("sq-interactable");
-		fireextra03.setAttribute("class", "buttons");
-		fireextra03.setAttribute("click-url", "url:" + p_custombutton03url);
-		firescreen.appendChild(fireextra03);
-		// Extra Button 03 Part 2
-		let fireextra03p2 = document.createElement("a-text");
-		fireextra03p2.setAttribute("value", p_custombutton03text);
-		fireextra03p2.setAttribute("position", "0 0 0.005");
-		fireextra03p2.setAttribute("scale", "0.11 0.11 0.11");
-		fireextra03p2.setAttribute("color", "#FFFFFF");
-		fireextra03p2.setAttribute("align", "center");
-		fireextra03.appendChild(fireextra03p2);
-	}; 
-	document.querySelector("a-scene").appendChild(firescreen);
-	setTimeout(() => { setupBrowsers(); keepsoundlevel(); }, 1000);
-	console.log("FIRESCREEN: " + numberofbrowsers + " screen(s) Enabled");
-	
+  if (p_handbuttons === "true" && window.firstrunhandcontrols) {
+    window.firstrunhandcontrols = false; console.log("FIRESCREEN: Enabling Hand Controls");
+    const handControl  = new handButtonCrap(p_voldowncolor, p_volupcolor, p_mutecolor, p_iconvolupurl, p_iconvoldownurl, p_iconmuteurl, p_buttoncolor); handControl.initialize();
+  };
+  console.log(`FIRESCREEN: ${p_thisBrowserNumber} screen(s) Enabled`);
 };
 
+function computeButtonPosition(basePos, offsetPos) {
+    const baseArray = basePos.split(" ").map(Number);
+    const offsetArray = offsetPos.split(" ").map(Number);
+    return baseArray.map((base, i) => base + offsetArray[i]).join(" ");
+};
 
 // Sets the default sound level probably
 var volinterval = null;
@@ -559,690 +247,417 @@ function keepsoundlevel() {
 	soundlevelfirstrun = false;
   // Loop to keep sound level set, runs every second
     volinterval = setInterval(function() {
-		let thisloopnumber = 0;
-		while (thisloopnumber < numberofbrowsers) {
-			thisloopnumber++
-			let theBrowser = document.getElementById("fires-browser" + thisloopnumber);
+    for (let i = 1; i <= window.NumberofBrowsers; i++) {
+			let theBrowser = document.getElementById(`fires-browser${i}`);
 			let volume = parseFloat(theBrowser.getAttribute("volumelevel"));
       let firepercent = parseInt(volume*100).toFixed(0);
 			theBrowser.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
-			"document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
-			theBrowser.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
-			"document.querySelector('.html5-video-player').setVolume(" + firepercent + ");", }, ]);
-			// document.querySelectorAll('.firescreenc')
-			//   .forEach((firescreenc) => {
-			// 	setTimeout(() => { 
-			// 		let volume = parseFloat(firescreenc.getAttribute("volumelevel"));
-			// 		firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
-			// 		"document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
-			// 	}, 1000);
-			//   });
-
-		}
+			`document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${volume});document.querySelector('.html5-video-player').setVolume("${firepercent});`, }, ]);
+		};
     }, 5000); } else if (fireScreenOn) { } else { clearInterval(volinterval); }
 };
 
 // Set the width and height of the screen(s)
 var notalreadysetup = true;
-function setupBrowsers() {
+async function setupBrowsers() {
 	if (notalreadysetup) {
 		notalreadysetup = false;
-		let thisloopnumber = 0;
-		while (thisloopnumber < numberofbrowsers) {
-			thisloopnumber++
-			let theBrowser = document.getElementById("fires-browser" + thisloopnumber);
-			let browserpageWidth = theBrowser.getAttribute("pageWidth");
-			let browserpageHeight = theBrowser.getAttribute("pageHeight");
-			theBrowser.browser.pageWidth=browserpageWidth;
-			theBrowser.browser.pageHeight=browserpageHeight;
-			
-			theBrowser.transform.WatchProperties([BS.PropertyName.position, BS.PropertyName.eulerAngles]); // Test Watch Properties
-			// console.log(`FIRESCREEN: Position: ${JSON.stringify(theBrowser.transform.position)} Rotation: ${JSON.stringify(theBrowser.transform.rotation)}`);
-
-			let x = theBrowser.object3D.rotation.x;
-			let y = theBrowser.object3D.rotation.y;
-			let z = theBrowser.object3D.rotation.z;
-			// theBrowser.transform.lerpRotation = true;
-			theBrowser.transform.eulerAngles = new BS.Vector3(x, y, z); 
-
-			console.log("FIRESCREEN: " + thisloopnumber + " Width is: " + browserpageWidth + " and Height: " + browserpageHeight);
-
-			if (announcerfirstrun === false) {
-			announcefirstrun = false;
-			timenow = Date.now(); 
-			}
-		};
+    for (let i = 1; i <= window.NumberofBrowsers; i++) {
+      const browserElement = document.getElementById(`fires-browser${i}`);
+      const browserPageWidth = browserElement.getAttribute("pageWidth");
+      const browserPageHeight = browserElement.getAttribute("pageHeight");
+      browserElement.browser.pageWidth = browserPageWidth; browserElement.browser.pageHeight = browserPageHeight;
+      browserElement.transform.WatchProperties([BS.PropertyName.position, BS.PropertyName.eulerAngles]); // Test Watch Properties
+      const { rotation } = browserElement.object3D;
+      browserElement.transform.eulerAngles = new BS.Vector3(rotation.x, rotation.y, rotation.z);
+      console.log(`FIRESCREEN: ${i} Width is: ${browserPageWidth} and Height: ${browserPageHeight}`);
+      if (!window.announcerfirstrun) { timenow = Date.now(); }
+    };
 	};
-}
+};
 
+function handleButtonClick(element) {
+  const buttonColor = element.getAttribute("color");
+  element.setAttribute("color", (buttonColor === "#FFFFFF" ? "#00FF00" : "#FFFFFF"));
+  setTimeout(() => {
+    element.setAttribute("color", buttonColor);
+  }, 100);
+}
 
 // Enables Interaction for all the browser windows by HBR
-
-	AFRAME.registerComponent("enable-interaction", { init: async function() { await window.AframeInjection.waitFor(this.el, "browser");
-		this.el.browser.ToggleInteraction(true) 			} });
-			
+AFRAME.registerComponent("enable-interaction", { init: async function() { await window.AframeInjection.waitFor(this.el, "browser"); this.el.browser.ToggleInteraction(true) } });
+    
 // Listens for button clicks to open the urls on either Screen by HBR
-  AFRAME.registerComponent("click-url", {
-	schema: { url: { type: "string", default: "" }, },
-	init: function () {
-	  this.el.addEventListener("click", () => {                         
-		const TheBrowser = this.el.parentElement;
-		let thisbuttoncolor = this.el.getAttribute("color");
-		if (thisbuttoncolor != null) {
-			this.el.setAttribute("color", "#FFFFFF"); 
-			setTimeout(() => {  this.el.setAttribute("color", thisbuttoncolor); }, 100);
-		};
-		TheBrowser.setAttribute("sq-browser", { url: this.data.url, pixelsPerUnit: 1600, mipMaps: 1, mode: "local", });		
-		});		},		});
+AFRAME.registerComponent("click-url", {
+schema: { url: { type: "string", default: "" }, },
+init: function () { this.el.addEventListener("click", () => {
+  const TheBrowser = this.el.parentElement; handleButtonClick(this.el);
+  TheBrowser.setAttribute("sq-browser", { url: this.data.url, pixelsPerUnit: 1600, mipMaps: 1, mode: "local", });		
+});		},		});
 		
- // Toggle Button for locking and unlocking either screen By Fire with help from HBR
-  AFRAME.registerComponent("lockbutton", {
-	init: function () {
-	  this.el.addEventListener("click", () => {                         
-		const TheBrowser = this.el.parentElement;
-		const lockToggle = this.el;
-		const ColliderScreen = lockToggle.parentElement.children[0];
-		let thisbuttoncolor = TheBrowser.getAttribute("button-color");
-		if (ColliderScreen.getAttribute("visible")) {
-			if (thisbuttoncolor === "#00FF00") {
-				lockToggle.setAttribute("color","#FFFF00");
-			} else { 
-				lockToggle.setAttribute("color", thisbuttoncolor);
-			};
-			ColliderScreen.setAttribute("visible","false");
-		} else {
-			// if (thisbuttoncolor === "#00FF00") {
-			// 	lockToggle.setAttribute("color","#FFFF00");
-			// } else { 
-				lockToggle.setAttribute("color","#00FF00");
-			// };
-			ColliderScreen.setAttribute("visible","true");
-	  }		});  }, 	});
+// Toggle Button for locking and unlocking either screen By Fire with help from HBR
+AFRAME.registerComponent("lockbutton", {
+init: function () {
+  this.el.addEventListener("click", () => {                         
+  const TheBrowser = this.el.parentElement;
+  const lockToggle = this.el;
+  const ColliderScreen = lockToggle.parentElement.children[0];
+  let thisbuttoncolor = TheBrowser.getAttribute("button-color");
+  const isLockEnabled = ColliderScreen.getAttribute("enableLock") === "true";
+  const newColor = isLockEnabled ? (thisbuttoncolor === "#00FF00" ? "#FFFF00" : thisbuttoncolor) : "#00FF00";
+  lockToggle.setAttribute("color", newColor);
+  ColliderScreen.setAttribute("enableLock", isLockEnabled ? "false" : "true");
+});  }, 	});
 
- // Toggle Button for Keyboard By Fire with help from HBR
- AFRAME.registerComponent("forcekeyboard", {
-	init: function () {
-	  this.el.addEventListener("click", () => {                         
-    	const TheBrowser = this.el.parentElement;
-		let keyboardstate = this.el.getAttribute("forcekeyboard");
-		let thisbuttoncolor = TheBrowser.getAttribute("button-color");
-		if (keyboardstate == "true") {
-			TheBrowser.browser.ToggleKeyboard(0)
-			this.el.setAttribute("forcekeyboard", "false");
-			this.el.setAttribute("color","#FFFFFF");
-		} else {
-      TheBrowser.browser.ToggleKeyboard(1)
-      this.el.setAttribute("forcekeyboard", "true");
-      this.el.setAttribute("color", thisbuttoncolor);
-	  }		});  }, 	});
+function updateLockState(state) {
+  document.querySelectorAll('.firescreenc').forEach(element => {
+    const ColliderScreen = element.children[0];
+    if (ColliderScreen.getAttribute("enableLock") === "true") { ColliderScreen.setAttribute("visible", state);
+    } else if (ColliderScreen.getAttribute("visible")) { ColliderScreen.setAttribute("visible", false); };
+  });
+};
 
-// Toggle Sound for browser screen By Fire with help from HBR
-	AFRAME.registerComponent("toggle-mute", {
-	init: function () {
-		this.el.addEventListener("click", () => {
-		const TheBrowser = this.el.parentElement;
-		const MuteButton = this.el;
-		let thisbuttoncolor = TheBrowser.getAttribute("mute-color");
-		if(TheBrowser.getAttribute("datamuted")=="true") {
-			MuteButton.setAttribute("color", thisbuttoncolor);
-			TheBrowser.setAttribute("datamuted", "false");
-			TheBrowser.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
-				"document.querySelectorAll('video, audio').forEach((elem) => elem.muted=false);", }, ]);
-		} else {
-			if (thisbuttoncolor === "#FF0000") {
-				MuteButton.setAttribute("color", "#FFFF00");
-			} else {
-				MuteButton.setAttribute("color", "#FF0000");
-			}
-			TheBrowser.setAttribute("datamuted", "true")
-			TheBrowser.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
-				  "document.querySelectorAll('video, audio').forEach((elem) => elem.muted=true);",
-			  },			]);		  }		});	  },	});
-		  
-// Changes Scale of either Screen when button clicked with help from HBR
-  AFRAME.registerComponent("scale-screen", {
-	schema: {
-	  size: { type: "string" },
-	  avalue: { type: "number" },
-	},
-	init: function () {
-	  this.el.addEventListener("click", () => {  
-		var screenScale = this.el.parentElement;
-		let thisbuttoncolor = this.el.getAttribute("color");
-		let scaleX = screenScale.object3D.scale.x;
-		let scaleY = screenScale.object3D.scale.y;
-		switch (this.data.size) {
-		  case "grow":
-			scaleX += this.data.avalue;
-			scaleY += this.data.avalue;
-			break;
-		  case "shrink":
-			scaleX += this.data.avalue;
-			scaleY += this.data.avalue;
-			break;
-		}
-		  scaleX = scaleX.toFixed(2);
-		  scaleY = scaleY.toFixed(2);
-      if (scaleX <= 0) {scaleX = 0.05};
-      if (scaleY <= 0) {scaleY = 0.05};
-		this.el.setAttribute("color","#AAAAAA");
-		screenScale.setAttribute("scale", scaleX + " " + scaleY + " 1");
-		setTimeout(() => {  this.el.setAttribute("color", thisbuttoncolor); }, 100);
-		});		},		});
-		
-  // Rotate either screen when buttons clicked by HBR
-  AFRAME.registerComponent("rotate", {
-	schema: {
-	  axis: { type: "string" },
-	  amount: { type: "number" },
-	},
-	init: function () {
-	  this.el.addEventListener("click", () => {
-		let browserRotation = this.el.parentElement;
-		let thisbuttoncolor = browserRotation.getAttribute("button-color");
-		// let x = browserRotation.object3D.rotation.x;
-		// let y = browserRotation.object3D.rotation.y;
-		// let z = browserRotation.object3D.rotation.z;
-		// let w = browserRotation.transform.rotation.w;
-		let x = browserRotation.transform.eulerAngles.x;
-		let y = browserRotation.transform.eulerAngles.y;
-		let z = browserRotation.transform.eulerAngles.z;
-		// console.log("X:" + x + " Y:" + y + " Z:" + z);
-		switch (this.data.axis) {
-			case "x":
-				x += this.data.amount;
-			break;
-			case "y":
-				y += this.data.amount;
-			break;
-			case "z":
-				z += this.data.amount;
-			break;
-			case "w":
-				w += this.data.amount;
-			break;
-		}
-		this.el.setAttribute("color","#AAAAAA");
-		// browserRotation.setAttribute("rotation", x + " " + y + " " + z); 
-		// browserRotation.transform.rotation = new BS.Vector3(x, y, z); 
-		// browserRotation.transform.rotation = new BS.Quaternion(x, y, z, w); 
-		browserRotation.transform.eulerAngles = new BS.Vector3(x, y, 0); 
-		// console.log("SET X:" + x + " Y:" + y + " Z:" + z);
-		setTimeout(() => {  this.el.setAttribute("color", thisbuttoncolor); }, 100); 
-		});        },      });
-
-	// Toggle for hiding and showing the rotation buttons By Fire with help from HBR
-  AFRAME.registerComponent("enablerot", {
-	init: function () {
-	  this.el.addEventListener("click", () => {
-		const rotats = this.el;
-		let thisbuttoncolor = this.el.parentElement.getAttribute("button-color");
-		const rotatebutton = rotats.parentElement.children[6];
-		var els = document.getElementsByClassName("tilt");
-		if (rotatebutton.getAttribute("visible")) {
-			  rotats.setAttribute("color","#FFFFFF");
-			[].forEach.call(els, function (el) {
-				el.setAttribute("visible","false");
-			});
-		} else {
-			  rotats.setAttribute("color", thisbuttoncolor);
-			[].forEach.call(els, function (el) {
-				el.setAttribute("visible","true");
-			});
-		}		});  }, 	});
-		
-	
-	// Toggle for hiding and showing buttons By Fire with help from HBR
-  AFRAME.registerComponent("hidebuttons", {
-	init: function () {
-	  this.el.addEventListener("click", () => {
-		const hidebut = this.el;
-		let thisbuttoncolor = this.el.parentElement.getAttribute("button-color");
-		const somebutton = hidebut.parentElement.children[2];
-		var buttons = document.getElementsByClassName("buttons");
-		if (somebutton.getAttribute("visible")) {
-			  hidebut.setAttribute("color", thisbuttoncolor);
-			[].forEach.call(buttons, function (el) {
-				el.setAttribute("visible","false");
-			});
-		} else {
-			  hidebut.setAttribute("color","#FFFFFF");
-			[].forEach.call(buttons, function (el) {
-				el.setAttribute("visible","true");
-			});
-		}		});  }, 	});
-		
-// Changes Volume of the Screen when button clicked By Fire with help from HBR
-  AFRAME.registerComponent("volume-level", {
-	schema: {
-	  vvalue: { type: "number" },
-	},
-	init: function () {
-	  this.el.addEventListener("click", () => {  
-
-		var screenVolume = this.el.parentElement;
-		let thisbuttoncolor = this.el.getAttribute("color");
-		let volume = parseFloat(screenVolume.getAttribute("volumelevel"));
-
-
-    if (this.data.vvalue > 0) {
-      volume = Number(volume);
-      if (volume < 0.1) {
-        volume += Number(0.01);
-      } else if (volume < 0.5) {
-        volume += Number(0.02);
-      } else {
-        volume += Number(0.05);
-      };
-      volume = parseFloat(volume).toFixed(2);
-      if (volume > 1) {volume = 1};
-
-    } else {
-      volume = Number(volume);
-      if (volume < 0.1) {
-        volume += Number(-0.01);
-      } else if (volume < 0.5) {
-        volume += Number(-0.02);
-      } else {
-        volume += Number(-0.05);
-      };
-      volume = parseFloat(volume).toFixed(2);
-      if (volume < 0) {volume = 0};
-    };
-
-		// volume += this.data.vvalue;
-		// volume = volume.toFixed(2);
-		// if (volume > 1) {volume = 1};
-
-		screenVolume.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
-	"document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
-		this.el.setAttribute("color","#AAAAAA");
-		screenVolume.setAttribute("volumelevel", volume);
-		setTimeout(() => {  this.el.setAttribute("color", thisbuttoncolor); }, 100);
-
-		});		},		});
-		
-	
-	// Navigates browser page Backwards/Forward
-  AFRAME.registerComponent("navigate-browser", {
-  schema: {
-    action: { type: "string", default: "goback" }  // Default action is "goback"
-  },
-  init: function () {
-    const browserElement = this.el.parentElement;
-	let thisbuttoncolor = this.el.getAttribute("color");
-    this.el.addEventListener("click", () => {
-      const actionType = this.data.action;
-      this.el.setAttribute("color", "#AAAAAA");
-      browserElement.components['sq-browser'].runActions([{
-        actionType: actionType
-      }]);
-      setTimeout(() => {
-        this.el.setAttribute("color", thisbuttoncolor);
-      }, 100);
-    });
-  },
-});
-
-function getV3FromStr(strVector3) {
-  var aresult = strVector3.split(" ");
-  let X = aresult[0]; let Y = aresult[1]; let Z = aresult[2];
-  return new BS.Vector3(X,Y,Z);
-}
-
-function getAttrOrDef(pScript, pAttr, pDefault) {
-  if (pScript.hasAttribute(pAttr)) {
-    return pScript.getAttribute(pAttr);
-  } else {
-    return pDefault;
+// Toggle Button Thing for locking and unlocking either screen By Fire with help from HBR
+window.buttonPressCallback = (button) => {        
+  switch (button) {
+    case "RightGrip":
+    case "LeftGrip":
+      updateLockState(true);
+      break;
+    case "RightGripRelease":
+    case "LeftGripRelease":
+      updateLockState(false);
+      break;
   }
 };
 
+// Toggle Button for Keyboard By Fire with help from HBR
+AFRAME.registerComponent("forcekeyboard", {
+  init: function () { this.el.addEventListener("click", () => {
+    const TheBrowser = this.el.parentElement;
+    const isKeyboardActive = this.el.getAttribute("forcekeyboard") === "true";
+    const buttonColor = TheBrowser.getAttribute("button-color");
+    TheBrowser.browser.ToggleKeyboard(isKeyboardActive ? 0 : 1);
+    this.el.setAttribute("forcekeyboard", !isKeyboardActive);
+    this.el.setAttribute("color", isKeyboardActive ? "#FFFFFF" : buttonColor);
+}); }, });
+
+// Toggle Sound for browser screen By Fire with help from HBR
+AFRAME.registerComponent("toggle-mute", {
+  init: function () { this.el.addEventListener("click", () => { 
+      const browserElement = this.el.parentElement; const muteButton = this.el;
+      const isMuted = browserElement.getAttribute("datamuted") === "true";
+      const muteColor = browserElement.getAttribute("mute-color");
+      const newMutedState = !isMuted;
+      const newColor = newMutedState ? (muteColor === "#FF0000" ? "#FFFF00" : "#FF0000") : muteColor;
+      muteButton.setAttribute("color", newColor);
+      browserElement.setAttribute("datamuted", String(newMutedState));
+      browserElement.components["sq-browser"].runActions([{ actionType: "runscript", strparam1: `document.querySelectorAll('video, audio').forEach((elem) => elem.muted = ${newMutedState});` }]);
+  })}
+});
+
+// Changes Scale of either Screen when button clicked with help from HBR
+AFRAME.registerComponent("scale-screen", {
+schema: {
+  size: { type: "string" },
+  avalue: { type: "number" },
+},
+init: function () { this.el.addEventListener("click", () => {
+  const screenScale = this.el.parentElement;
+  let { scale } = screenScale.object3D;
+  const delta = this.data.size === "grow" ? -this.data.avalue : this.data.avalue;
+  let newScaleX = Math.max(0.05, (scale.x + delta).toFixed(2));
+  let newScaleY = Math.max(0.05, (scale.y + delta).toFixed(2));
+  handleButtonClick(this.el);
+  screenScale.setAttribute("scale", `${newScaleX} ${newScaleY} 1`);
+});		},		});
+		
+// Rotate either screen when buttons clicked by HBR
+AFRAME.registerComponent("rotate", {
+  schema: { axis: { type: "string" }, amount: { type: "number" }, },
+  init: function () {
+    this.el.addEventListener("click", () => {
+      const browserRotation = this.el.parentElement;
+      const { x, y, z } = browserRotation.transform.eulerAngles;
+      const newRotation = { x, y, z };
+      if (this.data.axis === "x") { newRotation.x += this.data.amount;
+      } else if (this.data.axis === "y") { newRotation.y += this.data.amount; };
+      handleButtonClick(this.el);
+      browserRotation.transform.eulerAngles = new BS.Vector3(newRotation.x, newRotation.y, 0);
+}); }, });
+
+// Toggle for hiding and showing the rotation buttons By Fire with help from HBR
+AFRAME.registerComponent("enablerot", {
+init: function () { this.el.addEventListener("click", () => {
+  const isVisible = this.el.parentElement.children[7].getAttribute("visible");
+  const newColor = isVisible ? "#FFFFFF" : this.el.parentElement.getAttribute("button-color");
+  const visibilityState = isVisible ? "false" : "true"; this.el.setAttribute("color", newColor);
+  document.querySelectorAll(".tilt").forEach(el => el.setAttribute("visible", visibilityState));
+});  }, 	});
+		
+// Toggle for hiding and showing buttons By Fire with help from HBR
+AFRAME.registerComponent("hidebuttons", {
+init: function () { this.el.addEventListener("click", () => {
+  const isVisible = this.el.parentElement.children[2].getAttribute("visible");
+  this.el.setAttribute("color", isVisible ? this.el.parentElement.getAttribute("button-color") : "#FFFFFF");
+  const visibility = isVisible ? "false" : "true";
+  Array.from(document.getElementsByClassName("buttons")).forEach((el) => {
+    el.setAttribute("visible", visibility);
+  });
+});  }, 	});
+		
+// Changes Volume of the Screen when button clicked By Fire with help from HBR
+AFRAME.registerComponent("volume-level", {
+schema: { vvalue: { type: "number" }, },
+init: function () { this.el.addEventListener("click", () => {  
+  const browserElement = this.el.parentElement;
+  let volume = parseFloat(browserElement.getAttribute("volumelevel"));
+  const adjustVolume = (volume, delta) => {
+    const adjustment = volume < 0.1 ? 0.01 : (volume < 0.5 ? 0.02 : 0.05);
+    return Math.max(0, Math.min(1, volume + delta * adjustment));
+  };
+  volume = Number((this.data.vvalue > 0 ? adjustVolume(volume, 1) : adjustVolume(volume, -1)).toFixed(2));
+  let firepercent = (volume * 100).toFixed(0);
+  browserElement.components["sq-browser"].runActions([{ actionType: "runscript", strparam1: `document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${volume});document.querySelector('.html5-video-player').setVolume(${firepercent});`,}]);
+  browserElement.setAttribute("volumelevel", volume);
+  console.log(`FIRESCREEN: Volume Is : ${volume}`);
+  handleButtonClick(this.el);
+}); }, });
+		
+// Navigates browser page Backwards/Forward
+AFRAME.registerComponent("navigate-browser", {
+  schema: { action: { type: "string", default: "goback" } },
+  init: function () { this.el.addEventListener("click", () => {
+    handleButtonClick(this.el); this.el.parentElement.components['sq-browser'].runActions([{ actionType: this.data.action }]);
+}); }, });
+
+function getV3FromStr(strVector3) {
+  const [x, y, z] = strVector3.split(" ").map(Number);
+  return new BS.Vector3(x,y,z);
+};
+
+function getAttrOrDef(pScript, pAttr, pDefault) { return pScript.hasAttribute(pAttr) ? pScript.getAttribute(pAttr) : pDefault; };
+
 // Create screen After Unity load 
 var firstbrowserrun = true;
-function firescreenloadstuff() {
-
+async function firescreenloadstuff() {
 	const firescene = BS.BanterScene.GetInstance();
-
-  firescene.On("user-joined", e => {
-    if (e.detail.isLocal) {
-      console.log("HAND-CONTROLS: Local User Joined");
-        playersuserid = e.detail.uid;
-    };
-  });
-
-  let afirething = document.querySelector("firething");
-  if (afirething === null) {
-    console.log("FIRESCREEN: Setting up.");
-    const afiretag = document.createElement("firething");
-    afiretag.id = "firething";
-    document.querySelector("head").appendChild(afiretag);
-
-  // Check if A Frame already exists on the page, if not, Add it
-  const thesescripts = document.getElementsByTagName("script");
-  for (let i = 0; i < thesescripts.length; i++) {
-    if (getAttrOrDef(thesescripts[i], "src", "") === "https://aframe.io/releases/1.6.0/aframe.min.js" ) { 
-      console.log("FIRESCREEN: AFrame 1.6.0 Detected")
-      aframedetected = true;
-    } else if (getAttrOrDef(thesescripts[i], "src", "") === "https://aframe.io/releases/1.5.0/aframe.min.js" ) { 
-      console.log("FIRESCREEN: AFrame 1.5.0 Detected")
-      aframedetected = true;
-    } else if (getAttrOrDef(thesescripts[i], "src", "") === "https://aframe.io/releases/1.4.2/aframe.min.js" ) { 
-      console.log("FIRESCREEN: AFrame 1.4.2 Detected")
-      aframedetected = true;
-    } else if (getAttrOrDef(thesescripts[i], "src", "") === "https://aframe.io/releases/1.4.1/aframe.min.js" ) { 
-      console.log("FIRESCREEN: AFrame 1.4.1 Detected")
-      aframedetected = true;
-    } else if (getAttrOrDef(thesescripts[i], "src", "") === "https://aframe.io/releases/1.4.0/aframe.min.js" ) { 
-      console.log("FIRESCREEN: AFrame 1.4.0 Detected")
-      aframedetected = true;
-    } else if (getAttrOrDef(thesescripts[i], "src", "") === "https://aframe.io/releases/1.3.0/aframe.min.js" ) { 
-      console.log("FIRESCREEN: AFrame 1.3.0 Detected")
-      aframedetected = true;
-    } else if (getAttrOrDef(thesescripts[i], "src", "") === "https://aframe.io/releases/1.2.0/aframe.min.js" ) { 
-      console.log("FIRESCREEN: AFrame 1.2.0 Detected")
-      aframedetected = true;
-    } else if (getAttrOrDef(thesescripts[i], "src", "") === "https://aframe.io/releases/1.1.0/aframe.min.js" ) { 
-      console.log("FIRESCREEN: AFrame 1.1.0 Detected")
-      aframedetected = true;
-    };
+  firescene.On("user-joined", e => { if (e.detail.isLocal) playersuserid = e.detail.uid; });
+ // Function to check if a given script is already present
+ function isAFrameScriptPresent(scriptUrls) { const scripts = document.getElementsByTagName("script");
+    for (let i = 0; i < scripts.length; i++) { const src = getAttrOrDef(scripts[i], "src", "");
+      if (scriptUrls.includes(src)) { console.log(`FIRESCREEN: AFrame ${src.match(/(\d+\.\d+\.\d+)/)[0]} Detected`); return true; };
+    } return false;
   };
-      
-    if (aframedetected) {
-      console.log("FIRESCREEN: AFrame Was Detected");
-    } else if (aframedetected === false) {
-      aframedetected = true
+
+  // Function to safely append an element if it doesn't exist
+  function appendIfNotExists(selector, tagName, parent, id) { let element = document.querySelector(selector);
+    if (!element) { console.log(`FIRESCREEN: ${tagName.toUpperCase()} NOT Detected, Adding ${tagName.toUpperCase()}`);
+      element = document.createElement(tagName); if (id) element.id = id; parent.appendChild(element);
+    } else { console.log(`FIRESCREEN: ${tagName.toUpperCase()} Detected, NOT Adding ${tagName.toUpperCase()}`);
+    } return element;
+  };
+
+  let firething = document.querySelector("#firething"); // Check if firething exists
+  if (!firething) { console.log("FIRESCREEN: Setting up."); // Add firething, If it doesn't exist
+    const firetag = document.createElement("firething"); firetag.id = "firething"; document.querySelector("head").appendChild(firetag);
+
+    // A-Frame versions to check
+    const aframeVersions = [
+      "https://aframe.io/releases/1.6.0/aframe.min.js",
+      "https://aframe.io/releases/1.5.0/aframe.min.js",
+      "https://aframe.io/releases/1.4.2/aframe.min.js",
+      "https://aframe.io/releases/1.4.1/aframe.min.js",
+      "https://aframe.io/releases/1.4.0/aframe.min.js",
+      "https://aframe.io/releases/1.3.0/aframe.min.js",
+      "https://aframe.io/releases/1.2.0/aframe.min.js",
+      "https://aframe.io/releases/1.1.0/aframe.min.js"
+    ];
+
+    // Check if any A-Frame version is already present
+    let aframedetected = isAFrameScriptPresent(aframeVersions);
+
+    // Add A-Frame if not detected
+    if (!aframedetected) {
       console.log("FIRESCREEN: AFrame Was NOT Detected, Adding AFrame 1.4.0");
       const aframescript = document.createElement("script");
       aframescript.id = "aframe-script";
       aframescript.setAttribute("src", "https://aframe.io/releases/1.4.0/aframe.min.js");
       document.querySelector("head").appendChild(aframescript);
-
     };
 
-    // Check if html body is present, if Not, Add it
-    let abodything = document.querySelector("body");
-    if (abodything === null) {
-      console.log("FIRESCREEN: Body NOT Detected, Adding Body");
-      const abodytag = document.createElement("body");
-      abodytag.id = "body";
-      document.querySelector("head").appendChild(abodytag);
-    } else {
-      console.log("FIRESCREEN: Body Detected, NOT Adding Body");
-    };
+    // Ensure body exists
+    appendIfNotExists("body", "body", document.querySelector("head"));
 
-    // Check if A-Scene is present, if Not, Add it
-    let ascenething = document.querySelector("a-scene");
-    if (ascenething === null) {
-      console.log("FIRESCREEN: A Scene NOT Detected, Adding A Scene");
-      const ascenetag = document.createElement("a-scene");
-      ascenetag.id = "ascene";
-      document.querySelector("body").appendChild(ascenetag);
-    } else {
-      console.log("FIRESCREEN: A Scene Detected, NOT Adding A Scene");
-    };
-    
+    // Ensure a-scene exists
+    appendIfNotExists("a-scene", "a-scene", document.querySelector("body"));
+
     console.log("FIRESCREEN: Waiting for Unity-Loaded Event");
-
-  } else {
-    // console.log("FIRESCREEN: Thing Detected, NOT Adding Thing");
   };
-
-
-  let waitingforunity = true;
-  if (waitingforunity) {
-
-  fscreeninterval = setInterval(function() {
-    if (firescene.unityLoaded) {
-      waitingforunity = false;
-      clearInterval(fscreeninterval);
-      if (firstbrowserrun) { firstbrowserrun = false; console.log("FIRESCREEN: unity-loaded"); enableFireScreen(); } else {
-				console.log("FIRESCREEN: Should already be enabled/loading");
-			};
-    };
-  }, 500); };
 
   firescene.On("one-shot", e => { console.log(e)
     const data = JSON.parse(e.detail.data);
-    if (e.detail.fromAdmin) { console.log("Current Shot From Admin Is True");
+    const isAdminOrLocalUser = e.detail.fromAdmin || e.detail.fromId === firescene.localUser.uid;
+    if (isAdminOrLocalUser) { console.log(isAdminOrLocalUser ? "Current Shot is from Admin" : "Current Shot is from Local User");
       if (data.fireurl) setfirepageurls(data.fireurl);
     } else if (e.detail.fromId === "f67ed8a5ca07764685a64c7fef073ab9") {
       if (data.fireurl) setfirepageurls(data.fireurl);
-    } else { console.log("Current Shot From Admin Is False");
-      console.log(e.detail.fromId);
     };
   });
 
-	// firescene.On("unity-loaded", () => {
-	// 	console.log("FIRESCREEN: unity-loaded");
-	// 	setTimeout(() => { 
-	// 		if (firstbrowserrun) {
-	// 			firstbrowserrun = false;
-	// 			enableFireScreen();
-	// 		} else {
-	// 			console.log("FIRESCREEN: Should already be enabled/loading");
-	// 		};
-	// 	}, 3000);
-	// });
-	
-	// firescene.On("loaded", () => {
-	// 	console.log("FIRESCREEN: scene loaded");
-	// 	})
-}
+  const waitForUnity = async () => { while (!firescene.unityLoaded) { await new Promise(resolve => setTimeout(resolve, 500)); } };
+  await waitForUnity(); console.log("FIRESCREEN: Unity-Loaded");  setTimeout(() => { enableFireScreen(); }, 1000);
+};
 
-firescreenloadstuff()
+firescreenloadstuff();
 
+var handbuttonmutestate = false;
 var handscene = BS.BanterScene.GetInstance();
 
 class handButtonCrap{
-	
-	constructor() {
+  constructor(p_voldowncolor, p_volupcolor, p_mutecolor, p_iconvolupurl, p_iconvoldownurl, p_iconmuteurl, p_buttoncolor) {
+    this.volDownColor = p_voldowncolor;
+    this.volUpColor = p_volupcolor;
+    this.muteColor = p_mutecolor;
+    this.buttoncolor = p_buttoncolor;
+    this.IconVolUpUrl = p_iconvolupurl;
+    this.IconVolDownUrl = p_iconvoldownurl;
+    this.IconMuteUrl = p_iconmuteurl;
+
+    this.playerislocked = false;
 		console.log("HAND-CONTROLS: Delay Loading to avoid error");
-		setTimeout(() => { 
-			if (handcontrolsdisabled) {
-				console.log("HAND-CONTROLS: handcontrolsdisabled still true");
-				handcontrolsdisabled = false;
-				this.setupHandControls();
-			}
-		}, 20000); 
 	  
 		handscene.On("user-joined", e => {
-			if (e.detail.isLocal) {
-				console.log("HAND-CONTROLS: Local User Joined 2");
-				if (handcontrolsdisabled) {
-					handcontrolsdisabled = false;
-					playersuserid = e.detail.uid;
-					this.setupHandControls();
-				}
-			}
+			if (e.detail.isLocal && window.handControlsDisabled) { console.log("HAND-CONTROLS: Local User Joined");
+				window.handControlsDisabled = false; playersuserid = e.detail.uid; this.setupHandControls(); };
 		});
 
-		handscene.On("user-left", e => {
-			if (e.detail.isLocal) {
-				handcontrolsdisabled = true;
-				console.log("HAND-CONTROLS: Local User Left, Resetting variable to maybe setup hand controls again on rejoin");
-			};
+		handscene.On("user-left", e => { if (e.detail.isLocal) { window.handControlsDisabled = true;
+				console.log("HAND-CONTROLS: Local User Left, Resetting variable"); };
 		});
 
-		if (playersuserid != false && handcontrolsdisabled) {
-      console.log("HAND-CONTROLS: Enabling");
-      handcontrolsdisabled = false;
-      this.setupHandControls();
-		} else {
-      console.log("HAND-CONTROLS: Too Early, Waiting.");
-    }
-
-	}
-
-	mute() {
-		if (handbuttonmutestate) {
-		handbuttonmutestate = false;
-		} else {
-		handbuttonmutestate = true;
-		};
-		document.querySelectorAll('.firescreenc')
-		.forEach((firescreenc) => {
-			if(handbuttonmutestate) {
-			firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
-			"document.querySelectorAll('video, audio').forEach((elem) => elem.muted=false); ", }, ]);
-			} else {
-			firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
-			"document.querySelectorAll('video, audio').forEach((elem) => elem.muted=true); ", }, ]);
-			}
-		});
-		document.querySelectorAll('.firemutebutc')
-		.forEach((firemutebutc) => {                 
-			const TheBrowser = firemutebutc.parentElement;
-			let thisbuttoncolor = TheBrowser.getAttribute("mute-color");
-			if(handbuttonmutestate) {
-				if (thisbuttoncolor === null) {
-					firemutebutc.setAttribute("color","#FFFFFF");
-				} else {
-					firemutebutc.setAttribute("color", thisbuttoncolor);
-				};
-			} else {
-				if (thisbuttoncolor === "#FF0000") {
-					firemutebutc.setAttribute("color","#FFFF00");
-				} else { 
-					firemutebutc.setAttribute("color","#FF0000");
-				};
-			};
-		});
+		if (playersuserid != false && handControlsDisabled) { console.log("HAND-CONTROLS: Enabling");
+      handControlsDisabled = false; this.setupHandControls();
+		} else { console.log("HAND-CONTROLS: Too Early, Waiting."); }
 	};
 
-	volumecontrolup() {
-		let thisloopnumber = 0;
-		document.querySelectorAll('.firescreenc')
-		.forEach((firescreenc) => {
-			thisloopnumber++
-			let volume = parseFloat(firescreenc.getAttribute("volumelevel"));
-      volume = Number(volume);
-      if (volume < 0.1) {
-        volume += Number(0.01);
-      } else if (volume < 0.5) {
-        volume += Number(0.02);
-      } else {
-        volume += Number(0.05);
-      };
-      volume = parseFloat(volume).toFixed(2);
-      if (volume > 1) {volume = 1};
-			console.log("HAND-CONTROLS: FireScreen " + thisloopnumber + "'s Volume is: " + volume);
-      let firepercent = parseInt(volume*100).toFixed(0);
-			firescreenc.setAttribute("volumelevel", volume);
-			firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
-			"document.querySelectorAll('video, audio').forEach((elem) => elem.volume=" + volume + ");", }, ]);
-			firescreenc.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
-			"document.querySelector('.html5-video-player').setVolume(" + firepercent + ");", }, ]);
-		});
+  async initialize() { await this.waitForUserId(); if (window.handControlsDisabled) { window.handControlsDisabled = false; this.setupHandControls(); } }
 
-			let firevolupbut = document.getElementById("firevolupbut");
-			let butcolour = firevolupbut.getAttribute("color");
-			firevolupbut.setAttribute("color", "#FFFFFF"); 
-			setTimeout(() => {  firevolupbut.setAttribute("color", butcolour); }, 100);
+  async waitForUserId() { while (!window.user || window.user.id === undefined) { await new Promise(resolve => setTimeout(resolve, 200)); } }
 
-	}
-
-  volumecontroldown() {
-    const decreaseVolume = (volume) => {
-      if (volume < 0.1) return volume - 0.01;
-      if (volume < 0.5) return volume - 0.02;
-      return volume - 0.05;
-    };
-    document.querySelectorAll('.firescreenc').forEach((firescreenc, index) => {
-      let volume = Math.max(0, decreaseVolume(parseFloat(firescreenc.getAttribute("volumelevel"))));
-      volume = parseFloat(volume.toFixed(2));
-      console.log(`HAND-CONTROLS: FireScreen ${index + 1}'s Volume is: ${volume}`);
-      firescreenc.setAttribute("volumelevel", volume);
-      const percent = Math.round(volume * 100);
-      const browserComponent = firescreenc.components["sq-browser"];
-      browserComponent.runActions([{ actionType: "runscript",
-        strparam1: `document.querySelectorAll('video, audio').forEach(elem => elem.volume = ${volume});`
-      }]);
-      browserComponent.runActions([{ actionType: "runscript",
-        strparam1: `document.querySelector('.html5-video-player').setVolume(${percent});`
-      }]);
-    });
-    const firevolbut = document.getElementById("firevoldownbut");
-    const originalColor = firevolbut.getAttribute("color");
-    firevolbut.setAttribute("color", "#FFFFFF");
-    setTimeout(() => firevolbut.setAttribute("color", originalColor), 100);
+  toggleMute() {  handbuttonmutestate = !handbuttonmutestate;
+    this.runActionOnElements('.firescreenc', handbuttonmutestate);
+    this.updateButtonColors('.firemutebutc', handbuttonmutestate);
+    console.log(handbuttonmutestate);
+    const fireMuteBut = document.getElementById("firemutebut");
+    fireMuteBut.setAttribute("color", handbuttonmutestate ? "#FF0000" : this.muteColor);
   };
 
-	lockplayerfunc() {
-		let firelockbut = document.getElementById("firelockpbut");
-		if (playerislocked) {
-			playerislocked = false;
-			unlockPlayer();
-			firelockbut.setAttribute("color", thebuttoncolor); 
-		} else {
-			playerislocked = true;
-			lockPlayer();
-			if (thebuttoncolor === "#FF0000") {
-				firelockbut.setAttribute("color", "#FFFF00"); 
-			} else {
-			firelockbut.setAttribute("color", "#FF0000"); 
-			}
-		};
-	};
+  runActionOnElements(selector, state) { document.querySelectorAll(selector).forEach(element => {
+      element.components["sq-browser"].runActions([ { actionType: "runscript", strparam1: `document.querySelectorAll('video, audio').forEach(elem => elem.muted=${state});` } ]);
+    });
+  };
 
-	homefunc() {
-		let firehomebut = document.getElementById("firehomepbut");
+  updateButtonColors(selector, isActive) {
+    document.querySelectorAll(selector).forEach(button => { const TheBrowser = button.parentElement;
+      const thisButtonColor = TheBrowser.getAttribute("mute-color") || "#FFFFFF";
+      button.setAttribute("color", isActive ? (thisButtonColor === "#FF0000" ? "#FFFF00" : "#FF0000") : thisButtonColor);
+    });
+  };
 
-		document.querySelectorAll('.firescreenc')
-		.forEach((firescreenc) => {
-      let ThisHomePage = firescreenc.getAttribute("sq-browser");
-      console.log(ThisHomePage);
-      firescreenc.setAttribute("sq-browser", ThisHomePage);
+  adjustVolume(change) {
+    document.querySelectorAll('.firescreenc').forEach((element, index) => {
+      let volume = Number(parseFloat(element.getAttribute("volumelevel"))); let adjustment;
+      if (volume < 0.1) { adjustment = 0.01; // Tiny adjustment for low volume
+      } else if (volume < 0.5) { adjustment = 0.03; // Medium adjustment for medium volume
+      } else { adjustment = 0.05; } // Big adjustment for high volume
+      volume = Math.min(Math.max(0, (volume + (change * adjustment)).toFixed(2)), 1);
+      this.updateVolume(element, volume, index + 1);
+    });
+  };
 
-		});
-    firehomebut.setAttribute("color", "#FFFFFF"); 
-    setTimeout(() => {  firehomebut.setAttribute("color", thebuttoncolor); }, 100);
-	};
+  updateVolume(element, volume, index) {
+    const firePercent = Math.round(volume * 100);
+    element.setAttribute("volumelevel", volume);
+    console.log(`HAND-CONTROLS: FireScreen ${index}'s Volume is: ${volume}`);
+    element.components["sq-browser"].runActions([
+      { actionType: "runscript", strparam1: `document.querySelectorAll('video, audio').forEach(elem => elem.volume=${volume});` },
+      { actionType: "runscript", strparam1: `document.querySelector('.html5-video-player').setVolume(${firePercent});` }
+    ]);
+  };
+
+  volumeControlUp() { this.adjustVolume(1); this.flashButton("firevolupbut"); };
+
+  volumeControlDown() { this.adjustVolume(-1); this.flashButton("firevoldownbut"); };
+
+  flashButton(buttonId) {
+    const button = document.getElementById(buttonId);
+    const originalColor = button.getAttribute("color");
+    button.setAttribute("color", "#FFFFFF");
+    setTimeout(() => button.setAttribute("color", originalColor), 100);
+  };
+
+  lockPlayer() {
+    const fireLockBut = document.getElementById("firelockpbut");
+    this.playerislocked = !this.playerislocked;
+    if (this.playerislocked) lockPlayer();
+    else unlockPlayer();
+    fireLockBut.setAttribute("color", this.playerislocked ? "#FF0000" : "#FFFF00");
+  };
+
+  navigateHome() {
+    document.querySelectorAll('.firescreenc').forEach(element => {
+      const homePage = element.getAttribute("sq-browser");
+      element.setAttribute("sq-browser", homePage);
+    });
+    this.flashButton("firehomepbut");
+  };
 
   setupHandControls() {
-    console.log("HAND-CONTROLS: Setting up Hand Controls");
+    if (!window.handControlsDisabled) {
+      console.log("HAND-CONTROLS: Setting up Hand Controls");
 		// This was a great innovation by HBR, who wanted Skizot to also get credit for the original idea. 
-    const handControlsContainer = document.createElement("a-entity");
-    handControlsContainer.setAttribute("scale", "0.1 0.1 0.1");
-    handControlsContainer.setAttribute("position", "0.04 0.006 -0.010");
-    handControlsContainer.setAttribute("sq-lefthand", `whoToShow: ${playersuserid || window.user.id}`);
-  
-    const buttons = [
-      { image: IconVolUpUrl, position: "-1 0.2 -0.4", colour: volupcolor, bclass: "firevolbutc", id: "firevolupbut", callback: this.volumecontrolup },
-      { image: IconVolDownUrl, position: "-1 0.2 0", colour: voldowncolor, bclass: "firevolbutc", id: "firevoldownbut", callback: this.volumecontroldown },
-      { image: "https://firer.at/files/lock.png", position: "-1 -0.4 0", colour: thebuttoncolor, bclass: "firelockpbutc", id: "firelockpbut", callback: this.lockplayerfunc },
-      { image: "https://firer.at/files/Home.png", position: "-1 -0.4 -0.4", colour: thebuttoncolor, bclass: "firehomepbutc", id: "firehomepbut", callback: this.homefunc },
-      { image: IconMuteUrl, position: "-1 0.2 0.4", colour: "#FFFFFF", bclass: "firemutebutc", id: "firemutebut", callback: this.mute }
-    ];
-  
-    buttons.forEach(({ image, position, colour, bclass, id, callback }) => {
-      const button = document.createElement("a-plane");
-      Object.assign(button, {
-        setAttribute: button.setAttribute.bind(button),
-        addEventListener: button.addEventListener.bind(button)
+      const handControlsContainer = document.createElement("a-entity");
+      handControlsContainer.setAttribute("scale", "0.1 0.1 0.1");
+      handControlsContainer.setAttribute("position", "0.04 0.006 -0.010");
+      handControlsContainer.setAttribute("sq-lefthand", `whoToShow: ${playersuserid || window.user.id}`);
+
+      const buttons = [
+        { image: this.IconVolUpUrl, position: "-1 0.2 -0.4", color: this.volUpColor, id: "firevolupbut", callback: this.volumeControlUp.bind(this) },
+        { image: this.IconVolDownUrl, position: "-1 0.2 0", color: this.volDownColor, id: "firevoldownbut", callback: this.volumeControlDown.bind(this) },
+        { image: "https://firer.at/files/lock.png", position: "-1 -0.4 0", color: this.buttoncolor, id: "firelockpbut", callback: this.lockPlayer.bind(this) },
+        { image: "https://firer.at/files/Home.png", position: "-1 -0.4 -0.4", color: this.buttoncolor, id: "firehomepbut", callback: this.navigateHome.bind(this) },
+        { image: this.IconMuteUrl, position: "-1 0.2 0.4", color: this.muteColor, id: "firemutebut", callback: this.toggleMute.bind(this) }
+      ];
+
+      buttons.forEach(({ image, position, color, id, callback }) => {
+        const button = this.createButton(image, position, color, id, callback);
+        handControlsContainer.appendChild(button);
       });
-      button.setAttribute("sq-interactable", "");
-      button.setAttribute("sq-collider", "");
-      button.setAttribute("scale", "0.4 0.4 0.4");
-      button.setAttribute("rotation", "0 -90 180");
-      button.setAttribute("src", image);
-      button.setAttribute("color", colour);
-      button.setAttribute("transparent", true);
-      button.setAttribute("position", position);
-      button.setAttribute("class", bclass);
-      button.setAttribute("id", id);
-      button.addEventListener("click", callback.bind(this));
-      handControlsContainer.appendChild(button);
-    });
-    document.querySelector("a-scene").appendChild(handControlsContainer);
+      document.querySelector("a-scene").appendChild(handControlsContainer);
+    } else {
+      console.log("HAND-CONTROLS: Already set up, skipping re-initialization.");
+    };
+  };
+
+  createButton(image, position, color, id, callback) {
+    const button = document.createElement("a-plane");
+    button.setAttribute("sq-interactable", "");
+    button.setAttribute("sq-collider", "");
+    button.setAttribute("scale", "0.4 0.4 0.4");
+    button.setAttribute("rotation", "0 -90 180");
+    button.setAttribute("src", image);
+    button.setAttribute("color", color);
+    button.setAttribute("transparent", true);
+    button.setAttribute("position", position);
+    button.setAttribute("id", id);
+    button.addEventListener("click", callback);
+    return button;
   };
 };
 
-function setfirepageurls(thedata) {
-  document.querySelectorAll('.firescreenc')
-  .forEach((firescreenc) => {
-    let ThisHomePage = firescreenc.getAttribute("sq-browser");
-    console.log(ThisHomePage);
-    firescreenc.setAttribute("sq-browser", { url: thedata, pixelsPerUnit: 1200, mipMaps: 0, mode: "local", });
+function setFirePageUrls(thedata) {
+  document.querySelectorAll('.firescreenc').forEach(firescreenc => {
+    firescreenc.setAttribute("sq-browser", { url: thedata, pixelsPerUnit: 1200, mipMaps: 0, mode: "local" });
   });
 };
