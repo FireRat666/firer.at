@@ -1,6 +1,6 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.2 Beta 1.2.1
+// VERSION: 1.2 Beta 1.2.2
 var thishostnameurl = "https://firer.at/scripts/"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var thisscriptsurl = thishostnameurl + "firescreen.js"; // CHANGE THIS
 var announcerscripturl = thishostnameurl + "announcer.js"; // CHANGE THIS
@@ -244,19 +244,19 @@ function computeButtonPosition(basePos, offsetPos) {
 var volinterval = null;
 var soundlevelfirstrun = true;
 function keepsoundlevel() {
+  var loopCount = 0; const maxLoops = 3;
   if (fireScreenOn && soundlevelfirstrun) {
 	console.log("FIRESCREEN: keepsoundlevel loop");
 	soundlevelfirstrun = false;
   // Loop to keep sound level set, runs every second
     volinterval = setInterval(function() {
     for (let i = 1; i <= window.NumberofBrowsers; i++) {
-			let theBrowser = document.getElementById(`fires-browser${i}`);
-			let volume = parseFloat(theBrowser.getAttribute("volumelevel"));
-      let firepercent = parseInt(volume*100).toFixed(0);
+			const theBrowser = document.getElementById(`fires-browser${i}`);
+			const volume = parseFloat(theBrowser.getAttribute("volumelevel"));
 			theBrowser.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
-			`document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${volume});document.querySelector('.html5-video-player').setVolume("${firepercent});`, }, ]);
-		};
-    }, 5000); } else if (fireScreenOn) { } else { clearInterval(volinterval); }
+			`document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${volume});document.querySelector('.html5-video-player').setVolume("${Math.round(volume * 100)});`, }, ]);
+		}; loopCount++; if (loopCount >= maxLoops) { clearInterval(volInterval); };
+    }, 5000); } else if (!fireScreenOn) { clearInterval(volInterval); };
 };
 
 // Set the width and height of the screen(s)
