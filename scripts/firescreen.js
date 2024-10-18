@@ -241,7 +241,7 @@ function computeButtonPosition(basePos, offsetPos) {
 };
 
 // Sets the default sound level probably
-var volinterval = null;
+var volInterval = null;
 var soundlevelfirstrun = true;
 function keepsoundlevel() {
   var loopCount = 0; const maxLoops = 3;
@@ -249,7 +249,7 @@ function keepsoundlevel() {
 	console.log("FIRESCREEN: keepsoundlevel loop");
 	soundlevelfirstrun = false;
   // Loop to keep sound level set, runs every second
-    volinterval = setInterval(function() {
+  volInterval = setInterval(function() {
     for (let i = 1; i <= window.NumberofBrowsers; i++) {
 			const theBrowser = document.getElementById(`fires-browser${i}`);
 			const volume = parseFloat(theBrowser.getAttribute("volumelevel"));
