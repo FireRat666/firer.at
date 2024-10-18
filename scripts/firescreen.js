@@ -1,6 +1,6 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.2 Beta 1.2
+// VERSION: 1.2 Beta 1.2.1
 var thishostnameurl = "https://firer.at/scripts/"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var thisscriptsurl = thishostnameurl + "firescreen.js"; // CHANGE THIS
 var announcerscripturl = thishostnameurl + "announcer.js"; // CHANGE THIS
@@ -104,7 +104,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
   p_disableinteraction, p_buttonpos, p_buttonrot, p_handbuttons, p_width, p_height, p_custombutton01url, p_custombutton01text,
   p_custombutton02url, p_custombutton02text, p_custombutton03url, p_custombutton03text, p_thisBrowserNumber) {
 
-    thebuttoncolor = p_buttoncolor;
+    thebuttoncolor = p_buttoncolor; fireScreenOn = true;
   // Setup the Announcer only on the first run if enabled
   if (window.announcerfirstrun && typeof announcerscene === 'undefined') {
     window.announcerfirstrun = false;
@@ -505,9 +505,9 @@ async function firescreenloadstuff() {
     const data = JSON.parse(e.detail.data);
     const isAdminOrLocalUser = e.detail.fromAdmin || e.detail.fromId === firescene.localUser.uid;
     if (isAdminOrLocalUser) { console.log(isAdminOrLocalUser ? "Current Shot is from Admin" : "Current Shot is from Local User");
-      if (data.fireurl) setfirepageurls(data.fireurl);
+      if (data.fireurl) setFirePageUrls(data.fireurl);
     } else if (e.detail.fromId === "f67ed8a5ca07764685a64c7fef073ab9") {
-      if (data.fireurl) setfirepageurls(data.fireurl);
+      if (data.fireurl) setFirePageUrls(data.fireurl);
     };
   });
 
