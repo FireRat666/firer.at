@@ -1,4 +1,4 @@
-:root { color-scheme: dark; }
+:root { --background-image: url("https://firer.at/files/FireRat-Transparentv3.webp"); color-scheme: dark; }
 /* Button Colours */
 a.buttonG { color: #00FF00; }
 a.buttonY { color: #FFFF00; }
@@ -26,12 +26,12 @@ a.buttonss {
 .form-thing:focus { border: 3px solid rgb(0, 255, 0); }
 
 /* Base styles */
-body { font-size: 35px; color: #FFFFFF; margin: 0; margin-left:100px; margin-right:100px; padding: 0; height: 100vh; background-color:#000000; position: relative;}
+body { font-size: 35px; color: #FFFFFF; margin: 0 100px; padding: 0; height: 100vh; background-color:#000000; position: relative;}
 
 body::before {
-  content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), url("https://firer.at/files/FireRat-Logo-V2.png");
-  background-repeat: no-repeat; background-position: top center; background-size: contain 70%; z-index: -1;
+  content: ''; position: fixed; top: 15%; left: 15%; right: 15%; bottom: 15%;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), var(--background-image);
+  background-repeat: no-repeat; background-position: center; background-size: contain; z-index: -1; pointer-events: none;
 }
 /* Larger screens */
 @media (min-width: 1200px) { body { font-size: 45px; background-color:#000000; color: #FFFFFF; } .button {font-size: 35px;} .form-thing {font-size: 50px;} } 
