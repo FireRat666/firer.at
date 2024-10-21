@@ -85,7 +85,10 @@
           } catch (error) { return null; };
       };
 
-      function displayIframe() { document.getElementById('frame').hidden = false; };
+      function displayIframe() { const frameElement = document.getElementById('frame');
+        frameElement.hidden = !frameElement.hidden;
+      };
+      
   </script>
 
 	</center>
