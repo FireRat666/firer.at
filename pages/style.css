@@ -1,16 +1,24 @@
 :root { --background-image: url("https://firer.at/files/FireRat-Transparentv3.webp"); color-scheme: dark; }
+/* Button styles */
+a.buttonss { 
+	padding: 0.8vh 0.8vw;  border: 2px solid #989898; border-radius: 2vh;
+	background-color: rgba(0, 0, 0, 0.6); text-decoration: none; margin:2px; line-height: 2.2;
+  white-space: nowrap; display: inline;
+}
+.buttonss:hover { background-color: rgba(0, 0, 0, 0.4); }
+.buttonss:active { background-color: rgba(0, 0, 0, 0); transform: translateY(4px); }
 /* Button Colours */
 a.buttonG { color: #00FF00; }
 a.buttonY { color: #FFFF00; }
 a.buttonGY { color: #AAFF00; }
 a.buttonR { color: #FF0000; }
 a.buttonW { color: #FFFFFF; }
-/* Button styles */
-a.buttonss { 
-	padding: 0.8vh 0.8vw;  border: 2px solid #989898; border-radius: 2vh;
-	background-color: #000000; text-decoration: none; margin:2px; line-height: 2.2;
-  white-space: nowrap; display: inline;
-}
+
+a.buttonG:hover { border: 1px solid #00FF00; }
+a.buttonY:hover { border: 1px solid #FFFF00; }
+a.buttonGY:hover { border: 1px solid #AAFF00; }
+a.buttonR:hover { border: 1px solid #FF0000; }
+a.buttonW:hover { border: 1px solid #FFFFFF; }
 
 .button {
   background-color: #969696; border: none; color: white; padding: 8px 16px;
@@ -20,13 +28,18 @@ a.buttonss {
 .button1:hover { background-color: #007914; color: white; }
 .button1:active { background-color: #004a0c; color: white; transform: translateY(4px); }
 
+.url-form { width: 80%; border: 2px solid rgb(0, 130, 0);}
+.url-thing { font-size: 35px; padding: 0.3em 0.5em; margin: 0.1em 0em; border-radius: 2vh; background-color: rgba(0, 0, 0, 0.6);}
+.url-thing:hover { border: 2px solid rgb(0, 255, 0); }
+.url-thing:focus { border: 3px solid rgb(0, 255, 0); }
+
 .form-thing {font-size: 40px; width: 50%; padding: 12px 20px; margin: 8px 0;
   border: 2px solid rgb(0, 130, 0); border-radius: 4px; background-color: #000000; color: white;}
 
 .form-thing:focus { border: 3px solid rgb(0, 255, 0); }
 
 /* Base styles */
-body { font-size: 35px; color: #FFFFFF; margin: 0 100px; padding: 0; height: 100vh; background-color:#000000; position: relative;}
+body { font-size: 35px; color: #FFFFFF; margin: 0 15%; padding: 0; height: 100vh; background-color:#000000; position: relative;}
 
 body::before {
   content: ''; position: fixed; top: 15%; left: 15%; right: 15%; bottom: 15%;
