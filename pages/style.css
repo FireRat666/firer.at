@@ -49,5 +49,5 @@ body::before {
 /* Larger screens */
 @media (min-width: 1200px) { body { font-size: 45px; background-color:#000000; color: #FFFFFF; } .button {font-size: 35px;} .form-thing {font-size: 50px;} } 
 /* Smaller tablets and mobiles */
-@media (max-width: 900px) { body { font-size: 30px; background-color:#000000; color: #FFFFFF; } .button {font-size: 25px;} .form-thing {font-size: 30px;} }
+@media (max-width: 900px) { body { font-size: 30px; margin: 0 5%; background-color:#000000; color: #FFFFFF; } .button {font-size: 25px;} .form-thing {font-size: 30px;} }
 input.url {font-size: 30px;}
