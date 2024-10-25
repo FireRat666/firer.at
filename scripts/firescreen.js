@@ -224,7 +224,7 @@ function createFireScreen(p_pos, p_rot, p_sca, p_volume, p_url, p_backdrop, p_ca
   document.querySelector("a-scene").appendChild(firescreen);
   setTimeout(() => {
       setupBrowsers();
-      keepsoundlevel();
+      setTimeout(() => { keepsoundlevel(); }, 2000);
   }, 2000);
 
   if (p_handbuttons === "true" && window.firstrunhandcontrols) {
