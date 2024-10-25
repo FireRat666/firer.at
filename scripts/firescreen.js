@@ -1,6 +1,6 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.2 Beta 1.2.2
+// VERSION: 1.2 Beta 1.2.3
 var thishostnameurl = "https://firer.at/scripts/"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var thisscriptsurl = thishostnameurl + "firescreen.js"; // CHANGE THIS
 var announcerscripturl = thishostnameurl + "announcer.js"; // CHANGE THIS
@@ -244,7 +244,7 @@ function computeButtonPosition(basePos, offsetPos) {
 var volInterval = null;
 var soundlevelfirstrun = true;
 function keepsoundlevel() {
-  var loopCount = 0; const maxLoops = 3;
+  var loopCount = 0; const maxLoops = 6;
   if (fireScreenOn && soundlevelfirstrun) {
 	console.log("FIRESCREEN: keepsoundlevel loop");
 	soundlevelfirstrun = false;
