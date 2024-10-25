@@ -1,4 +1,4 @@
-// SDK2 Based FireScreen, V0.69 Beta 3.1 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
+// SDK2 Based FireScreen, V0.69 Beta 3.2 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts / live streams with volume controls or a portable browser for any website.
 var thisScriptLocation = `https://firer.at/scripts/`; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var fireScriptName = `${thisScriptLocation}firescreenv2.js`;
@@ -95,8 +95,8 @@ function adjustVolume(firebrowser, change) { // Pass -1 to decrease the volume P
   firevolume = Math.max(0, Math.min(firevolume, 1)).toFixed(2);
   let firepercent = (firevolume * 100).toFixed(0);
   firebrowser.volumeLevel = firevolume;
-  runBrowserActions(firebrowser, `document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${firevolume});`);
-  runBrowserActions(firebrowser, `document.querySelector('.html5-video-player').setVolume(${firepercent});`);
+  runBrowserActions(firebrowser, `document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${firevolume}); 
+    document.querySelector('.html5-video-player').setVolume(${firepercent});`);
   console.log(`FIRESCREEN2: Volume is: ${firevolume}`);
 };
 
@@ -271,22 +271,15 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_screenposition, p_screenrotation
   firerigidBody.gameObject.On('grab', () => {console.log("GRABBED!"); firerigidBody.isKinematic = false; });  // When user Grabs the Browser, Make it moveable
   firerigidBody.gameObject.On('drop', () => {console.log("DROPPED!"); firerigidBody.isKinematic = true; }); // When user Drops the Browser, Lock it in place
 
-  firescenev2.On("one-shot", e => { console.log(e)
-    const data = JSON.parse(e.detail.data);
-    if (e.detail.fromAdmin) { console.log("Current Shot From Admin Is True");
+  firescenev2.On("one-shot", e => { console.log(e.detail);
+    const data = JSON.parse(e.detail.data); const isAdmin = e.detail.fromAdmin;
+    if (isAdmin || e.detail.fromId === "f67ed8a5ca07764685a64c7fef073ab9") {console.log(isAdmin ? "Current Shot is from Admin" : "Current Shot is from Target ID");
       if (data.fireurl) firebrowser.url = data.fireurl;
-      if (data.firevolume) {
-        const thisfirevolume = Number(parseFloat(data.firevolume).toFixed(2));
-        const firepercent = (thisfirevolume * 100).toFixed(0);
-        runBrowserActions(`document.querySelectorAll('video, audio').forEach((elem) => elem.volume = ${thisfirevolume});
-          document.querySelector('.html5-video-player')?.setVolume(${firepercent});`);};
-    } else if (e.detail.fromId === "f67ed8a5ca07764685a64c7fef073ab9") {
-      if (data.fireurl) firebrowser.url = data.fireurl;
-      if (data.firevolume) {
-        const thisfirevolume = Number(parseFloat(data.firevolume).toFixed(2));
-        const firepercent = (thisfirevolume * 100).toFixed(0);
-        runBrowserActions(`document.querySelectorAll('video, audio').forEach((elem) => elem.volume = ${thisfirevolume});
-          document.querySelector('.html5-video-player')?.setVolume(${firepercent});`);};
+      if (data.firevolume) { const fireVolume = Number(parseFloat(data.firevolume).toFixed(2)); const firePercent = (fireVolume * 100).toFixed(0);
+        runBrowserActions(firebrowser, `document.querySelectorAll('video, audio').forEach(elem => elem.volume = ${fireVolume});
+          document.querySelector('.html5-video-player')?.setVolume(${firePercent});`);};
+      if (data.browseraction) { runBrowserActions(firebrowser, data.browseraction); console.log(data.browseraction); };
+      if (data.spaceaction) { console.log(data.spaceaction); new Function(data.spaceaction)(); };
     } else { console.log("Current Shot From Admin Is False");
       console.log(e.detail.fromId);
     };
@@ -300,6 +293,10 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_screenposition, p_screenrotation
       };
       console.log("FIRESCREEN2: user-joined");
     };
+  });
+
+  firescenev2.On("user-left", e => { if (e.detail.isLocal) { firstrunhandcontrolsv2 = true;
+      console.log("FIRESCREEN2: Local User Left, Resetting firstrunhandcontrolsv2 variable"); };
   });
 
   async function setupHandControls() {
@@ -403,8 +400,8 @@ function keepsoundlevel2() {
       while (thisloopnumber < window.theNumberofBrowsers) { thisloopnumber++
         let firebrowserthing = await BS.BanterScene.GetInstance().Find(`MyBrowser${thisloopnumber}`);
         let thebrowserpart = firebrowserthing.GetComponent(BS.ComponentType.BanterBrowser);
-        runBrowserActions(thebrowserpart, `document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${thebrowserpart.volumeLevel});`);
-        runBrowserActions(thebrowserpart, `document.querySelector('.html5-video-player').setVolume(${(thebrowserpart.volumeLevel * 100).toFixed(0)});`);
+        runBrowserActions(thebrowserpart, `document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${thebrowserpart.volumeLevel}); 
+          document.querySelector('.html5-video-player').setVolume(${(thebrowserpart.volumeLevel * 100).toFixed(0)});`);
       };
     }, 5000); } else if (fireScreen2On) { console.log("FIRESCREEN2: ALREADY SET soundlevel loop"); } else { console.log("FIRESCREEN2: CLEAR soundlevel loop"); clearInterval(volinterval2); }
 };
@@ -413,15 +410,18 @@ async function adjustForAll(action, change) {
 	let thisloopnumber = 0;
 	while (thisloopnumber < window.theNumberofBrowsers) {
 		thisloopnumber++
-		let firebrowserthing = await BS.BanterScene.GetInstance().Find(`MyBrowser${thisloopnumber}`);
-    let thebrowserpart = firebrowserthing.GetComponent(BS.ComponentType.BanterBrowser);
+		// let firebrowserthing = await BS.BanterScene.GetInstance().Find(`MyBrowser${thisloopnumber}`);
+    let thebrowserpart = (await BS.BanterScene.GetInstance().Find(`MyBrowser${thisloopnumber}`)).GetComponent(BS.ComponentType.BanterBrowser);
 		if (action === "adjustVolume") adjustVolume(thebrowserpart, change);
 		if (action === "soundLevels") keepsoundlevel2(thebrowserpart);
 		if (action === "goHome") thebrowserpart.url = thebrowserpart.homePage;
+		if (action === "goURL") thebrowserpart.url = change;
 		if (action === "toggleMute") {
       thebrowserpart.muteState = !thebrowserpart.muteState; thebrowserpart.muteState ? muteState = "mute" : muteState = "unMute";
-      runBrowserActions(thebrowserpart, `document.querySelectorAll('video, audio').forEach((elem) => elem.muted=${thebrowserpart.muteState});`);
-      runBrowserActions(thebrowserpart, `document.querySelector('.html5-video-player').${muteState}();`);
+      runBrowserActions(thebrowserpart, `document.querySelectorAll('video, audio').forEach((elem) => elem.muted=${thebrowserpart.muteState});document.querySelector('.html5-video-player').${muteState}();`);
+    };
+		if (action === "browserAction") {
+      runBrowserActions(thebrowserpart, `${change}`);
     };
     console.log(action);
 	};
@@ -466,3 +466,16 @@ if (!window.fireScreenScriptInitialized) { window.fireScreenScriptInitialized = 
 // oneShot({fireurl: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_5MB.mp4"});
 // oneShot({firevolume: "0.5"});
 // oneShot({firevolume: "0"});
+
+// oneShot({browseraction: "action"});
+// oneShot({browseraction: `window.bantermessage(window.alert('test'));`});
+
+// adjustForAll("browserAction", `window.bantermessage(window.alert('test'));`)
+
+// runBrowserActions((await BS.BanterScene.GetInstance().Find(`MyBrowser1`)).GetComponent(BS.ComponentType.BanterBrowser), `window.bantermessage(window.alert('test'))`)
+
+// (await BS.BanterScene.GetInstance().Find(`MyBrowser1`)).GetComponent(BS.ComponentType.BanterBrowser).RunActions(JSON.stringify({"actions": [{ "actionType": "runscript","strparam1": 
+//   `window.bantermessage(window.alert('test'))` 
+// }]}));
+
+// `window.scrollBy(0,1000);`  `window.scrollBy(0,-1000);`
