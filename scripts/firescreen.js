@@ -1,6 +1,6 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.2 Beta 1.3.0
+// VERSION: 1.2 Beta 1.3.1
 var thishostnameurl = "https://firer.at/scripts/"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var thisscriptsurl = thishostnameurl + "firescreen.js"; // CHANGE THIS
 var announcerscripturl = thishostnameurl + "announcer.js"; // CHANGE THIS
@@ -507,7 +507,7 @@ async function firescreenloadstuff() {
     if (isAdminOrLocalUser) { console.log(isAdminOrLocalUser ? "Current Shot is from Admin" : "Current Shot is from Local User");
       if (data.fireurlv1) setFirePageUrls(data.fireurl);
       if (data.firevolume) { const fireVolume = Number(parseFloat(data.firevolume).toFixed(2));
-        document.querySelectorAll('.firescreenc').forEach(element => {
+        document.querySelectorAll('.firescreenc').forEach(element => { element.setAttribute("volumelevel", fireVolume);
           element.components["sq-browser"].runActions([
             { actionType: "runscript", strparam1: `document.querySelectorAll('video, audio').forEach(elem => elem.volume=${fireVolume}); document.querySelector('.html5-video-player').setVolume(${(fireVolume * 100).toFixed(0)});` }
           ]);
@@ -516,7 +516,7 @@ async function firescreenloadstuff() {
     } else if (e.detail.fromId === "f67ed8a5ca07764685a64c7fef073ab9") {
       if (data.fireurlv1) setFirePageUrls(data.fireurl);
       if (data.firevolume) { const fireVolume = Number(parseFloat(data.firevolume).toFixed(2));
-        document.querySelectorAll('.firescreenc').forEach(element => {
+        document.querySelectorAll('.firescreenc').forEach(element => { element.setAttribute("volumelevel", fireVolume);
           element.components["sq-browser"].runActions([
             { actionType: "runscript", strparam1: `document.querySelectorAll('video, audio').forEach(elem => elem.volume=${fireVolume}); document.querySelector('.html5-video-player').setVolume(${(fireVolume * 100).toFixed(0)});` }
           ]);
