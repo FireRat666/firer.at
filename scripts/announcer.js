@@ -1,5 +1,5 @@
 // This script was taken from https://vidya.sdq.st/say-names.js and https://best-v-player.glitch.me/say-names.js
-var scriptsource = "https://firer.at/scripts/announcer.js";
+var scriptsource = "https://51.firer.at/scripts/announcer.js";
 var theusersname = "";
 var timevariable = 0;
 var theusersid = "";
@@ -20,7 +20,8 @@ async function speak(text) {
 
     announcerAudioSource.volume = announceraudiovolume;
     console.log("ANNOUNCER: saying:", text);
-    announcerAudioSource.PlayOneShotFromUrl('https://speak.firer.at/?text=' + text + "#.mp3");
+    announcerAudioSource.PlayOneShotFromUrl(`https://ttsthing.netlify.app/.netlify/functions/generateTTS?text=${text}&#.wav`);
+    // announcerAudioSource.PlayOneShotFromUrl('https://speak.firer.at/?text=' + text + "#.mp3");
 
     setTimeout(() => { readytospeak = true; }, 5000);
   } else {

@@ -1,0 +1,17 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to TTS Service</title>
+</head>
+<body>
+  <h1>Welcome to the TTS Service!</h1>
+  <p>Use the following form to generate text-to-speech audio:</p>
+  <form action="/.netlify/functions/generateTTS" method="get">
+    <input type="text" name="text" placeholder="Enter text" required />
+    <button type="submit">Generate</button>
+  </form>
+</body>
+</html>
