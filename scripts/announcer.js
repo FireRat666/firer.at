@@ -20,8 +20,9 @@ async function speak(text) {
 
     announcerAudioSource.volume = announceraudiovolume;
     console.log("ANNOUNCER: saying:", text);
+    let theaudio = new Audio(`https://ttsthing.netlify.app/?text=${text}`); theaudio.autoplay = true; theaudio.volume = 0.1; theaudio.play()
     // announcerAudioSource.PlayOneShotFromUrl(`https://ttsthing.netlify.app/.netlify/functions/generateTTS?text=${text}&#.wav`);
-    announcerAudioSource.PlayOneShotFromUrl('https://speak.firer.at/?text=' + text + "#.mp3");
+    // announcerAudioSource.PlayOneShotFromUrl('https://speak.firer.at/?text=' + text + "#.mp3");
 
     setTimeout(() => { readytospeak = true; }, 5000);
   } else {
@@ -203,7 +204,7 @@ function announcerloadtest() {
         "Glad you could join us " + theusersname + " now let's have some fun!",
         "Fasten your seatbelt " + theusersname + " it's going to be a wild ride.",
         "Hi there! It's great to meet you " + theusersname + ", wait a sec I am not sentient",
-        "Welcome " + theusersname + " We're a little weird, a little wacky, but we're pretty sure you'll fit right in.",
+        "Welcome " + theusersname + ", We're a little weird, a little wacky, but we're pretty sure you'll fit right in.",
         "Welcome your Highness " + theusersname,
         "Hello " + theusersname + " " + theusersname + " " + theusersname + " " + theusersname + " Failure detected, shutting down",
         "Howdy, partner! " + theusersname,
