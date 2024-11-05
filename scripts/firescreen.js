@@ -244,7 +244,7 @@ function computeButtonPosition(basePos, offsetPos) {
 var volInterval = null;
 var soundlevelfirstrun = true;
 function keepsoundlevel() {
-  var loopCount = 0; const maxLoops = 6;
+  var loopCount = 0; const maxLoops = 10;
   if (fireScreenOn && soundlevelfirstrun) {
 	console.log("FIRESCREEN: keepsoundlevel loop");
 	soundlevelfirstrun = false;
