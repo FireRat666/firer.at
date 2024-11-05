@@ -1,10 +1,9 @@
-// SDK2 Based FireScreen, V0.69 Beta 3.2 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
+// SDK2 Based FireScreen, V0.69 Beta 3.3 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts / live streams with volume controls or a portable browser for any website.
 var thisScriptLocation = `https://firer.at/scripts/`; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var fireScriptName = `${thisScriptLocation}firescreenv2.js`;
 var announcerscripturlv2 = `${thisScriptLocation}announcer.js`;
 var fireScreen2On = false;
-var firstrunhandcontrolsv2 = true;
 var playersuseridv2 = null;
 var the_announce = null;
 var the_announce420 = null;
@@ -15,7 +14,20 @@ var whiteColour = new BS.Vector4(1,1,1,1);
 var customButtonSize = new BS.Vector3(0.2,0.04,1);
 var textPlaneColour = new BS.Vector4(0.1,0.1,0.1,1);
 var fireScreenSetup = false;
-if (typeof window.theNumberofBrowsers === 'undefined') { window.theNumberofBrowsers = 0; } // Initialize only once 
+// if (typeof window.theNumberofBrowsers === 'undefined') { window.theNumberofBrowsers = 0; } // Initialize only once 
+
+
+(function() {
+  const initialValues = {
+    firstrunhandcontrols: true,
+    handControlsDisabled: true,
+    theNumberofBrowsers: 0,
+  };
+
+  for (const [key, value] of Object.entries(initialValues)) {
+    if (typeof window[key] === 'undefined') { window[key] = value; } // Initialize Variables only once 
+  }
+})();
 
 // This Function adds geometry to the given game Object
 async function createGeometry(thingy1, geomtype, options = {}) {
@@ -284,22 +296,26 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_screenposition, p_screenrotation
       console.log(e.detail.fromId);
     };
   });
+  
+  async function initializeV2() { await waitForUserIdv2(); if (window.handControlsDisabled) { playersuseridv2 = window.user.id; window.handControlsDisabled = false; setupHandControlsV2(); } }
 
-  firescenev2.On("user-joined", e => {
-    if (e.detail.isLocal) { // Setup Hand Controls only on the first run if enabled
-      if (p_handbuttons === "true" && firstrunhandcontrolsv2) {
-        firstrunhandcontrolsv2 = false; playersuseridv2 = e.detail.uid;
-        console.log("FIRESCREEN2: Enabling Hand Controls"); setupHandControls();
-      };
-      console.log("FIRESCREEN2: user-joined");
-    };
+  async function waitForUserIdv2() { while (!window.user || window.user.id === undefined) { await new Promise(resolve => setTimeout(resolve, 200)); } }
+
+  // firescenev2.On("user-joined", e => {
+  //   if (e.detail.isLocal) { // Setup Hand Controls only on the first run if enabled
+  //     if (p_handbuttons === "true" && window.firstrunhandcontrols) {
+  //       window.firstrunhandcontrols = false; playersuseridv2 = e.detail.uid;
+  //       console.log("FIRESCREEN2: Enabling Hand Controls"); setupHandControlsV2();
+  //     };
+  //     console.log("FIRESCREEN2: user-joined");
+  //   };
+  // });
+
+  firescenev2.On("user-left", e => { if (e.detail.isLocal) { window.firstrunhandcontrols = true;
+      console.log("FIRESCREEN2: Local User Left, Resetting firstrunhandcontrols variable"); };
   });
 
-  firescenev2.On("user-left", e => { if (e.detail.isLocal) { firstrunhandcontrolsv2 = true;
-      console.log("FIRESCREEN2: Local User Left, Resetting firstrunhandcontrolsv2 variable"); };
-  });
-
-  async function setupHandControls() {
+  async function setupHandControlsV2() {
     // THE CONTAINER FOR THE HAND BUTTONS
     const plane20Object = new BS.GameObject("handContainer");
     const plane20geometry = await createGeometry(plane20Object, BS.GeometryType.PlaneGeometry);
@@ -336,7 +352,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_screenposition, p_screenrotation
   if (p_thisBrowserNumber < 1) {p_thisBrowserNumber++}; 
   if (waitingforunity) { screeninterval = setInterval(function() {
     if (firescenev2.unityLoaded) { waitingforunity = false; clearInterval(screeninterval);
-      if (!window.announcerScriptInitialized) { window.announcerScriptInitialized = true; console.log("FIRESCREEN2: Announcer Initialising"); announcerstufffunc(); }; };
+      if (!window.announcerScriptInitialized && typeof announcerscene === 'undefined') { window.announcerScriptInitialized = true; console.log("FIRESCREEN2: Announcer Initialising"); announcerstufffunc(); }; };
   }, p_thisBrowserNumber * 1000); };
   // browser-message - Fired when a message is received from a browser in the space.  
   firebrowser.On("browser-message", e => { console.log(e) });
