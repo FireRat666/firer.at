@@ -297,10 +297,11 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_screenposition, p_screenrotation
     };
   });
   
-  async function initializeV2() { await waitForUserIdv2(); if (window.handControlsDisabled) { playersuseridv2 = window.user.id; window.handControlsDisabled = false; setupHandControlsV2(); } }
+  async function initializeV2() { await waitForUserIdv2(); if (window.handControlsDisabled && p_handbuttons === "true" && window.firstrunhandcontrols) { playersuseridv2 = window.user.id; window.handControlsDisabled = false; setupHandControlsV2(); } }
 
   async function waitForUserIdv2() { while (!window.user || window.user.id === undefined) { await new Promise(resolve => setTimeout(resolve, 200)); } }
-
+  
+  initializeV2();
   // firescenev2.On("user-joined", e => {
   //   if (e.detail.isLocal) { // Setup Hand Controls only on the first run if enabled
   //     if (p_handbuttons === "true" && window.firstrunhandcontrols) {
