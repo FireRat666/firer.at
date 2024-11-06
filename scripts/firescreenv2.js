@@ -1,4 +1,4 @@
-// SDK2 Based FireScreen, V0.69 Beta 3.3 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
+// SDK2 Based FireScreen, V0.69 Beta 3.3.1 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts / live streams with volume controls or a portable browser for any website.
 var thisScriptLocation = `https://firer.at/scripts/`; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var fireScriptName = `${thisScriptLocation}firescreenv2.js`;
@@ -132,7 +132,7 @@ function setupfirescreen2() {
   console.log(`FIRESCREEN2: Found ${allscripts.length} matching scripts`);
   allscripts.forEach((script, index) => { if (script.dataset.processed) { return; }; 
     window.theNumberofBrowsers++; console.log(`FIRESCREEN2: Loading browser ${window.theNumberofBrowsers}`); script.dataset.processed = 'true';const thisBrowserNumber = window.theNumberofBrowsers;
-    const defaultParams = { position: "0 2 0", rotation: "0 0 0", scale: "1 1 1", "screen-position": "0 0 -0.02", "screen-rotation": "0 0 0", volumelevel: "0.25",
+    const defaultParams = { position: "0 2 0", rotation: "0 0 0", scale: "1 1 1", "screen-position": "0 0 -0.02", "screen-rotation": "0 0 0", "screen-scale": "1 1 1", volumelevel: "0.25",
       website: "https://firer.at/pages/games.html", mipmaps: "1", pixelsperunit: "1200", width: "1024", height: "576",
       backdrop: "true", "hand-controls": "false", "disable-interaction": "false", "disable-rotation": false, announce: "false", "announce-420": "false", "announce-events": "undefined",
       "button-color": "0 1 0 1", "backdrop-color": "0 0 0 0.9", "volup-color": "0 1 0 1", "voldown-color": "1 1 0 1", "mute-color": "1 1 1 1", "space-sync": "false",
@@ -144,7 +144,7 @@ function setupfirescreen2() {
       "custom-button04-url": "false", "custom-button04-text": "Custom Button 04"
     };
 
-    const numberAttributes = { position: getV3FromStrv2, rotation: getV3FromStrv2, scale: getV3FromStrv2, "screen-position": getV3FromStrv2,  "screen-rotation": getV3FromStrv2,  "button-color": getV4FromStr, "backdrop-color": getV4FromStr, "volup-color": getV4FromStr, "voldown-color": getV4FromStr, "mute-color": getV4FromStr };
+    const numberAttributes = { position: getV3FromStrv2, rotation: getV3FromStrv2, scale: getV3FromStrv2, "screen-position": getV3FromStrv2, "screen-rotation": getV3FromStrv2, "screen-scale": getV3FromStrv2, "button-color": getV4FromStr, "backdrop-color": getV4FromStr, "volup-color": getV4FromStr, "voldown-color": getV4FromStr, "mute-color": getV4FromStr };
     // Function to get or convert attribute
     const getParam = (key) => { const attr = script.getAttribute(key);
       const value = attr !== null ? attr : defaultParams[key];
@@ -152,17 +152,17 @@ function setupfirescreen2() {
 
     const params = {}; Object.keys(defaultParams).forEach(key => { params[key] = getParam(key); });
     const {
-      position, rotation, scale, "screen-position": screenPosition, "screen-rotation": screenRotation, volumelevel, mipmaps, pixelsperunit, backdrop, website, "button-color": buttonColor, announce, "announce-420": announce420, "backdrop-color": backdropColor, "icon-mute-url": iconMuteUrl, "icon-volup-url": iconVolUpUrl, "icon-voldown-url": iconVolDownUrl, "icon-direction-url": iconDirectionUrl, "volup-color": volUpColor, "voldown-color": volDownColor, "mute-color": muteColor, "disable-interaction": disableInteraction, "disable-rotation": disableRotation, "space-sync": spaceSync, "hand-controls": handControls, width, height, "announce-events": announceEvents, "custom-button01-url": customButton01Url, "custom-button01-text": customButton01Text, "custom-button02-url": customButton02Url, "custom-button02-text": customButton02Text, "custom-button03-url": customButton03Url, "custom-button03-text": customButton03Text, "custom-button04-url": customButton04Url, "custom-button04-text": customButton04Text
+      position, rotation, scale, "screen-position": screenPosition, "screen-rotation": screenRotation, "screen-scale": screenScale, volumelevel, mipmaps, pixelsperunit, backdrop, website, "button-color": buttonColor, announce, "announce-420": announce420, "backdrop-color": backdropColor, "icon-mute-url": iconMuteUrl, "icon-volup-url": iconVolUpUrl, "icon-voldown-url": iconVolDownUrl, "icon-direction-url": iconDirectionUrl, "volup-color": volUpColor, "voldown-color": volDownColor, "mute-color": muteColor, "disable-interaction": disableInteraction, "disable-rotation": disableRotation, "space-sync": spaceSync, "hand-controls": handControls, width, height, "announce-events": announceEvents, "custom-button01-url": customButton01Url, "custom-button01-text": customButton01Text, "custom-button02-url": customButton02Url, "custom-button02-text": customButton02Text, "custom-button03-url": customButton03Url, "custom-button03-text": customButton03Text, "custom-button04-url": customButton04Url, "custom-button04-text": customButton04Text
     } = params;
 
-    sdk2tests(position, rotation, scale, screenPosition, screenRotation, volumelevel, mipmaps, pixelsperunit, backdrop, website, buttonColor, announce, announce420,
+    sdk2tests(position, rotation, scale, screenPosition, screenRotation, screenScale, volumelevel, mipmaps, pixelsperunit, backdrop, website, buttonColor, announce, announce420,
       backdropColor, iconMuteUrl, iconVolUpUrl, iconVolDownUrl, iconDirectionUrl, volUpColor, volDownColor, muteColor,
       disableInteraction, disableRotation, spaceSync, handControls, width, height, announceEvents, thisBrowserNumber, customButton01Url, customButton01Text,
       customButton02Url, customButton02Text, customButton03Url, customButton03Text, customButton04Url, customButton04Text);
     });
 };
 
-async function sdk2tests(p_pos, p_rot, p_sca, p_screenposition, p_screenrotation, p_volume, p_mipmaps, p_pixelsperunit, p_backdrop, p_website, p_buttoncolor, p_announce, p_announce420, p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor, p_mutecolor, p_disableinteraction, p_disableRotation, p_spacesync, p_handbuttons, p_width, p_height, p_announceevents, p_thisBrowserNumber, p_custombuttonurl01, p_custombutton01text, p_custombuttonurl02, p_custombutton02text, p_custombuttonurl03, p_custombutton03text, p_custombuttonurl04, p_custombutton04text) {
+async function sdk2tests(p_pos, p_rot, p_sca, p_screenposition, p_screenrotation, p_screenscale, p_volume, p_mipmaps, p_pixelsperunit, p_backdrop, p_website, p_buttoncolor, p_announce, p_announce420, p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor, p_mutecolor, p_disableinteraction, p_disableRotation, p_spacesync, p_handbuttons, p_width, p_height, p_announceevents, p_thisBrowserNumber, p_custombuttonurl01, p_custombutton01text, p_custombuttonurl02, p_custombutton02text, p_custombuttonurl03, p_custombutton03text, p_custombuttonurl04, p_custombutton04text) {
   // create a reference to the banter scene
   const firescenev2 = BS.BanterScene.GetInstance();
   the_announce = p_announce;
@@ -200,7 +200,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_screenposition, p_screenrotation
   // firebrowser Transform Stuff
   const browsertransform = await screenObject.AddComponent(new BS.Transform());
   browsertransform.position = p_screenposition; browsertransform.eulerAngles = p_screenrotation;
-  browsertransform.localScale = new BS.Vector3(1,1,1);
+  browsertransform.localScale = p_screenscale;
   await screenObject.SetParent(geometryObject, false); // Make the screen a child of the Main Geometry Object
   const dynamicFriction = 100; const staticFriction = 100;  // ADD FRICTION
   const physicMaterial = await geometryObject.AddComponent(new BS.BanterPhysicMaterial(dynamicFriction, staticFriction));
