@@ -477,7 +477,7 @@ if (!window.fireScreenScriptInitialized) { window.fireScreenScriptInitialized = 
 };
 
 // setProtectedSpaceProp('fireurl', "https://firer.at/");
-// await firescenev2.OneShot(JSON.stringify({firevolume: "0.5"}));
+// await BS.BanterScene.GetInstance().OneShot(JSON.stringify({firevolume: "0.5"}));
 // await firescenev2.OneShot(JSON.stringify({fireurl: "https://firer.at/"}));
 
 // oneShot({fireurl: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_5MB.mp4"});

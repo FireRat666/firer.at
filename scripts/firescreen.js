@@ -1,6 +1,6 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.2 Beta 1.3.1
+// VERSION: 1.2 Beta 1.3.1.1
 var thishostnameurl = "https://firer.at/scripts/"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var thisscriptsurl = thishostnameurl + "firescreen.js"; // CHANGE THIS
 var announcerscripturl = thishostnameurl + "announcer.js"; // CHANGE THIS
@@ -505,7 +505,7 @@ async function firescreenloadstuff() {
     const data = JSON.parse(e.detail.data);
     const isAdminOrLocalUser = e.detail.fromAdmin || e.detail.fromId === firescene.localUser.uid;
     if (isAdminOrLocalUser) { console.log(isAdminOrLocalUser ? "Current Shot is from Admin" : "Current Shot is from Local User");
-      if (data.fireurlv1) setFirePageUrls(data.fireurl);
+      if (data.fireurlv1) setFirePageUrls(data.fireurlv1);
       if (data.firevolume) { const fireVolume = Number(parseFloat(data.firevolume).toFixed(2));
         document.querySelectorAll('.firescreenc').forEach(element => { element.setAttribute("volumelevel", fireVolume);
           element.components["sq-browser"].runActions([
@@ -514,7 +514,7 @@ async function firescreenloadstuff() {
         });
       };
     } else if (e.detail.fromId === "f67ed8a5ca07764685a64c7fef073ab9") {
-      if (data.fireurlv1) setFirePageUrls(data.fireurl);
+      if (data.fireurlv1) setFirePageUrls(data.fireurlv1);
       if (data.firevolume) { const fireVolume = Number(parseFloat(data.firevolume).toFixed(2));
         document.querySelectorAll('.firescreenc').forEach(element => { element.setAttribute("volumelevel", fireVolume);
           element.components["sq-browser"].runActions([
