@@ -1,4 +1,4 @@
-// SDK2 Based FireScreen, V0.69 Beta 3.3.2 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
+// SDK2 Based FireScreen, V0.69 Beta 3.3.3 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts / live streams with volume controls or a portable browser for any website.
 var thisScriptLocation = `https://firer.at/scripts/`; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var fireScriptName = `${thisScriptLocation}firescreenv2.js`;
@@ -302,15 +302,15 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_lockposition, p_screenposition, 
   async function waitForUserIdv2() { while (!window.user || window.user.id === undefined) { await new Promise(resolve => setTimeout(resolve, 200)); } }
   
   initializeV2();
-  // firescenev2.On("user-joined", e => {
-  //   if (e.detail.isLocal) { // Setup Hand Controls only on the first run if enabled
-  //     if (p_handbuttons === "true" && window.firstrunhandcontrols) {
-  //       window.firstrunhandcontrols = false; playersuseridv2 = e.detail.uid;
-  //       console.log("FIRESCREEN2: Enabling Hand Controls"); setupHandControlsV2();
-  //     };
-  //     console.log("FIRESCREEN2: user-joined");
-  //   };
-  // });
+  firescenev2.On("user-joined", e => {
+    if (e.detail.isLocal) { // Setup Hand Controls only on the first run if enabled
+      if (p_handbuttons === "true" && window.firstrunhandcontrols) {
+        window.firstrunhandcontrols = false; playersuseridv2 = e.detail.uid;
+        console.log("FIRESCREEN2: Enabling Hand Controls"); setupHandControlsV2();
+      };
+      console.log("FIRESCREEN2: user-joined");
+    };
+  });
 
   firescenev2.On("user-left", e => { if (e.detail.isLocal) { window.firstrunhandcontrols = true;
       console.log("FIRESCREEN2: Local User Left, Resetting firstrunhandcontrols variable"); };
