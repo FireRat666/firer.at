@@ -280,7 +280,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_lockposition, p_screenposition, 
 
   const firesbillBoard = await geometryObject.AddComponent(new BS.BanterBillboard(0, isbillboarded, isbillboarded, true));  // Bill Board the geometryObject
   geometrytransform.localScale = p_sca; // SET THE SCALE FOR THE SCREEN
-  firerigidBody.gameObject.On('grab', () => {console.log("GRABBED!"); if (p_lockposition != "false") {firerigidBody.isKinematic = false; }});  // When user Grabs the Browser, Make it moveable
+  firerigidBody.gameObject.On('grab', () => {console.log("GRABBED!"); if (p_lockposition != "false") {console.log("Not locked!"); firerigidBody.isKinematic = false; }});  // When user Grabs the Browser, Make it moveable
   firerigidBody.gameObject.On('drop', () => {console.log("DROPPED!"); firerigidBody.isKinematic = true; }); // When user Drops the Browser, Lock it in place
 
   firescenev2.On("one-shot", e => { console.log(e.detail);
