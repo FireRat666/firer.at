@@ -14,6 +14,8 @@ var whiteColour = new BS.Vector4(1,1,1,1);
 var customButtonSize = new BS.Vector3(0.2,0.04,1);
 var textPlaneColour = new BS.Vector4(0.1,0.1,0.1,1);
 var fireScreenSetup = false;
+// create a reference to the banter scene
+var firescenev2 = BS.BanterScene.GetInstance();
 // if (typeof window.theNumberofBrowsers === 'undefined') { window.theNumberofBrowsers = 0; } // Initialize only once 
 
 
@@ -163,8 +165,6 @@ function setupfirescreen2() {
 };
 
 async function sdk2tests(p_pos, p_rot, p_sca, p_lockposition, p_screenposition, p_screenrotation, p_screenscale, p_volume, p_mipmaps, p_pixelsperunit, p_backdrop, p_website, p_buttoncolor, p_announce, p_announce420, p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor, p_mutecolor, p_disableinteraction, p_disableRotation, p_spacesync, p_handbuttons, p_width, p_height, p_announceevents, p_thisBrowserNumber, p_custombuttonurl01, p_custombutton01text, p_custombuttonurl02, p_custombutton02text, p_custombuttonurl03, p_custombutton03text, p_custombuttonurl04, p_custombutton04text) {
-  // create a reference to the banter scene
-  const firescenev2 = BS.BanterScene.GetInstance();
   the_announce = p_announce;
   the_announce420 = p_announce420;
   the_announceevents = p_announceevents;
@@ -297,9 +297,9 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_lockposition, p_screenposition, 
     };
   });
   
-  async function initializeV2() { await waitForUserIdv2(); if (window.handControlsDisabled && p_handbuttons === "true" && window.firstrunhandcontrols) { playersuseridv2 = window.user.id; window.handControlsDisabled = false; setupHandControlsV2(); } }
+  async function initializeV2() { await waitForUserIdv2(); if (window.handControlsDisabled && p_handbuttons === "true" && window.firstrunhandcontrols) { playersuseridv2 = firescenev2.localUser.uid; window.handControlsDisabled = false; setupHandControlsV2(); } }
 
-  async function waitForUserIdv2() { while (!window.user || window.user.id === undefined) { await new Promise(resolve => setTimeout(resolve, 200)); } }
+  async function waitForUserIdv2() { while (!firescenev2.localUser || firescenev2.localUser.uid === undefined) { await new Promise(resolve => setTimeout(resolve, 200)); } }
   
   initializeV2();
   firescenev2.On("user-joined", e => {
@@ -323,10 +323,11 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_lockposition, p_screenposition, 
     const plane20Collider = await plane20Object.AddComponent(new BS.BoxCollider(true, new BS.Vector3(0, 0, 0), new BS.Vector3(1,1,1)));
     const plane20material = await createMaterial(plane20Object, { shaderName: defaulTransparent, color: new BS.Vector4(0,0,0,0), side: 1 });
     const plane20transform = await plane20Object.AddComponent(new BS.Transform());
-    firescenev2.LegacyAttachObject(plane20Object, playersuseridv2, BS.LegacyAttachmentPosition.LEFT_HAND)
-    plane20transform.localPosition = new BS.Vector3(-0.01,-0.006,0.020);
+    plane20transform.localPosition = new BS.Vector3(0,0.046,0.030);
     plane20transform.localScale = new BS.Vector3(0.1,0.1,0.1);
-    plane20transform.localEulerAngles = new BS.Vector3(5,-95,0);
+    // plane20transform.eulerAngles = new BS.Vector3(5,-95,0);
+    plane20transform.rotation = new BS.Vector4(0.25,0,0.8,1);
+    setTimeout(async () => { await firescenev2.LegacyAttachObject(plane20Object, playersuseridv2, BS.LegacyAttachmentPosition.LEFT_HAND); }, 1000);
     // Hand Volume Up Button
     const hvolUpButton = await createUIButton("hVolumeUpButton", p_iconvolupurl, new BS.Vector3(0.4,0.4,0.3), p_volupcolor, plane20Object, () => { adjustForAll("adjustVolume", 1);
       updateButtonColor(hvolUpButton, p_volupcolor); }, new BS.Vector3(180,0,0),1,1, defaulTransparent, new BS.Vector3(0.4,0.4,0.4));
@@ -370,14 +371,14 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_lockposition, p_screenposition, 
         const announcerscript = document.createElement("script");
         announcerscript.id = "fires-announcer";
         announcerscript.setAttribute("src", announcerscripturlv2);
-        announcerscript.setAttribute("announce", the_announce);
-        announcerscript.setAttribute("announce-420", the_announce420);
-        if (the_announceevents === "undefined" && the_announce === "true") {
+        announcerscript.setAttribute("announce", p_announce);
+        announcerscript.setAttribute("announce-420", p_announce420);
+        if (p_announceevents === "undefined" && p_announce === "true") {
           announcerscript.setAttribute("announce-events", "true");
-        } else if (the_announceevents === "undefined") {
+        } else if (p_announceevents === "undefined") {
           announcerscript.setAttribute("announce-events", "false");
         } else {
-          announcerscript.setAttribute("announce-events", the_announceevents);
+          announcerscript.setAttribute("announce-events", p_announceevents);
         };
         document.querySelector("body").appendChild(announcerscript);
       } else { console.log('FIRESCREEN2: announcerscene is defined, Moving on'); };
@@ -447,7 +448,7 @@ async function adjustForAll(action, change) {
 async function getSpaceStateStuff(argument) {
   return new Promise((resolve) => {
     const thisintervalvar = setInterval(async () => {
-      if (window.user && window.user.id !== undefined) { clearInterval(thisintervalvar);
+      if (firescenev2.localUser && firescenev2.localUser.uid !== undefined) { clearInterval(thisintervalvar);
         const result = await spaceStateStuff(argument); resolve(result); }
     }, 100);
   });
