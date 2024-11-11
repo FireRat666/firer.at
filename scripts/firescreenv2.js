@@ -477,9 +477,9 @@ function spaceStateStuff(argument) {
 
 if (!window.fireScreenScriptInitialized) { window.fireScreenScriptInitialized = true;
   console.log("FIRESCREEN2: Initializing the script");
-  setTimeout(() => { setupfirescreen2(); }, 500);
+  setTimeout(() => { setupfirescreen2(); }, 2500);
 } else {
-  setTimeout(() => { setupfirescreen2(); }, 1500);
+  setTimeout(() => { setupfirescreen2(); }, 3500);
 };
 
 // setProtectedSpaceProp('fireurl', "https://firer.at/");
