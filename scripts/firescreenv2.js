@@ -1,4 +1,4 @@
-// SDK2 Based FireScreen, V0.69 Beta 4.0.1 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
+// SDK2 Based FireScreen, V0.69 Beta 4.1.0 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts / live streams with volume controls or a portable browser for any website.
 var thisScriptLocation = `https://firer.at/scripts/`; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var fireScriptName = `${thisScriptLocation}firescreenv2.js`;
@@ -475,11 +475,25 @@ function spaceStateStuff(argument) {
   return null;
 };
 
-if (!window.fireScreenScriptInitialized) { window.fireScreenScriptInitialized = true;
+function checkForMatchingScripts() {
+  const scripts = Array.from(document.getElementsByTagName('script'));
+  const matchingScriptFound = scripts.some(script =>
+    script.src.startsWith('https://best-v-player.glitch.me/') || script.src.startsWith('https://vidya.sdq.st/')
+  );
+  return matchingScriptFound;
+}
+
+// Modify this part where setupfirescreen2() is called
+if (!window.fireScreenScriptInitialized) {
+  window.fireScreenScriptInitialized = true;
   console.log("FIRESCREEN2: Initializing the script");
-  setTimeout(() => { setupfirescreen2(); }, 4500);
+
+  // Check for matching scripts and set delay accordingly
+  const delay = checkForMatchingScripts() ? 15000 : 500; // 7.5 seconds delay if matching script found
+  setTimeout(() => { setupfirescreen2(); }, delay);
 } else {
-  setTimeout(() => { setupfirescreen2(); }, 5500);
+  const delay = checkForMatchingScripts() ? 16000 : 1500; // Adjust delay based on script presence
+  setTimeout(() => { setupfirescreen2(); }, delay);
 };
 
 // setProtectedSpaceProp('fireurl', "https://firer.at/");
