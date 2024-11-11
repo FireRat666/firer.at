@@ -483,16 +483,15 @@ function checkForMatchingScripts() {
   return matchingScriptFound;
 }
 
-// Modify this part where setupfirescreen2() is called
 if (!window.fireScreenScriptInitialized) {
   window.fireScreenScriptInitialized = true;
   console.log("FIRESCREEN2: Initializing the script");
 
   // Check for matching scripts and set delay accordingly
-  const delay = checkForMatchingScripts() ? 15000 : 500; // 7.5 seconds delay if matching script found
+  const delay = checkForMatchingScripts() ? 25000 : 500;
   setTimeout(() => { setupfirescreen2(); }, delay);
 } else {
-  const delay = checkForMatchingScripts() ? 16000 : 1500; // Adjust delay based on script presence
+  const delay = checkForMatchingScripts() ? 26000 : 1500;
   setTimeout(() => { setupfirescreen2(); }, delay);
 };
 
