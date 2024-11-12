@@ -11,7 +11,7 @@ async function loadAndExecuteAnnouncerScript(src) {
     const scriptContent = await response.text();
     const delay = checkForMatchingAnnouncerScripts() ? 10000 : 0;
     setTimeout(() => { eval(scriptContent); }, delay);
-    console.log(`Announcer Script executed successfully! YT Detected:${checkForMatchingFireScripts()}`);
+    console.log(`Announcer Script executed successfully! YT Detected:${checkForMatchingAnnouncerScripts()}`);
   } catch (error) { console.error("Failed to load or execute the Announcer script:", error); }
 }
 
