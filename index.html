@@ -1,4 +1,4 @@
-<html lang="en">
+<html lang="en" android-bundle="https://firer.at/android.banter" windows-bundle="https://firer.at/windows.banter">
 	<head>
 		<meta charset="UTF-8" />
 		<link id="favicon" rel="icon" href="https://firer.at/files/favicon.ico" type="image/x-icon" />
@@ -8,7 +8,32 @@
 		<meta property="og:image" content="https://cdn.sidequestvr.com/file/636703/flower-tile-seamless-pattern.png">  
 		<script src="https://aframe.io/releases/1.4.0/aframe.min.js" sq-space="https://sidequestvr.com/space/2471"></script>
 		<title>FireR.at's Website/Space</title>
-		<script src="https://vidya.sdq.st/say-names.js" four-twenty="false" announce-events="true"></script>
+    <script>
+      const scene = BS.BanterScene.GetInstance();
+      scene.On("unity-loaded", ()=>{
+        console.log("index.html setSceneSettings Loading...");
+        // SetSettings - Set settings for the current space like spawn position, portals, guest access etc.
+        const settings = new BS.SceneSettings();
+        settings.EnableTeleport = true;
+        settings.EnableForceGrab = false;
+        settings.EnableSpiderMan = true;
+        settings.EnablePortals = true;
+        settings.EnableGuests = true;
+        settings.EnableQuaternionPose = false;
+        settings.EnableControllerExtras = false;
+        settings.EnableFriendPositionJoin = false;
+        settings.EnableDefaultTextures = true;
+        settings.EnableAvatars = true;
+        settings.MaxOccupancy = 30;
+        settings.RefreshRate = 72;
+        settings.ClippingPlane = new BS.Vector2(0.02, 1500);
+        settings.SpawnPoint = new BS.Vector4(0, 0.05, 0, 90);
+        scene.SetSettings(settings);
+        console.log("index.html finish setting settings for scene");
+        setTimeout(() => { scene.SetSettings(settings); }, 2000);
+      });
+    </script>
+		<!-- <script src="https://vidya.sdq.st/say-names.js" four-twenty="false" announce-events="true"></script> -->
 		<script src="/scripts/tests.js"></script>
 		<link rel="stylesheet" href="/pages/style.css" />
 		<script src="/scripts/RandomBG.js"></script>
@@ -31,17 +56,13 @@
 		<!-- Analytics and Cookie Stuff END -->
 </head>
 <body class="fixed bodyc">
-	   <div style="display: none;"><a-scene id="ascene"
-            sq-friendpositionjoinallowed="enabled: false" sq-portalsenabled="enabled: true" sq-refreshrate="rate:90" sq-spawnpoint="position: 0 0 0;" sq-maxoccupancy="number: 20"
-             sq-assetbundle="
-				android: https://firer.at/android.banter;
-				desktop: https://firer.at/windows.banter;"    >
+	   <div style="display: none;"><a-scene id="ascene">
 
       <!-- Screen for Movies/Screencast -->
       <script src="https://firer.at/scripts/firescreen.js" mipmaps="1" pixelsperunit="1200" castmode="true" backdrop="false" 
               website="https://firer.at/"
               position="5 1.5 0" rotation="0 -90 0" scale="1 1 1" volumelevel="0.1" backdrop-color="#000000"
-              button-color="#00FF00" button-position="0 0 0" disable-interaction="false"
+              button-color="#00FF00" button-position="0 0 0" disable-interaction="false" announce="true"
               volup-color="#00FF00" voldown-color="#FFFF00" mute-color="#FFFFFF" hand-controls="true" width="1024" height="576"
               custom-button01-url="false" custom-button01-text="Example Text"
               custom-button02-url="false" custom-button02-text="Some website!"
