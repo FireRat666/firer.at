@@ -150,10 +150,10 @@ function load420() {
   if(window.isBanter && announce420 === "true") {
     let keepAlive;
     function connect() {
-      const ws = new WebSocket('wss://calicocut-remix.glitch.me');
+      const ws = new WebSocket('wss://calicocut.glitch.me');
       ws.onmessage = (msg) => {
-        // TTSVoice(msg.data);
-        combineAudioFiles(msg.data);
+        TTSVoice(msg.data);
+        // combineAudioFiles(msg.data);
       };
       ws.onopen = (msg) => {
         console.log("ANNOUNCER: connected to 420 announcer.");
