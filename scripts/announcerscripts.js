@@ -12,7 +12,7 @@ var readytospeak = true;
 var announceraudiovolume = 0.08;
 var announcerAudioObject = new BS.GameObject("MyAudioSource"); 
 var announcerAudioSource = null;
-let AmeliaLink = `https://audiofiles.firer.at/mp3/11-Amelia/`;
+var AmeliaLink = `https://audiofiles.firer.at/mp3/11-Amelia/`;
 
 // // Main Speak Function, Thank you Elin and everyone
 async function TTSVoice(text) {
@@ -150,9 +150,10 @@ function load420() {
   if(window.isBanter && announce420 === "true") {
     let keepAlive;
     function connect() {
-      const ws = new WebSocket('wss://calicocut.glitch.me');
+      const ws = new WebSocket('wss://calicocut-remix.glitch.me');
       ws.onmessage = (msg) => {
-        TTSVoice(msg.data);
+        // TTSVoice(msg.data);
+        combineAudioFiles(msg.data);
       };
       ws.onopen = (msg) => {
         console.log("ANNOUNCER: connected to 420 announcer.");
