@@ -12,6 +12,7 @@ var readytospeak = true;
 var announceraudiovolume = 0.08;
 var announcerAudioObject = new BS.GameObject("MyAudioSource"); 
 var announcerAudioSource = null;
+let AmeliaLink = `https://audiofiles.firer.at/mp3/11-Amelia/`;
 
 // // Main Speak Function, Thank you Elin and everyone
 async function TTSVoice(text) {
@@ -135,7 +136,8 @@ function loadevents() {
         const difference = Math.abs(new Date(event[0].start_time) - new Date());
         if(difference < 60 * 1000 && lastEventsId !== event[0].events_v2_id) {
           lastEventsId = event[0].events_v2_id;
-          await TTSVoice("Oh Shit " + event[0].name + ", is starting now! Drop your shit and hussle");
+          // await TTSVoice("Oh Shit " + event[0].name + ", is starting now! Drop your shit and hussle");
+          await combineAudioFiles([`${AmeliaLink}Oh%20Shit.mp3`,`https://speak.firer.at/?text=${encodeURIComponent(event[0].name)}#.mp3`,`${AmeliaLink}is%20starting%20now!%20Drop%20your%20shit%20and%20hussle.mp3`]);
         };
       };
     })
@@ -182,7 +184,6 @@ function announcerloadtest() {
     timenow = Date.now(); // Sets Now to after unity scene load is done
   });
   announcerscene.On("user-joined", e => {
-    let AmeliaLink = `https://audiofiles.firer.at/mp3/11-Amelia/`;
     theusersid = e.detail.uid;
     let tempusername = false;
     if (e.detail.name === "Gravxton") {tempusername = "Graviton"};
