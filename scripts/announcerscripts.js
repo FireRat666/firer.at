@@ -120,7 +120,7 @@ function aloopfunction(interval, callback) {
         callback();
     };
   };
-  setInterval(_loop, 800);
+  setInterval(_aloopfunction, 800);
   _aloopfunction();
 };
 
