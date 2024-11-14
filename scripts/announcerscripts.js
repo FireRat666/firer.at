@@ -255,6 +255,7 @@ function announcerloadtest() {
     if (theusersid === "36253aa47452d740e2343513a1f8820c") {theusersname = `${AmeliaLink}Ron_B.mp3`}; //  Ron_B  
     if (theusersid === "606370cad7ec83cc4ed6685659d92940") {theusersname = `${AmeliaLink}incognito.mp3`}; //  incognito 
     if (theusersid === "ca5429464da79945c76e4f4d62700138") {theusersname = `${AmeliaLink}Vanski.mp3`}; //  Vanski  
+    if (theusersid === "f48dd317f7ea037b318f449ea60df169") {theusersname = `${AmeliaLink}GarethIW.mp3`}; //  GarethIW 
 
     console.log("ANNOUNCER: JOINED USER: " + e.detail.name + " UID: " + theusersid);
  
