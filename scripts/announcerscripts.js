@@ -1,5 +1,6 @@
 // This script was taken from https://vidya.sdq.st/say-names.js and https://best-v-player.glitch.me/say-names.js
 var scriptsource = "https://firer.at/scripts/announcer.js";
+var script420source = 'wss://calicocut-remix.glitch.me';
 var theusersname = "";
 var timevariable = 0;
 var theusersid = "";
@@ -136,8 +137,14 @@ function loadevents() {
         const difference = Math.abs(new Date(event[0].start_time) - new Date());
         if(difference < 60 * 1000 && lastEventsId !== event[0].events_v2_id) {
           lastEventsId = event[0].events_v2_id;
-          // await TTSVoice("Oh Shit " + event[0].name + ", is starting now! Drop your shit and hussle");
-          await combineAudioFiles([`${AmeliaLink}Oh%20Shit.mp3`,`https://speak.firer.at/?text=${encodeURIComponent(event[0].name)}#.mp3`,`${AmeliaLink}is%20starting%20now!%20Drop%20your%20shit%20and%20hussle.mp3`]);
+          let knownEvent = false;
+          if (event[0].name === 'Open Mic Night') { knownEvent = 'Open%20Mic%20Night.mp3'; };
+          if (event[0].name === 'LGBTQ+ and Friends') { knownEvent = 'LGBTQ+%20and%20Friends.mp3'; };
+          if (event[0].name === 'LyicBird Live' || event[0].name === 'LyricBird Live') { knownEvent = 'https://audiofiles.firer.at/mp3/11-Amelia/LyricBird%20Live.mp3'; };
+          if (event[0].name === 'Learn Afrikaans ') { knownEvent = 'Learn%20Afrikaans.mp3'; };
+          if (knownEvent) { await combineAudioFiles([`${AmeliaLink}Oh%20Shit.mp3`,`${AmeliaLink}${knownEvent}`,`${AmeliaLink}is%20starting%20now!%20Drop%20your%20shit%20and%20hussle.mp3`]);
+          } else { await combineAudioFiles([`${AmeliaLink}Oh%20Shit.mp3`,`https://speak.firer.at/?text=${encodeURIComponent(event[0].name)}#.mp3`,`${AmeliaLink}is%20starting%20now!%20Drop%20your%20shit%20and%20hussle.mp3`]);
+          }
         };
       };
     })
@@ -150,10 +157,24 @@ function load420() {
   if(window.isBanter && announce420 === "true") {
     let keepAlive;
     function connect() {
-      const ws = new WebSocket('wss://calicocut.glitch.me');
-      ws.onmessage = (msg) => {
-        TTSVoice(msg.data);
-        // combineAudioFiles(msg.data);
+      const ws = new WebSocket(script420source);
+      ws.onmessage = async (msg) => {
+        try {
+            if (msg.data instanceof Blob) {
+                console.warn("Received a Blob. Converting Blob to text.");
+                const textData = await msg.data.text();
+                console.log("Blob converted to text:", textData);
+    
+                const audioUrls = JSON.parse(textData);
+    
+                await combineAudioFiles(audioUrls);
+            } else {
+                const audioUrls = JSON.parse(msg.data);
+                await combineAudioFiles(audioUrls);
+            }
+        } catch (error) {
+            console.error("Error handling WebSocket message:", error);
+        }
       };
       ws.onopen = (msg) => {
         console.log("ANNOUNCER: connected to 420 announcer.");
@@ -171,8 +192,7 @@ function load420() {
     connect();
   };
 };
-
-
+      
 var thescripts = document.getElementsByTagName("script");
 var announcerscene = BS.BanterScene.GetInstance();
 var timenow = 9999999999999; // Set Now to a Really Big Number, so if user-joined is called before unity-loaded, it wont spam user joined messages for users that were already in the space
@@ -196,13 +216,10 @@ function announcerloadtest() {
     if (theusersid === "19f104073c0da250138d67be9634d842") {tempusername = "Jaeger 7 4 5"}; // Jaeger_745
     // if (theusersid === "597c64d0037631df4ec9d73ad381f634 ") {tempusername = "Someone you don't know"}; // Gooch Monkey
     if (theusersid === "ee95ee1ae0cd0d67066a4519e665911e") {tempusername = "Zelrainer"}; //  Zelrainer
-    // if (theusersid === "32c3e6ac83b78872be370cb10f0c9729") {tempusername = "Casey"}; //  "caseycastaway"
-    if (theusersid === "f3da86e3752aa16d8f574777cc5ed842") {tempusername = "Irish Jesus"}; //  "Scottish.Jesus"
-    // if (theusersid === "452267f713cf815aab6f8e6a2548ff93") {tempusername = "Ben"}; //  "Ben"
-    // if (theusersid === "d1bdc33ac0fcfc061728b2e11c740ac7") {tempusername = "Mika"}; //  "Mika"
+    if (theusersid === "32c3e6ac83b78872be370cb10f0c9729") { announcerscene.OpenPage('banter://afkjail.glitch.me') }; //  "caseycastaway"
+    // if (theusersid === "f3da86e3752aa16d8f574777cc5ed842") {tempusername = "Irish Jesus"}; //  "Scottish.Jesus"
     // if (theusersid === "2bf1e383ae55886d560f13e0bd040330") {tempusername = "Shane Harris"}; //  Shane Harris
     if (theusersid === "3236ff6310bfe543efa2648346f59ea3") {tempusername = "Irish Guy"}; //  Irishking  
-    if (theusersid === "9eefdbc0892b7f90f6c30723c00fcde5") {tempusername = "Shane"}; //  "Oh no, Shane"
 
     if (tempusername) {
       theusersname = `https://speak.firer.at/?text=${encodeURIComponent(tempusername)}#.mp3`;
@@ -231,7 +248,14 @@ function announcerloadtest() {
     if (theusersid === "52ac3e6e222a72ade6cbde376c27a6c3") {theusersname = `${AmeliaLink}I.T.Trey.mp3`}; // I.T.Trey
     if (theusersid === "89c3abbe6d16e057035cc35ad7492cf7") {theusersname = `${AmeliaLink}Static%20Threat.mp3`}; //  "staticthreat"
     if (theusersid === "f90d43718f190161c2fa2d0879218686") {theusersname = `${AmeliaLink}Captain%20Dan.mp3`}; //  CaptnDaN 
-    if (theusersid === "c0f4772ffcec1ee33f9f6e2230ac41bf") {theusersname = `${AmeliaLink}DraculusX.mp3`}; //  "DraculusX" 
+    if (theusersid === "c0f4772ffcec1ee33f9f6e2230ac41bf") {theusersname = `${AmeliaLink}DraculusX.mp3`}; //  "DraculusX"  
+    if (theusersid === "5cfcbb85c22e0a3c3d213f041b3d3d97") {theusersname = `${AmeliaLink}Skizot.mp3`}; //  Skizot 
+    if (theusersid === "2bda85050695db29c0f8cf10cf576c5c") {theusersname = `${AmeliaLink}RazorSmiles.mp3`}; //  RazorSmiles
+    if (theusersid === "ed81ca973bf8d169a8148d304065c9ef") {theusersname = `${AmeliaLink}Deadpool86.mp3`}; //  Deadpool86 
+    if (theusersid === "9eefdbc0892b7f90f6c30723c00fcde5") {theusersname = `${AmeliaLink}Shane.mp3`}; //  "Oh no, Shane"
+    if (theusersid === "452267f713cf815aab6f8e6a2548ff93") {theusersname = `${AmeliaLink}Ben.mp3`}; //  "Ben"
+    if (theusersid === "d1bdc33ac0fcfc061728b2e11c740ac7") {theusersname = `${AmeliaLink}Mika.mp3`}; //  "Mika"
+    if (theusersid === "36253aa47452d740e2343513a1f8820c") {theusersname = `${AmeliaLink}Ron_B.mp3`}; //  Ron_B 
 
     console.log("ANNOUNCER: JOINED USER: " + e.detail.name + " UID: " + theusersid);
  
@@ -756,7 +780,7 @@ function announcerloadtest() {
         if (theusersid === "3dbca1090fad5dff35543697ca007066") {message = ["https://audiofiles.firer.at/mp3/11-Amelia/Bow%20to%20your%20King%20Sebek%20the%20Mirror%20Creator.mp3"]}; //  "Sebek"
         // if (theusersid === "no-220a4b971b3edb376cbc956f5539b8a5") {message = "Big John is here everybody hide your snack packs"}; // Big John
         if (theusersid === "f8e9b8eed97623712f77f318fa35d7ce") {message = ["https://audiofiles.firer.at/mp3/11-Amelia/Don't%20Die%20it's%20bad%20for%20your%20health,%20Waffle%20Man%20is%20here.mp3"]}; // WaffleMan
-
+        console.log("Announcer: Announce True")
         combineAudioFiles(message);
         // speak(message);
       } else if (announcefirstrun) {
