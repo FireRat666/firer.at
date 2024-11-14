@@ -359,7 +359,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   if (p_thisBrowserNumber < 1) {p_thisBrowserNumber++}; 
   if (waitingforunity) { screeninterval = setInterval(function() {
     if (firescenev2.unityLoaded) { waitingforunity = false; clearInterval(screeninterval);
-      if (!window.announcerScriptInitialized && typeof announcerscene === 'undefined') { window.announcerScriptInitialized = true; console.log("FIRESCREEN2: Announcer Initialising"); announcerstufffunc(); }; };
+      if (!window.announcerScriptInitialized && typeof announcerscene === 'undefined') { console.log("FIRESCREEN2: Announcer Initialising"); announcerstufffunc(); }; };
   }, p_thisBrowserNumber * 1000); };
   // browser-message - Fired when a message is received from a browser in the space.  
   firebrowser.On("browser-message", e => { console.log(e) });
@@ -371,7 +371,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
     console.log("FIRESCREEN2: Announcer Script Called");
     // Setup the Announcer only on the first run if enabled
     setTimeout(() => { 
-      if (typeof announcerscene === 'undefined') { announcerfirstrunv2 = false;
+      if (!window.announcerScriptInitialized && typeof announcerscene === 'undefined') { announcerfirstrunv2 = false;
         console.log("FIRESCREEN2: announcerscene is not defined, Adding the Announcer Script");
         const announcerscript = document.createElement("script");
         announcerscript.id = "fires-announcer";
