@@ -6,10 +6,10 @@ function checkForMatchingAnnouncerScripts() {
 }
 
 async function loadAndExecuteAnnouncerScript(src) {
-  try {
+  try { var delay;
     const response = await fetch(src);
     const scriptContent = await response.text();
-    const delay = checkForMatchingAnnouncerScripts() ? 10000 : 0;
+    if (window.FireScriptLoaded) { delay = 0 } else { delay = checkForMatchingAnnouncerScripts() ? 10000 : 0; };
     setTimeout(() => { eval(scriptContent); }, delay);
     console.log(`Announcer Script executed successfully! YT Detected:${checkForMatchingAnnouncerScripts()}`);
   } catch (error) { console.error("Failed to load or execute the Announcer script:", error); }

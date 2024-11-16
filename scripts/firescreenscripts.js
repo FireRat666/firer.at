@@ -5,9 +5,6 @@ var fireScriptName = `${thisScriptLocation}firescreenv2.js`;
 var announcerscripturlv2 = `${thisScriptLocation}announcer.js`;
 var fireScreen2On = false;
 var playersuseridv2 = null;
-var the_announce = null;
-var the_announce420 = null;
-var the_announceevents = null;
 var customButShader = 'Unlit/Diffuse';
 var defaulTransparent = 'Unlit/DiffuseTransparent';
 var whiteColour = new BS.Vector4(1,1,1,1);
@@ -165,16 +162,10 @@ function setupfirescreen2() {
 };
 
 async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_screenposition, p_screenrotation, p_screenscale, p_volume, p_mipmaps, p_pixelsperunit, p_backdrop, p_website, p_buttoncolor, p_announce, p_announce420, p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor, p_mutecolor, p_disableinteraction, p_disableRotation, p_spacesync, p_handbuttons, p_width, p_height, p_announceevents, p_thisBrowserNumber, p_custombuttonurl01, p_custombutton01text, p_custombuttonurl02, p_custombutton02text, p_custombuttonurl03, p_custombutton03text, p_custombuttonurl04, p_custombutton04text) {
-  the_announce = p_announce;
-  the_announce420 = p_announce420;
-  the_announceevents = p_announceevents;
   fireScreen2On = true;
   let keyboardstate = false;
   let playerislockedv2 = false;
   let customButtonObjects = [];
-  let firevolume = p_volume;
-  let browsermuted = false;
-  let announcerfirstrunv2 = true;
   const screenObject = await new BS.GameObject(`MyBrowser${p_thisBrowserNumber}`);
   console.log(`FIRESCREEN2: Width:${p_width}, Height:${p_height}, Number:${p_thisBrowserNumber}, URL:${p_website}`);
   let firebrowser = await screenObject.AddComponent(new BS.BanterBrowser(p_website, p_mipmaps, p_pixelsperunit, p_width, p_height, null));
@@ -359,7 +350,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   if (p_thisBrowserNumber < 1) {p_thisBrowserNumber++}; 
   if (waitingforunity) { screeninterval = setInterval(function() {
     if (firescenev2.unityLoaded) { waitingforunity = false; clearInterval(screeninterval);
-      if (!window.announcerScriptInitialized && typeof announcerscene === 'undefined') { console.log("FIRESCREEN2: Announcer Initialising"); announcerstufffunc(); }; };
+      if (!window.FireScriptLoaded && !window.AnnouncerScriptInitialized) { window.FireScriptLoaded = true; console.log("FIRESCREEN2: Announcer Initialising"); announcerstufffunc(); }; };
   }, p_thisBrowserNumber * 1000); };
   // browser-message - Fired when a message is received from a browser in the space.  
   firebrowser.On("browser-message", e => { console.log(e) });
@@ -371,22 +362,18 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
     console.log("FIRESCREEN2: Announcer Script Called");
     // Setup the Announcer only on the first run if enabled
     setTimeout(() => { 
-      if (!window.announcerScriptInitialized && typeof announcerscene === 'undefined') { announcerfirstrunv2 = false;
-        console.log("FIRESCREEN2: announcerscene is not defined, Adding the Announcer Script");
+      const thisscripts = Array.from(document.getElementsByTagName('script'));
+      const matchingAnnouncerScriptFound = thisscripts.some(script => script.src.startsWith(`${announcerscripturlv2}`) || script.src.startsWith(`${thisScriptLocation}announce`) );
+      if (!matchingAnnouncerScriptFound && !window.AnnouncerScriptInitialized) {
+        console.log("FIRESCREEN2: matchingAnnouncerScriptFound is not found, Adding the Announcer Script");
         const announcerscript = document.createElement("script");
         announcerscript.id = "fires-announcer";
         announcerscript.setAttribute("src", announcerscripturlv2);
         announcerscript.setAttribute("announce", p_announce);
         announcerscript.setAttribute("announce-420", p_announce420);
-        if (p_announceevents === "undefined" && p_announce === "true") {
-          announcerscript.setAttribute("announce-events", "true");
-        } else if (p_announceevents === "undefined") {
-          announcerscript.setAttribute("announce-events", "false");
-        } else {
-          announcerscript.setAttribute("announce-events", p_announceevents);
-        };
+        announcerscript.setAttribute("announce-events", p_announceevents === "undefined" ? (p_announce === "true" ? "true" : "false") : p_announceevents );
         document.querySelector("body").appendChild(announcerscript);
-      } else { console.log('FIRESCREEN2: announcerscene is defined, Moving on'); };
+      } else { console.log('FIRESCREEN2: matchingAnnouncerScriptFound or AnnouncerScriptInitialized, Moving on'); };
     }, 1000);
     setTimeout(() => { timenow = Date.now(); }, 1000);
   };

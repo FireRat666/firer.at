@@ -33,6 +33,38 @@ async function TTSVoice(text) {
 
 };
 
+let isPlayingAudio = false; let audioQueue = null;
+async function playAudioSequentially(urls, volume = 0.1) {
+  if (isPlayingAudio) { console.log("Announcer: Currently playing. Updating queue."); audioQueue = { urls, volume }; return; }
+  isPlayingAudio = true; console.log(`Speaking:`); console.log(urls);
+  try { const audioFiles = [];
+    audioFiles.push(await loadAudio(urls[0], volume));
+    if (urls.length > 1) { audioFiles.push(await loadAudio(urls[1], volume)); }
+    await playAudioInSequence(audioFiles, volume, urls.slice(2));
+  } finally { isPlayingAudio = false;
+    if (audioQueue) {
+      const queuedAudio = audioQueue; // Take the current queue
+      audioQueue = null; // Clear the queue
+      playAudioSequentially(queuedAudio.urls, queuedAudio.volume); // Play the queued audio
+    }
+  }
+}
+// Helper to play audio in sequence while continuing to load remaining files
+async function playAudioInSequence(audioFiles, volume, remainingUrls) { // Start loading the remaining files
+  const remainingAudioPromises = remainingUrls.map(url => loadAudio(url, volume));
+  for (const audio of audioFiles) {  await playAudio(audio); }
+  for (const audioPromise of remainingAudioPromises) { const audio = await audioPromise; await playAudio(audio); }
+}
+
+function loadAudio(url, volume) {
+  return new Promise((resolve, reject) => {
+    const audio = new Audio(url); audio.volume = volume;
+    audio.oncanplaythrough = () => resolve(audio); audio.onerror = reject;
+  });
+}
+
+function playAudio(audio) { return new Promise((resolve) => { audio.play(); audio.onended = resolve; }); };
+
 let currentAudioSource = null; // Holds the reference to the current audio source
 
 async function combineAudioFiles(urls, volume = 0.1) {
@@ -139,8 +171,8 @@ function loadevents() {
           lastEventsId = event[0].events_v2_id;
           let knownEvent = false;
           if (event[0].name === 'Art by Zaleska' || event[0].name === 'Open Mic Night' || event[0].name === 'LGBTQ+ and Friends' || event[0].name === 'LyicBird Live' || event[0].name === 'Learn Afrikaans ' || event[0].name === 'Nighttime Jungle Party' || event[0].name === 'Divine Plays Games' || event[0].name === 'Women of Banter' || event[0].name === "Zel's Distracted Karaoke" || event[0].name === 'VR Creator Club Meetup' || event[0].name === 'Goth Night' || event[0].name === 'The Power Hour' || event[0].name === 'CTRL + ALT + GEEK' || event[0].name === 'Jackbox Games Cinema') { knownEvent = encodeURIComponent(event[0].name); };
-          if (knownEvent) { await combineAudioFiles([`${AmeliaLink}Oh%20Shit.mp3`,`${AmeliaLink}${knownEvent}.mp3`,`${AmeliaLink}is%20starting%20now!%20Drop%20your%20shit%20and%20hussle.mp3`]);
-          } else { await combineAudioFiles([`${AmeliaLink}Oh%20Shit.mp3`,`https://speak.firer.at/?text=${encodeURIComponent(event[0].name)}#.mp3`,`${AmeliaLink}is%20starting%20now!%20Drop%20your%20shit%20and%20hussle.mp3`]);
+          if (knownEvent) { await playAudioSequentially([`${AmeliaLink}Oh%20Shit.mp3`,`${AmeliaLink}${knownEvent}.mp3`,`${AmeliaLink}is%20starting%20now!%20Drop%20your%20shit%20and%20hussle.mp3`]);
+          } else { await playAudioSequentially([`${AmeliaLink}Oh%20Shit.mp3`,`https://speak.firer.at/?text=${encodeURIComponent(event[0].name)}#.mp3`,`${AmeliaLink}is%20starting%20now!%20Drop%20your%20shit%20and%20hussle.mp3`]);
           }
         };
       };
@@ -164,10 +196,10 @@ function load420() {
     
                 const audioUrls = JSON.parse(textData);
     
-                await combineAudioFiles(audioUrls);
+                await playAudioSequentially(audioUrls);
             } else {
                 const audioUrls = JSON.parse(msg.data);
-                await combineAudioFiles(audioUrls);
+                await playAudioSequentially(audioUrls);
             }
         } catch (error) {
             console.error("Error handling WebSocket message:", error);
@@ -356,7 +388,7 @@ function announcerloadtest() {
       if (theusersid === "replace") {randommessage = "replace"} //  replace
       else if (theusersid === "replace") {randommessage = "replace"}; // replace
 
-      combineAudioFiles(randommessage);
+      playAudioSequentially(randommessage);
       console.log("ANNOUNCER: Local-UID: " + e.detail.uid)
 
     } else {
@@ -783,12 +815,10 @@ function announcerloadtest() {
         // if (theusersid === "no-220a4b971b3edb376cbc956f5539b8a5") {message = "Big John is here everybody hide your snack packs"}; // Big John
         if (theusersid === "f8e9b8eed97623712f77f318fa35d7ce") {message = ["https://audiofiles.firer.at/mp3/11-Amelia/Don't%20Die%20it's%20bad%20for%20your%20health,%20Waffle%20Man%20is%20here.mp3"]}; // WaffleMan
         console.log("Announcer: Announce True")
-        combineAudioFiles(message);
+        playAudioSequentially(message);
         // speak(message);
-      } else if (announcefirstrun) {
-        announcefirstrun = false;
-        timenow = Date.now(); // Sets Now to after a user has joined if first run is still true
-      };
+      } else { console.log("Announcer: Announce False OR timenow < 5000") };
+      if (announcefirstrun) { announcefirstrun = false; timenow = Date.now(); }; // Sets Now to after a user has joined if first run is still true
     };
   });
   
