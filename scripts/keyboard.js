@@ -1,4 +1,5 @@
-async function initializeKeyboard() {
+const keyboardscene = BS.BanterScene.GetInstance();
+async function initializeKeyboard(keyBoardPosition = new BS.Vector3(0, 2, 5)) {
   const lowerCaseButtonObjects = {};
   const upperCaseButtonObjects = {};
   const specialCharsButtonObjects = {};
@@ -18,7 +19,7 @@ async function initializeKeyboard() {
 
   const keyboardParentObject = new BS.GameObject("KeyboardParent");
   const parentTransform = await keyboardParentObject.AddComponent(new BS.Transform());
-  parentTransform.localPosition = new BS.Vector3(0, 2, -0);
+  parentTransform.localPosition = keyBoardPosition;
 
   const textObject = new BS.GameObject("InputText");
   const inputText = await textObject.AddComponent(new BS.BanterText("", textColor));
@@ -155,10 +156,14 @@ async function initializeKeyboard() {
     await createSpecialButton("Caps", new BS.Vector3((startX - 0.9) + xOffset, (startY + 0.4) + 3 * yOffset, 0), toggleCapsLock);
     await createSpecialButton("Special", new BS.Vector3((startX - 0.2) + xOffset, startY + 3 * yOffset, 0), toggleSpecialChars, 0.8, new BS.Vector3(9.65, -2.37, -0.01));
     await createSpecialButton("Backspace", new BS.Vector3(startX + 10.8 * xOffset, (startY + 0.4), 0), backspaceInputText, 1.2, new BS.Vector3(9.5, -2.37, -0.01));
-    await createSpecialButton("Submit", new BS.Vector3(startX + 10.8 * xOffset, startY, 0), () => { console.log(inputText.text); openPage(inputText.text); inputText.text = ""; }, 1.2, new BS.Vector3(9.5, -2.37, -0.01));
+    await createSpecialButton("Submit", new BS.Vector3(startX + 10.8 * xOffset, startY, 0), () => { console.log(inputText.text);
+      // setPublicSpaceProp(`USERID:${keyboardscene.localUser.uid}:${keyboardscene.localUser.name}`, inputText.text.substring(0, 30).trim()); 
+      // keyboardscene.OneShot(JSON.stringify({fireurl: inputText.text})); 
+      // keyboardscene.OneShot(JSON.stringify({spaceaction: `document.querySelectorAll('.firescreenc').forEach(firescreenc => { firescreenc.setAttribute("sq-browser", { url: "https://${inputText.text}", pixelsPerUnit: 1200, mipMaps: 0, mode: "local" }); });`})); 
+      keyboardscene.OneShot(JSON.stringify({messagething: keyboardscene.localUser.name + ": " + inputText.text}));
+      inputText.text = ""; }, 1.2, new BS.Vector3(9.5, -2.37, -0.01));
     await createSpecialButton("Space", new BS.Vector3(startX + 1.5, startY + 3 * yOffset, 0), () => { updateInputText(" "); }, 1.2, new BS.Vector3(9.65, -2.37, -0.01));
-
-    // await createSpecialButton("Paste", new BS.Vector3(startX + 10.8 * xOffset, startY + 1.0 * yOffset, 0), async () => {
+    // await createSpecialButton("Paste", new BS.Vector3(startX + 10.9 * xOffset, startY + 1.0 * yOffset, 0), async () => {
     //   // Try to focus the document
     //   document.activeElement.blur(); // Unfocus any active element
     //   document.body.focus(); // Focus the body (or your specific input element)
