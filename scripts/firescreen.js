@@ -529,8 +529,9 @@ async function firescreenloadstuff() {
   await waitForUnity(); console.log("FIRESCREEN: Unity-Loaded");  setTimeout(() => { enableFireScreen(); }, 1000);
 };
 
-firescreenloadstuff();
-
+if(window.isBanter) { 
+  firescreenloadstuff();
+}
 var handbuttonmutestate = false;
 var handscene = BS.BanterScene.GetInstance();
 
