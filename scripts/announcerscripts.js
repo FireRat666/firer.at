@@ -170,7 +170,7 @@ function loadevents() {
         if(difference < 60 * 1000 && lastEventsId !== event[0].events_v2_id) {
           lastEventsId = event[0].events_v2_id;
           let knownEvent = false;
-          if (event[0].name === 'Art by Zaleska' || event[0].name === 'Open Mic Night' || event[0].name === 'LGBTQ+ and Friends' || event[0].name === 'LyicBird Live' || event[0].name === 'Learn Afrikaans ' || event[0].name === 'Nighttime Jungle Party' || event[0].name === 'Divine Plays Games' || event[0].name === 'Women of Banter' || event[0].name === "Zel's Distracted Karaoke" || event[0].name === 'VR Creator Club Meetup' || event[0].name === 'Goth Night' || event[0].name === 'The Power Hour' || event[0].name === 'CTRL + ALT + GEEK' || event[0].name === 'Jackbox Games Cinema') { knownEvent = encodeURIComponent(event[0].name); };
+          if (event[0].name === 'Art by Zaleska' || event[0].name === 'Open Mic Night' || event[0].name === 'LGBTQ+ and Friends' || event[0].name === 'LyicBird Live' || event[0].name === 'Learn Afrikaans ' || event[0].name === 'Nighttime Jungle Party' || event[0].name === 'Divine Plays Games' || event[0].name === 'Women of Banter' || event[0].name === "Zel's Distracted Karaoke" || event[0].name === 'VR Creator Club Meetup' || event[0].name === 'Goth Night' || event[0].name === 'The Power Hour' || event[0].name === 'CTRL + ALT + GEEK' || event[0].name === 'Jackbox Games Cinema' || event[0].name === 'DraculusX LIVE @ Cannabanter' || event[0].name === 'American Psycho [18+]' || event[0].name === 'Pub Karaoke & Chat' || event[0].name === "Gamer's Corner" || event[0].name === "Just Bobbin'" || event[0].name === "Speed Friending" || event[0].name === "Crystal Lake Light Show" || event[0].name === "Gaming with Big jon" || event[0].name === "Lean on Me" || event[0].name === "Sing n Chat" || event[0].name === "Delicious Discoveries" || event[0].name === "Talking Shite w/ Zaleska & Gem" || event[0].name === "Twitch Games w/ Zaleska & Gem" || event[0].name === "Nyx's Nightmares" || event[0].name === "Guardians of Ga'hoole" || event[0].name === "Katoxkaraoke" || event[0].name === "Space-making / Beginners" || event[0].name === "The Speakers Corner" || event[0].name === "Space Hoppers" || event[0].name === "Courtroom Comedy Clash" || event[0].name === "Weekly Jungle Party") { knownEvent = encodeURIComponent(event[0].name.replace('/', '_')); };
           if (knownEvent) { await playAudioSequentially([`${AmeliaLink}Oh%20Shit.mp3`,`${AmeliaLink}${knownEvent}.mp3`,`${AmeliaLink}is%20starting%20now!%20Drop%20your%20shit%20and%20hussle.mp3`]);
           } else { await playAudioSequentially([`${AmeliaLink}Oh%20Shit.mp3`,`https://speak.firer.at/?text=${encodeURIComponent(event[0].name)}#.mp3`,`${AmeliaLink}is%20starting%20now!%20Drop%20your%20shit%20and%20hussle.mp3`]);
           }
@@ -243,7 +243,6 @@ function announcerloadtest() {
     if (theusersid === "ada674dac0d26556244bf61c2b97184e") {tempusername = "Yunji verse"}; // Yunjiverse
     if (theusersid === "94acdf9d5887ce8fb4a5c9c605f906a5") {tempusername = "Fear Psycho"}; // "Psycho"
     if (theusersid === "19f104073c0da250138d67be9634d842") {tempusername = "Jaeger 7 4 5"}; // Jaeger_745
-    // if (theusersid === "597c64d0037631df4ec9d73ad381f634 ") {tempusername = "Someone you don't know"}; // Gooch Monkey
     if (theusersid === "ee95ee1ae0cd0d67066a4519e665911e") {tempusername = "Zelrainer"}; //  Zelrainer
     if (theusersid === "32c3e6ac83b78872be370cb10f0c9729") { announcerscene.OpenPage('banter://afkjail.glitch.me') }; //  "caseycastaway"
     // if (theusersid === "f3da86e3752aa16d8f574777cc5ed842") {tempusername = "Irish Jesus"}; //  "Scottish.Jesus"
@@ -290,6 +289,8 @@ function announcerloadtest() {
     if (theusersid === "f48dd317f7ea037b318f449ea60df169") {theusersname = `${AmeliaLink}GarethIW.mp3`}; //  GarethIW 
     if (theusersid === "c88a0d72ce75583a544984486ebb8bf8") {theusersname = `${AmeliaLink}frogger.mp3`}; //  frogger  
     if (theusersid === "d8a95acd1e6c774938b7ebdaf243f0b5") {theusersname = `${AmeliaLink}zaleska.mp3`}; //  zaleska  
+    if (theusersid === "b022ebf940849d79e3d5993dc0191bde") {theusersname = `${AmeliaLink}Maxi74x1.mp3`}; //  Maxi74x1  
+    if (theusersid === "597c64d0037631df4ec9d73ad381f634") {theusersname = `${AmeliaLink}Someone%20you%20don't%20know.mp3`}; // Gooch Monkey
 
     console.log("ANNOUNCER: JOINED USER: " + e.detail.name + " UID: " + theusersid);
  
