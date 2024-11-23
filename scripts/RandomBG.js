@@ -43,7 +43,10 @@ if(!window.isBanter) {
     'https://firer.at/files/FireRat-(26).jpeg',
     'https://firer.at/files/FireRat-(27).jpeg',
     'https://firer.at/files/FireRat-(28).jpeg',
-    'https://firer.at/files/FireRat-(29).jpeg'
+    'https://firer.at/files/FireRat-(29).jpeg',
+    'https://firer.at/files/FireRat-(30).jpeg',
+    'https://firer.at/files/FireRat-(31).jpeg',
+    'https://firer.at/files/FireRat-(32).jpeg'
   ];
 
   function setRandomBackground() {
