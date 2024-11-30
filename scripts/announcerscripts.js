@@ -291,6 +291,13 @@ function announcerloadtest() {
     if (theusersid === "d8a95acd1e6c774938b7ebdaf243f0b5") {theusersname = `${AmeliaLink}zaleska.mp3`}; //  zaleska  
     if (theusersid === "b022ebf940849d79e3d5993dc0191bde") {theusersname = `${AmeliaLink}Maxi74x1.mp3`}; //  Maxi74x1  
     if (theusersid === "597c64d0037631df4ec9d73ad381f634") {theusersname = `${AmeliaLink}Someone%20you%20don't%20know.mp3`}; // Gooch Monkey
+    if (theusersid === "18f3a20a8c9934694c793883d85986c0") {theusersname = `${AmeliaLink}Tahla.mp3`}; // Tahla 
+    if (theusersid === "0bbac405b093fd7e3daccc228e821050") {theusersname = `${AmeliaLink}Poxxxx.mp3`}; // Poxxxx  
+    if (theusersid === "076c47aaf78c6a4c095f2b8051b1be97") {theusersname = `${AmeliaLink}DynamicDragoness.mp3`}; // D̤̫ynamicDragoness̐̈   
+    if (theusersid === "597fc529c6121dffe515050120fd9794") {theusersname = `${AmeliaLink}Irish%20Duchess.mp3`}; // Irish Duchess   
+    if (theusersid === "0c62ba8e0e98991aa44ddf3689b84d69") {theusersname = `${AmeliaLink}Alleen.mp3`}; // Alleen 
+    if (theusersid === "8aaab72ab53d886f97adc35bece156fc") {theusersname = `${AmeliaLink}Bavu.mp3`}; // Bavu  
+    if (theusersid === "4bbc515af1000c1ac6b67c58876be51f") {theusersname = `${AmeliaLink}Homer.mp3`}; // Homer   
 
     console.log("ANNOUNCER: JOINED USER: " + e.detail.name + " UID: " + theusersid);
  
