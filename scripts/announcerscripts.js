@@ -228,11 +228,14 @@ var timenow = 9999999999999; // Set Now to a Really Big Number, so if user-joine
 // Welcome message for user entering the space
 function announcerloadtest() {
   
+  let awaitingforunity = true;
+  var announcerinterval;
+  if (awaitingforunity) { announcerinterval = setInterval(function() {
+    if (announcerscene.unityLoaded) { awaitingforunity = false; clearInterval(announcerinterval);
+      announcefirstrun = false; timenow = Date.now(); // Sets Now to after unity scene load is done
+    };
+  }, 1000); };
 
-  announcerscene.On("unity-loaded", () => {
-    announcefirstrun = false;
-    timenow = Date.now(); // Sets Now to after unity scene load is done
-  });
   announcerscene.On("user-joined", e => {
     theusersid = e.detail.uid;
     let tempusername = false;
