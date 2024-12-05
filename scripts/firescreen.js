@@ -1,6 +1,6 @@
 // Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts with volume controls or for a portable browser
-// VERSION: 1.2 Beta 1.3.1.1
+// VERSION: 1.2 Beta 1.3.2
 var thishostnameurl = "https://firer.at/scripts/"; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var thisscriptsurl = thishostnameurl + "firescreen.js"; // CHANGE THIS
 var announcerscripturl = thishostnameurl + "announcer.js"; // CHANGE THIS
@@ -641,6 +641,7 @@ var handscene = BS.BanterScene.GetInstance();
       // This was a great innovation by HBR, who wanted Skizot to also get credit for the original idea. 
         const handControlsContainer = document.createElement("a-entity");
         handControlsContainer.setAttribute("scale", "0.1 0.1 0.1");
+        handControlsContainer.setAttribute("rotation", "70 180 10");
         handControlsContainer.setAttribute("position", "0.04 0.006 -0.010");
         handControlsContainer.setAttribute("sq-lefthand", `whoToShow: ${playersuserid || handscene.localUser.uid}`);
 
