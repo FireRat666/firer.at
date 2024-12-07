@@ -312,6 +312,11 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
       console.log("FIRESCREEN2: Local User Left, Resetting firstrunhandcontrols variable"); };
   });
 
+  function clickABut(uniqueAttribute, lastChild = false) {
+    document.querySelector(uniqueAttribute)?.[lastChild ? 'lastChild' : 'firstChild']?.dispatchEvent(new Event("click"));
+    // console.log(`clicked ${uniqueAttribute}`);
+  };
+
   async function setupHandControlsV2() {
     // THE CONTAINER FOR THE HAND BUTTONS
     const plane20Object = new BS.GameObject("handContainer");
@@ -325,13 +330,13 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
     plane20transform.rotation = new BS.Vector4(0.25,0,0.8,1);
     setTimeout(async () => { await firescenev2.LegacyAttachObject(plane20Object, playersuseridv2, BS.LegacyAttachmentPosition.LEFT_HAND); }, 1000);
     // Hand Volume Up Button
-    const hvolUpButton = await createUIButton("hVolumeUpButton", p_iconvolupurl, new BS.Vector3(0.4,0.4,0.3), p_volupcolor, plane20Object, () => { adjustForAll("adjustVolume", 1);
+    const hvolUpButton = await createUIButton("hVolumeUpButton", p_iconvolupurl, new BS.Vector3(0.4,0.4,0.3), p_volupcolor, plane20Object, () => { adjustForAll("adjustVolume", 1); clickABut('[position="0.693 0 0"]'); clickABut('[position="1.78 0 0"]', true); //vidya.sdq.st VolUp
       updateButtonColor(hvolUpButton, p_volupcolor); }, new BS.Vector3(180,0,0),1,1, defaulTransparent, new BS.Vector3(0.4,0.4,0.4));
     // Hand Volume Down Button
-    const hvolDownButton = await createUIButton("hVolumeDownButton", p_iconvoldownurl, new BS.Vector3(0.0,0.4,0.3), p_voldowncolor, plane20Object, () => { adjustForAll("adjustVolume", -1);
+    const hvolDownButton = await createUIButton("hVolumeDownButton", p_iconvoldownurl, new BS.Vector3(0.0,0.4,0.3), p_voldowncolor, plane20Object, () => { adjustForAll("adjustVolume", -1); clickABut('[position="0.471 0 0"]'); clickABut('[position="1.25 0 0"]', true); //vidya.sdq.st VolDown
       updateButtonColor(hvolDownButton, p_voldowncolor); }, new BS.Vector3(180,0,0),1,1, defaulTransparent, new BS.Vector3(0.4,0.4,0.4));
     // Hand Mute Button
-    const hmuteButton = await createUIButton("hMuteButton", p_iconmuteurl, new BS.Vector3(-0.4,0.4,0.3), p_mutecolor, plane20Object, () => { adjustForAll("toggleMute");
+    const hmuteButton = await createUIButton("hMuteButton", p_iconmuteurl, new BS.Vector3(-0.4,0.4,0.3), p_mutecolor, plane20Object, () => { adjustForAll("toggleMute"); clickABut('[position="0.23 0 0"]'); clickABut('[position="0.73 0 0"]', true); //vidya.sdq.st Mute
       let muteMaterial = hmuteButton.GetComponent(BS.ComponentType.BanterMaterial);
       muteMaterial.color = firebrowser.muteState ? p_mutecolor : new BS.Vector4(1, 0, 0, 1); }, new BS.Vector3(180,0,0),1,1,defaulTransparent, new BS.Vector3(0.4,0.4,0.4));
     // Hand Lock Button
@@ -340,7 +345,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
       let plane24material = hlockButton.GetComponent(BS.ComponentType.BanterMaterial);
       plane24material.color = playerislockedv2 ? new BS.Vector4(1,0,0,1) : new BS.Vector4(1, 1, 1, 0.7); }, new BS.Vector3(180,0,0),1,1, defaulTransparent, new BS.Vector3(0.4,0.4,0.4));
     // Hand Home Button
-    const hhomeButton = await createUIButton("hHomeButton", "https://firer.at/files/Home.png", new BS.Vector3(0.4,-0.1,0.3), p_buttoncolor, plane20Object, () => { adjustForAll("goHome");
+    const hhomeButton = await createUIButton("hHomeButton", "https://firer.at/files/Home.png", new BS.Vector3(0.4,-0.1,0.3), p_buttoncolor, plane20Object, () => { adjustForAll("goHome"); clickABut('[position="-0.633 0 0"]'); clickABut('[position="-1.7 0 0"]', true); //vidya.sdq.st Playlist
       updateButtonColor(hhomeButton, p_buttoncolor); }, new BS.Vector3(180,0,0),1,1, defaulTransparent, new BS.Vector3(0.4,0.4,0.4));
     console.log("FIRESCREEN2: Hand Buttons Setup Complete");
   };
@@ -353,10 +358,10 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
       if (!window.FireScriptLoaded && !window.AnnouncerScriptInitialized) { window.FireScriptLoaded = true; console.log("FIRESCREEN2: Announcer Initialising"); announcerstufffunc(); }; };
   }, p_thisBrowserNumber * 1000); };
   // browser-message - Fired when a message is received from a browser in the space.  
-  firebrowser.On("browser-message", e => { console.log(e) });
-  firescenev2.On("browser-message", e => { console.log(e) });
-  firebrowser.On("menu-browser-message", e => { console.log(e) });
-  firescenev2.On("menu-browser-message", e => { console.log(e) });
+  screenObject.On("browser-message", e => { console.log(e) });
+  screenObject.On("browsermessage", e => { console.log(e) });
+  screenObject.On("menu-browser-message", e => { console.log(e) });
+  screenObject.On("menubrowsermessage", e => { console.log(e) });
 
   function announcerstufffunc() {
     console.log("FIRESCREEN2: Announcer Script Called");
