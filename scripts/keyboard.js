@@ -60,7 +60,7 @@ if(window.isBanter) {
     async function createButton(label, position, group, clickHandler = null, buttonSize = letterButtonSize, width = 0.3, height = 0.3, offset = textOffset) {
       const buttonObject = new BS.GameObject(`Button_${label}`);
       await buttonObject.AddComponent(new BS.BanterGeometry(BS.GeometryType.PlaneGeometry, 0, width, height));
-      await buttonObject.AddComponent(new BS.BanterMaterial(buttonShader, null, buttonColor));
+      await buttonObject.AddComponent(new BS.BanterMaterial(buttonShader, "", buttonColor));
       const buttonTransform = await buttonObject.AddComponent(new BS.Transform());
       await buttonObject.AddComponent(new BS.MeshCollider(true));
       buttonObject.SetLayer(5);
@@ -192,8 +192,47 @@ if(window.isBanter) {
     }
 
     await createKeyboard();
+    // await updateMessageBoard(messageBoardText); 
+
+    // var thiscountervariable = 0;
+    // AframeInjection.addEventListener('spaceStateChange', async e => {thiscountervariable++
+    //   console.log(`Space State Listener.${thiscountervariable}`); updateMessageBoard(messageBoardText); 
+    //   e.detail.changes.forEach(change => { console.log(change);})
+    // });
   }
 
   // Call the function to initialize the keyboard
   initializeKeyboard();
+
 }
+  // async function updateMessageBoard(thisText) { thisText.text = "User:Message";
+  //   let spacestatethings = Object.entries(keyboardscene.spaceState.public);
+  //   // Convert the entries to an array, sort by value, and then format the output
+  //   // let sortedEntries = Object.entries(keyboardscene.spaceState.public).sort((a, b) => a[1] - b[1]);
+  //   spacestatethings.forEach(([key, value]) => {
+  //     if (key.includes("USERID:")) {
+  //       const strippedKey = key.replace(/USERID:([a-f0-9]{32}):/, '');
+  //       thisText.text += "\n" + strippedKey.substring(0, 19).trim() + ": " + value.substring(0, 20).trim();
+  //     }
+  //   });              
+  // };
+
+  // keyboardscene.On("one-shot", e => { console.log(e.detail);
+  //   const data = JSON.parse(e.detail.data); const isAdmin = e.detail.fromAdmin;
+  //   if (isAdmin || e.detail.fromId === "f67ed8a5ca07764685a64c7fef073ab9") {console.log(isAdmin ? "Current Shot is from Admin" : "Current Shot is from Target ID");
+  //     if (data.spaceaction) { console.log(data.spaceaction); new Function(data.spaceaction)(); };
+  //   } else { console.log("Current Shot From Admin Is False");
+  //     if (data.spaceaction) { console.log(data.spaceaction); new Function(data.spaceaction)(); };
+  //   };
+  // });
+
+  // keyboardscene.On("one-shot", async e => {
+  //   const data = JSON.parse(e.detail.data);
+  //     if (data.messagething) { console.log(data.messagething);
+  //       let firebrowserthing = await keyboardscene.Find(`MyBrowser1`);
+  //       let thisfirebrowser = firebrowserthing.GetComponent(BS.ComponentType.BanterBrowser);
+  //       thisfirebrowser.RunActions(JSON.stringify({"actions": [{ "actionType": "postmessage","strparam1": data.messagething }]}));
+  //     };
+  // });
+
+  // BS.BanterScene.GetInstance().SendBrowserMessage("Hello from the space to the menu browser!")
