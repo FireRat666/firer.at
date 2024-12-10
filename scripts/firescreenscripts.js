@@ -71,7 +71,7 @@ function adjustScale(geometrytransform, direction) {
 async function createCustomButton(name, firebrowser, parentObject, buttonObjects, position, text, textposition, url, clickHandler) {
   const buttonObject = await createUIButton(name, null, position, textPlaneColour, parentObject, false, "false", 1, 1, customButShader, customButtonSize);
   buttonObjects.push(buttonObject); let material = buttonObject.GetComponent(BS.ComponentType.BanterMaterial);
-  const textObject = new BS.GameObject(`${name}Text${window.theNumberofBrowsers}`);
+  const textObject = await new BS.GameObject(`${name}Text${window.theNumberofBrowsers}`).Async();
   const banterText = await textObject.AddComponent(new BS.BanterText(text, whiteColour, "Center", "Center", 0.20, true, true, new BS.Vector2(2,1)));
   const textTransform = await textObject.AddComponent(new BS.Transform());
   textTransform.localPosition = textposition; await textObject.SetParent(parentObject, false);
@@ -83,7 +83,7 @@ async function createCustomButton(name, firebrowser, parentObject, buttonObjects
 };
 
 async function createUIButton(name, thetexture, position, thecolor, thisparent, clickHandler = false, rotation = false, width = 0.1, height = 0.1, theShader = defaulTransparent, localScale = new BS.Vector3(1, 1, 1)) {
-  const buttonObject = new BS.GameObject(name);
+  const buttonObject = await new BS.GameObject(name).Async();
   const buttonGeometry = await createGeometry(buttonObject, BS.GeometryType.PlaneGeometry, { thewidth: width, theheight: height });
   const buttonCollider = await buttonObject.AddComponent(new BS.BoxCollider(true, new BS.Vector3(0,0,0), new BS.Vector3(width, height, 0.01)));
   const buttonMaterial = await createMaterial(buttonObject, { shaderName: theShader, texture: thetexture, color: thecolor });
@@ -166,7 +166,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   let keyboardstate = false;
   let playerislockedv2 = false;
   let customButtonObjects = [];
-  const screenObject = await new BS.GameObject(`MyBrowser${p_thisBrowserNumber}`);
+  const screenObject = await new BS.GameObject(`MyBrowser${p_thisBrowserNumber}`).Async();
   console.log(`FIRESCREEN2: Width:${p_width}, Height:${p_height}, Number:${p_thisBrowserNumber}, URL:${p_website}`);
   let firebrowser = await screenObject.AddComponent(new BS.BanterBrowser(p_website, p_mipmaps, p_pixelsperunit, p_width, p_height, null));
   firebrowser.homePage = p_website; // Set variable for default Home Page for later use
@@ -176,7 +176,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   p_disableRotation ? isbillboarded = false : isbillboarded = true;
   if (p_disableinteraction === "false") { firebrowser.ToggleInteraction(true); }
 
-  const geometryObject = new BS.GameObject(`MainParentObject${p_thisBrowserNumber}`);
+  const geometryObject = await new BS.GameObject(`MainParentObject${p_thisBrowserNumber}`).Async();
   const geometry = await createGeometry(geometryObject, BS.GeometryType.PlaneGeometry, { thewidth: 1.09, theheight: 0.64 });
   // geometry Transform Stuff
   const geometrytransform = await geometryObject.AddComponent(new BS.Transform());
@@ -319,7 +319,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
 
   async function setupHandControlsV2() {
     // THE CONTAINER FOR THE HAND BUTTONS
-    const plane20Object = new BS.GameObject("handContainer");
+    const plane20Object = await new BS.GameObject("handContainer").Async();
     const plane20geometry = await createGeometry(plane20Object, BS.GeometryType.PlaneGeometry);
     const plane20Collider = await plane20Object.AddComponent(new BS.BoxCollider(true, new BS.Vector3(0, 0, 0), new BS.Vector3(1,1,1)));
     const plane20material = await createMaterial(plane20Object, { shaderName: defaulTransparent, color: new BS.Vector4(0,0,0,0), side: 1 });

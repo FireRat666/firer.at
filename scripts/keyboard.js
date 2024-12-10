@@ -19,12 +19,12 @@ if(window.isBanter) {
     let isCapsLockActive = false;
     let isSpecialCharActive = false;
 
-    const keyboardParentObject = new BS.GameObject("KeyboardParent");
+    const keyboardParentObject = await new BS.GameObject("KeyboardParent").Async();
     const parentTransform = await keyboardParentObject.AddComponent(new BS.Transform());
     parentTransform.localPosition = keyBoardPosition;
     parentTransform.localScale = keyBoardScale;
 
-    const textObject = new BS.GameObject("InputText");
+    const textObject = await new BS.GameObject("InputText").Async();
     const inputText = await textObject.AddComponent(new BS.BanterText("", textColor));
     const textTransform = await textObject.AddComponent(new BS.Transform());
     textTransform.localPosition = new BS.Vector3(8.1, -1, 0);
@@ -58,7 +58,7 @@ if(window.isBanter) {
     }
 
     async function createButton(label, position, group, clickHandler = null, buttonSize = letterButtonSize, width = 0.3, height = 0.3, offset = textOffset) {
-      const buttonObject = await new BS.GameObject(`Button_${label}`);
+      const buttonObject = await new BS.GameObject(`Button_${label}`).Async();
       await buttonObject.AddComponent(new BS.BanterGeometry(BS.GeometryType.PlaneGeometry, 0, width, height));
       await buttonObject.AddComponent(new BS.BanterMaterial(buttonShader, "", buttonColor));
       const buttonTransform = await buttonObject.AddComponent(new BS.Transform());
@@ -68,7 +68,7 @@ if(window.isBanter) {
       buttonTransform.position = position;
       buttonTransform.localScale = buttonSize;
 
-      const textObject = new BS.GameObject(`${label}_Text`);
+      const textObject = await new BS.GameObject(`${label}_Text`).Async();
       await textObject.AddComponent(new BS.BanterText(label, textColor));
       const textTransform = await textObject.AddComponent(new BS.Transform());
       textTransform.localPosition = offset;
