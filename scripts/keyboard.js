@@ -58,7 +58,7 @@ if(window.isBanter) {
     }
 
     async function createButton(label, position, group, clickHandler = null, buttonSize = letterButtonSize, width = 0.3, height = 0.3, offset = textOffset) {
-      const buttonObject = new BS.GameObject(`Button_${label}`);
+      const buttonObject = await new BS.GameObject(`Button_${label}`);
       await buttonObject.AddComponent(new BS.BanterGeometry(BS.GeometryType.PlaneGeometry, 0, width, height));
       await buttonObject.AddComponent(new BS.BanterMaterial(buttonShader, "", buttonColor));
       const buttonTransform = await buttonObject.AddComponent(new BS.Transform());
