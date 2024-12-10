@@ -254,7 +254,7 @@ function keepsoundlevel() {
 			const theBrowser = document.getElementById(`fires-browser${i}`);
 			const volume = parseFloat(theBrowser.getAttribute("volumelevel"));
 			theBrowser.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
-			`document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${volume});document.querySelector('.html5-video-player').setVolume("${Math.round(volume * 100)});`, }, ]);
+			`document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${volume});document.querySelector('.html5-video-player').setVolume(${Math.round(volume * 100)});`, }, ]);
 		}; loopCount++; if (loopCount >= maxLoops) { clearInterval(volInterval); };
     }, 5000); } else if (!fireScreenOn) { clearInterval(volInterval); };
 };
