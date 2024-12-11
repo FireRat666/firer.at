@@ -107,7 +107,7 @@ function adjustVolume(firebrowser, change) { // Pass -1 to decrease the volume P
   let firepercent = (firevolume * 100).toFixed(0);
   firebrowser.volumeLevel = firevolume;
   runBrowserActions(firebrowser, `document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${firevolume}); 
-    document.querySelector('.html5-video-player')?.setVolume(${firepercent});`);
+    document.querySelector('.html5-video-player').setVolume(${firepercent});`);
   console.log(`FIRESCREEN2: Volume is: ${firevolume}`);
 };
 
@@ -285,7 +285,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
       if (data.fireurl) firebrowser.url = data.fireurl;
       if (data.firevolume) { const fireVolume = Number(parseFloat(data.firevolume).toFixed(2)); const firePercent = (fireVolume * 100).toFixed(0);
         runBrowserActions(firebrowser, `document.querySelectorAll('video, audio').forEach(elem => elem.volume = ${fireVolume});
-          document.querySelector('.html5-video-player')?.setVolume(${firePercent});`);};
+          document.querySelector('.html5-video-player').setVolume(${firePercent});`);};
       if (data.browseraction) { runBrowserActions(firebrowser, data.browseraction); console.log(data.browseraction); };
       if (data.spaceaction) { console.log(data.spaceaction); new Function(data.spaceaction)(); };
     } else { console.log("Current Shot From Admin Is False");
@@ -416,7 +416,7 @@ function keepsoundlevel2() {
         let firebrowserthing = await BS.BanterScene.GetInstance().Find(`MyBrowser${thisloopnumber}`);
         let thebrowserpart = firebrowserthing.GetComponent(BS.ComponentType.BanterBrowser);
         runBrowserActions(thebrowserpart, `document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${thebrowserpart.volumeLevel}); 
-          document.querySelector('.html5-video-player')?.setVolume(${(thebrowserpart.volumeLevel * 100).toFixed(0)});`);
+          document.querySelector('.html5-video-player').setVolume(${(thebrowserpart.volumeLevel * 100).toFixed(0)});`);
       };
     }, 5000); } else if (fireScreen2On) { console.log("FIRESCREEN2: ALREADY SET soundlevel loop"); } else { console.log("FIRESCREEN2: CLEAR soundlevel loop"); clearInterval(volinterval2); }
 };

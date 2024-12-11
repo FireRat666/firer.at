@@ -254,7 +254,7 @@ function keepsoundlevel() {
 			const theBrowser = document.getElementById(`fires-browser${i}`);
 			const volume = parseFloat(theBrowser.getAttribute("volumelevel"));
 			theBrowser.components["sq-browser"].runActions([ { actionType: "runscript", strparam1:
-			`document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${volume});document.querySelector('.html5-video-player')?.setVolume(${Math.round(volume * 100)});`, }, ]);
+			`document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${volume});document.querySelector('.html5-video-player').setVolume(${Math.round(volume * 100)});`, }, ]);
 		}; loopCount++; if (loopCount >= maxLoops) { clearInterval(volInterval); };
     }, 5000); } else if (!fireScreenOn) { clearInterval(volInterval); };
 };
@@ -424,7 +424,7 @@ init: function () { this.el.addEventListener("click", () => {
   };
   volume = Number((this.data.vvalue > 0 ? adjustVolume(volume, 1) : adjustVolume(volume, -1)).toFixed(2));
   let firepercent = (volume * 100).toFixed(0);
-  browserElement.components["sq-browser"].runActions([{ actionType: "runscript", strparam1: `document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${volume});document.querySelector('.html5-video-player')?.setVolume(${firepercent});`,}]);
+  browserElement.components["sq-browser"].runActions([{ actionType: "runscript", strparam1: `document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${volume});document.querySelector('.html5-video-player').setVolume(${firepercent});`,}]);
   browserElement.setAttribute("volumelevel", volume);
   console.log(`FIRESCREEN: Volume Is : ${volume}`);
   handleButtonClick(this.el);
@@ -509,7 +509,7 @@ async function firescreenloadstuff() {
       if (data.firevolume) { const fireVolume = Number(parseFloat(data.firevolume).toFixed(2));
         document.querySelectorAll('.firescreenc').forEach(element => { element.setAttribute("volumelevel", fireVolume);
           element.components["sq-browser"].runActions([
-            { actionType: "runscript", strparam1: `document.querySelectorAll('video, audio').forEach(elem => elem.volume=${fireVolume}); document.querySelector('.html5-video-player')?.setVolume(${(fireVolume * 100).toFixed(0)});` }
+            { actionType: "runscript", strparam1: `document.querySelectorAll('video, audio').forEach(elem => elem.volume=${fireVolume}); document.querySelector('.html5-video-player').setVolume(${(fireVolume * 100).toFixed(0)});` }
           ]);
         });
       };
@@ -518,7 +518,7 @@ async function firescreenloadstuff() {
       if (data.firevolume) { const fireVolume = Number(parseFloat(data.firevolume).toFixed(2));
         document.querySelectorAll('.firescreenc').forEach(element => { element.setAttribute("volumelevel", fireVolume);
           element.components["sq-browser"].runActions([
-            { actionType: "runscript", strparam1: `document.querySelectorAll('video, audio').forEach(elem => elem.volume=${fireVolume}); document.querySelector('.html5-video-player')?.setVolume(${(fireVolume * 100).toFixed(0)});` }
+            { actionType: "runscript", strparam1: `document.querySelectorAll('video, audio').forEach(elem => elem.volume=${fireVolume}); document.querySelector('.html5-video-player').setVolume(${(fireVolume * 100).toFixed(0)});` }
           ]);
         });
       };
@@ -604,7 +604,7 @@ var handscene = BS.BanterScene.GetInstance();
       console.log(`HAND-CONTROLS: FireScreen ${index}'s Volume is: ${volume}`);
       element.components["sq-browser"].runActions([
         { actionType: "runscript", strparam1: `document.querySelectorAll('video, audio').forEach(elem => elem.volume=${volume});` },
-        { actionType: "runscript", strparam1: `document.querySelector('.html5-video-player')?.setVolume(${firePercent});` }
+        { actionType: "runscript", strparam1: `document.querySelector('.html5-video-player').setVolume(${firePercent});` }
       ]);
     };
 
