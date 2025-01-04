@@ -66,7 +66,25 @@ if(!window.isBanter) {
     'https://firer.at/files/FireRat-(49).jpeg',
     'https://firer.at/files/FireRat-(50).jpeg',
     'https://firer.at/files/FireRat-(51).jpeg',
-    'https://firer.at/files/FireRat-(52).jpeg'
+    'https://firer.at/files/FireRat-(52).jpeg',
+    'https://firer.at/files/FireRat-(53).jpeg',
+    'https://firer.at/files/FireRat-(54).jpeg',
+    'https://firer.at/files/FireRat-(55).jpeg',
+    'https://firer.at/files/FireRat-(56).jpeg',
+    'https://firer.at/files/FireRat-(57).jpeg',
+    'https://firer.at/files/FireRat-(58).jpeg',
+    'https://firer.at/files/FireRat-(59).jpeg',
+    'https://firer.at/files/FireRat-(60).jpeg',
+    'https://firer.at/files/FireRat-(61).jpeg',
+    'https://firer.at/files/FireRat-(62).jpeg',
+    'https://firer.at/files/FireRat-(63).jpeg',
+    'https://firer.at/files/FireRat-(64).jpeg',
+    'https://firer.at/files/FireRat-(65).jpeg',
+    'https://firer.at/files/FireRat-(66).jpeg',
+    'https://firer.at/files/FireRat-(67).jpeg',
+    'https://firer.at/files/FireRat-(68).jpeg',
+    'https://firer.at/files/FireRat-(69).jpeg',
+    'https://firer.at/files/FireRat-(70).jpeg'
   ];
 
   function setRandomBackground() {
