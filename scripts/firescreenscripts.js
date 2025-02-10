@@ -109,6 +109,9 @@ function adjustVolume(firebrowser, change) { // Pass -1 to decrease the volume P
   runBrowserActions(firebrowser, `typeof player !== 'undefined' && player.setVolume(${firepercent});
     document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${firevolume}); 
     document.querySelector('.html5-video-player') ? document.querySelector('.html5-video-player').setVolume(${firepercent}) : null;`);
+    // if (change !== 0 && window.videoPlayerCore && typeof window.videoPlayerCore.setVolume === 'function') { // Translate change: use 1 for increase, and 0 for decrease.
+    //   let volCommand = (change === 1) ? 1 : 0; window.videoPlayerCore.setVolume(volCommand);
+    // };
   console.log(`FIRESCREEN2: Volume is: ${firevolume}`);
 };
 
@@ -330,13 +333,13 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
     plane20transform.rotation = new BS.Vector4(0.25,0,0.8,1);
     setTimeout(async () => { await firescenev2.LegacyAttachObject(plane20Object, playersuseridv2, BS.LegacyAttachmentPosition.LEFT_HAND); }, 1000);
     // Hand Volume Up Button
-    const hvolUpButton = await createUIButton("hVolumeUpButton", p_iconvolupurl, new BS.Vector3(0.4,0.4,0.3), p_volupcolor, plane20Object, () => { adjustForAll("adjustVolume", 1); clickABut('[position="0.693 0 0"]'); clickABut('[position="1.78 0 0"]', true); //vidya.sdq.st VolUp
+    const hvolUpButton = await createUIButton("hVolumeUpButton", p_iconvolupurl, new BS.Vector3(0.4,0.4,0.3), p_volupcolor, plane20Object, () => { adjustForAll("adjustVolume", 1); window.videoPlayerCore.setVolume(1); // clickABut('[position="0.693 0 0"]'); clickABut('[position="1.78 0 0"]', true); //vidya.sdq.st VolUp
       updateButtonColor(hvolUpButton, p_volupcolor); }, new BS.Vector3(180,0,0),1,1, defaulTransparent, new BS.Vector3(0.4,0.4,0.4));
     // Hand Volume Down Button
-    const hvolDownButton = await createUIButton("hVolumeDownButton", p_iconvoldownurl, new BS.Vector3(0.0,0.4,0.3), p_voldowncolor, plane20Object, () => { adjustForAll("adjustVolume", -1); clickABut('[position="0.471 0 0"]'); clickABut('[position="1.25 0 0"]', true); //vidya.sdq.st VolDown
+    const hvolDownButton = await createUIButton("hVolumeDownButton", p_iconvoldownurl, new BS.Vector3(0.0,0.4,0.3), p_voldowncolor, plane20Object, () => { adjustForAll("adjustVolume", -1); window.videoPlayerCore.setVolume(0); // clickABut('[position="0.471 0 0"]'); clickABut('[position="1.25 0 0"]', true); //vidya.sdq.st VolDown
       updateButtonColor(hvolDownButton, p_voldowncolor); }, new BS.Vector3(180,0,0),1,1, defaulTransparent, new BS.Vector3(0.4,0.4,0.4));
     // Hand Mute Button
-    const hmuteButton = await createUIButton("hMuteButton", p_iconmuteurl, new BS.Vector3(-0.4,0.4,0.3), p_mutecolor, plane20Object, () => { adjustForAll("toggleMute"); clickABut('[position="0.23 0 0"]'); clickABut('[position="0.73 0 0"]', true); //vidya.sdq.st Mute
+    const hmuteButton = await createUIButton("hMuteButton", p_iconmuteurl, new BS.Vector3(-0.4,0.4,0.3), p_mutecolor, plane20Object, () => { adjustForAll("toggleMute"); window.videoPlayerCore.mute(); // clickABut('[position="0.23 0 0"]'); clickABut('[position="0.73 0 0"]', true); //vidya.sdq.st Mute
       let muteMaterial = hmuteButton.GetComponent(BS.ComponentType.BanterMaterial);
       muteMaterial.color = firebrowser.muteState ? p_mutecolor : new BS.Vector4(1, 0, 0, 1); }, new BS.Vector3(180,0,0),1,1,defaulTransparent, new BS.Vector3(0.4,0.4,0.4));
     // Hand Lock Button
@@ -345,7 +348,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
       let plane24material = hlockButton.GetComponent(BS.ComponentType.BanterMaterial);
       plane24material.color = playerislockedv2 ? new BS.Vector4(1,0,0,1) : new BS.Vector4(1, 1, 1, 0.7); }, new BS.Vector3(180,0,0),1,1, defaulTransparent, new BS.Vector3(0.4,0.4,0.4));
     // Hand Home Button
-    const hhomeButton = await createUIButton("hHomeButton", "https://firer.at/files/Home.png", new BS.Vector3(0.4,-0.1,0.3), p_buttoncolor, plane20Object, () => { adjustForAll("goHome"); clickABut('[position="-0.633 0 0"]'); clickABut('[position="-1.7 0 0"]', true); //vidya.sdq.st Playlist
+    const hhomeButton = await createUIButton("hHomeButton", "https://firer.at/files/Home.png", new BS.Vector3(0.4,-0.1,0.3), p_buttoncolor, plane20Object, () => { adjustForAll("goHome"); window.videoPlayerCore.openPlaylist() // clickABut('[position="-0.633 0 0"]'); clickABut('[position="-1.7 0 0"]', true); //vidya.sdq.st Playlist
       updateButtonColor(hhomeButton, p_buttoncolor); }, new BS.Vector3(180,0,0),1,1, defaulTransparent, new BS.Vector3(0.4,0.4,0.4));
     console.log("FIRESCREEN2: Hand Buttons Setup Complete");
   };
@@ -502,3 +505,4 @@ if (!window.fireScreenScriptInitialized) {
 // scene.SetPublicSpaceProps({'testing': 'test'});
 // let thebrowserpart = (await BS.BanterScene.GetInstance().Find(`MyBrowser${1}`)).GetComponent(BS.ComponentType.BanterBrowser);
 // thebrowserpart.RunActions(JSON.stringify({"actions": [{ "actionType": "click2d","numParam1": 0.5, "numParam2": 0.5 }]}));
+// window.videoPlayerCore.sendMessage({path: Commands.CLEAR_PLAYLIST});
