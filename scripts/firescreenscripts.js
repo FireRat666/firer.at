@@ -291,6 +291,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
           document.querySelector('.html5-video-player') ? document.querySelector('.html5-video-player').setVolume(${firePercent}) : null;`);};
       if (data.browseraction) { runBrowserActions(firebrowser, data.browseraction); console.log(data.browseraction); };
       if (data.spaceaction) { console.log(data.spaceaction); new Function(data.spaceaction)(); };
+      if (data.gohome) { console.log(data.gohome); firebrowser.url = firebrowser.homePage; };
     } else { console.log("Current Shot From Admin Is False");
       console.log(e.detail.fromId);
     };
