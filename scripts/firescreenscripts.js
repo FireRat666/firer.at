@@ -203,7 +203,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   if (Number(p_height) === 720) {TButPos += 0.07; LButPos += -0.14; RButPos += 0.14;} else if (Number(p_height) === 1080) {TButPos += 0.23; LButPos += -0.45; RButPos += 0.45;};
 
   let BUTTON_CONFIGS = { home: { icon: "https://firer.at/files/Home.png", position: new BS.Vector3(-0.2,TButPos,0), color: p_buttoncolor,
-      clickHandler: () => { console.log("Home Clicked!"); firebrowser.url = `${p_website}?${Math.floor(Math.random() * 1000) + 1}`;
+      clickHandler: () => { console.log("Home Clicked!"); firebrowser.url = `${p_website}`; // `${p_website}?${Math.floor(Math.random() * 1000) + 1}`
       updateButtonColor(uiButtons.home, p_buttoncolor); }
     }, info: { icon: "https://firer.at/files/Info.png", position: new BS.Vector3(LButPos,0.28,0), color: p_buttoncolor,
       clickHandler: () => { console.log("Info Clicked!"); firebrowser.url = "https://firer.at/pages/Info.html";
