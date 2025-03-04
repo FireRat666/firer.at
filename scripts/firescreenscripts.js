@@ -292,6 +292,8 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
       if (data.browseraction) { runBrowserActions(firebrowser, data.browseraction); console.log(data.browseraction); };
       if (data.spaceaction) { console.log(data.spaceaction); new Function(data.spaceaction)(); };
       if (data.gohome) { console.log(data.gohome); firebrowser.url = firebrowser.homePage; };
+      if (data.firevolumeup) { console.log(data.firevolumeup); adjustForAll("adjustVolume", 1); youtubePlayerControl(1); };
+      if (data.firevolumedown) { console.log(data.firevolumedown); adjustForAll("adjustVolume", -1); youtubePlayerControl(0); };
     } else { console.log("Current Shot From Admin Is False");
       console.log(e.detail.fromId);
     };
