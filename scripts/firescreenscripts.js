@@ -203,7 +203,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   if (Number(p_height) === 720) {TButPos += 0.07; LButPos += -0.14; RButPos += 0.14;} else if (Number(p_height) === 1080) {TButPos += 0.23; LButPos += -0.45; RButPos += 0.45;};
 
   let BUTTON_CONFIGS = { home: { icon: "https://firer.at/files/Home.png", position: new BS.Vector3(-0.2,TButPos,0), color: p_buttoncolor,
-      clickHandler: () => { console.log("Home Clicked!"); firebrowser.url = `${p_website}`; // `${p_website}?${Math.floor(Math.random() * 1000) + 1}`
+    clickHandler: () => { console.log("Home Clicked!"); firebrowser.url = `${p_website}`; // `${p_website}?${Math.floor(Math.random() * 1000) + 1}`
       updateButtonColor(uiButtons.home, p_buttoncolor); }
     }, info: { icon: "https://firer.at/files/Info.png", position: new BS.Vector3(LButPos,0.28,0), color: p_buttoncolor,
       clickHandler: () => { console.log("Info Clicked!"); firebrowser.url = "https://firer.at/pages/Info.html";
@@ -326,7 +326,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
 
   async function youtubePlayerControl(value, action = null) {
     const core = window.videoPlayerCore; if (!core) return;
-    const methodName = (action === "mute" || action === "openPlaylist") ? action : "setVolume"; // Choose the method name based on the action.
+    const methodName = (action === "mute" || action === "openPlaylist") ? action : "volume"; // Choose the method name based on the action.
     if (typeof core[methodName] !== "function") return;  // Only call if it's a function.
     return methodName === "setVolume" ? core[methodName](value) : core[methodName](); // Call with or without the value argument.
 
