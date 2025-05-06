@@ -1,6 +1,6 @@
 // SDK2 Based FireScreen, V0.9 Beta 1.0.1 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts / live streams with volume controls or a portable browser for any website.
-var thisScriptLocation = `https://firer.at/scripts/`; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
+var thisScriptLocation = `https://51.firer.at/scripts/`; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
 var fireScriptName = `${thisScriptLocation}firescreenv2.js`;
 var announcerscripturlv2 = `${thisScriptLocation}announcer.js`;
 var fireScreen2On = false;
@@ -106,6 +106,13 @@ function adjustVolume(firebrowser, change) { // Pass -1 to decrease the volume P
   firevolume = Math.max(0, Math.min(firevolume, 1)).toFixed(2);
   let firepercent = (firevolume * 100).toFixed(0);
   firebrowser.volumeLevel = firevolume;
+  let tempvolumeLevel = Math.max(0, Math.min(1, firevolume)).toFixed(1);
+  runBrowserActions(firebrowser, `
+    (function() { document.querySelectorAll('video, audio').forEach(el => {
+      if ('volume' in el) { try { el.volume = ${tempvolumeLevel}; console.log('[Banter Volume Injection] HTML5 volume set for element: ', el.id || el.src); }
+          catch (e) {  console.error("[Banter Volume Injection] HTML5 volume error for element:", el.id || el.src, e.message, e.stack); }
+    } }); })();
+  `);
   runBrowserActions(firebrowser, `typeof player !== 'undefined' && player.setVolume(${firepercent});
     document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${firevolume}); 
     document.querySelector('.html5-video-player') ? document.querySelector('.html5-video-player').setVolume(${firepercent}) : null;`);
@@ -203,7 +210,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   if (Number(p_height) === 720) {TButPos += 0.07; LButPos += -0.14; RButPos += 0.14;} else if (Number(p_height) === 1080) {TButPos += 0.23; LButPos += -0.45; RButPos += 0.45;};
 
   let BUTTON_CONFIGS = { home: { icon: "https://firer.at/files/Home.png", position: new BS.Vector3(-0.2,TButPos,0), color: p_buttoncolor,
-    clickHandler: () => { console.log("Home Clicked!"); firebrowser.url = `${p_website}`; // `${p_website}?${Math.floor(Math.random() * 1000) + 1}`
+    clickHandler: () => { console.log("Home Clicked!"); firebrowser.url = firebrowser.homePage; // `${p_website}?${Math.floor(Math.random() * 1000) + 1}`
       updateButtonColor(uiButtons.home, p_buttoncolor); }
     }, info: { icon: "https://firer.at/files/Info.png", position: new BS.Vector3(LButPos,0.28,0), color: p_buttoncolor,
       clickHandler: () => { console.log("Info Clicked!"); firebrowser.url = "https://firer.at/pages/Info.html";
