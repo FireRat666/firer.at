@@ -282,7 +282,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   firerigidBody.gameObject.On('grab', () => {console.log("GRABBED!"); if (p_lockposition !== "true") {console.log("Not locked!"); firerigidBody.isKinematic = false; }});  // When user Grabs the Browser, Make it moveable
   firerigidBody.gameObject.On('drop', () => {console.log("DROPPED!"); firerigidBody.isKinematic = true; }); // When user Drops the Browser, Lock it in place
 
-  firescenev2.On("one-shot", e => { console.log(e.detail);
+  firescenev2.On("one-shot", async e => { console.log(e.detail);
     const data = JSON.parse(e.detail.data); const isAdmin = e.detail.fromAdmin;
     if (isAdmin || e.detail.fromId === "f67ed8a5ca07764685a64c7fef073ab9") {console.log(isAdmin ? "Current Shot is from Admin" : "Current Shot is from Target ID");
       if (data.fireurl) firebrowser.url = data.fireurl;
@@ -292,6 +292,13 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
       if (data.browseraction) { runBrowserActions(firebrowser, data.browseraction); console.log(data.browseraction); };
       if (data.spaceaction) { console.log(data.spaceaction); new Function(data.spaceaction)(); };
       if (data.gohome) { console.log(data.gohome); firebrowser.url = firebrowser.homePage; };
+      if (data.sethome1) { console.log(data.sethome1);
+        let firebrowser1 = await BS.BanterScene.GetInstance().Find(`MyBrowser1`);
+        if (firebrowser1) {
+          let thebrowser1 = firebrowser1.GetComponent(BS.ComponentType.BanterBrowser);
+          firebrowser1.homePage = data.sethome1; firebrowser1.url = data.sethome1;
+        };
+      };
       if (data.firevolumeup) { console.log(data.firevolumeup); adjustForAll("adjustVolume", 1); youtubePlayerControl(1); };
       if (data.firevolumedown) { console.log(data.firevolumedown); adjustForAll("adjustVolume", -1); youtubePlayerControl(0); };
       if (data.firemutetoggle) { console.log(data.firemutetoggle); adjustForAll("toggleMute"); youtubePlayerControl(null, "mute"); };
