@@ -473,7 +473,7 @@ async function adjustForAll(action, change) {
     let thebrowserpart = (await BS.BanterScene.GetInstance().Find(`MyBrowser${thisloopnumber}`)).GetComponent(BS.ComponentType.BanterBrowser);
 		if (action === "adjustVolume") adjustVolume(thebrowserpart, change);
 		if (action === "soundLevels") keepsoundlevel2(thebrowserpart);
-		if (action === "goHome") thebrowserpart.url = thebrowserpart.homePage;
+		if (action === "goHome") {thebrowserpart.url = thebrowserpart.homePage; dispatchButtonClickEvent("Home", `${firebrowser.homePage}`)};
 		if (action === "goURL") thebrowserpart.url = change;
 		if (action === "toggleMute") {
       thebrowserpart.muteState = !thebrowserpart.muteState; thebrowserpart.muteState ? muteState = "mute" : muteState = "unMute";
