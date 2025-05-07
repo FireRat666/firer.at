@@ -311,7 +311,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
         let firebrowser1 = await BS.BanterScene.GetInstance().Find(`MyBrowser1`);
         if (firebrowser1) {
           let thebrowser1 = firebrowser1.GetComponent(BS.ComponentType.BanterBrowser);
-          thebrowser1.homePage = data.sethome1; thebrowser1.url = data.sethome1;
+          thebrowser1.homePage = data.sethome1; thebrowser1.url = data.sethome1; dispatchButtonClickEvent("Home", `${firebrowser.homePage}`);
         };
       };
       if (data.firevolumeup) { console.log(data.firevolumeup); adjustForAll("adjustVolume", 1); youtubePlayerControl(1); };
