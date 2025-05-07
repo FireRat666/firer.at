@@ -135,6 +135,13 @@ function createButtonAction(buttonObject, clickHandler) {
   buttonObject.On('click', (e) => { clickHandler(e); });
 };
 
+function dispatchButtonClickEvent(buttonName, message) {
+  const eventDetails = { buttonName: buttonName, message: message, timestamp: new Date() };
+  const buttonClickEvent = new CustomEvent('CustomButtonClick', { detail: eventDetails, bubbles: true, composed: true });
+  document.dispatchEvent(buttonClickEvent);
+  console.log(`ButtonClick for button: ${buttonName} with message: "${message}"`);
+};
+
 function setupfirescreen2() {
   const allScriptTags = document.getElementsByTagName('script');
   // console.log("FIRESCREEN2: All script tags:", Array.from(allScriptTags).map(s => s.src));
@@ -212,26 +219,26 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
 
   let BUTTON_CONFIGS = { home: { icon: "https://firer.at/files/Home.png", position: new BS.Vector3(-0.2,TButPos,0), color: p_buttoncolor,
     clickHandler: () => { console.log("Home Clicked!"); firebrowser.url = firebrowser.homePage; // `${p_website}?${Math.floor(Math.random() * 1000) + 1}`
-      updateButtonColor(uiButtons.home, p_buttoncolor); }
+      updateButtonColor(uiButtons.home, p_buttoncolor); dispatchButtonClickEvent("Home", `${firebrowser.homePage}`); }
     }, info: { icon: "https://firer.at/files/Info.png", position: new BS.Vector3(LButPos,0.28,0), color: p_buttoncolor,
       clickHandler: () => { console.log("Info Clicked!"); firebrowser.url = "https://firer.at/pages/Info.html";
-      updateButtonColor(uiButtons.info, p_buttoncolor); }
+      updateButtonColor(uiButtons.info, p_buttoncolor); dispatchButtonClickEvent("Info", 'Info Clicked!'); }
     }, google: { icon: "https://firer.at/files/Google.png", position: new BS.Vector3(LButPos,0.16,0), color: whiteColour,
       clickHandler: () => { console.log("Google Clicked!"); firebrowser.url = "https://google.com/";
-      updateButtonColor(uiButtons.google, whiteColour); }
+      updateButtonColor(uiButtons.google, whiteColour); dispatchButtonClickEvent("Google", 'Google Clicked!'); }
     }, keyboard: { icon: "https://firer.at/files/Keyboard.png", position: new BS.Vector3(LButPos,-0.15,0), color: whiteColour,
       clickHandler: () => { console.log("Keyboard Clicked!"); keyboardstate = !keyboardstate; firebrowser.ToggleKeyboard(keyboardstate ? 1 : 0);
-        uiButtons.keyboard.GetComponent(BS.ComponentType.BanterMaterial).color = keyboardstate ? p_buttoncolor : whiteColour; }
+        uiButtons.keyboard.GetComponent(BS.ComponentType.BanterMaterial).color = keyboardstate ? p_buttoncolor : whiteColour; dispatchButtonClickEvent("Keyboard", 'Keyboard Clicked!'); }
     }, mute: { icon: p_iconmuteurl, position: new BS.Vector3(0.167,TButPos,0), color: p_mutecolor,
       clickHandler: () => { console.log("Mute Clicked!"); firebrowser.muteState = !firebrowser.muteState;
       runBrowserActions(firebrowser, `document.querySelectorAll('video, audio').forEach((elem) => elem.muted=${firebrowser.muteState});`);
-      uiButtons.mute.GetComponent(BS.ComponentType.BanterMaterial).color = firebrowser.muteState ? new BS.Vector4(1,0,0,1) : (p_mutecolor ? p_mutecolor : p_buttoncolor); }
+      uiButtons.mute.GetComponent(BS.ComponentType.BanterMaterial).color = firebrowser.muteState ? new BS.Vector4(1,0,0,1) : (p_mutecolor ? p_mutecolor : p_buttoncolor); dispatchButtonClickEvent("Mute", 'Mute Clicked!'); }
     }, volDown: { icon: p_iconvoldownurl, position: new BS.Vector3(0.334,TButPos,0), color: p_voldowncolor,
       clickHandler: () => { console.log("Volume Down Clicked!"); adjustVolume(firebrowser, -1);
-      updateButtonColor(uiButtons.volDown, p_voldowncolor ? p_voldowncolor : p_buttoncolor); }
+      updateButtonColor(uiButtons.volDown, p_voldowncolor ? p_voldowncolor : p_buttoncolor); dispatchButtonClickEvent("VolumeDown", 'Volume Down Clicked!'); }
     }, pageBack: { icon: p_icondirectionurl, position: new BS.Vector3(-0.5,TButPos,0), color: p_buttoncolor,
       clickHandler: () => { console.log("Back Clicked!"); firebrowser.RunActions(JSON.stringify({"actions":[{"actionType": "goback"}]}));
-      updateButtonColor(uiButtons.pageBack, p_buttoncolor); }
+      updateButtonColor(uiButtons.pageBack, p_buttoncolor); dispatchButtonClickEvent("Back", 'Back Clicked!'); }
     }, sizeGrow: { icon: "https://firer.at/files/expand.png", position: new BS.Vector3(RButPos,0.06,0), color: p_buttoncolor,
       clickHandler: () => { console.log("Grow Clicked!"); adjustScale(geometrytransform, "grow");
       updateButtonColor(uiButtons.sizeGrow, p_buttoncolor); }
@@ -240,10 +247,10 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
       updateButtonColor(uiButtons.sizeShrink, p_buttoncolor); }
     }, pageForward: { icon: p_icondirectionurl, position: new BS.Vector3(-0.38,TButPos,0), color: p_buttoncolor,
       clickHandler: () => { console.log("Forward Clicked!"); firebrowser.RunActions(JSON.stringify({"actions":[{"actionType": "goforward"}]}));
-      updateButtonColor(uiButtons.pageForward, p_buttoncolor); }, rotation: new BS.Vector3(0,0,180)
+      updateButtonColor(uiButtons.pageForward, p_buttoncolor); dispatchButtonClickEvent("Forward", 'Forward Clicked!'); }, rotation: new BS.Vector3(0,0,180)
     }, volUp: { icon: p_iconvolupurl, position: new BS.Vector3(0.495,TButPos,0), color: p_volupcolor,
       clickHandler: () => { console.log("Volume Up Clicked!"); adjustVolume(firebrowser, 1);
-      updateButtonColor(uiButtons.volUp, p_volupcolor ? p_volupcolor : p_buttoncolor); }
+      updateButtonColor(uiButtons.volUp, p_volupcolor ? p_volupcolor : p_buttoncolor); dispatchButtonClickEvent("VolumeUp", 'Volume Up Clicked!'); }
     }, billboard: { icon: "https://firer.at/files/Rot.png", position: new BS.Vector3(LButPos,-0.3,0), color: isbillboarded ? p_buttoncolor : whiteColour,
       clickHandler: () => {isbillboarded = !isbillboarded; console.log("Billboard Clicked!");
         firesbillBoard.enableXAxis = isbillboarded; firesbillBoard.enableYAxis = isbillboarded;
