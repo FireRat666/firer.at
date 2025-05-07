@@ -306,12 +306,12 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
           document.querySelector('.html5-video-player') ? document.querySelector('.html5-video-player').setVolume(${firePercent}) : null;`);};
       if (data.browseraction) { runBrowserActions(firebrowser, data.browseraction); console.log(data.browseraction); };
       if (data.spaceaction) { console.log(data.spaceaction); new Function(data.spaceaction)(); };
-      if (data.gohome) { console.log(data.gohome); firebrowser.url = firebrowser.homePage; };
+      if (data.gohome) { console.log(data.gohome); firebrowser.url = firebrowser.homePage; dispatchButtonClickEvent("Home", `${firebrowser.homePage}`)};
       if (data.sethome1) { console.log(data.sethome1);
         let firebrowser1 = await BS.BanterScene.GetInstance().Find(`MyBrowser1`);
         if (firebrowser1) {
           let thebrowser1 = firebrowser1.GetComponent(BS.ComponentType.BanterBrowser);
-          thebrowser1.homePage = data.sethome1; firebrowser1.url = data.sethome1;
+          thebrowser1.homePage = data.sethome1; thebrowser1.url = data.sethome1;
         };
       };
       if (data.firevolumeup) { console.log(data.firevolumeup); adjustForAll("adjustVolume", 1); youtubePlayerControl(1); };
