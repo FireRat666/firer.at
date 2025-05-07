@@ -184,6 +184,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   firebrowser.volumeLevel = p_volume; // Set variable for Volume Level for later use
   firebrowser.muteState = false; // Set variable for Mute State for later use
   let isbillboarded;
+  await screenObject.SetLayer(5);
   p_disableRotation ? isbillboarded = false : isbillboarded = true;
   if (p_disableinteraction === "false") { firebrowser.ToggleInteraction(true); }
 
