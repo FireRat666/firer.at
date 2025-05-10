@@ -359,6 +359,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
       console.log("User already joined:", e.detail);
       if (p_handbuttons === "true" && e.detail.isLocal) { window.firstrunhandcontrols = false;
         console.log("FIRESCREEN2: Local User-already-joined, Enabling Hand Controls"); setupHandControlsV2();
+        console.log(`window.firstrunhandcontrols:${window.firstrunhandcontrols}`);
       };
   });
 
