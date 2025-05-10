@@ -359,8 +359,9 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   firescenev2.addEventListener("user-already-joined", (e) => {
       console.log("User already joined:", e.detail);
       if (p_handbuttons === "true" && e.detail.isLocal && window.notalreadyjoined) { window.notalreadyjoined = false; window.firstrunhandcontrols = false; playersuseridv2 = e.detail.uid;
-        console.log("FIRESCREEN2: Local User-already-joined, Enabling Hand Controls"); setupHandControlsV2();
+        console.log("FIRESCREEN2: Local User-already-joined, Enabling Hand Controls");
         console.log(`window.firstrunhandcontrols:${window.firstrunhandcontrols}`);
+        setTimeout(async () => {  setupHandControlsV2(); }, 3000);
       };
   });
 
@@ -453,6 +454,8 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   };
   setTimeout(async () => { adjustVolume(firebrowser, 0); // attempt to set default sound level for the page
   }, 5000);
+  setTimeout(async () => { adjustVolume(firebrowser, 0); // attempt to set default sound level for the page a second time
+  }, 8000);
 };
 
 function getV3FromStrv2(strVector3) {
