@@ -19,6 +19,7 @@ var firescenev2 = BS.BanterScene.GetInstance();
 (function() {
   const initialValues = {
     firstrunhandcontrols: true,
+    notalreadyjoined: true,
     handControlsDisabled: true,
     theNumberofBrowsers: 0,
   };
@@ -357,7 +358,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
 
   firescenev2.addEventListener("user-already-joined", (e) => {
       console.log("User already joined:", e.detail);
-      if (p_handbuttons === "true" && e.detail.isLocal) { window.firstrunhandcontrols = false; playersuseridv2 = e.detail.uid;
+      if (p_handbuttons === "true" && e.detail.isLocal && window.notalreadyjoined) { window.notalreadyjoined = false; window.firstrunhandcontrols = false; playersuseridv2 = e.detail.uid;
         console.log("FIRESCREEN2: Local User-already-joined, Enabling Hand Controls"); setupHandControlsV2();
         console.log(`window.firstrunhandcontrols:${window.firstrunhandcontrols}`);
       };
