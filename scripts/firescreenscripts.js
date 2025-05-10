@@ -143,7 +143,7 @@ function dispatchButtonClickEvent(buttonName, message) {
 };
 
 function setupfirescreen2() {
-  const allScriptTags = document.getElementsByTagName('script');
+  // const allScriptTags = document.getElementsByTagName('script');
   // console.log("FIRESCREEN2: All script tags:", Array.from(allScriptTags).map(s => s.src));
   const allscripts = document.querySelectorAll(`script[src^='${fireScriptName}']`);
   console.log(`FIRESCREEN2: Found ${allscripts.length} matching scripts`);
@@ -334,11 +334,32 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
         console.log("FIRESCREEN2: Enabling Hand Controls"); setupHandControlsV2();
       };
       console.log("FIRESCREEN2: user-joined");
+      console.log(e.detail);
     };
   });
 
   firescenev2.On("user-left", e => { if (e.detail.isLocal) { window.firstrunhandcontrols = true;
       console.log("FIRESCREEN2: Local User Left, Resetting firstrunhandcontrols variable"); };
+  });
+
+  const originalWarn = console.warn;
+
+  console.warn = function (...args) {
+      if (typeof args[0] === "string" && args[0].includes("got user-joined event for user that already joined")) {
+          const user = args[1];
+          firescenev2.dispatchEvent(new CustomEvent("user-already-joined", {
+              detail: user
+          }));
+      }
+
+      originalWarn.apply(console, args);
+  };
+
+  firescenev2.addEventListener("user-already-joined", (e) => {
+      console.log("User already joined:", e.detail);
+      if (e.detail.isLocal) { window.firstrunhandcontrols = true;
+        console.log("FIRESCREEN2: Local User-already-joined, Resetting firstrunhandcontrols variable"); 
+      };
   });
 
   function clickABut(uniqueAttribute, lastChild = false) {
