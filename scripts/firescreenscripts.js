@@ -357,8 +357,8 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
 
   firescenev2.addEventListener("user-already-joined", (e) => {
       console.log("User already joined:", e.detail);
-      if (e.detail.isLocal) { window.firstrunhandcontrols = true;
-        console.log("FIRESCREEN2: Local User-already-joined, Resetting firstrunhandcontrols variable"); 
+      if (e.detail.isLocal) { window.firstrunhandcontrols = false;
+        console.log("FIRESCREEN2: Local User-already-joined, Enabling Hand Controls"); setupHandControlsV2();
       };
   });
 
