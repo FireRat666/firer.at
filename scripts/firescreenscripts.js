@@ -323,7 +323,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
     };
   });
   
-  async function initializeV2() { await waitForUserIdv2(); if (window.handControlsDisabled && p_handbuttons === "true" && window.firstrunhandcontrols) { playersuseridv2 = firescenev2.localUser.uid; window.handControlsDisabled = false; setupHandControlsV2(); } }
+  async function initializeV2() { await waitForUserIdv2(); if (window.handControlsDisabled && p_handbuttons === "true" && window.firstrunhandcontrols) { playersuseridv2 = firescenev2.localUser.uid; window.handControlsDisabled = false; setupHandControlsV2(1, BS.LegacyAttachmentPosition.LEFT_HAND); setupHandControlsV2(1, BS.LegacyAttachmentPosition.RIGHT_HAND); } }
 
   async function waitForUserIdv2() { while (!firescenev2.localUser || firescenev2.localUser.uid === undefined) { await new Promise(resolve => setTimeout(resolve, 200)); } }
   
@@ -332,7 +332,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
     if (e.detail.isLocal) { // Setup Hand Controls only on the first run if enabled
       if (p_handbuttons === "true" && window.firstrunhandcontrols) {
         window.firstrunhandcontrols = false; playersuseridv2 = e.detail.uid;
-        console.log("FIRESCREEN2: Enabling Hand Controls"); setupHandControlsV2();
+        console.log("FIRESCREEN2: Enabling Hand Controls"); setupHandControlsV2(1, BS.LegacyAttachmentPosition.LEFT_HAND); setupHandControlsV2(1, BS.LegacyAttachmentPosition.RIGHT_HAND);
       };
       console.log("FIRESCREEN2: user-joined");
       console.log(e.detail);
@@ -361,7 +361,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
       if (p_handbuttons === "true" && e.detail.isLocal && window.notalreadyjoined) { window.notalreadyjoined = false; window.firstrunhandcontrols = false; playersuseridv2 = e.detail.uid;
         console.log("FIRESCREEN2: Local User-already-joined, Enabling Hand Controls");
         console.log(`window.firstrunhandcontrols:${window.firstrunhandcontrols}`);
-        setTimeout(async () => {  setupHandControlsV2(); window.notalreadyjoined = true }, 3000);
+        setTimeout(async () => {  setupHandControlsV2(1, BS.LegacyAttachmentPosition.LEFT_HAND); setupHandControlsV2(1, BS.LegacyAttachmentPosition.RIGHT_HAND); window.notalreadyjoined = true }, 3000);
       };
   });
 
@@ -382,9 +382,9 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
 
   };
 
-  async function setupHandControlsV2() {
+  async function setupHandControlsV2(id, positionofcontrols) {
     // THE CONTAINER FOR THE HAND BUTTONS
-    const plane20Object = await new BS.GameObject("handContainer").Async();
+    const plane20Object = await new BS.GameObject(`handContainer${id}`).Async();
     const plane20geometry = await createGeometry(plane20Object, BS.GeometryType.PlaneGeometry);
     const plane20Collider = await plane20Object.AddComponent(new BS.BoxCollider(true, new BS.Vector3(0, 0, 0), new BS.Vector3(1,1,1)));
     const plane20material = await createMaterial(plane20Object, { shaderName: defaulTransparent, color: new BS.Vector4(0,0,0,0), side: 1 });
@@ -393,7 +393,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
     plane20transform.localScale = new BS.Vector3(0.1,0.1,0.1);
     // plane20transform.eulerAngles = new BS.Vector3(5,-95,0);
     plane20transform.rotation = new BS.Vector4(0.25,0,0.8,1);
-    setTimeout(async () => { await firescenev2.LegacyAttachObject(plane20Object, playersuseridv2, BS.LegacyAttachmentPosition.LEFT_HAND); }, 1000);
+    setTimeout(async () => { await firescenev2.LegacyAttachObject(plane20Object, playersuseridv2, positionofcontrols); }, 1000);
     // Hand Volume Up Button
     const hvolUpButton = await createUIButton("hVolumeUpButton", p_iconvolupurl, new BS.Vector3(0.4,0.4,0.3), p_volupcolor, plane20Object, () => { adjustForAll("adjustVolume", 1); youtubePlayerControl(1); // clickABut('[position="0.693 0 0"]'); clickABut('[position="1.78 0 0"]', true); //vidya.sdq.st VolUp
       updateButtonColor(hvolUpButton, p_volupcolor); }, new BS.Vector3(180,0,0),1,1, defaulTransparent, new BS.Vector3(0.4,0.4,0.4));
