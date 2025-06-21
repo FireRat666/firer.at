@@ -305,7 +305,7 @@ function load420() {
                 } else {
                     // Default fallback or if timeRemainingSeconds < -60 (event passed significantly)
                     nextFetchDelay = 30 * 1000; // Poll every 30 seconds until a new event is found
-                    console.log(`ANNOUNCER: Defaulting to 10 second poll to find next 4:20.`);
+                    console.log(`ANNOUNCER: Defaulting to ${Math.ceil(nextFetchDelay / 1000)} second poll to find next 4:20.`);
                 }
 
             } catch (error) {
