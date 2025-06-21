@@ -1,6 +1,5 @@
 // This script was taken from https://vidya.sdq.st/say-names.js and https://best-v-player.glitch.me/say-names.js
 var scriptsource = "https://firer.at/scripts/announcer.js";
-var script420source = 'wss://calicocut-remix.glitch.me';
 var theusersname = "";
 var timevariable = 0;
 var theusersid = "";
@@ -182,45 +181,149 @@ function loadevents() {
 
 
 // This function is for the 420 events announcements
+
+// Define the Netlify Function URL
+const NETLIFY_FUNCTION_URL = 'https://420.firer.at/.netlify/functions/check-blazing';
+
+// These variables will track the state on the client-side
+let lastPlayedMessageLinks = null; // To prevent playing the exact same audio sequence twice
+let currentlyTracking420EventTime = null; // The timestamp of the 4:20 event we are currently tracking
+const WARNING_MINS = 2; // Keep this consistent with your Netlify function logic
+
+// Flags to ensure specific announcements only happen once per event
+let initialAnnouncementMade = false;
+let warningAnnouncementMade = false;
+let blazeItAnnouncementMade = false;
+
+// This function is for the 420 events announcements
 function load420() {
-  if(window.isBanter && announce420 === "true") {
-    let keepAlive;
-    function connect() {
-      const ws = new WebSocket(script420source);
-      ws.onmessage = async (msg) => {
-        try {
-            if (msg.data instanceof Blob) {
-                console.warn("Received a Blob. Converting Blob to text.");
-                const textData = await msg.data.text();
-                console.log("Blob converted to text:", textData);
-    
-                const audioUrls = JSON.parse(textData);
-    
-                await playAudioSequentially(audioUrls);
-            } else {
-                const audioUrls = JSON.parse(msg.data);
-                await playAudioSequentially(audioUrls);
+    // Only run if window.isBanter and announce420 are true
+    if (window.isBanter && announce420 === "true") {
+        async function fetchAndAnnounce420() {
+            let nextFetchDelay = 60 * 1000; // Default poll every minute if no specific timing is needed
+
+            try {
+                console.log("ANNOUNCER: Fetching 420 data from Netlify Function...");
+                const response = await fetch(NETLIFY_FUNCTION_URL);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log("ANNOUNCER: Received data:", data);
+
+                const { next420Time, timeRemainingMinutes, timeRemainingSeconds, messageType, messageLinks, location } = data;
+
+                // Convert next420Time string to a Date object for comparison
+                // Use the ISO string directly for a robust comparison of the precise event
+                const new420EventTimeIdentifier = next420Time; // Use ISO string as consistent identifier
+
+                // Reset flags if we are tracking a new 420 event
+                if (currentlyTracking420EventTime === null || new420EventTimeIdentifier !== currentlyTracking420EventTime) {
+                    console.log(`ANNOUNCER: New 4:20 event detected: ${new Date(new420EventTimeIdentifier).toLocaleString()} in ${location}`);
+                    currentlyTracking420EventTime = new420EventTimeIdentifier;
+                    initialAnnouncementMade = false;
+                    warningAnnouncementMade = false;
+                    blazeItAnnouncementMade = false;
+                    lastPlayedMessageLinks = null; // Reset this too for the new event
+                }
+
+                // --- Announcement Logic ---
+
+                // 1. Initial Load / New Event Announcement (e.g., "Next blaze time is in X minutes in Y")
+                // This should only happen ONCE for a given 4:20 event.
+                if (!initialAnnouncementMade) {
+                    // Check if the current data reflects the "nextBlaze" type and is not already in warning/blaze-it range
+                    if (messageType === 'nextBlaze' && timeRemainingMinutes > WARNING_MINS) {
+                        console.log(`ANNOUNCER: Initial announcement for new event. Time: ${timeRemainingMinutes} mins, Location: ${location}`);
+                        await playAudioSequentially(messageLinks);
+                        initialAnnouncementMade = true; // Mark as announced
+                        lastPlayedMessageLinks = JSON.stringify(messageLinks);
+                    }
+                }
+
+                // 2. Warning Announcement (e.g., "It's almost time to torch it... 2 minutes til 420")
+                // This should happen ONCE when timeRemainingMinutes becomes <= WARNING_MINS (e.g., 2 mins) but > 0.
+                if (!warningAnnouncementMade && timeRemainingMinutes <= WARNING_MINS && timeRemainingMinutes > 0) {
+                    if (messageType === 'blazeItWarning') {
+                        console.log(`ANNOUNCER: Warning for ${location}. ${timeRemainingMinutes} mins left.`);
+                        await playAudioSequentially(messageLinks);
+                        warningAnnouncementMade = true;
+                        lastPlayedMessageLinks = JSON.stringify(messageLinks);
+                    }
+                }
+
+                // 3. At 4:20 Announcement (e.g., "It's 4:20 in X now!")
+                // This should happen ONCE when timeRemainingSeconds becomes <= 0 and > -60.
+                if (!blazeItAnnouncementMade && timeRemainingSeconds <= 0 && timeRemainingSeconds > -60) {
+                    if (messageType === 'blazeItNow') {
+                        console.log(`ANNOUNCER: It's 4:20 in ${location} NOW!`);
+                        await playAudioSequentially(messageLinks);
+                        blazeItAnnouncementMade = true;
+                        lastPlayedMessageLinks = JSON.stringify(messageLinks);
+                    }
+                }
+                
+                // If a new 4:20 event has passed (timeRemainingSeconds significantly negative),
+                // we should reset `currentlyTracking420EventTime` so the next fetch
+                // can identify the *next* upcoming 4:20 event.
+                if (timeRemainingSeconds < -60) { // e.g., more than a minute past 4:20
+                    console.log("ANNOUNCER: Current 4:20 event has passed. Looking for the next one.");
+                    currentlyTracking420EventTime = null; // Clear the tracking, next poll will find the new closest 4:20
+                    // Set nextFetchDelay to poll sooner to find the *next* 420 event quickly
+                    nextFetchDelay = 10 * 1000; // Poll in 10 seconds to find the new next event
+                }
+
+
+                // --- Dynamic Next Fetch Calculation ---
+                // Calculate when to fetch next based on remaining time
+                if (timeRemainingSeconds > WARNING_MINS * 60) {
+                    // More than WARNING_MINS away: Fetch again when it's WARNING_MINS minutes away.
+                    // We subtract a small buffer (e.g., 5 seconds) to ensure we fetch *before* the threshold.
+                    nextFetchDelay = (timeRemainingSeconds - (WARNING_MINS * 60)) * 1000 - 5000; 
+                    if (nextFetchDelay <= 0) { // Ensure it's not negative or too small, fall back to a small poll
+                         nextFetchDelay = 5 * 1000; // Poll very soon to catch the warning
+                    }
+                    console.log(`ANNOUNCER: Scheduling next fetch for warning in ${Math.ceil(nextFetchDelay / 1000)} seconds.`);
+                } else if (timeRemainingSeconds > 0 && timeRemainingSeconds <= WARNING_MINS * 60) {
+                    // Within WARNING_MINS but not yet 4:20: Fetch again right at 4:20 (or slightly before).
+                    // We want to hit exactly at 0 seconds or very close.
+                    nextFetchDelay = timeRemainingSeconds * 1000 - 500; // Fetch 0.5 seconds before 4:20 hits
+                    if (nextFetchDelay <= 0) { // Ensure it's not negative or too small, fall back to a small poll
+                        nextFetchDelay = 1 * 1000; // Poll in 1 second to catch the exact moment
+                    }
+                    console.log(`ANNOUNCER: Scheduling next fetch for 4:20 in ${Math.ceil(nextFetchDelay / 1000)} seconds.`);
+                } else if (timeRemainingSeconds <= 0 && timeRemainingSeconds > -60) {
+                    // It's currently 4:20 (within the 0 to -59 second window)
+                    // Poll again after this minute has passed to find the *next* 4:20.
+                    nextFetchDelay = (60 + timeRemainingSeconds) * 1000 + 1000; // Time left in current 4:20 minute + 1 second buffer
+                    if (nextFetchDelay <= 0) { // Should not happen with proper calculation, but as a safeguard
+                        nextFetchDelay = 5 * 1000; // Poll soon
+                    }
+                    console.log(`ANNOUNCER: Scheduling next fetch after 4:20 passes in ${Math.ceil(nextFetchDelay / 1000)} seconds.`);
+                } else {
+                    // Default fallback or if timeRemainingSeconds < -60 (event passed significantly)
+                    nextFetchDelay = 10 * 1000; // Poll every 10 seconds until a new event is found
+                    console.log(`ANNOUNCER: Defaulting to 10 second poll to find next 4:20.`);
+                }
+
+            } catch (error) {
+                console.error("ANNOUNCER: Error fetching or processing 420 data:", error);
+                // If there's an error, don't stop, but revert to a short poll to retry
+                nextFetchDelay = 15 * 1000; // Retry in 15 seconds after an error
+            } finally {
+                // Schedule the next fetch using the calculated delay
+                setTimeout(fetchAndAnnounce420, nextFetchDelay);
             }
-        } catch (error) {
-            console.error("Error handling WebSocket message:", error);
         }
-      };
-      ws.onopen = (msg) => {
-        console.log("ANNOUNCER: connected to 420 announcer.");
-      };
-      ws.onerror = (msg) => {
-        console.log("ANNOUNCER: error", msg);
-      };
-      ws.onclose = (e) => {
-        console.log('ANNOUNCER: Disconnected 420!');
-        clearInterval(keepAlive);
-        setTimeout(()=>connect(), 3000);
-      };
-      keepAlive = setInterval(()=>{ws.send("keep-alive")}, 120000)
+
+        // Start the polling immediately when load420 is called
+        fetchAndAnnounce420();
+    } else {
+        console.log("ANNOUNCER: 4:20 announcements are disabled (isBanter or announce420 not true).");
     }
-    connect();
-  };
-};
+}
       
 var thescripts = document.getElementsByTagName("script");
 var announcerscene = BS.BanterScene.GetInstance();
