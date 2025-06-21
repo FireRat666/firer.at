@@ -289,9 +289,9 @@ function load420() {
                 } else if (timeRemainingSeconds > 0 && timeRemainingSeconds <= WARNING_MINS * 60) {
                     // Within WARNING_MINS but not yet 4:20: Fetch again right at 4:20 (or slightly before).
                     // We want to hit exactly at 0 seconds or very close.
-                    nextFetchDelay = timeRemainingSeconds * 1000 - 500; // Fetch 0.5 seconds before 4:20 hits
+                    nextFetchDelay = timeRemainingSeconds * 1000 - 1000; // Fetch 1 second(s) before 4:20 hits
                     if (nextFetchDelay <= 0) { // Ensure it's not negative or too small, fall back to a small poll
-                        nextFetchDelay = 1 * 1000; // Poll in 1 second to catch the exact moment
+                        nextFetchDelay = 1 * 500; // Poll in 0.5 second to catch the exact moment
                     }
                     console.log(`ANNOUNCER: Scheduling next fetch for 4:20 in ${Math.ceil(nextFetchDelay / 1000)} seconds.`);
                 } else if (timeRemainingSeconds <= 0 && timeRemainingSeconds > -60) {
@@ -304,7 +304,7 @@ function load420() {
                     console.log(`ANNOUNCER: Scheduling next fetch after 4:20 passes in ${Math.ceil(nextFetchDelay / 1000)} seconds.`);
                 } else {
                     // Default fallback or if timeRemainingSeconds < -60 (event passed significantly)
-                    nextFetchDelay = 10 * 1000; // Poll every 10 seconds until a new event is found
+                    nextFetchDelay = 30 * 1000; // Poll every 30 seconds until a new event is found
                     console.log(`ANNOUNCER: Defaulting to 10 second poll to find next 4:20.`);
                 }
 
