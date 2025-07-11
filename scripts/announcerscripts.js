@@ -237,9 +237,9 @@ function load420() {
                     // Check if the current data reflects the "nextBlaze" type and is not already in warning/blaze-it range
                     if (messageType === 'nextBlaze' && timeRemainingMinutes > WARNING_MINS) {
                         console.log(`ANNOUNCER: Initial announcement for new event. Time: ${timeRemainingMinutes} mins, Location: ${location}`);
-                        await playAudioSequentially(messageLinks);
                         initialAnnouncementMade = true; // Mark as announced
                         lastPlayedMessageLinks = JSON.stringify(messageLinks);
+                        await playAudioSequentially(messageLinks);
                     }
                 }
 
@@ -248,20 +248,20 @@ function load420() {
                 if (!warningAnnouncementMade && timeRemainingMinutes <= WARNING_MINS && timeRemainingMinutes > 0) {
                     if (messageType === 'blazeItWarning') {
                         console.log(`ANNOUNCER: Warning for ${location}. ${timeRemainingMinutes} mins left.`);
-                        await playAudioSequentially(messageLinks);
                         warningAnnouncementMade = true;
                         lastPlayedMessageLinks = JSON.stringify(messageLinks);
+                        await playAudioSequentially(messageLinks);
                     }
                 }
 
                 // 3. At 4:20 Announcement (e.g., "It's 4:20 in X now!")
                 // This should happen ONCE when timeRemainingSeconds becomes <= 0 and > -60.
                 if (!blazeItAnnouncementMade && timeRemainingSeconds <= 0 && timeRemainingSeconds > -60) {
-                    if (messageType === 'blazeItNow') {
+                    if (messageType === 'blazeItNow' && JSON.stringify(messageLinks) !== lastPlayedMessageLinks) {
                         console.log(`ANNOUNCER: It's 4:20 in ${location} NOW!`);
-                        await playAudioSequentially(messageLinks);
                         blazeItAnnouncementMade = true;
                         lastPlayedMessageLinks = JSON.stringify(messageLinks);
+                        await playAudioSequentially(messageLinks);
                     }
                 }
                 
