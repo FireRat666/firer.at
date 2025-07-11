@@ -289,7 +289,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   if (p_custombuttonurl04 !== "false") { console.log(`${p_custombutton04text} : ${p_custombuttonurl04}`);
     await createCustomButton("CustomButton04", firebrowser, geometryObject, customButtonObjects, new BS.Vector3(RCButPos,0.15,0), p_custombutton04text, new BS.Vector3(RCTexPos,-0.336,-0.005), p_custombuttonurl04, () => {});};
   if (p_custombuttonurl05 !== "false") { console.log(`${p_custombutton05text} : ${p_custombuttonurl05}`);
-    await createCustomButton("CustomButton05", firebrowser, geometryObject, customButtonObjects, new BS.Vector3(RCButPos,-0.15,0), p_custombutton05text, new BS.Vector3(RCTexPos,-0.632,-0.005), p_custombuttonurl05, () => {});};
+    await createCustomButton("CustomButton05", firebrowser, geometryObject, customButtonObjects, new BS.Vector3(RCButPos,-0.15,0), p_custombutton05text, new BS.Vector3(RCTexPos,-0.635,-0.005), p_custombuttonurl05, () => {});};
 
   if (p_castmode === "true") {
     const alwaysVisibleButtons = ["FireButton_home", "FireButton_volUp", "FireButton_volDown", "FireButton_mute", "FireButton_pageBack", "FireButton_pageForward"];
