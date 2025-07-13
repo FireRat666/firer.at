@@ -603,18 +603,15 @@ function spaceStateStuff(argument) {
   console.log("FIRESCREEN2: Core script functions initialized.");
 
 } // End of one-time initialization block
- 
+
 // This part runs for every <script> tag.
 // We use a timeout to debounce the setup call and ensure it only runs once,
 // even if multiple FireScreen scripts are loaded concurrently.
-if (typeof window.fireScreenSetupTimeout === 'undefined') {
-  window.fireScreenSetupTimeout = setTimeout(() => {
-    console.log("FIRESCREEN2: Debounced setup call executing.");
-    window.setupfirescreen2();
-    // Once run, we clear the timeout id.
-    delete window.fireScreenSetupTimeout;
-  }, 100);
-}
+clearTimeout(window.fireScreenSetupTimeout);
+window.fireScreenSetupTimeout = setTimeout(() => {
+  console.log("FIRESCREEN2: Debounced setup call executing.");
+  window.setupfirescreen2();
+}, 100);
 // setProtectedSpaceProp('fireurl', "https://firer.at/");
 // await BS.BanterScene.GetInstance().OneShot(JSON.stringify({firevolume: "0.5"}));
 // await firescenev2.OneShot(JSON.stringify({fireurl: "https://firer.at/"}));
