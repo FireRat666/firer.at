@@ -1,33 +1,37 @@
-// SDK2 Based FireScreen, V0.9 Beta 1.0.1 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
-// FireScreen Tablet for Screen Casts / live streams with volume controls or a portable browser for any website.
-var thisScriptLocation = `https://firer.at/scripts/`; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
-var fireScriptName = `${thisScriptLocation}firescreenv2.js`;
-var announcerscripturlv2 = `${thisScriptLocation}announcer.js`;
-var fireScreen2On = false;
-var playersuseridv2 = null;
-var customButShader = 'Unlit/Diffuse';
-var defaulTransparent = 'Unlit/DiffuseTransparent';
-var whiteColour = new BS.Vector4(1,1,1,1);
-var customButtonSize = new BS.Vector3(0.2,0.04,1);
-var textPlaneColour = new BS.Vector4(0.1,0.1,0.1,1);
-var fireScreenSetup = false;
-// create a reference to the banter scene
-var firescenev2 = BS.BanterScene.GetInstance();
-// if (typeof window.theNumberofBrowsers === 'undefined') { window.theNumberofBrowsers = 0; } // Initialize only once 
+// This script can be loaded multiple times on the same page.
+// To prevent functions from being redefined, we wrap the core logic
+// in a check to ensure it only runs once.
+if (typeof window.fireScreenScriptInitialized === 'undefined') {
+
+  // SDK2 Based FireScreen, V0.9 Beta 1.1.0 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
+  // FireScreen Tablet for Screen Casts / live streams with volume controls or a portable browser for any website.
+  var thisScriptLocation = `https://firer.at/scripts/`; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
+  var fireScriptName = `${thisScriptLocation}firescreenv2.js`;
+  var announcerscripturlv2 = `${thisScriptLocation}announcer.js`;
+  var fireScreen2On = false;
+  var playersuseridv2 = null;
+  var customButShader = 'Unlit/Diffuse';
+  var defaulTransparent = 'Unlit/DiffuseTransparent';
+  var whiteColour = new BS.Vector4(1,1,1,1);
+  var customButtonSize = new BS.Vector3(0.2,0.04,1);
+  var textPlaneColour = new BS.Vector4(0.1,0.1,0.1,1);
+  var fireScreenSetup = false;
+  // create a reference to the banter scene
+  var firescenev2 = BS.BanterScene.GetInstance();
+  if (typeof window.fireScreenInstances === 'undefined') { window.fireScreenInstances = {}; }
 
 
-(function() {
+  (function() {
   const initialValues = {
     firstrunhandcontrols: true,
     notalreadyjoined: true,
-    handControlsDisabled: true,
-    theNumberofBrowsers: 0,
+    handControlsDisabled: true
   };
 
   for (const [key, value] of Object.entries(initialValues)) {
     if (typeof window[key] === 'undefined') { window[key] = value; } // Initialize Variables only once 
   }
-})();
+  })();
 
 // This Function adds geometry to the given game Object
 async function createGeometry(thingy1, geomtype, options = {}) {
@@ -69,11 +73,11 @@ function adjustScale(geometrytransform, direction) {
   return adjustment;
 };
 
-async function createCustomButton(name, firebrowser, parentObject, buttonObjects, position, text, textposition, url, clickHandler) {
+async function createCustomButton(name, firebrowser, parentObject, buttonObjects, position, text, textposition, url, clickHandler, browserNumber) {
   const buttonObject = await createUIButton(name, null, position, textPlaneColour, parentObject, false, "false", 1, 1, customButShader, customButtonSize);
   buttonObjects.push(buttonObject); let material = buttonObject.GetComponent(BS.ComponentType.BanterMaterial);
-  const textObject = await new BS.GameObject(`${name}Text${window.theNumberofBrowsers}`).Async();
-  const banterText = await textObject.AddComponent(new BS.BanterText(text, whiteColour, "Center", "Center", 0.20, true, true, new BS.Vector2(2,1)));
+  const textObject = await new BS.GameObject(`${name}Text${browserNumber}`).Async();
+  await textObject.AddComponent(new BS.BanterText(text, whiteColour, "Center", "Center", 0.20, true, true, new BS.Vector2(2,1)));
   const textTransform = await textObject.AddComponent(new BS.Transform());
   textTransform.localPosition = textposition; await textObject.SetParent(parentObject, false);
   buttonObjects.push(textObject);
@@ -143,13 +147,24 @@ function dispatchButtonClickEvent(buttonName, message) {
   console.log(`ButtonClick for button: ${buttonName} with message: "${message}"`);
 };
 
-function setupfirescreen2() {
+function getNextFireScreenId() {
+  let id = 1;
+  // Keep incrementing the ID until we find one that is not in use
+  while (window.fireScreenInstances[id]) {
+    id++;
+  }
+  console.log("getNextFireScreenId = " + id);
+  return id;
+}
+
+async function setupfirescreen2() {
   // const allScriptTags = document.getElementsByTagName('script');
   // console.log("FIRESCREEN2: All script tags:", Array.from(allScriptTags).map(s => s.src));
   const allscripts = document.querySelectorAll(`script[src^='${fireScriptName}']`);
   console.log(`FIRESCREEN2: Found ${allscripts.length} matching scripts`);
-  allscripts.forEach((script, index) => { if (script.dataset.processed) { return; }; 
-    window.theNumberofBrowsers++; console.log(`FIRESCREEN2: Loading browser ${window.theNumberofBrowsers}`); script.dataset.processed = 'true';const thisBrowserNumber = window.theNumberofBrowsers;
+  for (const script of allscripts) {
+    if (script.dataset.processed) { continue; }
+    const thisBrowserNumber = getNextFireScreenId(); console.log(`FIRESCREEN2: Loading browser ${thisBrowserNumber}`); script.dataset.processed = 'true';
     const defaultParams = { position: "0 2 0", rotation: "0 0 0", scale: "1 1 1", castmode: "false", "lock-position": "false", "screen-position": "0 0 -0.02", "screen-rotation": "0 0 0", "screen-scale": "1 1 1", volumelevel: "0.25",
       website: "https://firer.at/pages/games.html", mipmaps: "1", pixelsperunit: "1200", width: "1024", height: "576",
       backdrop: "true", "hand-controls": "false", "disable-interaction": "false", "disable-rotation": false, announce: "false", "announce-420": "false", "announce-events": "undefined",
@@ -174,11 +189,9 @@ function setupfirescreen2() {
       position, rotation, scale, castmode, "lock-position": lockPosition, "screen-position": screenPosition, "screen-rotation": screenRotation, "screen-scale": screenScale, volumelevel, mipmaps, pixelsperunit, backdrop, website, "button-color": buttonColor, announce, "announce-420": announce420, "backdrop-color": backdropColor, "icon-mute-url": iconMuteUrl, "icon-volup-url": iconVolUpUrl, "icon-voldown-url": iconVolDownUrl, "icon-direction-url": iconDirectionUrl, "volup-color": volUpColor, "voldown-color": volDownColor, "mute-color": muteColor, "disable-interaction": disableInteraction, "disable-rotation": disableRotation, "space-sync": spaceSync, "hand-controls": handControls, width, height, "announce-events": announceEvents, "custom-button01-url": customButton01Url, "custom-button01-text": customButton01Text, "custom-button02-url": customButton02Url, "custom-button02-text": customButton02Text, "custom-button03-url": customButton03Url, "custom-button03-text": customButton03Text, "custom-button04-url": customButton04Url, "custom-button04-text": customButton04Text, "custom-button05-url": customButton05Url, "custom-button05-text": customButton05Text
     } = params;
 
-    sdk2tests(position, rotation, scale, castmode, lockPosition, screenPosition, screenRotation, screenScale, volumelevel, mipmaps, pixelsperunit, backdrop, website, buttonColor, announce, announce420,
-      backdropColor, iconMuteUrl, iconVolUpUrl, iconVolDownUrl, iconDirectionUrl, volUpColor, volDownColor, muteColor,
-      disableInteraction, disableRotation, spaceSync, handControls, width, height, announceEvents, thisBrowserNumber, customButton01Url, customButton01Text,
-      customButton02Url, customButton02Text, customButton03Url, customButton03Text, customButton04Url, customButton04Text, customButton05Url, customButton05Text);
-    });
+    await sdk2tests(position, rotation, scale, castmode, lockPosition, screenPosition, screenRotation, screenScale, volumelevel, mipmaps, pixelsperunit, backdrop, website, buttonColor, announce, announce420,
+      backdropColor, iconMuteUrl, iconVolUpUrl, iconVolDownUrl, iconDirectionUrl, volUpColor, volDownColor, muteColor, disableInteraction, disableRotation, spaceSync, handControls, width, height, announceEvents, thisBrowserNumber, customButton01Url, customButton01Text, customButton02Url, customButton02Text, customButton03Url, customButton03Text, customButton04Url, customButton04Text, customButton05Url, customButton05Text);
+  }
 };
 
 async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_screenposition, p_screenrotation, p_screenscale, p_volume, p_mipmaps, p_pixelsperunit, p_backdrop, p_website, p_buttoncolor, p_announce, p_announce420, p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor, p_mutecolor, p_disableinteraction, p_disableRotation, p_spacesync, p_handbuttons, p_width, p_height, p_announceevents, p_thisBrowserNumber, p_custombuttonurl01, p_custombutton01text, p_custombuttonurl02, p_custombutton02text, p_custombuttonurl03, p_custombutton03text, p_custombuttonurl04, p_custombutton04text, p_custombuttonurl05, p_custombutton05text) {
@@ -187,6 +200,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   let playerislockedv2 = false;
   let customButtonObjects = [];
   const screenObject = await new BS.GameObject(`MyBrowser${p_thisBrowserNumber}`).Async();
+  const instanceObjects = { gameObjects: [screenObject], browserComponent: null, handControls: null, intervals: [] };
   console.log(`FIRESCREEN2: Width:${p_width}, Height:${p_height}, Number:${p_thisBrowserNumber}, URL:${p_website}`);
   let firebrowser = await screenObject.AddComponent(new BS.BanterBrowser(p_website, p_mipmaps, p_pixelsperunit, p_width, p_height, null));
   firebrowser.homePage = p_website; // Set variable for default Home Page for later use
@@ -198,6 +212,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   if (p_disableinteraction === "false") { firebrowser.ToggleInteraction(true); }
 
   const geometryObject = await new BS.GameObject(`MainParentObject${p_thisBrowserNumber}`).Async();
+  instanceObjects.gameObjects.push(geometryObject);
   const geometry = await createGeometry(geometryObject, BS.GeometryType.PlaneGeometry, { thewidth: 1.09, theheight: 0.64 });
   // geometry Transform Stuff
   const geometrytransform = await geometryObject.AddComponent(new BS.Transform());
@@ -276,6 +291,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   createButtonAction(hideShowObject, () => { console.log("HideShow Clicked!");buttonsvisible = !buttonsvisible; toggleButtonVisibility(Object.values(uiButtons), customButtonObjects, buttonsvisible ? 1 : 0)
     hideShowObject.GetComponent(BS.ComponentType.BanterMaterial).color = buttonsvisible ? p_buttoncolor : new BS.Vector4(1, 1, 1, 0.5);
   });
+  uiButtons.hideShow = hideShowObject;
   
   let RCButPos = 0.68; let RCTexPos = 1.59;
   if (Number(p_height) === 720) {RCButPos += 0.14; RCTexPos += 0.14;} else if (Number(p_height) === 1080) {RCButPos += 0.4; RCTexPos += 0.4;};
@@ -290,6 +306,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
     await createCustomButton("CustomButton04", firebrowser, geometryObject, customButtonObjects, new BS.Vector3(RCButPos,0.15,0), p_custombutton04text, new BS.Vector3(RCTexPos,-0.336,-0.005), p_custombuttonurl04, () => {});};
   if (p_custombuttonurl05 !== "false") { console.log(`${p_custombutton05text} : ${p_custombuttonurl05}`);
     await createCustomButton("CustomButton05", firebrowser, geometryObject, customButtonObjects, new BS.Vector3(RCButPos,-0.15,0), p_custombutton05text, new BS.Vector3(RCTexPos,-0.635,-0.005), p_custombuttonurl05, () => {});};
+  instanceObjects.gameObjects.push(...Object.values(uiButtons), ...customButtonObjects);
 
   if (p_castmode === "true") {
     const alwaysVisibleButtons = ["FireButton_home", "FireButton_volUp", "FireButton_volDown", "FireButton_mute", "FireButton_pageBack", "FireButton_pageForward"];
@@ -326,9 +343,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
     };
   });
   
-  async function initializeV2() { await waitForUserIdv2(); if (window.handControlsDisabled && p_handbuttons === "true" && window.firstrunhandcontrols) { playersuseridv2 = firescenev2.localUser.uid; window.handControlsDisabled = false; setupHandControlsV2(1, BS.LegacyAttachmentPosition.LEFT_HAND); // setupHandControlsV2(1, BS.LegacyAttachmentPosition.RIGHT_HAND); 
-
-  } }
+  async function initializeV2() { await waitForUserIdv2(); if (window.handControlsDisabled && p_handbuttons === "true" && window.firstrunhandcontrols) { playersuseridv2 = firescenev2.localUser.uid; window.handControlsDisabled = false; setupHandControlsV2(p_thisBrowserNumber, BS.LegacyAttachmentPosition.LEFT_HAND, instanceObjects); } }
 
   async function waitForUserIdv2() { while (!firescenev2.localUser || firescenev2.localUser.uid === undefined) { await new Promise(resolve => setTimeout(resolve, 200)); } }
   
@@ -336,8 +351,8 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   firescenev2.On("user-joined", e => {
     if (e.detail.isLocal) { // Setup Hand Controls only on the first run if enabled
       if (p_handbuttons === "true" && window.firstrunhandcontrols) {
-        window.firstrunhandcontrols = false; playersuseridv2 = e.detail.uid;
-        console.log("FIRESCREEN2: Enabling Hand Controls"); setupHandControlsV2(1, BS.LegacyAttachmentPosition.LEFT_HAND); // setupHandControlsV2(1, BS.LegacyAttachmentPosition.RIGHT_HAND );
+        window.firstrunhandcontrols = false; playersuseridv2 = e.detail.uid; instanceObjects.intervals = [];
+        console.log("FIRESCREEN2: Enabling Hand Controls"); setupHandControlsV2(p_thisBrowserNumber, BS.LegacyAttachmentPosition.LEFT_HAND, instanceObjects); // setupHandControlsV2(1, BS.LegacyAttachmentPosition.RIGHT_HAND );
       };
       console.log("FIRESCREEN2: user-joined");
       console.log(e.detail);
@@ -366,8 +381,8 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
       if (p_handbuttons === "true" && e.detail.isLocal && window.notalreadyjoined) { window.notalreadyjoined = false; window.firstrunhandcontrols = false; playersuseridv2 = e.detail.uid;
         console.log("FIRESCREEN2: Local User-already-joined, Enabling Hand Controls");
         console.log(`window.firstrunhandcontrols:${window.firstrunhandcontrols}`);
-        setTimeout(async () => {  setupHandControlsV2(1, BS.LegacyAttachmentPosition.LEFT_HAND); // setupHandControlsV2(1, BS.LegacyAttachmentPosition.RIGHT_HAND); 
-          window.notalreadyjoined = true }, 3000);
+        setTimeout(async () => {  setupHandControlsV2(p_thisBrowserNumber, BS.LegacyAttachmentPosition.LEFT_HAND, instanceObjects); // setupHandControlsV2(1, BS.LegacyAttachmentPosition.RIGHT_HAND); 
+          window.notalreadyjoined = true; }, 3000);
       };
   });
 
@@ -388,9 +403,11 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
 
   };
 
-  async function setupHandControlsV2(id, positionofcontrols) {
+  async function setupHandControlsV2(id, positionofcontrols, instanceObjects) {
     // THE CONTAINER FOR THE HAND BUTTONS
     const plane20Object = await new BS.GameObject(`handContainer${id}`).Async();
+    instanceObjects.handControls = plane20Object;
+    instanceObjects.gameObjects.push(plane20Object);
     const plane20geometry = await createGeometry(plane20Object, BS.GeometryType.PlaneGeometry);
     const plane20Collider = await plane20Object.AddComponent(new BS.BoxCollider(true, new BS.Vector3(0, 0, 0), new BS.Vector3(1,1,1)));
     const plane20material = await createMaterial(plane20Object, { shaderName: defaulTransparent, color: new BS.Vector4(0,0,0,0), side: 1 });
@@ -418,6 +435,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
     // Hand Home Button
     const hhomeButton = await createUIButton("hHomeButton", "https://firer.at/files/Home.png", new BS.Vector3(0.4,-0.1,0.3), p_buttoncolor, plane20Object, () => { adjustForAll("goHome"); youtubePlayerControl(null, "openPlaylist"); // clickABut('[position="-0.633 0 0"]'); clickABut('[position="-1.7 0 0"]', true); //vidya.sdq.st Playlist
       updateButtonColor(hhomeButton, p_buttoncolor); }, new BS.Vector3(180,0,0),1,1, defaulTransparent, new BS.Vector3(0.4,0.4,0.4));
+    instanceObjects.gameObjects.push(hvolUpButton, hvolDownButton, hmuteButton, hlockButton, hhomeButton);
     console.log("FIRESCREEN2: Hand Buttons Setup Complete");
   };
 
@@ -462,6 +480,16 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   }, 5000);
   setTimeout(async () => { adjustVolume(firebrowser, 0); // attempt to set default sound level for the page a second time
   }, 8000);
+
+  // Keep sound level set, runs every 5 seconds for this instance
+  const soundInterval = setInterval(() => {
+    const volume = firebrowser.volumeLevel;
+    const firePercent = (volume * 100).toFixed(0);
+    runBrowserActions(firebrowser, `document.querySelectorAll('video, audio').forEach(elem => elem.volume=${volume}); document.querySelector('.html5-video-player') ? document.querySelector('.html5-video-player').setVolume(${firePercent}) : null;`);
+  }, 5000);
+  instanceObjects.intervals.push(soundInterval);
+  // Add the completed instance to the global registry
+  window.fireScreenInstances[p_thisBrowserNumber] = instanceObjects;
 };
 
 function getV3FromStrv2(strVector3) {
@@ -475,47 +503,68 @@ function getV4FromStr(strVector4) {
   return new BS.Vector4(x, y, z, w);
 };
 
-// function getAttrOrDef(script, attr, defaultValue) { script.hasAttribute(attr) ? script.getAttribute(attr) : defaultValue };
+async function cleanupFireScreenV2(instanceId) {
+  const instance = window.fireScreenInstances[instanceId];
+  if (!instance) {
+    console.error(`FireScreenV2: Instance ${instanceId} not found for cleanup.`);
+    return;
+  }
 
-function keepsoundlevel2() { 
-  var volinterval2;
-  if (fireScreen2On && !window.NotRunKeepSoundLoop) {
-  console.log("FIRESCREEN2: keepsoundlevel loop");
-  window.NotRunKeepSoundLoop = true;
-  // Loop to keep sound level set, runs every set second(s)
-    volinterval2 = setInterval(async function() {
-      let thisloopnumber = 0;
-      while (thisloopnumber < window.theNumberofBrowsers) { thisloopnumber++
-        let firebrowserthing = await BS.BanterScene.GetInstance().Find(`MyBrowser${thisloopnumber}`);
-        let thebrowserpart = firebrowserthing.GetComponent(BS.ComponentType.BanterBrowser);
-        runBrowserActions( thebrowserpart, 
-          `typeof player !== 'undefined' && player.setVolume(${Number((thebrowserpart.volumeLevel * 100).toFixed(0))});
-          document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${thebrowserpart.volumeLevel});
-          document.querySelector('.html5-video-player') ? document.querySelector('.html5-video-player').setVolume(${(thebrowserpart.volumeLevel * 100).toFixed(0)}) : null;`
-        );
-      };
-    }, 5000); } else if (fireScreen2On) { console.log("FIRESCREEN2: ALREADY SET soundlevel loop"); } else { console.log("FIRESCREEN2: CLEAR soundlevel loop"); clearInterval(volinterval2); }
-};
+  console.log(`FireScreenV2: Cleaning up instance ${instanceId}.`);
+
+  // 1. Clear all intervals
+  instance.intervals.forEach(intervalId => clearInterval(intervalId));
+  console.log(`FireScreenV2: Cleared ${instance.intervals.length} intervals.`);
+
+  // 2. Destroy all tracked GameObjects
+  for (const gameObject of instance.gameObjects) {
+    if (gameObject && !gameObject.destroyed) {
+      try {
+        await gameObject.Destroy();
+      } catch (e) {
+        console.warn(`FireScreenV2: Error destroying GameObject ${gameObject.name}:`, e);
+      }
+    }
+  }
+  console.log(`FireScreenV2: Destroyed ${instance.gameObjects.length} GameObjects.`);
+
+  // 3. Remove the instance from the registry
+  delete window.fireScreenInstances[instanceId];
+  console.log(`FireScreenV2: Instance ${instanceId} removed from registry.`);
+
+  // Optional: Check if any instances are left and perform global cleanup
+  if (Object.keys(window.fireScreenInstances).length === 0) {
+    console.log("FireScreenV2: All instances cleaned up.");
+    fireScreen2On = false;
+  }
+}
+
+window.cleanupFireScreenV2 = cleanupFireScreenV2;
+
+window.setupfirescreen2 = setupfirescreen2;
 
 async function adjustForAll(action, change) {
-	let thisloopnumber = 0;
-	while (thisloopnumber < window.theNumberofBrowsers) {
-		thisloopnumber++
-		// let firebrowserthing = await BS.BanterScene.GetInstance().Find(`MyBrowser${thisloopnumber}`);
-    let thebrowserpart = (await BS.BanterScene.GetInstance().Find(`MyBrowser${thisloopnumber}`)).GetComponent(BS.ComponentType.BanterBrowser);
-		if (action === "adjustVolume") adjustVolume(thebrowserpart, change);
-		if (action === "soundLevels") keepsoundlevel2(thebrowserpart);
-		if (action === "goHome") {thebrowserpart.url = thebrowserpart.homePage; dispatchButtonClickEvent("Home", `${thebrowserpart.homePage}`)};
-		if (action === "goURL") thebrowserpart.url = change;
-		if (action === "toggleMute") {
-      thebrowserpart.muteState = !thebrowserpart.muteState; thebrowserpart.muteState ? muteState = "mute" : muteState = "unMute";
-      runBrowserActions(thebrowserpart, `document.querySelectorAll('video, audio').forEach((elem) => elem.muted=${thebrowserpart.muteState}); typeof player !== 'undefined' && player.${muteState}(); document.querySelector('.html5-video-player').${muteState}();`);
-    };
-		if (action === "browserAction") {
-      runBrowserActions(thebrowserpart, `${change}`);
-    };
-    console.log(action);
-	};
+  // Iterate over all registered FireScreen instances
+  for (const instanceId in window.fireScreenInstances) {
+    const firebrowserthing = await BS.BanterScene.GetInstance().Find(`MyBrowser${instanceId}`);
+    if (firebrowserthing) {
+      const thebrowserpart = firebrowserthing.GetComponent(BS.ComponentType.BanterBrowser);
+      if (thebrowserpart) {
+        if (action === "adjustVolume") adjustVolume(thebrowserpart, change);
+        if (action === "goHome") { thebrowserpart.url = thebrowserpart.homePage; dispatchButtonClickEvent("Home", `${thebrowserpart.homePage}`); }
+        if (action === "goURL") thebrowserpart.url = change;
+        if (action === "toggleMute") {
+          thebrowserpart.muteState = !thebrowserpart.muteState;
+          const muteState = thebrowserpart.muteState ? "mute" : "unMute";
+          runBrowserActions(thebrowserpart, `document.querySelectorAll('video, audio').forEach((elem) => elem.muted=${thebrowserpart.muteState}); typeof player !== 'undefined' && player.${muteState}(); document.querySelector('.html5-video-player').${muteState}();`);
+        }
+        if (action === "browserAction") { runBrowserActions(thebrowserpart, `${change}`); }
+        console.log(`adjustForAll: Action '${action}' applied to instance ${instanceId}`);
+      }
+    } else {
+      console.warn(`adjustForAll: Could not find browser instance ${instanceId}. It might have been cleaned up.`);
+    }
+  }
 };
 
 async function getSpaceStateStuff(argument) {
@@ -543,14 +592,23 @@ function spaceStateStuff(argument) {
   return null;
 };
 
-if (!window.fireScreenScriptInitialized) {
+  // Mark the script as initialized
   window.fireScreenScriptInitialized = true;
-  console.log("FIRESCREEN2: Initializing the script");
-  setTimeout(() => { setupfirescreen2(); }, 500);
-} else {
-  setTimeout(() => { setupfirescreen2(); }, 1500);
-};
+  console.log("FIRESCREEN2: Core script functions initialized.");
 
+} // End of one-time initialization block
+ 
+// This part runs for every <script> tag.
+// We use a timeout to debounce the setup call and ensure it only runs once,
+// even if multiple FireScreen scripts are loaded concurrently.
+if (typeof window.fireScreenSetupTimeout === 'undefined') {
+  window.fireScreenSetupTimeout = setTimeout(() => {
+    console.log("FIRESCREEN2: Debounced setup call executing.");
+    window.setupfirescreen2();
+    // Once run, we clear the timeout id.
+    delete window.fireScreenSetupTimeout;
+  }, 100);
+}
 // setProtectedSpaceProp('fireurl', "https://firer.at/");
 // await BS.BanterScene.GetInstance().OneShot(JSON.stringify({firevolume: "0.5"}));
 // await firescenev2.OneShot(JSON.stringify({fireurl: "https://firer.at/"}));
@@ -579,3 +637,9 @@ if (!window.fireScreenScriptInitialized) {
 // window.videoPlayerCore.sendMessage({path: Commands.REMOVE_PLAYLIST_ITEM, data: 0 });
 // v = {}; v.id = "ApXoWvfEYVU"; v.link = "https://www.youtube.com/watch?v=ApXoWvfEYVU"; v.title = "This is Not the Right Title for This Video"; v.thumbnail = "https://daily.jstor.org/wp-content/uploads/2015/08/Fire.jpg"; 
 // window.videoPlayerCore.sendMessage({path: Commands.ADD_TO_PLAYLIST, data: v });
+
+// let browserthing = await BS.BanterScene.GetInstance().Find(`MyBrowser2`)
+// let componenttest = browserthing.GetComponent(BS.ComponentType.BanterBrowser)
+// componenttest.WatchProperties([BS.PropertyName.url])
+// componenttest.url
+// cleanupFireScreenV2(1)
