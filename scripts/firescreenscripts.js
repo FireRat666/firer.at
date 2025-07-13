@@ -19,6 +19,7 @@ if (typeof window.fireScreenScriptInitialized === 'undefined') {
   // create a reference to the banter scene
   var firescenev2 = BS.BanterScene.GetInstance();
   if (typeof window.fireScreenInstances === 'undefined') { window.fireScreenInstances = {}; }
+  window.fireScreenSetupRunning = false;
 
 
   (function() {
@@ -604,14 +605,26 @@ function spaceStateStuff(argument) {
 
 } // End of one-time initialization block
 
-// This part runs for every <script> tag.
-// We use a timeout to debounce the setup call and ensure it only runs once,
-// even if multiple FireScreen scripts are loaded concurrently.
-clearTimeout(window.fireScreenSetupTimeout);
-window.fireScreenSetupTimeout = setTimeout(() => {
-  console.log("FIRESCREEN2: Debounced setup call executing.");
-  window.setupfirescreen2();
-}, 100);
+(async () => {
+  // A short delay to allow other scripts to load and set the lock if they are faster.
+  await new Promise(resolve => setTimeout(resolve, 50));
+
+  if (window.fireScreenSetupRunning) {
+    console.log("FIRESCREEN2: Setup already in progress. Skipping.");
+    return;
+  }
+  window.fireScreenSetupRunning = true;
+  console.log("FIRESCREEN2: Lock acquired, starting setup...");
+
+  try {
+    // This function is now async and processes scripts sequentially.
+    await window.setupfirescreen2();
+  } finally {
+    console.log("FIRESCREEN2: Setup finished, releasing lock.");
+    // Release the lock so a new setup can run if a new script is added later.
+    window.fireScreenSetupRunning = false;
+  }
+})();
 // setProtectedSpaceProp('fireurl', "https://firer.at/");
 // await BS.BanterScene.GetInstance().OneShot(JSON.stringify({firevolume: "0.5"}));
 // await firescenev2.OneShot(JSON.stringify({fireurl: "https://firer.at/"}));
