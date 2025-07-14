@@ -606,24 +606,30 @@ function spaceStateStuff(argument) {
 } // End of one-time initialization block
 
 (async () => {
-  // A short delay to allow other scripts to load and set the lock if they are faster.
-  await new Promise(resolve => setTimeout(resolve, 50));
+  // This function will attempt to acquire a lock and run the setup.
+  // If the lock is already taken, it will wait and retry.
+  async function attemptSetup() {
+    if (window.fireScreenSetupRunning) {
+      console.log("FIRESCREEN2: Setup in progress. Waiting to retry...");
+      setTimeout(attemptSetup, 500); // Wait 500ms and try again
+      return;
+    }
 
-  if (window.fireScreenSetupRunning) {
-    console.log("FIRESCREEN2: Setup already in progress. Skipping.");
-    return;
-  }
-  window.fireScreenSetupRunning = true;
-  console.log("FIRESCREEN2: Lock acquired, starting setup...");
+    // Acquire lock
+    window.fireScreenSetupRunning = true;
+    console.log("FIRESCREEN2: Lock acquired, starting setup...");
 
-  try {
-    // This function is now async and processes scripts sequentially.
-    await window.setupfirescreen2();
-  } finally {
-    console.log("FIRESCREEN2: Setup finished, releasing lock.");
-    // Release the lock so a new setup can run if a new script is added later.
-    window.fireScreenSetupRunning = false;
+    try {
+      // This function is now async and processes all unprocessed scripts sequentially.
+      await window.setupfirescreen2();
+    } finally {
+      console.log("FIRESCREEN2: Setup finished, releasing lock.");
+      window.fireScreenSetupRunning = false;
+    }
   }
+
+  // Initial call to start the process for this script instance.
+  attemptSetup();
 })();
 // setProtectedSpaceProp('fireurl', "https://firer.at/");
 // await BS.BanterScene.GetInstance().OneShot(JSON.stringify({firevolume: "0.5"}));
