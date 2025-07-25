@@ -346,8 +346,7 @@ async function sdk2tests(params) {
   await geometryObject.SetLayer(20);
   const firerigidBody = await geometryObject.AddComponent(new BS.BanterRigidbody(1, 10, 10, true, false, new BS.Vector3(0,0,0), 0, false, false, false, false, false, false, new BS.Vector3(0,0,0), new BS.Vector3(0,0,0)));
 
-  if (p_backdrop !== "true") { p_backdropcolor = new BS.Vector4(0,0,0,0); }; // If Backdrop is disabled, Hide it
-  const material = await createMaterial(geometryObject, { color: p_backdropcolor });
+  const material = await createMaterial(geometryObject, { color: p_backdrop === "true" ? p_backdropcolor : new BS.Vector4(0,0,0,0) });
   // firebrowser Transform Stuff
   const browsertransform = await screenObject.AddComponent(new BS.Transform());
   browsertransform.position = p_screenposition; browsertransform.localScale = p_screenscale; browsertransform.eulerAngles = p_screenrotation;
