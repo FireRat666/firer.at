@@ -3,7 +3,7 @@
 // in a check to ensure it only runs once.
 if (typeof window.fireScreenScriptInitialized === 'undefined') {
 
-  // SDK2 Based FireScreen, V0.9 Beta 1.1.2 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
+  // SDK2 Based FireScreen, V0.9 Beta 2.0 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
   // FireScreen Tablet for Screen Casts / live streams with volume controls or a portable browser for any website.
   var thisScriptLocation = `https://firer.at/scripts/`; // CHANGE THIS URL IF MAKING A COPY OF THIS SCRIPT AND THE ONES BELOW
   var fireScriptName = `${thisScriptLocation}firescreenv2.js`;
@@ -26,13 +26,61 @@ if (typeof window.fireScreenScriptInitialized === 'undefined') {
   const initialValues = {
     firstrunhandcontrols: true,
     notalreadyjoined: true,
-    handControlsDisabled: true
+    handControlsDisabled: true,
+    fireScreenSpaceStateLogged: false
   };
 
   for (const [key, value] of Object.entries(initialValues)) {
     if (typeof window[key] === 'undefined') { window[key] = value; } // Initialize Variables only once 
   }
   })();
+
+// This is the stateless script that will be injected into the browser on every action.
+const mediaControlScript = `
+(function() {
+    // --- Universal Media Control Function ---
+    // This function will be called from the Banter space to control media inside the browser.
+    window.fireScreenMediaControl = function(options) {
+        const { volume, mute } = options;
+
+        function controlMedia(doc) {
+            // 1. Find all standard HTML5 video and audio elements
+            doc.querySelectorAll('video, audio').forEach(el => {
+                try {
+                    if (volume !== undefined && 'volume' in el && !el.muted) {
+                        el.volume = volume;
+                    }
+                    if (mute !== undefined && 'muted' in el) {
+                        el.muted = mute;
+                    }
+                } catch (e) { /* console.error('[FireScreen] Error controlling HTML5 media:', e); */ }
+            });
+
+            // 2. Attempt to control common third-party players (e.g., YouTube)
+            const ytPlayer = doc.querySelector('.html5-video-player');
+            if (ytPlayer) {
+                try {
+                    if (volume !== undefined && typeof ytPlayer.setVolume === 'function') {
+                        ytPlayer.setVolume(volume * 100);
+                    }
+                    if (mute !== undefined) {
+                        if (mute && typeof ytPlayer.mute === 'function') ytPlayer.mute();
+                        if (!mute && typeof ytPlayer.unMute === 'function') ytPlayer.unMute();
+                    }
+                } catch(e) { /* console.error('[FireScreen] Error controlling YouTube player:', e); */ }
+            }
+
+            // 3. Recursively search within iframes
+            doc.querySelectorAll('iframe').forEach(iframe => {
+                try {
+                    if (iframe.contentDocument) controlMedia(iframe.contentDocument);
+                } catch (e) { /* Cross-origin iFrames will throw errors, which is expected. */ }
+            });
+        }
+        controlMedia(window.document);
+    };
+})();
+`;
 
 // This Function adds geometry to the given game Object
 async function createGeometry(thingy1, geomtype, options = {}) {
@@ -74,17 +122,24 @@ function adjustScale(geometrytransform, direction) {
   return adjustment;
 };
 
-async function createCustomButton(name, firebrowser, parentObject, buttonObjects, position, text, textposition, url, clickHandler, browserNumber) {
-  const buttonObject = await createUIButton(name, null, position, textPlaneColour, parentObject, false, "false", 1, 1, customButShader, customButtonSize);
-  buttonObjects.push(buttonObject); let material = buttonObject.GetComponent(BS.ComponentType.BanterMaterial);
+async function createCustomButton(config, firebrowser, parentObject, buttonObjects, browserNumber) {
+  const { name, url, text, position, textposition, clickHandler } = config;
+  const buttonObject = await createUIButton(name, null, position, textPlaneColour, parentObject, false, false, 1, 1, customButShader, customButtonSize);
+  buttonObjects.push(buttonObject);
+  const material = buttonObject.GetComponent(BS.ComponentType.BanterMaterial);
+
   const textObject = await new BS.GameObject(`${name}Text${browserNumber}`).Async();
   await textObject.AddComponent(new BS.BanterText(text, whiteColour, "Center", "Center", 0.20, true, true, new BS.Vector2(2,1)));
   const textTransform = await textObject.AddComponent(new BS.Transform());
-  textTransform.localPosition = textposition; await textObject.SetParent(parentObject, false);
+  textTransform.localPosition = textposition;
+  await textObject.SetParent(parentObject, false);
   buttonObjects.push(textObject);
-  buttonObject.On('click', () => { console.log(`CLICKED: ${name}`);
-      firebrowser.url = url; material.color = new BS.Vector4(0.3,0.3,0.3,1);
-      setTimeout(() => { material.color = textPlaneColour; }, 100); if (clickHandler) clickHandler();
+
+  buttonObject.On('click', () => {
+    console.log(`CLICKED: ${name}`);
+    if (url) setBrowserUrl(firebrowser, url); material.color = new BS.Vector4(0.3,0.3,0.3,1);
+    setTimeout(() => { material.color = textPlaneColour; }, 100);
+    if (clickHandler) clickHandler();
   });
 };
 
@@ -95,7 +150,7 @@ async function createUIButton(name, thetexture, position, thecolor, thisparent, 
   const buttonMaterial = await createMaterial(buttonObject, { shaderName: theShader, texture: thetexture, color: thecolor });
   const buttonTransform = await buttonObject.AddComponent(new BS.Transform());
   buttonTransform.position = position; buttonTransform.localScale = localScale;
-  rotation ? buttonTransform.localEulerAngles = rotation : rotation; buttonObject.SetLayer(5); // UI Layer
+  if (rotation instanceof BS.Vector3) { buttonTransform.localEulerAngles = rotation; } buttonObject.SetLayer(5); // UI Layer
   await buttonObject.SetParent(thisparent, false);
   if (clickHandler) {
     createButtonAction(buttonObject, clickHandler);
@@ -108,24 +163,29 @@ function adjustVolume(firebrowser, change) { // Pass -1 to decrease the volume P
   if (currentVolume < 0.1) { adjustment = 0.01; // Tiny adjustment for low volume
   } else if (currentVolume < 0.5) { adjustment = 0.03; // Medium adjustment for medium volume
   } else { adjustment = 0.05; } // Big adjustment for high volume
-  firevolume = currentVolume + (change * adjustment);
-  firevolume = Math.max(0, Math.min(firevolume, 1)).toFixed(2);
-  let firepercent = (firevolume * 100).toFixed(0);
-  firebrowser.volumeLevel = firevolume;
-  let tempvolumeLevel = Math.max(0, Math.min(1, firevolume)).toFixed(1);
-  runBrowserActions(firebrowser, `
-    (function() { document.querySelectorAll('video, audio').forEach(el => {
-      if ('volume' in el) { try { el.volume = ${tempvolumeLevel}; console.log('[Banter Volume Injection] HTML5 volume set for element: ', el.id || el.src); }
-          catch (e) {  console.error("[Banter Volume Injection] HTML5 volume error for element:", el.id || el.src, e.message, e.stack); }
-    } }); })();
-  `);
-  runBrowserActions(firebrowser, `typeof player !== 'undefined' && player.setVolume(${firepercent});
-    document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${firevolume}); 
-    document.querySelector('.html5-video-player') ? document.querySelector('.html5-video-player').setVolume(${firepercent}) : null;`);
-    // if (change !== 0 && window.videoPlayerCore && typeof window.videoPlayerCore.setVolume === 'function') { // Translate change: use 1 for increase, and 0 for decrease.
-    //   let volCommand = (change === 1) ? 1 : 0; window.videoPlayerCore.setVolume(volCommand);
-    // };
-  console.log(`FIRESCREEN2: Volume is: ${firevolume}`);
+  // firevolume = currentVolume + (change * adjustment);
+  // firevolume = Math.max(0, Math.min(firevolume, 1)).toFixed(2);
+  // let firepercent = (firevolume * 100).toFixed(0);
+  // firebrowser.volumeLevel = firevolume;
+  // let tempvolumeLevel = Math.max(0, Math.min(1, firevolume)).toFixed(1);
+  // runBrowserActions(firebrowser, `
+  //   (function() { document.querySelectorAll('video, audio').forEach(el => {
+  //     if ('volume' in el) { try { el.volume = ${tempvolumeLevel}; console.log('[Banter Volume Injection] HTML5 volume set for element: ', el.id || el.src); }
+  //         catch (e) {  console.error("[Banter Volume Injection] HTML5 volume error for element:", el.id || el.src, e.message, e.stack); }
+  //   } }); })();
+  // `);
+  // runBrowserActions(firebrowser, `typeof player !== 'undefined' && player.setVolume(${firepercent});
+  //   document.querySelectorAll('video, audio').forEach((elem) => elem.volume=${firevolume}); 
+  //   document.querySelector('.html5-video-player') ? document.querySelector('.html5-video-player').setVolume(${firepercent}) : null;`);
+  // console.log(`FIRESCREEN2: Volume is: ${firevolume}`);
+  let newVolume = currentVolume + (change * adjustment);
+  newVolume = Math.max(0, Math.min(newVolume, 1)).toFixed(2);
+  firebrowser.volumeLevel = newVolume;
+
+  console.log(`FIRESCREEN2: Setting volume to: ${newVolume}`);
+  // Inject the control script and immediately execute the command.
+  const scriptToRun = `${mediaControlScript} window.fireScreenMediaControl({ volume: ${newVolume} });`;
+  runBrowserActions(firebrowser, scriptToRun);
 };
 
 function toggleButtonVisibility(defaultobjects, customButtonObjects, visible, exceptions = []) {
@@ -145,8 +205,53 @@ function dispatchButtonClickEvent(buttonName, message) {
   const eventDetails = { buttonName: buttonName, message: message, timestamp: new Date() };
   const buttonClickEvent = new CustomEvent('CustomButtonClick', { detail: eventDetails, bubbles: true, composed: true });
   document.dispatchEvent(buttonClickEvent);
-  console.log(`ButtonClick for button: ${buttonName} with message: "${message}"`);
+  // console.log(`ButtonClick for button: ${buttonName} with message: "${message}"`);
 };
+
+/**
+ * Sets the browser URL and manually triggers volume synchronization.
+ * This is a workaround for the unreliable 'property-changed' event for the URL.
+ * @param {BS.BanterBrowser} firebrowser - The browser component instance.
+ * @param {string} url - The new URL to set.
+ */
+function setBrowserUrl(firebrowser, url) {
+  if (!firebrowser) {
+    console.error("setBrowserUrl: firebrowser is null or undefined.");
+    return;
+  }
+  console.log(`FIRESCREEN2: Setting URL for ${firebrowser.gameObject.name} to: ${url}`);
+  firebrowser.url = url;
+  triggerVolumeSync(firebrowser);
+}
+
+/**
+ * Triggers a temporary, repeated synchronization of the browser's volume.
+ * This is more efficient than a persistent interval, as it only runs when needed
+ * (e.g., on page load) and then stops itself.
+ * @param {BS.BanterBrowser} firebrowser - The browser component instance.
+ */
+function triggerVolumeSync(firebrowser) {
+  // If there's an existing temporary sync interval for this browser, clear it first.
+  if (firebrowser.volumeSyncInterval) {
+    clearInterval(firebrowser.volumeSyncInterval);
+  }
+
+  let syncCount = 0;
+  const maxSyncs = 4; // How many times to sync volume after a page load
+  const syncIntervalTime = 2500; // e.g., 2.5 seconds between syncs
+
+  firebrowser.volumeSyncInterval = setInterval(() => {
+    if (syncCount >= maxSyncs) {
+      clearInterval(firebrowser.volumeSyncInterval);
+      firebrowser.volumeSyncInterval = null; // Clean up the reference
+      return;
+    }
+
+    console.log(`FIRESCREEN2: Triggering volume sync #${syncCount + 1} for browser ${firebrowser.gameObject.name}`);
+    adjustVolume(firebrowser, 0); // A change of 0 just re-applies the current volume
+    syncCount++;
+  }, syncIntervalTime);
+}
 
 function getNextFireScreenId() {
   let id = 1;
@@ -185,23 +290,41 @@ async function setupfirescreen2() {
       const value = attr !== null ? attr : defaultParams[key];
       return numberAttributes[key] ? numberAttributes[key](value) : value; };
 
-    const params = {}; Object.keys(defaultParams).forEach(key => { params[key] = getParam(key); });
-    const {
-      position, rotation, scale, castmode, "lock-position": lockPosition, "screen-position": screenPosition, "screen-rotation": screenRotation, "screen-scale": screenScale, volumelevel, mipmaps, pixelsperunit, backdrop, website, "button-color": buttonColor, announce, "announce-420": announce420, "backdrop-color": backdropColor, "icon-mute-url": iconMuteUrl, "icon-volup-url": iconVolUpUrl, "icon-voldown-url": iconVolDownUrl, "icon-direction-url": iconDirectionUrl, "volup-color": volUpColor, "voldown-color": volDownColor, "mute-color": muteColor, "disable-interaction": disableInteraction, "disable-rotation": disableRotation, "space-sync": spaceSync, "hand-controls": handControls, width, height, "announce-events": announceEvents, "custom-button01-url": customButton01Url, "custom-button01-text": customButton01Text, "custom-button02-url": customButton02Url, "custom-button02-text": customButton02Text, "custom-button03-url": customButton03Url, "custom-button03-text": customButton03Text, "custom-button04-url": customButton04Url, "custom-button04-text": customButton04Text, "custom-button05-url": customButton05Url, "custom-button05-text": customButton05Text
-    } = params;
+    const params = {};
+    Object.keys(defaultParams).forEach(key => { params[key] = getParam(key); });
 
-    await sdk2tests(position, rotation, scale, castmode, lockPosition, screenPosition, screenRotation, screenScale, volumelevel, mipmaps, pixelsperunit, backdrop, website, buttonColor, announce, announce420,
-      backdropColor, iconMuteUrl, iconVolUpUrl, iconVolDownUrl, iconDirectionUrl, volUpColor, volDownColor, muteColor, disableInteraction, disableRotation, spaceSync, handControls, width, height, announceEvents, thisBrowserNumber, customButton01Url, customButton01Text, customButton02Url, customButton02Text, customButton03Url, customButton03Text, customButton04Url, customButton04Text, customButton05Url, customButton05Text, script);
+    // Add script-specific properties to the params object
+    params.thisBrowserNumber = thisBrowserNumber;
+    params.scriptElement = script;
+
+    await sdk2tests(params);
   }
 };
 
-async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_screenposition, p_screenrotation, p_screenscale, p_volume, p_mipmaps, p_pixelsperunit, p_backdrop, p_website, p_buttoncolor, p_announce, p_announce420, p_backdropcolor, p_iconmuteurl, p_iconvolupurl, p_iconvoldownurl, p_icondirectionurl, p_volupcolor, p_voldowncolor, p_mutecolor, p_disableinteraction, p_disableRotation, p_spacesync, p_handbuttons, p_width, p_height, p_announceevents, p_thisBrowserNumber, p_custombuttonurl01, p_custombutton01text, p_custombuttonurl02, p_custombutton02text, p_custombuttonurl03, p_custombutton03text, p_custombuttonurl04, p_custombutton04text, p_custombuttonurl05, p_custombutton05text, p_scriptElement) {
+async function sdk2tests(params) {
+  const {
+    position: p_pos, rotation: p_rot, scale: p_sca, castmode: p_castmode, 'lock-position': p_lockposition,
+    'screen-position': p_screenposition, 'screen-rotation': p_screenrotation, 'screen-scale': p_screenscale,
+    volumelevel: p_volume, mipmaps: p_mipmaps, pixelsperunit: p_pixelsperunit, backdrop: p_backdrop,
+    website: p_website, 'button-color': p_buttoncolor, announce: p_announce, 'announce-420': p_announce420,
+    'backdrop-color': p_backdropcolor, 'icon-mute-url': p_iconmuteurl, 'icon-volup-url': p_iconvolupurl,
+    'icon-voldown-url': p_iconvoldownurl, 'icon-direction-url': p_icondirectionurl, 'volup-color': p_volupcolor,
+    'voldown-color': p_voldowncolor, 'mute-color': p_mutecolor, 'disable-interaction': p_disableinteraction,
+    'disable-rotation': p_disableRotation, 'space-sync': p_spacesync, 'hand-controls': p_handbuttons,
+    width: p_width, height: p_height, 'announce-events': p_announceevents,
+    'custom-button01-url': p_custombuttonurl01, 'custom-button01-text': p_custombutton01text,
+    'custom-button02-url': p_custombuttonurl02, 'custom-button02-text': p_custombutton02text,
+    'custom-button03-url': p_custombuttonurl03, 'custom-button03-text': p_custombutton03text,
+    'custom-button04-url': p_custombuttonurl04, 'custom-button04-text': p_custombutton04text,
+    'custom-button05-url': p_custombuttonurl05, 'custom-button05-text': p_custombutton05text,
+    thisBrowserNumber: p_thisBrowserNumber, scriptElement: p_scriptElement
+  } = params;
   fireScreen2On = true;
   let keyboardstate = false;
   let playerislockedv2 = false;
   let customButtonObjects = [];
-  const screenObject = await new BS.GameObject(`MyBrowser${p_thisBrowserNumber}`).Async();
-  const instanceObjects = { gameObjects: [screenObject], browserComponent: null, handControls: null, intervals: [], scriptElement: p_scriptElement };
+  const screenObject = await new BS.GameObject(`MyBrowser${p_thisBrowserNumber}`).Async(); // The main browser object
+  const instanceObjects = { gameObjects: [screenObject], browserComponent: null, handControls: null, intervals: [], listeners: [], scriptElement: p_scriptElement };
   console.log(`FIRESCREEN2: Width:${p_width}, Height:${p_height}, Number:${p_thisBrowserNumber}, URL:${p_website}`);
   let firebrowser = await screenObject.AddComponent(new BS.BanterBrowser(p_website, p_mipmaps, p_pixelsperunit, p_width, p_height, null));
   firebrowser.homePage = p_website; // Set variable for default Home Page for later use
@@ -236,20 +359,21 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   if (Number(p_height) === 720) {TButPos += 0.07; LButPos += -0.14; RButPos += 0.14;} else if (Number(p_height) === 1080) {TButPos += 0.23; LButPos += -0.45; RButPos += 0.45;};
 
   let BUTTON_CONFIGS = { home: { icon: "https://firer.at/files/Home.png", position: new BS.Vector3(-0.2,TButPos,0), color: p_buttoncolor,
-    clickHandler: () => { console.log("Home Clicked!"); firebrowser.url = firebrowser.homePage; // `${p_website}?${Math.floor(Math.random() * 1000) + 1}`
+    clickHandler: () => { console.log("Home Clicked!"); setBrowserUrl(firebrowser, firebrowser.homePage);
       updateButtonColor(uiButtons.home, p_buttoncolor); dispatchButtonClickEvent("Home", `${firebrowser.homePage}`); }
     }, info: { icon: "https://firer.at/files/Info.png", position: new BS.Vector3(LButPos,0.28,0), color: p_buttoncolor,
-      clickHandler: () => { console.log("Info Clicked!"); firebrowser.url = "https://firer.at/pages/Info.html";
+      clickHandler: () => { console.log("Info Clicked!"); setBrowserUrl(firebrowser, "https://firer.at/pages/Info.html");
       updateButtonColor(uiButtons.info, p_buttoncolor); dispatchButtonClickEvent("Info", 'Info Clicked!'); }
     }, google: { icon: "https://firer.at/files/Google.png", position: new BS.Vector3(LButPos,0.16,0), color: whiteColour,
-      clickHandler: () => { console.log("Google Clicked!"); firebrowser.url = "https://google.com/";
+      clickHandler: () => { console.log("Google Clicked!"); setBrowserUrl(firebrowser, "https://google.com/");
       updateButtonColor(uiButtons.google, whiteColour); dispatchButtonClickEvent("Google", 'Google Clicked!'); }
     }, keyboard: { icon: "https://firer.at/files/Keyboard.png", position: new BS.Vector3(LButPos,-0.15,0), color: whiteColour,
       clickHandler: () => { console.log("Keyboard Clicked!"); keyboardstate = !keyboardstate; firebrowser.ToggleKeyboard(keyboardstate ? 1 : 0);
         uiButtons.keyboard.GetComponent(BS.ComponentType.BanterMaterial).color = keyboardstate ? p_buttoncolor : whiteColour; dispatchButtonClickEvent("Keyboard", 'Keyboard Clicked!'); }
     }, mute: { icon: p_iconmuteurl, position: new BS.Vector3(0.167,TButPos,0), color: p_mutecolor,
-      clickHandler: () => { console.log("Mute Clicked!"); firebrowser.muteState = !firebrowser.muteState;
-      runBrowserActions(firebrowser, `document.querySelectorAll('video, audio').forEach((elem) => elem.muted=${firebrowser.muteState});`);
+      clickHandler: () => { console.log("Mute Clicked!"); firebrowser.muteState = !firebrowser.muteState; // Toggle mute state
+      const scriptToRun = `${mediaControlScript} window.fireScreenMediaControl({ mute: ${firebrowser.muteState} });`;
+      runBrowserActions(firebrowser, scriptToRun);
       uiButtons.mute.GetComponent(BS.ComponentType.BanterMaterial).color = firebrowser.muteState ? new BS.Vector4(1,0,0,1) : (p_mutecolor ? p_mutecolor : p_buttoncolor); dispatchButtonClickEvent("Mute", 'Mute Clicked!'); }
     }, volDown: { icon: p_iconvoldownurl, position: new BS.Vector3(0.334,TButPos,0), color: p_voldowncolor,
       clickHandler: () => { console.log("Volume Down Clicked!"); adjustVolume(firebrowser, -1);
@@ -297,16 +421,20 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
   let RCButPos = 0.68; let RCTexPos = 1.59;
   if (Number(p_height) === 720) {RCButPos += 0.14; RCTexPos += 0.14;} else if (Number(p_height) === 1080) {RCButPos += 0.4; RCTexPos += 0.4;};
 
-  if (p_custombuttonurl01 !== "false") {  console.log(`${p_custombutton01text} : ${p_custombuttonurl01}`);
-    await createCustomButton("CustomButton01", firebrowser, geometryObject, customButtonObjects, new BS.Vector3(RCButPos,0.30,0), p_custombutton01text, new BS.Vector3(RCTexPos,-0.188,-0.005), p_custombuttonurl01, () => {});};
-  if (p_custombuttonurl02 !== "false") { console.log(`${p_custombutton02text} : ${p_custombuttonurl02}`);
-    await createCustomButton("CustomButton02", firebrowser, geometryObject, customButtonObjects, new BS.Vector3(RCButPos,0.25,0), p_custombutton02text, new BS.Vector3(RCTexPos,-0.237,-0.005), p_custombuttonurl02, () => {});};
-  if (p_custombuttonurl03 !== "false") { console.log(`${p_custombutton03text} : ${p_custombuttonurl03}`);
-    await createCustomButton("CustomButton03", firebrowser, geometryObject, customButtonObjects, new BS.Vector3(RCButPos,0.20,0), p_custombutton03text, new BS.Vector3(RCTexPos,-0.287,-0.005), p_custombuttonurl03, () => {});};
-  if (p_custombuttonurl04 !== "false") { console.log(`${p_custombutton04text} : ${p_custombuttonurl04}`);
-    await createCustomButton("CustomButton04", firebrowser, geometryObject, customButtonObjects, new BS.Vector3(RCButPos,0.15,0), p_custombutton04text, new BS.Vector3(RCTexPos,-0.336,-0.005), p_custombuttonurl04, () => {});};
-  if (p_custombuttonurl05 !== "false") { console.log(`${p_custombutton05text} : ${p_custombuttonurl05}`);
-    await createCustomButton("CustomButton05", firebrowser, geometryObject, customButtonObjects, new BS.Vector3(RCButPos,-0.15,0), p_custombutton05text, new BS.Vector3(RCTexPos,-0.635,-0.005), p_custombuttonurl05, () => {});};
+  const customButtonConfigs = [
+    { name: 'CustomButton01', url: p_custombuttonurl01, text: p_custombutton01text, position: new BS.Vector3(RCButPos, 0.30, 0), textposition: new BS.Vector3(RCTexPos, -0.188, -0.005) },
+    { name: 'CustomButton02', url: p_custombuttonurl02, text: p_custombutton02text, position: new BS.Vector3(RCButPos, 0.25, 0), textposition: new BS.Vector3(RCTexPos, -0.237, -0.005) },
+    { name: 'CustomButton03', url: p_custombuttonurl03, text: p_custombutton03text, position: new BS.Vector3(RCButPos, 0.20, 0), textposition: new BS.Vector3(RCTexPos, -0.287, -0.005) },
+    { name: 'CustomButton04', url: p_custombuttonurl04, text: p_custombutton04text, position: new BS.Vector3(RCButPos, 0.15, 0), textposition: new BS.Vector3(RCTexPos, -0.336, -0.005) },
+    { name: 'CustomButton05', url: p_custombuttonurl05, text: p_custombutton05text, position: new BS.Vector3(RCButPos, -0.15, 0), textposition: new BS.Vector3(RCTexPos, -0.635, -0.005) }
+  ];
+
+  for (const config of customButtonConfigs) {
+    if (config.url !== "false") {
+      console.log(`${config.text} : ${config.url}`);
+      await createCustomButton(config, firebrowser, geometryObject, customButtonObjects, p_thisBrowserNumber);
+    }
+  }
   instanceObjects.gameObjects.push(...Object.values(uiButtons), ...customButtonObjects);
 
   if (p_castmode === "true") {
@@ -316,56 +444,80 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
 
   const firesbillBoard = await geometryObject.AddComponent(new BS.BanterBillboard(0, isbillboarded, isbillboarded, true));  // Bill Board the geometryObject
   geometrytransform.localScale = p_sca; // SET THE SCALE FOR THE SCREEN
-  firerigidBody.gameObject.On('grab', () => {console.log("GRABBED!"); if (p_lockposition !== "true") {console.log("Not locked!"); firerigidBody.isKinematic = false; }});  // When user Grabs the Browser, Make it moveable
-  firerigidBody.gameObject.On('drop', () => {console.log("DROPPED!"); firerigidBody.isKinematic = true; }); // When user Drops the Browser, Lock it in place
+  
+  // --- Event Listeners ---
+  const onGrab = () => {console.log("GRABBED!"); if (p_lockposition !== "true") {console.log("Not locked!"); firerigidBody.isKinematic = false; }};
+  const onDrop = () => {console.log("DROPPED!"); firerigidBody.isKinematic = true; };
+  firerigidBody.gameObject.On('grab', onGrab); // When user Grabs the Browser, Make it moveable
+  firerigidBody.gameObject.On('drop', onDrop); // When user Drops the Browser, Lock it in place
+  instanceObjects.listeners.push({ target: firerigidBody.gameObject, event: 'grab', handler: onGrab });
+  instanceObjects.listeners.push({ target: firerigidBody.gameObject, event: 'drop', handler: onDrop });
 
-  firescenev2.On("one-shot", async e => { console.log(e.detail);
+  const onOneShot = async e => { console.log(e.detail);
     const data = JSON.parse(e.detail.data); const isAdmin = e.detail.fromAdmin;
-    if (isAdmin || e.detail.fromId === "f67ed8a5ca07764685a64c7fef073ab9") {console.log(isAdmin ? "Current Shot is from Admin" : "Current Shot is from Target ID");
-      if (data.fireurl) firebrowser.url = data.fireurl;
-      if (data.firevolume) { const fireVolume = Number(parseFloat(data.firevolume).toFixed(2)); const firePercent = (fireVolume * 100).toFixed(0);
-        runBrowserActions(firebrowser, `document.querySelectorAll('video, audio').forEach(elem => elem.volume = ${fireVolume});
-          document.querySelector('.html5-video-player') ? document.querySelector('.html5-video-player').setVolume(${firePercent}) : null;`);};
-      if (data.browseraction) { runBrowserActions(firebrowser, data.browseraction); console.log(data.browseraction); };
-      if (data.spaceaction) { console.log(data.spaceaction); new Function(data.spaceaction)(); };
-      if (data.gohome) { console.log(data.gohome); firebrowser.url = firebrowser.homePage; dispatchButtonClickEvent("Home", `${firebrowser.homePage}`)};
-      if (data.sethome1) { console.log(data.sethome1);
-        let firebrowser1 = await BS.BanterScene.GetInstance().Find(`MyBrowser1`);
-        if (firebrowser1) {
-          let thebrowser1 = firebrowser1.GetComponent(BS.ComponentType.BanterBrowser);
-          thebrowser1.homePage = data.sethome1; thebrowser1.url = data.sethome1; dispatchButtonClickEvent("Home", `${firebrowser.homePage}`);
-        };
-      };
-      if (data.firevolumeup) { console.log(data.firevolumeup); adjustForAll("adjustVolume", 1); youtubePlayerControl(1); };
-      if (data.firevolumedown) { console.log(data.firevolumedown); adjustForAll("adjustVolume", -1); youtubePlayerControl(0); };
-      if (data.firemutetoggle) { console.log(data.firemutetoggle); adjustForAll("toggleMute"); youtubePlayerControl(null, "mute"); };
-    } else { console.log("Current Shot From Admin Is False");
-      console.log(e.detail.fromId);
+    const isAuthorized = isAdmin || e.detail.fromId === "f67ed8a5ca07764685a64c7fef073ab9";
+    if (!isAuthorized) {
+      console.log("FIRESCREEN2: One-shot received from unauthorized user:", e.detail.fromId);
+      return;
+    }
+    // If a target is specified and it's not this browser, ignore the command.
+    // This allows for both broadcast commands (no target) and specific commands.
+    if (data.target !== undefined && data.target != p_thisBrowserNumber) {
+      // console.log(`FIRESCREEN2: One-shot ignored. Target: ${data.target}, This Browser: ${p_thisBrowserNumber}`);
+      return; // This command is for a different browser, so this instance will ignore it.
+    }
+    console.log(isAdmin ? "Current Shot is from Admin" : "Current Shot is from Target ID");
+    const oneShotCommands = {
+      fireurl: (value) => setBrowserUrl(firebrowser, value),
+      firevolume: (value) => { // This command sets the volume directly, bypassing the +/- adjustment
+        const fireVolume = Number(parseFloat(value).toFixed(2)); firebrowser.volumeLevel = fireVolume;
+        const scriptToRun = `${mediaControlScript} window.fireScreenMediaControl({ volume: ${fireVolume} });`;
+        runBrowserActions(firebrowser, scriptToRun);
+      },
+      browseraction: (value) => { runBrowserActions(firebrowser, value); console.log(value); },
+      spaceaction: (value) => { console.log(value); new Function(value)(); },
+      gohome: (value) => { console.log(value); setBrowserUrl(firebrowser, firebrowser.homePage); dispatchButtonClickEvent("Home", `${firebrowser.homePage}`); },
+      sethome: (value) => { console.log(value); firebrowser.homePage = value; setBrowserUrl(firebrowser, value); dispatchButtonClickEvent("Home", `${firebrowser.homePage}`); },
+      firevolumeup: (value) => { console.log(value); adjustForAll("adjustVolume", 1); youtubePlayerControl(1); },
+      firevolumedown: (value) => { console.log(value); adjustForAll("adjustVolume", -1); youtubePlayerControl(0); },
+      firemutetoggle: (value) => { console.log(value); adjustForAll("toggleMute"); youtubePlayerControl(null, "mute"); },
     };
-  });
+    for (const command in oneShotCommands) {
+      if (data[command] !== undefined) { oneShotCommands[command](data[command]); }
+    }
+  };
+  firescenev2.On("one-shot", onOneShot);
+  instanceObjects.listeners.push({ target: firescenev2, event: 'one-shot', handler: onOneShot });
   
   async function initializeV2() { await waitForUserIdv2(); if (window.handControlsDisabled && p_handbuttons === "true" && window.firstrunhandcontrols) { playersuseridv2 = firescenev2.localUser.uid; window.handControlsDisabled = false; setupHandControlsV2(p_thisBrowserNumber, BS.LegacyAttachmentPosition.LEFT_HAND, instanceObjects); } }
 
   async function waitForUserIdv2() { while (!firescenev2.localUser || firescenev2.localUser.uid === undefined) { await new Promise(resolve => setTimeout(resolve, 200)); } }
   
   initializeV2();
-  firescenev2.On("user-joined", e => {
+  const onUserJoined = e => {
     if (e.detail.isLocal) { // Setup Hand Controls only on the first run if enabled
       if (p_handbuttons === "true" && window.firstrunhandcontrols) {
         window.firstrunhandcontrols = false; playersuseridv2 = e.detail.uid; instanceObjects.intervals = [];
         console.log("FIRESCREEN2: Enabling Hand Controls"); setupHandControlsV2(p_thisBrowserNumber, BS.LegacyAttachmentPosition.LEFT_HAND, instanceObjects); // setupHandControlsV2(1, BS.LegacyAttachmentPosition.RIGHT_HAND );
       };
-      console.log("FIRESCREEN2: user-joined");
-      console.log(e.detail);
+      // console.log("FIRESCREEN2: user-joined");
+      // console.log(e.detail);
+      console.log("FIRESCREEN2: user-joined", e.detail);
     };
-  });
+  };
+  firescenev2.On("user-joined", onUserJoined);
+  instanceObjects.listeners.push({ target: firescenev2, event: 'user-joined', handler: onUserJoined });
 
-  firescenev2.On("user-left", e => { if (e.detail.isLocal) { window.firstrunhandcontrols = true;
+  const onUserLeft = e => { if (e.detail.isLocal) { window.firstrunhandcontrols = true;
       console.log("FIRESCREEN2: Local User Left, Resetting firstrunhandcontrols variable"); };
-  });
+  };
+  firescenev2.On("user-left", onUserLeft);
+  instanceObjects.listeners.push({ target: firescenev2, event: 'user-left', handler: onUserLeft });
 
   const originalWarn = console.warn;
 
+  // This is a clever workaround for an SDK bug where 'user-joined' doesn't fire for the local user on world load.
+  // It listens for a specific warning that indicates the user is already present and then fires a custom event.
   console.warn = function (...args) {
       if (typeof args[0] === "string" && args[0].includes("got user-joined event for user that already joined")) {
           const user = args[1];
@@ -377,7 +529,7 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
       originalWarn.apply(console, args);
   };
 
-  firescenev2.addEventListener("user-already-joined", (e) => {
+  const onUserAlreadyJoined = (e) => {
       console.log("User already joined:", e.detail);
       if (p_handbuttons === "true" && e.detail.isLocal && window.notalreadyjoined) { window.notalreadyjoined = false; window.firstrunhandcontrols = false; playersuseridv2 = e.detail.uid;
         console.log("FIRESCREEN2: Local User-already-joined, Enabling Hand Controls");
@@ -385,7 +537,9 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
         setTimeout(async () => {  setupHandControlsV2(p_thisBrowserNumber, BS.LegacyAttachmentPosition.LEFT_HAND, instanceObjects); // setupHandControlsV2(1, BS.LegacyAttachmentPosition.RIGHT_HAND); 
           window.notalreadyjoined = true; }, 3000);
       };
-  });
+  };
+  firescenev2.addEventListener("user-already-joined", onUserAlreadyJoined);
+  instanceObjects.listeners.push({ target: firescenev2, event: 'user-already-joined', handler: onUserAlreadyJoined, useRemoveListener: true });
 
   function clickABut(uniqueAttribute, lastChild = false) {
     document.querySelector(uniqueAttribute)?.[lastChild ? 'lastChild' : 'firstChild']?.dispatchEvent(new Event("click"));
@@ -418,25 +572,37 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
     // plane20transform.eulerAngles = new BS.Vector3(5,-95,0);
     plane20transform.rotation = new BS.Vector4(0.25,0,0.8,1);
     setTimeout(async () => { await firescenev2.LegacyAttachObject(plane20Object, playersuseridv2, positionofcontrols); }, 1000);
-    // Hand Volume Up Button
-    const hvolUpButton = await createUIButton("hVolumeUpButton", p_iconvolupurl, new BS.Vector3(0.4,0.4,0.3), p_volupcolor, plane20Object, () => { adjustForAll("adjustVolume", 1); youtubePlayerControl(1); // clickABut('[position="0.693 0 0"]'); clickABut('[position="1.78 0 0"]', true); //vidya.sdq.st VolUp
-      updateButtonColor(hvolUpButton, p_volupcolor); }, new BS.Vector3(180,0,0),1,1, defaulTransparent, new BS.Vector3(0.4,0.4,0.4));
-    // Hand Volume Down Button
-    const hvolDownButton = await createUIButton("hVolumeDownButton", p_iconvoldownurl, new BS.Vector3(0.0,0.4,0.3), p_voldowncolor, plane20Object, () => { adjustForAll("adjustVolume", -1); youtubePlayerControl(0); // clickABut('[position="0.471 0 0"]'); clickABut('[position="1.25 0 0"]', true); //vidya.sdq.st VolDown
-      updateButtonColor(hvolDownButton, p_voldowncolor); }, new BS.Vector3(180,0,0),1,1, defaulTransparent, new BS.Vector3(0.4,0.4,0.4));
-    // Hand Mute Button
-    const hmuteButton = await createUIButton("hMuteButton", p_iconmuteurl, new BS.Vector3(-0.4,0.4,0.3), p_mutecolor, plane20Object, () => { adjustForAll("toggleMute"); youtubePlayerControl(null, "mute"); // clickABut('[position="0.23 0 0"]'); clickABut('[position="0.73 0 0"]', true); //vidya.sdq.st Mute
-      let muteMaterial = hmuteButton.GetComponent(BS.ComponentType.BanterMaterial);
-      muteMaterial.color = firebrowser.muteState ? p_mutecolor : new BS.Vector4(1, 0, 0, 1); }, new BS.Vector3(180,0,0),1,1,defaulTransparent, new BS.Vector3(0.4,0.4,0.4));
-    // Hand Lock Button
-    const hlockButton = await createUIButton("hLockButton", 'https://firer.at/files/lock.png', new BS.Vector3(0,-0.1,0.3), new BS.Vector4(1, 1, 1, 0.7), plane20Object, () => {
-      playerislockedv2 = !playerislockedv2; playerislockedv2 ? firescenev2.LegacyLockPlayer() : firescenev2.LegacyUnlockPlayer();
-      let plane24material = hlockButton.GetComponent(BS.ComponentType.BanterMaterial);
-      plane24material.color = playerislockedv2 ? new BS.Vector4(1,0,0,1) : new BS.Vector4(1, 1, 1, 0.7); }, new BS.Vector3(180,0,0),1,1, defaulTransparent, new BS.Vector3(0.4,0.4,0.4));
-    // Hand Home Button
-    const hhomeButton = await createUIButton("hHomeButton", "https://firer.at/files/Home.png", new BS.Vector3(0.4,-0.1,0.3), p_buttoncolor, plane20Object, () => { adjustForAll("goHome"); youtubePlayerControl(null, "openPlaylist"); // clickABut('[position="-0.633 0 0"]'); clickABut('[position="-1.7 0 0"]', true); //vidya.sdq.st Playlist
-      updateButtonColor(hhomeButton, p_buttoncolor); }, new BS.Vector3(180,0,0),1,1, defaulTransparent, new BS.Vector3(0.4,0.4,0.4));
-    instanceObjects.gameObjects.push(hvolUpButton, hvolDownButton, hmuteButton, hlockButton, hhomeButton);
+
+    const handButtons = {};
+    const handButtonConfigs = [
+      { name: 'hVolumeUpButton', icon: p_iconvolupurl, pos: new BS.Vector3(0.4, 0.4, 0.3), color: p_volupcolor, clickHandler: (btn) => { adjustForAll("adjustVolume", 1); youtubePlayerControl(1); updateButtonColor(btn, p_volupcolor); } },
+      { name: 'hVolumeDownButton', icon: p_iconvoldownurl, pos: new BS.Vector3(0.0, 0.4, 0.3), color: p_voldowncolor, clickHandler: (btn) => { adjustForAll("adjustVolume", -1); youtubePlayerControl(0); updateButtonColor(btn, p_voldowncolor); } },
+      { name: 'hMuteButton', icon: p_iconmuteurl, pos: new BS.Vector3(-0.4, 0.4, 0.3), color: p_mutecolor, clickHandler: (btn) => {
+          adjustForAll("toggleMute");
+          youtubePlayerControl(null, "mute");
+          const firstBrowser = window.fireScreenInstances[Object.keys(window.fireScreenInstances)[0]]?.browserComponent;
+          if (firstBrowser) {
+            const muteMaterial = btn.GetComponent(BS.ComponentType.BanterMaterial);
+            muteMaterial.color = firstBrowser.muteState ? new BS.Vector4(1, 0, 0, 1) : p_mutecolor;
+          }
+        }
+      },
+      { name: 'hLockButton', icon: 'https://firer.at/files/lock.png', pos: new BS.Vector3(0, -0.1, 0.3), color: new BS.Vector4(1, 1, 1, 0.7), clickHandler: (btn) => {
+          playerislockedv2 = !playerislockedv2;
+          playerislockedv2 ? firescenev2.LegacyLockPlayer() : firescenev2.LegacyUnlockPlayer();
+          const lockMaterial = btn.GetComponent(BS.ComponentType.BanterMaterial);
+          lockMaterial.color = playerislockedv2 ? new BS.Vector4(1, 0, 0, 1) : new BS.Vector4(1, 1, 1, 0.7);
+        }
+      },
+      { name: 'hHomeButton', icon: 'https://firer.at/files/Home.png', pos: new BS.Vector3(0.4, -0.1, 0.3), color: p_buttoncolor, clickHandler: (btn) => { adjustForAll("goHome"); youtubePlayerControl(null, "openPlaylist"); updateButtonColor(btn, p_buttoncolor); } }
+    ];
+
+    for (const config of handButtonConfigs) {
+      const button = await createUIButton(config.name, config.icon, config.pos, config.color, plane20Object, () => config.clickHandler(button), new BS.Vector3(180, 0, 0), 1, 1, defaulTransparent, new BS.Vector3(0.4, 0.4, 0.4));
+      handButtons[config.name] = button;
+    }
+
+    instanceObjects.gameObjects.push(...Object.values(handButtons));
     console.log("FIRESCREEN2: Hand Buttons Setup Complete");
   };
 
@@ -472,23 +638,18 @@ async function sdk2tests(p_pos, p_rot, p_sca, p_castmode, p_lockposition, p_scre
     }, 1000);
     setTimeout(() => { timenow = Date.now(); }, 1000);
   };
-  if (p_spacesync === 'true') {let syncedurl = await getSpaceStateStuff('fireurl'); firebrowser.url = syncedurl;
-    await createCustomButton("SpaceSyncButton", firebrowser, geometryObject, customButtonObjects, new BS.Vector3(RCButPos,0.35,0), "Synced Button", new BS.Vector3(RCTexPos,-0.139,-0.005), syncedurl, async () => {
-      firebrowser.url = await getSpaceStateStuff('fireurl');
-    });
+  if (p_spacesync === 'true') { const syncedurl = await getSpaceStateStuff('fireurl');
+    if (syncedurl) setBrowserUrl(firebrowser, syncedurl);
+    await createCustomButton({ name: "SpaceSyncButton", text: "Synced Button",
+      position: new BS.Vector3(RCButPos, 0.35, 0), textposition: new BS.Vector3(RCTexPos, -0.139, -0.005),
+      clickHandler: async () => { const newUrl = await getSpaceStateStuff('fireurl'); if (newUrl) setBrowserUrl(firebrowser, newUrl); }
+    }, firebrowser, geometryObject, customButtonObjects, p_thisBrowserNumber);
   };
-  setTimeout(async () => { adjustVolume(firebrowser, 0); // attempt to set default sound level for the page
-  }, 5000);
-  setTimeout(async () => { adjustVolume(firebrowser, 0); // attempt to set default sound level for the page a second time
-  }, 8000);
-
-  // Keep sound level set, runs every 5 seconds for this instance
-  const soundInterval = setInterval(() => {
-    const volume = firebrowser.volumeLevel;
-    const firePercent = (volume * 100).toFixed(0);
-    runBrowserActions(firebrowser, `document.querySelectorAll('video, audio').forEach(elem => elem.volume=${volume}); document.querySelector('.html5-video-player') ? document.querySelector('.html5-video-player').setVolume(${firePercent}) : null;`);
-  }, 5000);
-  instanceObjects.intervals.push(soundInterval);
+ 
+  // Trigger the volume sync once on initial load.
+  // Subsequent syncs are triggered by the setBrowserUrl helper function.
+  setTimeout(() => triggerVolumeSync(firebrowser), 3000);
+  instanceObjects.browserComponent = firebrowser;
   // Add the completed instance to the global registry
   window.fireScreenInstances[p_thisBrowserNumber] = instanceObjects;
 };
@@ -513,11 +674,27 @@ async function cleanupFireScreenV2(instanceId) {
 
   console.log(`FireScreenV2: Cleaning up instance ${instanceId}.`);
 
-  // 1. Clear all intervals
+  // 1. Clear all intervals, including the temporary volume sync one
   instance.intervals.forEach(intervalId => clearInterval(intervalId));
+  if (instance.browserComponent && instance.browserComponent.volumeSyncInterval) {
+    clearInterval(instance.browserComponent.volumeSyncInterval);
+    instance.browserComponent.volumeSyncInterval = null;
+  }
   console.log(`FireScreenV2: Cleared ${instance.intervals.length} intervals.`);
 
-  // 2. Destroy all tracked GameObjects
+  // 2. Remove all event listeners
+  instance.listeners.forEach(({ target, event, handler, useRemoveListener }) => {
+    if (target) {
+      try {
+        useRemoveListener ? target.removeEventListener(event, handler) : target.Off(event, handler);
+      } catch (e) {
+        console.warn(`FireScreenV2: Error removing listener for event '${event}':`, e);
+      }
+    }
+  });
+  console.log(`FireScreenV2: Removed ${instance.listeners.length} event listeners.`);
+
+  // 3. Destroy all tracked GameObjects
   for (const gameObject of instance.gameObjects) {
     if (gameObject && !gameObject.destroyed) {
       try {
@@ -529,17 +706,17 @@ async function cleanupFireScreenV2(instanceId) {
   }
   console.log(`FireScreenV2: Destroyed ${instance.gameObjects.length} GameObjects.`);
   
-  // 3. Remove the script tag from the DOM
+  // 4. Remove the script tag from the DOM
   if (instance.scriptElement && instance.scriptElement.parentElement) {
     instance.scriptElement.parentElement.removeChild(instance.scriptElement);
     console.log(`FireScreenV2: Removed script tag for instance ${instanceId}.`);
   }
 
-  // 4. Remove the instance from the registry
+  // 5. Remove the instance from the registry
   delete window.fireScreenInstances[instanceId];
   console.log(`FireScreenV2: Instance ${instanceId} removed from registry.`);
 
-  // 5. Optional: Check if any instances are left and perform global cleanup
+  // 6. Optional: Check if any instances are left and perform global cleanup
   if (Object.keys(window.fireScreenInstances).length === 0) {
     console.log("FireScreenV2: All instances cleaned up.");
     fireScreen2On = false;
@@ -550,52 +727,84 @@ window.cleanupFireScreenV2 = cleanupFireScreenV2;
 
 window.setupfirescreen2 = setupfirescreen2;
 
-async function adjustForAll(action, change) {
+function adjustForAll(action, change) {
   // Iterate over all registered FireScreen instances
   for (const instanceId in window.fireScreenInstances) {
-    const firebrowserthing = await BS.BanterScene.GetInstance().Find(`MyBrowser${instanceId}`);
-    if (firebrowserthing) {
-      const thebrowserpart = firebrowserthing.GetComponent(BS.ComponentType.BanterBrowser);
-      if (thebrowserpart) {
-        if (action === "adjustVolume") adjustVolume(thebrowserpart, change);
-        if (action === "goHome") { thebrowserpart.url = thebrowserpart.homePage; dispatchButtonClickEvent("Home", `${thebrowserpart.homePage}`); }
-        if (action === "goURL") thebrowserpart.url = change;
-        if (action === "toggleMute") {
+    const instance = window.fireScreenInstances[instanceId];
+    if (instance && instance.browserComponent) {
+      const thebrowserpart = instance.browserComponent;
+
+      switch (action) {
+        case "adjustVolume":
+          adjustVolume(thebrowserpart, change);
+          break;
+        case "goHome":
+          setBrowserUrl(thebrowserpart, thebrowserpart.homePage);
+          dispatchButtonClickEvent("Home", `${thebrowserpart.homePage}`);
+          break;
+        case "goURL":
+          setBrowserUrl(thebrowserpart, change);
+          break;
+        case "toggleMute":
           thebrowserpart.muteState = !thebrowserpart.muteState;
-          const muteState = thebrowserpart.muteState ? "mute" : "unMute";
-          runBrowserActions(thebrowserpart, `document.querySelectorAll('video, audio').forEach((elem) => elem.muted=${thebrowserpart.muteState}); typeof player !== 'undefined' && player.${muteState}(); document.querySelector('.html5-video-player').${muteState}();`);
-        }
-        if (action === "browserAction") { runBrowserActions(thebrowserpart, `${change}`); }
-        console.log(`adjustForAll: Action '${action}' applied to instance ${instanceId}`);
+          const scriptToRun = `${mediaControlScript} window.fireScreenMediaControl({ mute: ${thebrowserpart.muteState} });`;
+          runBrowserActions(thebrowserpart, scriptToRun);
+          break;
+        case "browserAction":
+          runBrowserActions(thebrowserpart, `${change}`);
+          break;
       }
+      console.log(`adjustForAll: Action '${action}' applied to instance ${instanceId}`);
     } else {
-      console.warn(`adjustForAll: Could not find browser instance ${instanceId}. It might have been cleaned up.`);
+      console.warn(`adjustForAll: Could not find browser instance ${instanceId}. It might have been cleaned up or not initialized correctly.`);
     }
   }
-};
+}
 
 async function getSpaceStateStuff(argument) {
-  return new Promise((resolve) => {
-    const thisintervalvar = setInterval(async () => {
-      if (firescenev2.localUser && firescenev2.localUser.uid !== undefined) { clearInterval(thisintervalvar);
-        const result = await spaceStateStuff(argument); resolve(result); }
-    }, 100);
-  });
-};
+  // Wait until the localUser is available before trying to access space state.
+  while (!firescenev2.localUser || firescenev2.localUser.uid === undefined) {
+    await new Promise(resolve => setTimeout(resolve, 200));
+  }
+  // Once the user is available, get the state property.
+  return spaceStateStuff(argument);
+}
 
 function spaceStateStuff(argument) {
-  let SpaceStateScene = BS.BanterScene.GetInstance().spaceState;
-  let ProtectedSpacestatethings = SpaceStateScene.protected;
-  let PublicSpacestatethings = SpaceStateScene.public;
-  for (const [key, value] of Object.entries(PublicSpacestatethings)) {
-    console.log(`Public Space State Key: ${key}, Value: ${value}`);
-    // if (key === argument) { console.log(`Return Public Space State Key ${key}`); return value; };
-  };
-  for (const [key, value] of Object.entries(ProtectedSpacestatethings)) {
-    console.log(`Protected Space State Key: ${key}, Value: ${value}`);
-    if (key === argument) { console.log(`Return Space State Key ${key}`); return value; };
-  }; 
-  console.log(`Return NULL State Key`);
+  const spaceState = BS.BanterScene.GetInstance().spaceState;
+
+  // Safely log all properties, but only do it once per session.
+  if (!window.fireScreenSpaceStateLogged) {
+    console.log("--- Logging All Space State Properties (once per session) ---");
+    if (spaceState.public) {
+      console.log("--- Public Space State ---");
+      // Using Object.entries as it's proven to be safe with the spaceState object
+      for (const [key, value] of Object.entries(spaceState.public)) {
+        console.log(`  ${key}:`, value);
+      }
+    }
+    if (spaceState.protected) {
+      console.log("--- Protected Space State ---");
+      for (const [key, value] of Object.entries(spaceState.protected)) {
+        console.log(`  ${key}:`, value);
+      }
+    }
+    window.fireScreenSpaceStateLogged = true;
+  }
+  // Find and return the requested value using the safe iteration method.
+  // Prioritize protected properties.
+  if (spaceState.protected) {
+    for (const [key, value] of Object.entries(spaceState.protected)) {
+      if (key === argument) return value;
+    }
+  }
+  // Fallback to public properties.
+  if (spaceState.public) {
+    for (const [key, value] of Object.entries(spaceState.public)) {
+      if (key === argument) return value;
+    }
+  }
+  console.log(`Could not find space state key: '${argument}', returning null.`);
   return null;
 };
 
@@ -631,32 +840,22 @@ function spaceStateStuff(argument) {
   // Initial call to start the process for this script instance.
   attemptSetup();
 })();
+
 // setProtectedSpaceProp('fireurl', "https://firer.at/");
 // await BS.BanterScene.GetInstance().OneShot(JSON.stringify({firevolume: "0.5"}));
-// await firescenev2.OneShot(JSON.stringify({fireurl: "https://firer.at/"}));
-
-// oneShot({fireurl: "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/1080/Big_Buck_Bunny_1080_10s_5MB.mp4"});
+// await BS.BanterScene.GetInstance().OneShot(JSON.stringify({fireurl: "https://firer.at/"}));
+// oneShot({fireurl: "https://firer.at/"});
 // oneShot({firevolume: "0.5"});
-// oneShot({firevolume: "0"});
-
 // oneShot({browseraction: "action"});
 // oneShot({browseraction: `window.bantermessage(window.alert('test'));`});
-
-// adjustForAll("browserAction", `window.bantermessage(window.alert('test'));`)
-
-// runBrowserActions((await BS.BanterScene.GetInstance().Find(`MyBrowser1`)).GetComponent(BS.ComponentType.BanterBrowser), `window.bantermessage(window.alert('test'))`)
 
 // (await BS.BanterScene.GetInstance().Find(`MyBrowser1`)).GetComponent(BS.ComponentType.BanterBrowser).RunActions(JSON.stringify({"actions": [{ "actionType": "runscript","strparam1": 
 //   `window.bantermessage(window.alert('test'))` 
 // }]}));
 
-// `window.scrollBy(0,1000);`  `window.scrollBy(0,-1000);`
-
 // scene.SetPublicSpaceProps({'testing': 'test'});
 // let thebrowserpart = (await BS.BanterScene.GetInstance().Find(`MyBrowser${1}`)).GetComponent(BS.ComponentType.BanterBrowser);
 // thebrowserpart.RunActions(JSON.stringify({"actions": [{ "actionType": "click2d","numParam1": 0.5, "numParam2": 0.5 }]}));
-// window.videoPlayerCore.sendMessage({path: Commands.CLEAR_PLAYLIST});
-// window.videoPlayerCore.sendMessage({path: Commands.REMOVE_PLAYLIST_ITEM, data: 0 });
 // v = {}; v.id = "ApXoWvfEYVU"; v.link = "https://www.youtube.com/watch?v=ApXoWvfEYVU"; v.title = "This is Not the Right Title for This Video"; v.thumbnail = "https://daily.jstor.org/wp-content/uploads/2015/08/Fire.jpg"; 
 // window.videoPlayerCore.sendMessage({path: Commands.ADD_TO_PLAYLIST, data: v });
 
@@ -665,3 +864,4 @@ function spaceStateStuff(argument) {
 // componenttest.WatchProperties([BS.PropertyName.url])
 // componenttest.url
 // cleanupFireScreenV2(1)
+// await BS.BanterScene.GetInstance().OneShot(JSON.stringify({ sethome: "https://google.com", target: 2 }));
