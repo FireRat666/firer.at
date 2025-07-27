@@ -303,15 +303,34 @@ export class FireScreenManager {
     const isAuthorized = isAdmin || this.authorizedUserIds.includes(e.detail.fromId);
     if (!isAuthorized) return;
 
-    if (data.target !== undefined) {
+    // --- Legacy Command Translation ---
+    // To maintain backward compatibility with older one-shot commands like 'firevolumeup'.
+    // The new system uses 'adjustVolume' and 'toggleMute' which are handled by broadcastCommand.
+    const commandData = { ...data }; // Start with a copy of the original data.
+
+    if (commandData.firevolumeup) {
+        commandData.adjustVolume = 1;
+        delete commandData.firevolumeup;
+    }
+    if (commandData.firevolumedown) {
+        commandData.adjustVolume = -1;
+        delete commandData.firevolumedown;
+    }
+    if (commandData.firemutetoggle) {
+        commandData.toggleMute = true;
+        delete commandData.firemutetoggle;
+    }
+    // --- End Legacy Command Translation ---
+
+    if (commandData.target !== undefined) {
       // Command is for a specific instance.
-      const instance = this.instances[data.target];
+      const instance = this.instances[commandData.target];
       if (instance) {
-        instance.handleCommand(data);
+        instance.handleCommand(commandData);
       }
     } else {
       // Command is for all instances. Broadcast it.
-      this.broadcastCommand(data);
+      this.broadcastCommand(commandData);
     }
   }
 

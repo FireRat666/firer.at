@@ -261,7 +261,7 @@ export class FireScreen {
                 text: "Synced Button",
                 position: new BS.Vector3(RCButPos, 0.35, 0),
                 textposition: new BS.Vector3(RCTexPos, -0.139, -0.005),
-                clickHandler: async () => { const newUrl = await this._getSpaceStateStuff('fireurl'); if (newUrl) this._setBrowserUrl(newUrl); }
+                clickHandler: async () => { var newSyncUrl = await this._getSpaceStateStuff('fireurl'); if (newSyncUrl) this._setBrowserUrl(newSyncUrl); }
             });
         }
     }
@@ -521,17 +521,15 @@ export class FireScreen {
             this.manager.spaceStateLogged = true;
         }
 
-        // Find and return the requested value using the safe iteration method.
-        // Prioritize protected properties.
-        if (spaceState && spaceState.protected) {
-            for (const [key, value] of Object.entries(spaceState.protected)) {
-                if (key === argument) return value;
-            }
-        }
-        // Fallback to public properties.
-        if (spaceState && spaceState.public) {
-            for (const [key, value] of Object.entries(spaceState.public)) {
-                if (key === argument) return value;
+        // Find and return the requested value. Prioritize protected properties.
+        if (spaceState) {
+            const storesToSearch = [spaceState.protected, spaceState.public];
+            for (const store of storesToSearch) {
+                if (store) {
+                    for (const [key, value] of Object.entries(store)) {
+                        if (key === argument) return value;
+                    }
+                }
             }
         }
 
