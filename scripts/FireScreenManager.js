@@ -166,7 +166,9 @@ export class FireScreenManager {
     console.log(`FIRESCREEN_MANAGER: Local user detected (ID: ${uid}). Setting up hand controls.`);
     this.firstRunHandControls = false;
     this.playersUserId = uid;
-    this._setupHandControlsForAllInstances(this.playersUserId);
+
+    // Delay the entire hand control setup to prevent race conditions on Quest.
+    setTimeout(() => this._setupHandControlsForAllInstances(this.playersUserId), 5000);
   }
 
   _getNextId() {
