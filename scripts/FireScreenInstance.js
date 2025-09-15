@@ -168,7 +168,7 @@ export class FireScreen {
                 this._runBrowserActions(scriptToRun);
             },
             browseraction: (value) => this._runBrowserActions(value),
-            gohome: () => this._setBrowserUrl(this.browserComponent.homePage),
+            goHome: () => this._setBrowserUrl(this.browserComponent.homePage),
             sethome: (value) => {
                 this.browserComponent.homePage = value;
                 this._setBrowserUrl(value);
