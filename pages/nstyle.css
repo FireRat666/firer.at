@@ -1,17 +1,27 @@
 :root {
+  --primary-green: #00ff00; /* A slightly softer, yet vibrant green */
+  --secondary-accent: #82b1ff; /* A light blue for subtle contrast */
+  --text-light: #e0e0e0; /* Off-white for general text */
+  --text-dark: #ffffff; /* Pure white for headings/important text */
+  --background-dark: #0a0a0a; /* Very dark background */
+  --card-bg-alpha: rgba(0, 0, 0, 0.08); /* Slightly lighter card background */
+  --border-subtle: #2c2c2c; /* Subtle border color */
+  --shadow-subtle: rgba(0, 0, 0, 0.4); /* For general shadows */
+  --shadow-accent: rgba(0, 230, 118, 0.5); /* Greenish shadow for highlights */
+
   --background-image: url("https://firer.at/files/FireRat-Transparentv3.webp");
   color-scheme: dark;
 }
 
 /* Base styles */
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  font-size: 1.2rem;
-  line-height: 1.6;
-  color: #FFFFFF;
+  font-family: 'Inter', 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; /* Added Inter/Roboto, assuming they are loaded or will be */
+  font-size: 1.15rem; /* Slightly smaller base font for better balance */
+  line-height: 1.7; /* Increased line height for readability */
+  color: var(--text-light);
   margin: 0;
   padding: 2rem 0;
-  background-color: #000000;
+  background-color: var(--background-dark);
   position: relative;
   text-align: center;
 }
@@ -23,7 +33,7 @@ body::before {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), var(--background-image);
+  background-image: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), var(--background-image); /* Increased overlay opacity */
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
@@ -32,25 +42,29 @@ body::before {
 }
 
 .container {
-  max-width: 1440px;
+  max-width: 1200px; /* Slightly reduced max-width for better readability on large screens */
   margin: 0 auto;
-  padding: 2rem;
-  background-color: rgba(0, 0, 0, 0.6);
-  border-radius: 15px;
-  border: 1px solid #333;
-  box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+  padding: 2.5rem; /* Increased padding */
+  background-color: var(--card-bg-alpha);
+  border-radius: 12px; /* Slightly smaller border-radius */
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 8px 25px var(--shadow-subtle), 0 0 15px var(--shadow-accent); /* More refined shadow */
 }
 
 header h1 {
-  font-size: 3rem;
-  margin-bottom: 0.5rem;
-  color: #00FF00;
+  font-size: 3.2rem; /* Slightly larger heading */
+  margin-bottom: 0.7rem;
+  color: var(--text-dark); /* Use pure white for main heading */
+  letter-spacing: -0.03em; /* Subtle letter spacing adjustment */
 }
 
 header p {
-  font-size: 1.5rem;
-  color: #CCCCCC;
+  font-size: 1.3rem; /* Slightly smaller header paragraph */
+  color: var(--text-light);
   margin-top: 0;
+  max-width: 800px; /* Constrain width for better readability */
+  margin-left: auto;
+  margin-right: auto;
 }
 
 nav {
@@ -59,59 +73,60 @@ nav {
 
 main section {
   margin-bottom: 3rem;
-  /* Keep this for other sections if needed, but we'll override for #about */
 }
 
 #about {
-  text-align: center; /* Ensure the about section itself is centered */
+  text-align: center;
 }
 
 #about p {
-  text-align: center; /* Explicitly center the paragraph within the about section */
+  text-align: center;
 }
 
 main h2 {
-  font-size: 2rem;
-  color: #00FF00;
+  font-size: 2.2rem; /* Slightly larger main section headings */
+  color: var(--primary-green);
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem; /* Increased margin-bottom */
+  padding-top: 1rem; /* Add some padding to separate from previous section */
 }
 
 /* Button styles */
 a.buttonss {
-  padding: 10px 20px;
-  border: 2px solid #989898;
-  border-radius: 8px;
-  background-color: rgba(0, 0, 0, 0.6);
+  padding: 12px 25px; /* Increased padding */
+  border: 1px solid var(--border-subtle); /* Use subtle border */
+  border-radius: 6px; /* Slightly smaller border-radius for buttons */
+  background-color: rgba(255, 255, 255, 0.05); /* Softer default background */
   text-decoration: none;
-  margin: 5px;
+  margin: 8px; /* Increased margin */
   display: inline-block;
   transition: all 0.3s ease;
-  font-weight: bold;
+  font-weight: 600; /* Slightly bolder font weight */
+  letter-spacing: 0.02em; /* Subtle letter spacing */
 }
 
 .buttonss:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  transform: translateY(-3px); /* Slightly more pronounced lift */
+  box-shadow: 0 6px 18px var(--shadow-subtle); /* Refined hover shadow */
 }
 
 .buttonss:active {
-  transform: translateY(1px);
+  transform: translateY(0px); /* Reset on active */
   box-shadow: none;
 }
 
-/* Button Colours */
-a.buttonG { color: #00FF00; }
-a.buttonY { color: #FFFF00; }
-a.buttonGY { color: #AAFF00; }
-a.buttonR { color: #FF0000; }
-a.buttonW { color: #FFFFFF; }
+/* Button Colours - update to use variables and be more consistent */
+a.buttonG { color: var(--primary-green); border-color: var(--primary-green); }
+a.buttonY { color: #FFD700; border-color: #FFD700; } /* Gold for yellow, more professional */
+a.buttonGY { color: #9CCC65; border-color: #9CCC65; } /* Softer green-yellow */
+a.buttonR { color: #EF5350; border-color: #EF5350; } /* Softer red */
+a.buttonW { color: var(--text-dark); border-color: var(--text-light); }
 
-a.buttonG:hover { border-color: #00FF00; background-color: rgba(0, 255, 0, 0.1); }
-a.buttonY:hover { border-color: #FFFF00; background-color: rgba(255, 255, 0, 0.1); }
-a.buttonGY:hover { border-color: #AAFF00; background-color: rgba(170, 255, 0, 0.1); }
-a.buttonR:hover { border-color: #FF0000; background-color: rgba(255, 0, 0, 0.1); }
-a.buttonW:hover { border-color: #FFFFFF; background-color: rgba(255, 255, 255, 0.1); }
+a.buttonG:hover { background-color: rgba(0, 230, 118, 0.15); }
+a.buttonY:hover { background-color: rgba(255, 215, 0, 0.15); }
+a.buttonGY:hover { background-color: rgba(156, 204, 101, 0.15); }
+a.buttonR:hover { background-color: rgba(239, 83, 80, 0.15); }
+a.buttonW:hover { background-color: rgba(255, 255, 255, 0.1); }
 
 /* Project and Blog Cards */
 #projects {
@@ -121,21 +136,28 @@ a.buttonW:hover { border-color: #FFFFFF; background-color: rgba(255, 255, 255, 0
 }
 
 .project-card, .blog-post {
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid #444;
+    background-color: var(--card-bg-alpha);
+    border: 1px solid var(--border-subtle);
     border-radius: 10px;
-    padding: 1.5rem;
+    padding: 1.8rem; /* Increased padding */
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .project-card:hover, .blog-post:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-7px); /* Slightly more pronounced lift */
+    box-shadow: 0 12px 25px var(--shadow-subtle), 0 0 10px var(--primary-green); /* Refined hover shadow */
 }
 
 .project-card h3, .blog-post h3 {
     margin-top: 0;
-    color: #00FF00;
+    color: var(--primary-green);
+    font-size: 1.6rem; /* Slightly larger project titles */
+}
+
+.project-card p, .blog-post p {
+    font-size: 1rem; /* Slightly smaller project description */
+    line-height: 1.6;
+    color: var(--text-light);
 }
 
 #connect {
@@ -143,11 +165,11 @@ a.buttonW:hover { border-color: #FFFFFF; background-color: rgba(255, 255, 255, 0
 }
 
 footer {
-  margin-top: 3rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid #333;
-  color: #888;
-  font-size: 0.9rem;
+  margin-top: 4rem; /* Increased margin */
+  padding-top: 2rem; /* Increased padding */
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-light);
+  font-size: 0.95rem; /* Slightly larger footer font */
 }
 
 /* Media Queries */
@@ -157,32 +179,42 @@ footer {
     padding: 1rem 0;
   }
   .container {
-    padding: 1.5rem;
+    padding: 2rem; /* Adjusted padding */
     margin: 1rem;
   }
   header h1 {
-    font-size: 2.5rem;
+    font-size: 2.8rem;
   }
   header p {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
   nav {
-    display: flex;
-    flex-direction: column;
+    flex-direction: row; /* Keep buttons in a row if space allows */
+    flex-wrap: wrap; /* Allow wrapping */
+    justify-content: center;
   }
   a.buttonss {
-    margin-bottom: 10px;
+    margin: 5px; /* Adjust margin for smaller screens */
   }
 }
 
 @media (max-width: 600px) {
     header h1 {
-        font-size: 2rem;
+        font-size: 2.2rem;
     }
     header p {
-        font-size: 1rem;
+        font-size: 0.95rem;
     }
     main h2 {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
+    }
+    .container {
+      padding: 1.5rem;
+    }
+    nav {
+      flex-direction: column; /* Stack buttons vertically on very small screens */
+    }
+    a.buttonss {
+      margin-bottom: 10px;
     }
 }
