@@ -172,46 +172,55 @@ footer {
   font-size: 0.95rem; /* Slightly larger footer font */
 }
 
-/* Media Queries */
+/* Media Queries for general smaller screens (e.g., tablets, resized desktop) */
 @media (max-width: 900px) {
-  body {
-    font-size: 1.1rem; /* Increased font size for better mobile readability */
-    padding: 1rem 0;
-  }
   .container {
     padding: 2rem;
     margin: 1rem;
   }
-  header h1 {
-    font-size: 3rem; /* Increased font size */
-  }
-  header p {
-    font-size: 1.2rem; /* Increased font size */
-  }
-  nav {
-    flex-direction: column; /* Stack buttons vertically on mobile */
-    align-items: center; /* Center stacked buttons */
-  }
-  a.buttonss {
-    margin: 8px 0; /* Adjust margin for vertical stacking */
-  }
 }
 
 @media (max-width: 600px) {
-    header h1 {
-        font-size: 2.5rem; /* Increased font size */
-    }
-    header p {
-        font-size: 1.1rem; /* Increased font size */
-    }
-    main h2 {
-        font-size: 2rem; /* Increased font size */
-    }
     .container {
       padding: 1.5rem;
     }
-    /* nav already handled by 900px breakpoint to stack */
-    a.buttonss {
-      margin-bottom: 10px;
-    }
+}
+
+/* Media Query for touch-based devices (phones, some tablets) */
+@media (hover: none) and (pointer: coarse) {
+  body {
+    font-size: 1.15rem; /* Ensure good base font size for touch */
+    padding: 1rem 0;
+  }
+  .container {
+    padding: 1.5rem; /* More compact on touch devices */
+    margin: 0.5rem;
+  }
+  header h1 {
+    font-size: 2.8rem; /* Larger for touch */
+  }
+  header p {
+    font-size: 1.2rem; /* Larger for touch */
+  }
+  nav {
+    flex-direction: column; /* Always stack buttons on touch */
+    align-items: center;
+  }
+  a.buttonss {
+    margin: 10px 0; /* Generous vertical margin for touch targets */
+    padding: 15px 30px; /* Larger touch targets */
+    font-size: 1.1rem; /* Ensure button text is readable */
+  }
+  main h2 {
+    font-size: 2rem; /* Larger for touch */
+  }
+  .project-card, .blog-post {
+    padding: 1.5rem; /* Adjust card padding for touch */
+  }
+  .project-card h3, .blog-post h3 {
+    font-size: 1.5rem; /* Adjust project title size for touch */
+  }
+  .project-card p, .blog-post p {
+    font-size: 1.05rem; /* Adjust project description size for touch */
+  }
 }
