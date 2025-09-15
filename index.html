@@ -1,4 +1,4 @@
-<html lang="en" android-bundle="https://firer.at/android.banter" windows-bundle="https://firer.at/windows.banter">
+<html lang="en">
 	<head>
 		<meta charset="UTF-8" />
 		<link id="favicon" rel="icon" href="https://firer.at/files/favicon.ico" type="image/x-icon" />
@@ -6,36 +6,8 @@
 		<meta property="og:title" content="A Github Test Space">
 		<meta property="og:description" content="FireR.at's Website/Space">
 		<meta property="og:image" content="https://cdn.sidequestvr.com/file/636703/flower-tile-seamless-pattern.png">  
-		<script src="https://aframe.io/releases/1.4.0/aframe.min.js" sq-space="https://sidequestvr.com/space/2471"></script>
 		<title>FireR.at's Website/Space</title>
-    <script>
-      const scene = BS.BanterScene.GetInstance();
-      scene.On("unity-loaded", ()=>{
-        console.log("index.html setSceneSettings Loading...");
-        // SetSettings - Set settings for the current space like spawn position, portals, guest access etc.
-        const settings = new BS.SceneSettings();
-        settings.EnableTeleport = true;
-        settings.EnableForceGrab = false;
-        settings.EnableSpiderMan = true;
-        settings.EnablePortals = true;
-        settings.EnableGuests = true;
-        settings.EnableQuaternionPose = false;
-        settings.EnableControllerExtras = false;
-        settings.EnableFriendPositionJoin = false;
-        settings.EnableDefaultTextures = true;
-        settings.EnableAvatars = true;
-        settings.MaxOccupancy = 30;
-        settings.RefreshRate = 72;
-        settings.ClippingPlane = new BS.Vector2(0.02, 1500);
-        settings.SpawnPoint = new BS.Vector4(0, 0.05, 0, 90);
-        scene.SetSettings(settings);
-        console.log("index.html finish setting settings for scene");
-        setTimeout(() => { scene.SetSettings(settings); }, 2000);
-      });
-    </script>
-		<!-- <script src="https://vidya.sdq.st/say-names.js" four-twenty="false" announce-events="true"></script> -->
-		<script src="/scripts/tests.js"></script>
-		<link rel="stylesheet" href="/pages/style.css" />
+		<link rel="stylesheet" href="/pages/nstyle.css" />
 		<script src="/scripts/RandomBG.js"></script>
 		<!-- Analytics and Cookie Stuff Start -->
 		<!-- <script src="https://cookiechimp.com/widget/mV3trJ.js"></script> -->
@@ -55,79 +27,57 @@
 		  gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
 		<!-- Analytics and Cookie Stuff END -->
 </head>
-<body class="fixed bodyc">
-	   <div style="display: none;"><a-scene id="ascene">
-
-      <!-- Screen for Movies/Screencast -->
-      <script src="https://firer.at/scripts/firescreen.js" mipmaps="1" pixelsperunit="1200" castmode="true" backdrop="false" 
-              website="https://firer.at/"
-              position="5 1.5 0" rotation="0 -90 0" scale="1 1 1" volumelevel="0.1" backdrop-color="#000000"
-              button-color="#00FF00" button-position="0 0 0" disable-interaction="false" announce="true"
-              volup-color="#00FF00" voldown-color="#FFFF00" mute-color="#FFFFFF" hand-controls="true" width="1024" height="576"
-              custom-button01-url="false" custom-button01-text="Example Text"
-              custom-button02-url="false" custom-button02-text="Some website!"
-              custom-button03-url="false" custom-button03-text="Another website"></script>
-
-      <!-- Main Fire Browser, grabbable/moveable -->
-      <script src="https://firer.at/scripts/firescreen.js" mipmaps="1" pixelsperunit="1200" castmode="false" backdrop="true" 
-              website="https://firer.at/"
-              position="0 1.5 6" rotation="0 180 0" scale="2 2 1" volumelevel="0.2" backdrop-color="#000000"  
-              button-color="#FF0000" button-position="0 0 0" disable-interaction="false"
-              volup-color="#00FF00" voldown-color="#FFFF00" mute-color="#FFFFFF" hand-controls="true" width="1024" height="576"
-              icon-mute-url="https://firer.at/files/VolumeMute.png" 
-              icon-volup-url="https://firer.at/files/VolumeHigh.png"
-              icon-voldown-url="https://firer.at/files/VolumeLow.png"
-              icon-direction-url="https://firer.at/files/Arrow.png"
-              custom-button01-url="https://firer.at" custom-button01-text="Example Text"
-              custom-button02-url="https://docs.invidious.io/instances/" custom-button02-text="Invidious Instances"
-              custom-button03-url="false" custom-button03-text="Another website"></script>
-        
-      <!-- Main Fire Browser, grabbable/moveable -->
-      <script src="https://firer.at/scripts/firescreen.js" mipmaps="1" pixelsperunit="1200" castmode="false" backdrop="true"
-              website="https://firer.at/"
-              position="0 1.5 -6" rotation="0 0 0" scale="1 1 1" volumelevel="0.25" backdrop-color="#000000"
-              button-color="#FFFF00" button-position="0 0.2 0.1" disable-interaction="false"
-              volup-color="#00FF00" voldown-color="#00FFFF" mute-color="#FFFF00" hand-controls="true" width="1024" height="576"
-              icon-mute-url="https://51.firer.at/files/lake-icons/MuteGrey.png" 
-              icon-volup-url="https://51.firer.at/files/lake-icons/VolUpGrey.png"
-              icon-voldown-url="https://51.firer.at/files/lake-icons/VolDownGrey.png"
-              icon-direction-url="https://51.firer.at/files/lake-icons/BackGrey.png"
-              custom-button01-url="false" custom-button01-text="Example Text"
-              custom-button02-url="false" custom-button02-text="Some website!"
-              custom-button03-url="false" custom-button03-text="Another website"></script>
-
-  <!--     Test Buttons stuff -->
-  <a-entity id="somebuttons" position="1.7 1.5 6" rotation="0 -180 0" scale="0.2 0.2 0.2" >
-    <!-- Test Button -->
-    <a-plane position="0 3 0" opacity="1.0" width="2" height="0.6"
-    disable-fscreen color="#333333" sq-collider sq-interactable >
-    <a-text value="disable F screen" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
-    <!-- Test Button -->
-    <a-plane position="0 2 0" opacity="1.0" width="2" height="0.6"
-    enable-fscreen	color="#333333" sq-collider sq-interactable >
-    <a-text value="enable F screen" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
-    <!-- Test Button -->
-    <a-plane position="0 1 0" opacity="1.0" width="2" height="0.6"
-    disable-screen color="#333333" sq-collider sq-interactable >
-    <a-text value="disable ss screen" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
-    <!-- Test Button -->
-    <a-plane position="0 0 0" opacity="1.0" width="2" height="0.6"
-    enable-screen	color="#333333" sq-collider sq-interactable >
-    <a-text value="enable ss screen" position="0 0 0.01" align="center" scale="1 1 1" color="#FFFFFF"></a-text></a-plane>
-  </a-entity>
-
-  <a-entity sq-mirror position="-5 1 0" rotation="0 90 0" scale="3 3 1"></a-entity>
-
-    </a-scene></div>
-<center><br/>
-	<a href="https://firer.at/pages/games.html" class="buttonG buttonss">Go Home</a>
-	<p>Or Enter a URL here:<br/>
-  <form id="form" method="get">
-  <input type="url" id="text" value="https://" class="url-form url-thing" size="40" placeholder="https://bantervr.com" onchange="document.getElementById('form').action = this.value;" />
-  <input type="button" id="btn" value="Go" class="url-thing" 
-         onclick="window.open(document.getElementById('text').value);" />
-  </form>
-	</p>
-</center>
+<body>
+    <div class="container">
+      <header>
+        <h1>Welcome to FireR.at</h1>
+        <p>Your portal to the metaverse and beyond.</p>
+      </header>
+      <nav>
+        <a href="https://firer.at/pages/games.html" class="buttonG buttonss">Games</a>
+        <a href="https://github.com/FireRat666" class="buttonW buttonss" target="_blank">GitHub</a>
+        <a href="https://ko-fi.com/FireRat666" class="buttonGY buttonss" target="_blank">Ko-fi</a>
+        <a href="https://paypal.me/FireRat666" class="buttonY buttonss" target="_blank">PayPal</a>
+      </nav>
+      <main>
+        <section id="about">
+          <h2>About Me</h2>
+          <p>I'm a programmer at heart, with a strong interest in the ever-evolving world of VR.<br/>I'm on a path to becoming a creator of immersive experiences, focusing on building practical tools and utilities.<br/>You can see some of my work below.</p>
+        </section>
+        <section id="projects">
+          <h2>My Projects</h2>
+          <div class="project-card">
+            <h3>shorter</h3>
+            <p>A powerful, self-hostable link shortener and text sharing service with multi-domain support. Features: URL & text sharing, custom keys, password-protected links, and more.</p>
+            <a href="https://github.com/FireRat666/shorter" class="buttonss buttonG" target="_blank">Learn More</a>
+          </div>
+          <div class="project-card">
+            <h3>Ready Player Me ID Extractor</h3>
+            <p>A simple tool to extract your Avatar ID and User ID from Ready Player Me via their IFrame API.</p>
+            <a href="https://firer.at/pages/rpm-id/index.html" class="buttonss buttonG" target="_blank">Learn More</a>
+          </div>
+          <div class="project-card">
+            <h3>Fire-V-Player</h3>
+            <p>A collaborative, embeddable YouTube video player designed for virtual worlds inside Banter VR. It allows users to create shared playlists, vote on songs, and watch together in a synchronized real-time environment.</p>
+            <a href="https://github.com/FireRat666/Fire-V-Player/" class="buttonss buttonG" target="_blank">Learn More</a>
+          </div>
+          <div class="project-card">
+            <h3>Banter Remote Console Logger</h3>
+            <p>A robust, real-time logging solution for Banter VR spaces. It uses a WebSocket server to capture console.log messages from a Banter space and forward them to a server's system logs, making debugging on devices like the Quest much easier.</p>
+            <a href="https://github.com/FireRat666/Quest-Console-Logger" class="buttonss buttonG" target="_blank">Learn More</a>
+          </div>
+        </section>
+        <section id="connect">
+          <h2>Connect With Me</h2>
+          <p>I'm always open to new ideas, collaborations, or just a friendly chat. Feel free to reach out!</p>
+          <a href="https://github.com/FireRat666" class="buttonW buttonss" target="_blank">GitHub</a>
+          <a href="https://t.me/FireRat666" class="buttonGY buttonss" target="_blank">Telegram</a>
+          <a href="mailto:hello@firer.at" class="buttonR buttonss">Email Me</a>
+        </section>
+      </main>
+      <footer>
+        <p>&copy; 2025 FireR.at. All Rights Reserved.</p>
+      </footer>
+    </div>
   </body>
 </html>

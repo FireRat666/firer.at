@@ -1,0 +1,188 @@
+:root {
+  --background-image: url("https://firer.at/files/FireRat-Transparentv3.webp");
+  color-scheme: dark;
+}
+
+/* Base styles */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #FFFFFF;
+  margin: 0;
+  padding: 2rem 0;
+  background-color: #000000;
+  position: relative;
+  text-align: center;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), var(--background-image);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 15px;
+  border: 1px solid #333;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+}
+
+header h1 {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  color: #00FF00;
+}
+
+header p {
+  font-size: 1.5rem;
+  color: #CCCCCC;
+  margin-top: 0;
+}
+
+nav {
+  margin: 2rem 0;
+}
+
+main section {
+  margin-bottom: 3rem;
+  /* Keep this for other sections if needed, but we'll override for #about */
+}
+
+#about {
+  text-align: center; /* Ensure the about section itself is centered */
+}
+
+#about p {
+  text-align: center; /* Explicitly center the paragraph within the about section */
+}
+
+main h2 {
+  font-size: 2rem;
+  color: #00FF00;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Button styles */
+a.buttonss {
+  padding: 10px 20px;
+  border: 2px solid #989898;
+  border-radius: 8px;
+  background-color: rgba(0, 0, 0, 0.6);
+  text-decoration: none;
+  margin: 5px;
+  display: inline-block;
+  transition: all 0.3s ease;
+  font-weight: bold;
+}
+
+.buttonss:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.buttonss:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* Button Colours */
+a.buttonG { color: #00FF00; }
+a.buttonY { color: #FFFF00; }
+a.buttonGY { color: #AAFF00; }
+a.buttonR { color: #FF0000; }
+a.buttonW { color: #FFFFFF; }
+
+a.buttonG:hover { border-color: #00FF00; background-color: rgba(0, 255, 0, 0.1); }
+a.buttonY:hover { border-color: #FFFF00; background-color: rgba(255, 255, 0, 0.1); }
+a.buttonGY:hover { border-color: #AAFF00; background-color: rgba(170, 255, 0, 0.1); }
+a.buttonR:hover { border-color: #FF0000; background-color: rgba(255, 0, 0, 0.1); }
+a.buttonW:hover { border-color: #FFFFFF; background-color: rgba(255, 255, 255, 0.1); }
+
+/* Project and Blog Cards */
+#projects {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.project-card, .blog-post {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid #444;
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-card:hover, .blog-post:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.project-card h3, .blog-post h3 {
+    margin-top: 0;
+    color: #00FF00;
+}
+
+#connect {
+  text-align: center;
+}
+
+footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #333;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+/* Media Queries */
+@media (max-width: 900px) {
+  body {
+    font-size: 1rem;
+    padding: 1rem 0;
+  }
+  .container {
+    padding: 1.5rem;
+    margin: 1rem;
+  }
+  header h1 {
+    font-size: 2.5rem;
+  }
+  header p {
+    font-size: 1.2rem;
+  }
+  nav {
+    display: flex;
+    flex-direction: column;
+  }
+  a.buttonss {
+    margin-bottom: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+    header h1 {
+        font-size: 2rem;
+    }
+    header p {
+        font-size: 1rem;
+    }
+    main h2 {
+        font-size: 1.5rem;
+    }
+}
