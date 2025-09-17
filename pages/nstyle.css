@@ -123,7 +123,7 @@ a.buttonY { color: #FFD700; border-color: #FFD700; } /* Gold for yellow, more pr
 a.buttonGY { color: #9CCC65; border-color: #9CCC65; } /* Softer green-yellow */
 a.buttonR { color: #EF5350; border-color: #EF5350; } /* Softer red */
 a.buttonW { color: var(--text-dark); border-color: var(--text-light); }
-a.buttonMain { border-color: var(--primary-yellow); color: var(--primary-green); }
+a.buttonMain { border-color: var(--primary-yellow); color: var(--primary-yellow); }
 a.buttonActive { background-color: var(--secondary-yellow); }
 
 a.buttonG:hover { background-color: rgba(0, 230, 118, 0.15); }
