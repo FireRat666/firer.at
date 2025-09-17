@@ -1,5 +1,7 @@
 :root {
   --primary-green: #00ff00; /* A slightly softer, yet vibrant green */
+  --primary-yellow: #ffff00; /* A slightly softer, yet vibrant yellow */
+  --secondary-yellow: #ffff001c; /* A transparent yellow */
   --secondary-accent: #82b1ff; /* A light blue for subtle contrast */
   --text-light: #e0e0e0; /* Off-white for general text */
   --text-dark: #ffffff; /* Pure white for headings/important text */
@@ -121,12 +123,15 @@ a.buttonY { color: #FFD700; border-color: #FFD700; } /* Gold for yellow, more pr
 a.buttonGY { color: #9CCC65; border-color: #9CCC65; } /* Softer green-yellow */
 a.buttonR { color: #EF5350; border-color: #EF5350; } /* Softer red */
 a.buttonW { color: var(--text-dark); border-color: var(--text-light); }
+a.buttonMain { border-color: var(--primary-yellow); color: var(--primary-green); }
+a.buttonActive { background-color: var(--secondary-yellow); }
 
 a.buttonG:hover { background-color: rgba(0, 230, 118, 0.15); }
 a.buttonY:hover { background-color: rgba(255, 215, 0, 0.15); }
 a.buttonGY:hover { background-color: rgba(156, 204, 101, 0.15); }
 a.buttonR:hover { background-color: rgba(239, 83, 80, 0.15); }
 a.buttonW:hover { background-color: rgba(255, 255, 255, 0.1); }
+a.buttonMain:hover { background-color: var(--secondary-yellow); }
 
 /* Project and Blog Cards */
 #projects {
