@@ -54,14 +54,14 @@ body::before {
 }
 
 header h1 {
-  font-size: 3.2rem; /* Slightly larger heading */
+  font-size: 2rem; /* Slightly larger heading */
   margin-bottom: 0.7rem;
   color: var(--text-dark); /* Use pure white for main heading */
   letter-spacing: -0.03em; /* Subtle letter spacing adjustment */
 }
 
 header p {
-  font-size: 1.3rem; /* Slightly smaller header paragraph */
+  font-size: 1.2rem; /* Slightly smaller header paragraph */
   color: var(--text-light);
   margin-top: 0;
   max-width: 800px; /* Constrain width for better readability */
@@ -86,11 +86,11 @@ main section {
 }
 
 main h2 {
-  font-size: 2.2rem; /* Slightly larger main section headings */
+  font-size: 2rem; /* Slightly larger main section headings */
   color: var(--primary-green);
   text-align: center;
-  margin-bottom: 2rem; /* Increased margin-bottom */
-  padding-top: 1rem; /* Add some padding to separate from previous section */
+  margin-bottom: 0rem; /* Increased margin-bottom */
+  padding-top: 0rem; /* Add some padding to separate from previous section */
 }
 
 /* Button styles */
@@ -194,7 +194,7 @@ footer {
 /* Media Query for touch-based devices (phones, some tablets) */
 @media (hover: none) and (pointer: coarse) {
   body {
-    font-size: 1.15rem; /* Ensure good base font size for touch */
+    font-size: 1.1rem; /* Ensure good base font size for touch */
     padding: 1rem 0;
   }
   .container {
@@ -202,10 +202,10 @@ footer {
     margin: 0.5rem;
   }
   header h1 {
-    font-size: 2.8rem; /* Larger for touch */
+    font-size: 2rem; /* Larger for touch */
   }
   header p {
-    font-size: 1.2rem; /* Larger for touch */
+    font-size: 1.15rem; /* Larger for touch */
   }
   nav {
     flex-direction: column; /* Always stack buttons on touch */
@@ -213,7 +213,7 @@ footer {
   }
   a.buttonss {
     margin: 10px 0; /* Generous vertical margin for touch targets */
-    padding: 15px 30px; /* Larger touch targets */
+    padding: 13px 25px; /* Larger touch targets */
     font-size: 1.1rem; /* Ensure button text is readable */
   }
   main h2 {
