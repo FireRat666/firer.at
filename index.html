@@ -1,7 +1,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<link id="favicon" rel="icon" href="https://firer.at/files/favicon.ico" type="image/x-icon" />
+		<link id="favicon" rel="icon" href="/files/favicon.ico" type="image/x-icon" />
 		<meta name="color-scheme" content="dark">
 		<meta property="og:title" content="FireR.at">
 		<meta property="og:description" content="FireR.at, A Place for things">
@@ -85,6 +85,11 @@
             <p>A robust, real-time logging solution for Banter VR spaces. It uses a WebSocket server to capture console.log messages from a Banter space and forward them to a server's system logs, making debugging on devices like the Quest much easier.</p>
             <a href="https://github.com/FireRat666/Quest-Console-Logger" class="buttonss buttonG" target="_blank">Learn More</a>
           </div>
+          <div class="project-card">
+            <h3>Holograms Against Humanity</h3>
+            <p>A clone of Cards Against Humanity adapted for social VR platforms. Supports up to 10 players, custom card decks, and easy embedding into web-based virtual worlds.</p>
+            <a href="https://github.com/FireRat666/Holograms-Against-Humanity" class="buttonss buttonG" target="_blank">Learn More</a>
+          </div>
         </section>
         <section id="connect">
           <h2>Connect With Me</h2>
@@ -95,7 +100,8 @@
         </section>
       </main>
       <footer>
-        <p>&copy; 2025 FireR.at. All Rights Reserved.</p>
+        <p>&copy; <span id="year"></span> FireR.at. All Rights Reserved.</p>
+        <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
       </footer>
     </div>
   </body>
