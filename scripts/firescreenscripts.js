@@ -123,7 +123,7 @@ function adjustScale(geometrytransform, direction) {
 };
 
 async function createCustomButton(config, firebrowser, parentObject, buttonObjects, browserNumber) {
-  const { name, url, text, position, textposition, clickHandler } = config;
+  const { name, url, text, position, clickHandler } = config;
   const buttonObject = await createUIButton(name, null, position, textPlaneColour, parentObject, false, false, 1, 1, customButShader, customButtonSize);
   buttonObjects.push(buttonObject);
   const material = buttonObject.GetComponent(BS.ComponentType.BanterMaterial);
@@ -131,7 +131,7 @@ async function createCustomButton(config, firebrowser, parentObject, buttonObjec
   const textObject = await new BS.GameObject(`${name}Text${browserNumber}`).Async();
   await textObject.AddComponent(new BS.BanterText(text, whiteColour, "Center", "Center", 0.20, true, true, new BS.Vector2(2,1)));
   const textTransform = await textObject.AddComponent(new BS.Transform());
-  textTransform.localPosition = textposition;
+  textTransform.localPosition = new BS.Vector3(position.x, position.y, position.z - 0.005);
   await textObject.SetParent(parentObject, false);
   buttonObjects.push(textObject);
 
@@ -417,15 +417,15 @@ async function sdk2tests(params) {
   });
   uiButtons.hideShow = hideShowObject;
   
-  let RCButPos = 0.68; let RCTexPos = 1.59;
-  if (Number(p_height) === 720) {RCButPos += 0.14; RCTexPos += 0.14;} else if (Number(p_height) === 1080) {RCButPos += 0.4; RCTexPos += 0.4;};
+  let RCButPos = 0.68;
+  if (Number(p_height) === 720) {RCButPos += 0.14;} else if (Number(p_height) === 1080) {RCButPos += 0.4;};
 
   const customButtonConfigs = [
-    { name: 'CustomButton01', url: p_custombuttonurl01, text: p_custombutton01text, position: new BS.Vector3(RCButPos, 0.30, 0), textposition: new BS.Vector3(RCTexPos, -0.188, -0.005) },
-    { name: 'CustomButton02', url: p_custombuttonurl02, text: p_custombutton02text, position: new BS.Vector3(RCButPos, 0.25, 0), textposition: new BS.Vector3(RCTexPos, -0.237, -0.005) },
-    { name: 'CustomButton03', url: p_custombuttonurl03, text: p_custombutton03text, position: new BS.Vector3(RCButPos, 0.20, 0), textposition: new BS.Vector3(RCTexPos, -0.287, -0.005) },
-    { name: 'CustomButton04', url: p_custombuttonurl04, text: p_custombutton04text, position: new BS.Vector3(RCButPos, 0.15, 0), textposition: new BS.Vector3(RCTexPos, -0.336, -0.005) },
-    { name: 'CustomButton05', url: p_custombuttonurl05, text: p_custombutton05text, position: new BS.Vector3(RCButPos, -0.15, 0), textposition: new BS.Vector3(RCTexPos, -0.635, -0.005) }
+    { name: 'CustomButton01', url: p_custombuttonurl01, text: p_custombutton01text, position: new BS.Vector3(RCButPos, 0.30, 0) },
+    { name: 'CustomButton02', url: p_custombuttonurl02, text: p_custombutton02text, position: new BS.Vector3(RCButPos, 0.25, 0) },
+    { name: 'CustomButton03', url: p_custombuttonurl03, text: p_custombutton03text, position: new BS.Vector3(RCButPos, 0.20, 0) },
+    { name: 'CustomButton04', url: p_custombuttonurl04, text: p_custombutton04text, position: new BS.Vector3(RCButPos, 0.15, 0) },
+    { name: 'CustomButton05', url: p_custombuttonurl05, text: p_custombutton05text, position: new BS.Vector3(RCButPos, -0.15, 0) }
   ];
 
   for (const config of customButtonConfigs) {
@@ -475,7 +475,7 @@ async function sdk2tests(params) {
       },
       browseraction: (value) => { runBrowserActions(firebrowser, value); console.log(value); },
       spaceaction: (value) => { console.log(value); new Function(value)(); },
-      gohome: (value) => { console.log(value); setBrowserUrl(firebrowser, firebrowser.homePage); dispatchButtonClickEvent("Home", `${firebrowser.homePage}`); },
+      goHome: (value) => { console.log(value); setBrowserUrl(firebrowser, firebrowser.homePage); dispatchButtonClickEvent("Home", `${firebrowser.homePage}`); },
       sethome: (value) => { console.log(value); firebrowser.homePage = value; setBrowserUrl(firebrowser, value); dispatchButtonClickEvent("Home", `${firebrowser.homePage}`); },
       firevolumeup: (value) => { console.log(value); adjustForAll("adjustVolume", 1); youtubePlayerControl(1); },
       firevolumedown: (value) => { console.log(value); adjustForAll("adjustVolume", -1); youtubePlayerControl(0); },
@@ -640,7 +640,7 @@ async function sdk2tests(params) {
   if (p_spacesync === 'true') { const syncedurl = await getSpaceStateStuff('fireurl');
     if (syncedurl) setBrowserUrl(firebrowser, syncedurl);
     await createCustomButton({ name: "SpaceSyncButton", text: "Synced Button",
-      position: new BS.Vector3(RCButPos, 0.35, 0), textposition: new BS.Vector3(RCTexPos, -0.139, -0.005),
+      position: new BS.Vector3(RCButPos, 0.35, 0),
       clickHandler: async () => { const newUrl = await getSpaceStateStuff('fireurl'); if (newUrl) setBrowserUrl(firebrowser, newUrl); }
     }, firebrowser, geometryObject, customButtonObjects, p_thisBrowserNumber);
   };
