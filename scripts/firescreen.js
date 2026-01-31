@@ -269,7 +269,7 @@ async function setupBrowsers() {
       const browserPageWidth = browserElement.getAttribute("pageWidth");
       const browserPageHeight = browserElement.getAttribute("pageHeight");
       browserElement.browser.pageWidth = browserPageWidth; browserElement.browser.pageHeight = browserPageHeight;
-      browserElement.transform.WatchProperties([BS.PropertyName.position, BS.PropertyName.eulerAngles]); // Test Watch Properties
+      // browserElement.transform.WatchProperties([BS.PropertyName.position, BS.PropertyName.eulerAngles]); // Test Watch Properties
       const { rotation } = browserElement.object3D;
       browserElement.transform.eulerAngles = new BS.Vector3(rotation.x, rotation.y, rotation.z);
       console.log(`FIRESCREEN: ${i} Width is: ${browserPageWidth} and Height: ${browserPageHeight}`);
