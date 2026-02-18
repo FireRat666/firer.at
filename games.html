@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <link id="favicon" rel="icon" href="/files/favicon.ico" type="image/x-icon" />
+    <meta name="color-scheme" content="dark">
+    <meta property="og:title" content="FireR.at - Banter Games">
+    <meta property="og:description" content="A collection of multiplayer games for BanterVR.">
+    <meta name="description" content="Explore a variety of multiplayer games created for BanterVR, playable on PC, Quest, and Mobile.">
+    <meta property="og:image" content="https://firer.at/files/FireRat-(7).jpeg">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FireR.at - Banter Games</title>
+    <link rel="stylesheet" href="/pages/nstyle.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="/scripts/RandomBG.js"></script>
+    <script>
+      if(window.isBanter) { console.log("Window is Banter, Not adding cookie chimp scripts");
+      } else {
+          console.log("Adding Cookie Chimp Script")
+          const cookiechimpscript = document.createElement("script");
+          cookiechimpscript.id = "cookiechimpscript";
+          cookiechimpscript.setAttribute("src", "https://cookiechimp.com/widget/mV3trJ.js");
+          document.querySelector("head").appendChild(cookiechimpscript); };
+    </script>
+    <script type="text/plain" data-src="https://www.googletagmanager.com/gtag/js?id=G-HSMS8JERQ2"
+      data-category="analytics" data-service="Google Analytics" ></script>
+    <script type="text/plain" data-category="analytics" data-service="Google Analytics" >
+      window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
+</head>
+<body>
+    <div class="container">
+      <header>
+        <h1>Banter Games</h1>
+        <p>A collection of multiplayer games designed for BanterVR. These games feature real-time synchronization, allowing you to play with friends in VR or on 2D screens.</p>
+      </header>
+      <nav>
+        <a href="index.html" class="buttonss buttonMain">Home</a>
+        <a href="contact.html" class="buttonss buttonMain">Contact</a>
+        <a href="privacy.html" class="buttonss buttonMain">Privacy</a>
+        <a href="games.html" class="buttonG buttonss buttonActive">Games</a>
+        <a href="https://firer.at/pages/games.html" class="buttonG buttonss">Browser Games</a>
+        <a href="https://github.com/FireRat666" class="buttonW buttonss" target="_blank">GitHub</a>
+        <a href="https://ko-fi.com/FireRat666" class="buttonGY buttonss" target="_blank">Ko-fi</a>
+        <a href="https://paypal.me/FireRat666" class="buttonY buttonss" target="_blank">PayPal</a>
+      </nav>
+      <main>
+        <section id="projects">
+            <div class="project-card">
+              <h3>Banter Checkers</h3>
+              <p>A fully synchronized multiplayer checkers game. Features forced jumps, multi-jumps, and king promotion. Runs entirely client-side using Banter's space state.</p>
+              <a href="https://github.com/FireRat666/Banter-Checkers" class="buttonss buttonG" target="_blank">View on GitHub</a>
+            </div>
+
+            <div class="project-card">
+              <h3>Banter Chess</h3>
+              <p>A serverless, 3D chess game. Handles core chess rules including move validation and FEN state management using chess.js. Supports multiple independent games in one space.</p>
+              <a href="https://github.com/FireRat666/Banter-Chess" class="buttonss buttonG" target="_blank">View on GitHub</a>
+            </div>
+
+            <div class="project-card">
+              <h3>Banter Connect 4</h3>
+              <p>A plug-and-play synchronized Connect 4 game. Drop pieces into columns and connect four to win. Features procedurally generated geometry and customizable board settings.</p>
+              <a href="https://github.com/FireRat666/Banter-Connect4" class="buttonss buttonG" target="_blank">View on GitHub</a>
+            </div>
+
+            <div class="project-card">
+                <h3>Banter Go (Weiqi)</h3>
+                <p>A fully implemented Go game with standard rules including liberties, capturing, suicide prevention, and Ko rule. Includes a scoreboard and pass functionality.</p>
+                <a href="https://github.com/FireRat666/Banter-Go" class="buttonss buttonG" target="_blank">View on GitHub</a>
+            </div>
+
+            <div class="project-card">
+                <h3>Banter Gomoku</h3>
+                <p>Five in a Row. A strategy board game where the goal is to get five stones in a row. Fully multiplayer and synchronized.</p>
+                <a href="https://github.com/FireRat666/Banter-Gomoku" class="buttonss buttonG" target="_blank">View on GitHub</a>
+            </div>
+
+            <div class="project-card">
+                <h3>Banter Mancala</h3>
+                <p>The classic Mancala (Kalah) game. Pick up stones and distribute them to capture your opponent's pieces. Features simple embedding and custom model support.</p>
+                <a href="https://github.com/FireRat666/Banter-Mancala" class="buttonss buttonG" target="_blank">View on GitHub</a>
+            </div>
+
+            <div class="project-card">
+                <h3>Banter Reversi</h3>
+                <p>Also known as Othello. Capture opponent pieces by flanking them. Features valid move highlighting and automatic turn management.</p>
+                <a href="https://github.com/FireRat666/Banter-Reversi" class="buttonss buttonG" target="_blank">View on GitHub</a>
+            </div>
+
+            <div class="project-card">
+                <h3>Banter Tic-Tac-Toe</h3>
+                <p>A simple, classic Tic-Tac-Toe game. Perfect for a quick match. Fully synchronized and lightweight.</p>
+                <a href="https://github.com/FireRat666/Banter-TicTacToe" class="buttonss buttonG" target="_blank">View on GitHub</a>
+            </div>
+        </section>
+      </main>
+      <footer>
+        <p>&copy; <span id="year"></span> FireR.at. All Rights Reserved.</p>
+        <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+      </footer>
+    </div>
+</body>
+</html>
