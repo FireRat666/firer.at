@@ -118,7 +118,8 @@
         </p>
       </main>
       <footer>
-        <p>&copy; 2025 FireR.at. All Rights Reserved.</p>
+        <p>&copy; <span id="year"></span> FireR.at. All Rights Reserved.</p>
+        <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
       </footer>
     </div>
   </body>
