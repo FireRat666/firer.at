@@ -253,6 +253,16 @@ pre code {
     background-color: transparent;
     padding: 0;
     color: #9cdcfe; /* Light blue for code text */
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+pre:hover {
+    border-color: var(--primary-green);
+}
+
+pre:hover code {
+    color: #fff;
 }
 
 .code-header {

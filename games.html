@@ -158,13 +158,48 @@
                 <p>Simple 3x3 game for quick decisions.</p>
                 <div class="code-header">Embed Code</div>
                 <pre><code>&lt;script src="https://banter-tic-tac-toe.firer.at/TicTacToe.js?instance=tictactoe&boardPosition=0 1.2 0&boardScale=1"&gt;&lt;/script&gt;</code></pre>
-                <a href="https://github.com/FireRat666/Banter-TicTacToe" class="buttonss buttonG" target="_blank">GitHub</a>
+                <a href="https://github.com/FireRat666/Banter-Tic-Tac-Toe" class="buttonss buttonG" target="_blank">GitHub</a>
             </div>
         </section>
       </main>
       <footer>
         <p>&copy; <span id="year"></span> FireR.at. All Rights Reserved.</p>
-        <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+        <script>
+            document.getElementById('year').textContent = new Date().getFullYear();
+
+            // Click-to-copy functionality
+            document.querySelectorAll('.project-card pre code').forEach(block => {
+                block.parentElement.addEventListener('click', async () => {
+                    // Copy text
+                    try {
+                        await navigator.clipboard.writeText(block.innerText);
+                        
+                        // Select text for visual feedback
+                        const range = document.createRange();
+                        range.selectNodeContents(block);
+                        const selection = window.getSelection();
+                        selection.removeAllRanges();
+                        selection.addRange(range);
+
+                        // Show "Copied!" message in header
+                        const header = block.parentElement.previousElementSibling;
+                        if (header && header.classList.contains('code-header')) {
+                            const originalText = header.innerText;
+                            header.innerText = 'Copied!';
+                            header.style.color = 'var(--primary-green)';
+                            
+                            setTimeout(() => {
+                                header.innerText = originalText;
+                                header.style.color = '';
+                                selection.removeAllRanges(); // Deselect
+                            }, 2000);
+                        }
+                    } catch (err) {
+                        console.error('Failed to copy text: ', err);
+                    }
+                });
+            });
+        </script>
       </footer>
     </div>
 </body>
