@@ -40,60 +40,125 @@
         <a href="index.html" class="buttonss buttonMain">Home</a>
         <a href="contact.html" class="buttonss buttonMain">Contact</a>
         <a href="privacy.html" class="buttonss buttonMain">Privacy</a>
-        <a href="games.html" class="buttonG buttonss buttonActive">Games</a>
+        <a href="games.html" class="buttonG buttonss buttonActive">Banter Games</a>
         <a href="https://firer.at/pages/games.html" class="buttonG buttonss">Browser Games</a>
         <a href="https://github.com/FireRat666" class="buttonW buttonss" target="_blank">GitHub</a>
         <a href="https://ko-fi.com/FireRat666" class="buttonGY buttonss" target="_blank">Ko-fi</a>
         <a href="https://paypal.me/FireRat666" class="buttonY buttonss" target="_blank">PayPal</a>
       </nav>
       <main>
+        <section id="guide">
+            <h2>How to Embed Banter Games</h2>
+            <p>Adding these games to your Banter space is simple. Just add a <code>&lt;script&gt;</code> tag to your space's HTML pointing to the game's URL.</p>
+            
+            <h3>Common Configuration</h3>
+            <p>All games support the following URL parameters to control their placement and behavior:</p>
+            <table>
+                <tr>
+                    <th>Parameter</th>
+                    <th>Default</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><code>instance</code></td>
+                    <td>(Page URL)</td>
+                    <td><strong>Highly Recommended.</strong> A unique ID (e.g., <code>?instance=lobby-chess</code>) to separate multiple games in the same space.</td>
+                </tr>
+                <tr>
+                    <td><code>boardPosition</code></td>
+                    <td>0 1.1 0</td>
+                    <td>Position of the board center in world space (x y z).</td>
+                </tr>
+                <tr>
+                    <td><code>boardRotation</code></td>
+                    <td>0 0 0</td>
+                    <td>Rotation in Euler angles (x y z).</td>
+                </tr>
+                <tr>
+                    <td><code>boardScale</code></td>
+                    <td>1 1 1</td>
+                    <td>Scale of the entire game object.</td>
+                </tr>
+                <tr>
+                    <td><code>hideUI</code></td>
+                    <td>false</td>
+                    <td>Set to <code>true</code> to hide the floating reset/control buttons.</td>
+                </tr>
+            </table>
+            <p><em>Note: Parameters are space-separated (e.g., <code>0 1.5 -3</code>). In URLs, spaces can be written as <code>%20</code> or <code>+</code>.</em></p>
+        </section>
+
         <section id="projects">
+            <!-- Banter Checkers -->
             <div class="project-card">
               <h3>Banter Checkers</h3>
-              <p>A fully synchronized multiplayer checkers game. Features forced jumps, multi-jumps, and king promotion. Runs entirely client-side using Banter's space state.</p>
-              <a href="https://github.com/FireRat666/Banter-Checkers" class="buttonss buttonG" target="_blank">View on GitHub</a>
+              <p>Classic checkers with forced jumps and king promotion.</p>
+              <div class="code-header">Embed Code</div>
+              <pre><code>&lt;script src="https://banter-checkers.firer.at/checkers.js?instance=checkers&boardPosition=0 1.1 -2&boardScale=1"&gt;&lt;/script&gt;</code></pre>
+              <a href="https://github.com/FireRat666/Banter-Checkers" class="buttonss buttonG" target="_blank">GitHub</a>
             </div>
 
+            <!-- Banter Chess -->
             <div class="project-card">
               <h3>Banter Chess</h3>
-              <p>A serverless, 3D chess game. Handles core chess rules including move validation and FEN state management using chess.js. Supports multiple independent games in one space.</p>
-              <a href="https://github.com/FireRat666/Banter-Chess" class="buttonss buttonG" target="_blank">View on GitHub</a>
+              <p>3D serverless chess with move validation.</p>
+              <div class="code-header">Embed Code</div>
+              <pre><code>&lt;script src="https://banter-chess.firer.at/Chess.js?instance=chess&boardPosition=0 1.1 -2&lighting=lit"&gt;&lt;/script&gt;</code></pre>
+              <a href="https://github.com/FireRat666/Banter-Chess" class="buttonss buttonG" target="_blank">GitHub</a>
             </div>
 
-            <div class="project-card">
-              <h3>Banter Connect 4</h3>
-              <p>A plug-and-play synchronized Connect 4 game. Drop pieces into columns and connect four to win. Features procedurally generated geometry and customizable board settings.</p>
-              <a href="https://github.com/FireRat666/Banter-Connect4" class="buttonss buttonG" target="_blank">View on GitHub</a>
-            </div>
-
-            <div class="project-card">
-                <h3>Banter Go (Weiqi)</h3>
-                <p>A fully implemented Go game with standard rules including liberties, capturing, suicide prevention, and Ko rule. Includes a scoreboard and pass functionality.</p>
-                <a href="https://github.com/FireRat666/Banter-Go" class="buttonss buttonG" target="_blank">View on GitHub</a>
-            </div>
-
-            <div class="project-card">
-                <h3>Banter Gomoku</h3>
-                <p>Five in a Row. A strategy board game where the goal is to get five stones in a row. Fully multiplayer and synchronized.</p>
-                <a href="https://github.com/FireRat666/Banter-Gomoku" class="buttonss buttonG" target="_blank">View on GitHub</a>
-            </div>
-
-            <div class="project-card">
-                <h3>Banter Mancala</h3>
-                <p>The classic Mancala (Kalah) game. Pick up stones and distribute them to capture your opponent's pieces. Features simple embedding and custom model support.</p>
-                <a href="https://github.com/FireRat666/Banter-Mancala" class="buttonss buttonG" target="_blank">View on GitHub</a>
-            </div>
-
+            <!-- Banter Reversi -->
             <div class="project-card">
                 <h3>Banter Reversi</h3>
-                <p>Also known as Othello. Capture opponent pieces by flanking them. Features valid move highlighting and automatic turn management.</p>
-                <a href="https://github.com/FireRat666/Banter-Reversi" class="buttonss buttonG" target="_blank">View on GitHub</a>
+                <p>Othello-style disk flipping strategy game.</p>
+                <div class="code-header">Embed Code</div>
+                <pre><code>&lt;script src="https://banter-reversi.firer.at/Reversi.js?instance=reversi&boardPosition=0 1.1 -2&hideUI=false"&gt;&lt;/script&gt;</code></pre>
+                <a href="https://github.com/FireRat666/Banter-Reversi" class="buttonss buttonG" target="_blank">GitHub</a>
             </div>
 
+            <!-- Banter Connect 4 -->
+            <div class="project-card">
+              <h3>Banter Connect 4</h3>
+              <p>The vertical four-in-a-row strategy game. Supports custom models.</p>
+              <div class="code-header">Embed Code</div>
+              <pre><code>&lt;script src="https://banter-connect4.firer.at/Connect4.js?instance=c4&boardPosition=0 1.1 0&useCustomModels=true&lighting=lit"&gt;&lt;/script&gt;</code></pre>
+              <a href="https://github.com/FireRat666/Banter-Connect4" class="buttonss buttonG" target="_blank">GitHub</a>
+            </div>
+
+            <!-- Banter Go -->
+            <div class="project-card">
+                <h3>Banter Go (Weiqi)</h3>
+                <p>Full-featured Go with liberties, ko rule, and suicide prevention.</p>
+                <div class="code-header">Embed Code</div>
+                <pre><code>&lt;script src="https://banter-go.firer.at/Go.js?instance=go&boardSize=19&boardPosition=0 1.5 0&scoreboardPosition=0 2 -2"&gt;&lt;/script&gt;</code></pre>
+                <a href="https://github.com/FireRat666/Banter-Go" class="buttonss buttonG" target="_blank">GitHub</a>
+            </div>
+
+            <!-- Banter Gomoku -->
+            <div class="project-card">
+                <h3>Banter Gomoku</h3>
+                <p>Five-in-a-row on a Go board.</p>
+                <div class="code-header">Embed Code</div>
+                <pre><code>&lt;script src="https://banter-gomoku.firer.at/Gomoku.js?instance=gomoku&boardSize=15&boardPosition=0 1.5 0"&gt;&lt;/script&gt;</code></pre>
+                <a href="https://github.com/FireRat666/Banter-Gomoku" class="buttonss buttonG" target="_blank">GitHub</a>
+            </div>
+
+            <!-- Banter Mancala -->
+            <div class="project-card">
+                <h3>Banter Mancala (WIP)</h3>
+                <p>Ancient stone-moving game. Capture opponent's stones.</p>
+                <div class="code-header">Embed Code</div>
+                <pre><code>&lt;script src="https://banter-mancala.firer.at/Mancala.js?instance=mancala&boardPosition=0 1.1 -2&lighting=lit"&gt;&lt;/script&gt;</code></pre>
+                <a href="https://github.com/FireRat666/Banter-Mancala" class="buttonss buttonG" target="_blank">GitHub</a>
+            </div>
+
+            <!-- Banter Tic-Tac-Toe -->
             <div class="project-card">
                 <h3>Banter Tic-Tac-Toe</h3>
-                <p>A simple, classic Tic-Tac-Toe game. Perfect for a quick match. Fully synchronized and lightweight.</p>
-                <a href="https://github.com/FireRat666/Banter-TicTacToe" class="buttonss buttonG" target="_blank">View on GitHub</a>
+                <p>Simple 3x3 game for quick decisions.</p>
+                <div class="code-header">Embed Code</div>
+                <pre><code>&lt;script src="https://banter-tic-tac-toe.firer.at/TicTacToe.js?instance=tictactoe&boardPosition=0 1.2 0&boardScale=1"&gt;&lt;/script&gt;</code></pre>
+                <a href="https://github.com/FireRat666/Banter-TicTacToe" class="buttonss buttonG" target="_blank">GitHub</a>
             </div>
         </section>
       </main>

@@ -229,3 +229,69 @@ footer {
     font-size: 1.05rem; /* Adjust project description size for touch */
   }
 }
+
+/* Code Block Styles */
+code {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+pre {
+    background-color: #1e1e1e;
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin: 1rem 0;
+    border: 1px solid var(--border-subtle);
+}
+
+pre code {
+    background-color: transparent;
+    padding: 0;
+    color: #9cdcfe; /* Light blue for code text */
+}
+
+.code-header {
+    font-size: 0.85rem;
+    color: var(--secondary-text);
+    margin-bottom: -0.8rem;
+    margin-top: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+    background-color: var(--card-bg-alpha);
+    border-radius: 8px;
+    overflow: hidden; /* For border radius */
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+th {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--primary-green);
+    font-weight: 600;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+tr:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+}
