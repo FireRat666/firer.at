@@ -16,6 +16,16 @@ async function loadAndExecuteFireScript(src) {
   } catch (error) { console.error("Failed to load or execute the FireScreen script:", error); }
 }
 
-if(window.isBanter) { 
-  loadAndExecuteFireScript(`https://firer.at/scripts/firescreenscripts.js`);
+function checkForBS() {
+  if (window.BS) {
+    // BS is loaded, so we can now execute the script
+    loadAndExecuteFireScript('https://firer.at/scripts/firescreenscripts.js');
+  } else {
+    // BS not loaded yet, wait for it
+    window.addEventListener("bs-loaded", () => {
+      loadAndExecuteFireScript('https://firer.at/scripts/firescreenscripts.js');
+    })
+  }
 }
+
+checkForBS();
