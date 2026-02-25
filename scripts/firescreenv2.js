@@ -19,13 +19,16 @@ async function loadAndExecuteFireScript(src) {
 function checkForBS() {
   if (window.BS) {
     // BS is loaded, so we can now execute the script
+    console.log(`FireScreen Script BS is loaded, so we can now execute the script`);
     loadAndExecuteFireScript('https://firer.at/scripts/firescreenscripts.js');
   } else {
     // BS not loaded yet, wait for it
     window.addEventListener("bs-loaded", () => {
+      console.log(`FireScreen Script BS not loaded yet, wait for it`);
       loadAndExecuteFireScript('https://firer.at/scripts/firescreenscripts.js');
     })
   }
+    console.log(`FireScreen Script Checked for BS`);
 }
 
 checkForBS();
