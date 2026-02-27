@@ -186,6 +186,6 @@
         initGame();
     } else {
         window.addEventListener("unity-loaded", initGame);
-        // window.addEventListener("bs-loaded", initGame);
+        window.addEventListener("bs-loaded", initGame);
     }
 })();
