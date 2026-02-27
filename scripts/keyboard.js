@@ -19,8 +19,6 @@
             const textColor = new BS.Vector4(1, 1, 1, 1);
             const buttonShader = 'Unlit/Diffuse';
             const flashColor = new BS.Vector4(0.3, 0.3, 0.3, 0.5);
-            const textOffset = new BS.Vector3(9.94, -2.38, -0.01);
-            const specialTextOffset = new BS.Vector3(9.8, -2.37, -0.01);
             let isShiftActive = false;
             let isCapsLockActive = false;
             let isSpecialCharActive = false;
@@ -57,7 +55,7 @@
                 material.color = flashColor; setTimeout(() => { material.color = buttonColor; }, 100);
             }
 
-            async function createButton(label, position, group, clickHandler = null, buttonSize = letterButtonSize, width = 0.3, height = 0.3, offset = textOffset) {
+            async function createButton(label, position, group, clickHandler = null, buttonSize = letterButtonSize, width = 0.3, height = 0.3) {
                 const buttonObject = await new BS.GameObject(`Button_${label}`).Async();
                 await buttonObject.AddComponent(new BS.BanterGeometry(BS.GeometryType.PlaneGeometry, 0, width, height));
                 await buttonObject.AddComponent(new BS.BanterMaterial(buttonShader, "", buttonColor));
@@ -69,9 +67,11 @@
                 buttonTransform.localScale = buttonSize;
 
                 const textObject = await new BS.GameObject(`${label}_Text`).Async();
-                await textObject.AddComponent(new BS.BanterText(label, textColor));
+                // Set text alignment to center
+                await textObject.AddComponent(new BS.BanterText(label, textColor, BS.HorizontalAlignment.Center, BS.VerticalAlignment.Center));
                 const textTransform = await textObject.AddComponent(new BS.Transform());
-                textTransform.localPosition = offset;
+                // Position text slightly in front of the button to prevent z-fighting
+                textTransform.localPosition = new BS.Vector3(0, 0, -0.01);
                 await textObject.SetParent(buttonObject, false);
 
                 if (clickHandler) {
@@ -108,8 +108,8 @@
                 }
             }
 
-            async function createSpecialButton(label, position, clickHandler, width = 0.8, thisTextOffset = specialTextOffset) {
-                await createButton(label, position, 'specialButtons', clickHandler, specialButtonSize, width, 0.37, thisTextOffset);
+            async function createSpecialButton(label, position, clickHandler, width = 0.8) {
+                await createButton(label, position, 'specialButtons', clickHandler, specialButtonSize, width, 0.37);
             }
 
             function toggleButtonGroup(showGroup) {
@@ -163,29 +163,12 @@
                 // Create special buttons: Shift, Caps Lock, Special Characters, Backspace, and Space
                 await createSpecialButton("Shift", new BS.Vector3(startX - 0.5, (startY) + 3 * yOffset, 0), toggleShift);
                 await createSpecialButton("Caps", new BS.Vector3((startX - 0.9) + xOffset, (startY + 0.4) + 3 * yOffset, 0), toggleCapsLock);
-                await createSpecialButton("Special", new BS.Vector3((startX - 0.2) + xOffset, startY + 3 * yOffset, 0), toggleSpecialChars, 0.8, new BS.Vector3(9.65, -2.37, -0.01));
-                await createSpecialButton("Backspace", new BS.Vector3(startX + 10.8 * xOffset, (startY + 0.4), 0), backspaceInputText, 1.2, new BS.Vector3(9.5, -2.37, -0.01));
+                await createSpecialButton("Special", new BS.Vector3((startX - 0.2) + xOffset, startY + 3 * yOffset, 0), toggleSpecialChars, 0.8);
+                await createSpecialButton("Backspace", new BS.Vector3(startX + 10.8 * xOffset, (startY + 0.4), 0), backspaceInputText, 1.2);
                 await createSpecialButton("Submit", new BS.Vector3(startX + 10.8 * xOffset, startY, 0), () => { console.log(inputText.text);
-                    // setPublicSpaceProp(`USERID:${keyboardscene.localUser.uid}:${keyboardscene.localUser.name}`, inputText.text.substring(0, 30).trim());
-                    // keyboardscene.OneShot(JSON.stringify({fireurl: inputText.text}));
-                    // keyboardscene.OneShot(JSON.stringify({spaceaction: `document.querySelectorAll('.firescreenc').forEach(firescreenc => { firescreenc.setAttribute("sq-browser", { url: "https://${inputText.text}", pixelsPerUnit: 1200, mipMaps: 0, mode: "local" }); });`}));
                     keyboardscene.OneShot(JSON.stringify({messagething: keyboardscene.localUser.name + ": " + inputText.text}));
-                    inputText.text = ""; }, 1.2, new BS.Vector3(9.5, -2.37, -0.01));
-                await createSpecialButton("Space", new BS.Vector3(startX + 1.5, startY + 3 * yOffset, 0), () => { updateInputText(" "); }, 1.2, new BS.Vector3(9.65, -2.37, -0.01));
-                // await createSpecialButton("Paste", new BS.Vector3(startX + 10.9 * xOffset, startY + 1.0 * yOffset, 0), async () => {
-                //   // Try to focus the document
-                //   document.activeElement.blur(); // Unfocus any active element
-                //   document.body.focus(); // Focus the body (or your specific input element)
-
-                //   try {
-                //     const text = await navigator.clipboard.readText();
-                //     updateInputText(text);
-                //     console.log(`Pasted text: ${text}`);
-                //   } catch (error) {
-                //     console.error('Failed to read clipboard contents: ', error);
-                //   }
-                // }, 1.2, new BS.Vector3(9.5, -2.37, -0.01));
-
+                    inputText.text = ""; }, 1.2);
+                await createSpecialButton("Space", new BS.Vector3(startX + 1.5, startY + 3 * yOffset, 0), () => { updateInputText(" "); }, 1.2);
 
                 // Default to showing lowercase letters
                 toggleButtonGroup('lowercase');
