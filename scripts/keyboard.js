@@ -31,7 +31,7 @@
             const textObject = await new BS.GameObject("InputText").Async();
             const inputText = await textObject.AddComponent(new BS.BanterText("", textColor));
             const textTransform = await textObject.AddComponent(new BS.Transform());
-            textTransform.localPosition = new BS.Vector3(8.1, -1, 0);
+            textTransform.localPosition = new BS.Vector3(0, 1.5, 0);
             await textObject.SetParent(keyboardParentObject, false);
 
             function updateInputText(label) { inputText.text += label; }
