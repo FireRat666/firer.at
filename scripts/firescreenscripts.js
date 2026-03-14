@@ -632,6 +632,7 @@ async function sdk2tests(params) {
         announcerscript.setAttribute("announce", p_announce);
         announcerscript.setAttribute("announce-420", p_announce420);
         announcerscript.setAttribute("announce-events", p_announceevents === "undefined" ? (p_announce === "true" ? "true" : "false") : p_announceevents );
+        announcerscript.setAttribute("audio.crossOrigin", "anonymous");
         document.querySelector("body").appendChild(announcerscript);
       } else { console.log('FIRESCREEN2: matchingAnnouncerScriptFound or AnnouncerScriptInitialized, Moving on'); };
     }, 1000);
