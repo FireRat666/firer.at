@@ -57,7 +57,9 @@ async function playAudioInSequence(audioFiles, volume, remainingUrls) { // Start
 
 function loadAudio(url, volume) {
   return new Promise((resolve, reject) => {
-    const audio = new Audio(url); audio.volume = volume;
+    const audio = new Audio(url);
+    audio.crossOrigin = "anonymous";
+    audio.volume = volume;
     audio.oncanplaythrough = () => resolve(audio); audio.onerror = reject;
   });
 }
