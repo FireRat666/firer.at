@@ -2,27 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <link id="favicon" rel="icon" href="/files/favicon.ico" type="image/x-icon" />
+    <link id="favicon" rel="icon" href="./files/favicon.ico" type="image/x-icon" />
     <meta name="color-scheme" content="dark">
+    
+    <!-- SEO Meta Tags -->
     <meta property="og:title" content="FireR.at - Banter Games">
-    <meta property="og:description" content="A collection of multiplayer games for BanterVR.">
-    <meta name="description" content="Explore a variety of multiplayer games created for BanterVR, playable on PC, Quest, and Mobile.">
+    <meta property="og:description" content="A collection of embeddable multiplayer games for BanterVR, including Chess, Checkers, Connect 4, and Go.">
+    <meta name="description" content="Integrate interactive multiplayer board games into your Banter VR space with a single script tag. Check out embed codes and configurations.">
     <meta property="og:image" content="https://firer.at/files/FireRat-(7).jpeg">  
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FireR.at - Banter Games</title>
-    <link rel="stylesheet" href="/pages/nstyle.css" />
+    <title>Banter Games | FireR.at</title>
+    
+    <!-- Typography & Stylesheets -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <script src="/scripts/RandomBG.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./pages/nstyle.css" />
+    
+    <!-- Dynamic Background Script -->
+    <script src="./scripts/RandomBG.js"></script>
+    
+    <!-- Analytics & Privacy Consent -->
     <script>
-      if(window.isBanter) { console.log("Window is Banter, Not adding cookie chimp scripts");
+      if(window.isBanter) { 
+        console.log("Window is Banter, skipping analytics.");
       } else {
-          console.log("Adding Cookie Chimp Script")
-          const cookiechimpscript = document.createElement("script");
-          cookiechimpscript.id = "cookiechimpscript";
-          cookiechimpscript.setAttribute("src", "https://cookiechimp.com/widget/mV3trJ.js");
-          document.querySelector("head").appendChild(cookiechimpscript); };
+        console.log("Adding Cookie Chimp Script");
+        const cookiechimpscript = document.createElement("script");
+        cookiechimpscript.id = "cookiechimpscript";
+        cookiechimpscript.setAttribute("src", "https://cookiechimp.com/widget/mV3trJ.js");
+        document.querySelector("head").appendChild(cookiechimpscript);
+      };
     </script>
     <script type="text/plain" data-src="https://www.googletagmanager.com/gtag/js?id=G-HSMS8JERQ2"
       data-category="analytics" data-service="Google Analytics" ></script>
@@ -31,147 +41,221 @@
       gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
 </head>
 <body>
+    <div class="ambient-glow-2"></div>
     <div class="container">
       <header>
-        <h1>Banter Games</h1>
-        <p>A collection of multiplayer games designed for BanterVR. These games feature real-time synchronization, allowing you to play with friends in VR or on 2D screens.</p>
+        <h1><span class="text-gradient">Banter Games</span></h1>
+        <p>A collection of serverless multiplayer games designed for Banter VR. These games feature real-time synchronization, allowing friends to play together in VR or inside standard 2D web browsers.</p>
       </header>
+      
       <nav>
         <a href="index.html" class="buttonss buttonMain">Home</a>
         <a href="contact.html" class="buttonss buttonMain">Contact</a>
         <a href="privacy.html" class="buttonss buttonMain">Privacy</a>
         <a href="games.html" class="buttonG buttonss buttonActive">Banter Games</a>
-        <a href="https://firer.at/pages/games.html" class="buttonG buttonss">Browser Games</a>
+        <a href="/pages/games.html" class="buttonG buttonss">Browser Games</a>
         <a href="https://github.com/FireRat666" class="buttonW buttonss" target="_blank">GitHub</a>
         <a href="https://ko-fi.com/FireRat666" class="buttonGY buttonss" target="_blank">Ko-fi</a>
         <a href="https://paypal.me/FireRat666" class="buttonY buttonss" target="_blank">PayPal</a>
       </nav>
+      
       <main>
         <section id="guide">
             <h2>How to Embed Banter Games</h2>
-            <p>Adding these games to your Banter space is simple. Just add a <code>&lt;script&gt;</code> tag to your space's HTML pointing to the game's URL.</p>
+            <p>Adding these games to your Banter space is simple. Just insert a <code>&lt;script&gt;</code> tag into your space's HTML pointing to the game's script URL.</p>
             
-            <h3>Common Configuration</h3>
-            <p>All games support the following URL parameters to control their placement and behavior:</p>
+            <h3>Common Configuration Parameters</h3>
+            <p>All games support the following URL query parameters to control their position, size, and layout inside virtual spaces:</p>
             <table>
-                <tr>
-                    <th>Parameter</th>
-                    <th>Default</th>
-                    <th>Description</th>
-                </tr>
-                <tr>
-                    <td><code>instance</code></td>
-                    <td>(Page URL)</td>
-                    <td><strong>Highly Recommended.</strong> A unique ID (e.g., <code>?instance=lobby-chess</code>) to separate multiple games in the same space.</td>
-                </tr>
-                <tr>
-                    <td><code>boardPosition</code></td>
-                    <td>0 1.1 0</td>
-                    <td>Position of the board center in world space (x y z).</td>
-                </tr>
-                <tr>
-                    <td><code>boardRotation</code></td>
-                    <td>0 0 0</td>
-                    <td>Rotation in Euler angles (x y z).</td>
-                </tr>
-                <tr>
-                    <td><code>boardScale</code></td>
-                    <td>1 1 1</td>
-                    <td>Scale of the entire game object.</td>
-                </tr>
-                <tr>
-                    <td><code>hideUI</code></td>
-                    <td>false</td>
-                    <td>Set to <code>true</code> to hide the floating reset/control buttons.</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Default Value</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>instance</code></td>
+                        <td>(Page URL)</td>
+                        <td><strong>Recommended.</strong> A unique ID (e.g., <code>?instance=lobby-chess</code>) to isolate game states if you have multiple games of the same type in your space.</td>
+                    </tr>
+                    <tr>
+                        <td><code>boardPosition</code></td>
+                        <td><code>0 1.1 0</code></td>
+                        <td>The center position of the board in 3D world space coordinates (x y z).</td>
+                    </tr>
+                    <tr>
+                        <td><code>boardRotation</code></td>
+                        <td><code>0 0 0</code></td>
+                        <td>The rotation angles of the board in Euler space (x y z).</td>
+                    </tr>
+                    <tr>
+                        <td><code>boardScale</code></td>
+                        <td><code>1 1 1</code></td>
+                        <td>The overall scale of the 3D game objects.</td>
+                    </tr>
+                    <tr>
+                        <td><code>hideUI</code></td>
+                        <td><code>false</code></td>
+                        <td>Set to <code>true</code> to hide the floating 3D control panels (reset/undo buttons).</td>
+                    </tr>
+                </tbody>
             </table>
-            <p><em>Note: Parameters are space-separated (e.g., <code>0 1.5 -3</code>). In URLs, spaces can be written as <code>%20</code> or <code>+</code>.</em></p>
+            <p><em>Note: Coordinates are space-separated. In URLs, spaces must be encoded as <code>%20</code> or <code>+</code>.</em></p>
         </section>
 
+        <h2 class="section-title">Available Game Scripts</h2>
         <section id="projects">
             <!-- Banter Checkers -->
             <div class="project-card">
-              <h3>Banter Checkers</h3>
-              <p>Classic checkers with forced jumps and king promotion.</p>
-              <div class="code-header">Embed Code</div>
-              <pre><code>&lt;script src="https://banter-checkers.firer.at/checkers.js?instance=checkers&boardPosition=0 1.1 -2&boardScale=1"&gt;&lt;/script&gt;</code></pre>
-              <a href="https://github.com/FireRat666/Banter-Checkers" class="buttonss buttonG" target="_blank">GitHub</a>
+              <div>
+                <div class="tech-badges">
+                  <span class="badge vr">Checkers</span>
+                  <span class="badge api">Embeddable</span>
+                </div>
+                <h3>Banter Checkers</h3>
+                <p>Classic checkers with forced jumps, turn validation, and automatic king promotion.</p>
+                <div class="code-header">Embed Script (Click to copy)</div>
+                <pre><code>&lt;script src="https://banter-checkers.firer.at/checkers.js?instance=checkers&boardPosition=0 1.1 -2&boardScale=1"&gt;&lt;/script&gt;</code></pre>
+              </div>
+              <div class="card-actions">
+                <a href="https://github.com/FireRat666/Banter-Checkers" class="buttonss buttonG" target="_blank">GitHub</a>
+              </div>
             </div>
 
             <!-- Banter Chess -->
             <div class="project-card">
-              <h3>Banter Chess</h3>
-              <p>3D serverless chess with move validation.</p>
-              <div class="code-header">Embed Code</div>
-              <pre><code>&lt;script src="https://banter-chess.firer.at/Chess.js?instance=chess&boardPosition=0 1.1 -2&lighting=lit"&gt;&lt;/script&gt;</code></pre>
-              <a href="https://github.com/FireRat666/Banter-Chess" class="buttonss buttonG" target="_blank">GitHub</a>
+              <div>
+                <div class="tech-badges">
+                  <span class="badge vr">Chess</span>
+                  <span class="badge api">Embeddable</span>
+                </div>
+                <h3>Banter Chess</h3>
+                <p>3D serverless chess featuring real-time move validation and custom lighting options.</p>
+                <div class="code-header">Embed Script (Click to copy)</div>
+                <pre><code>&lt;script src="https://banter-chess.firer.at/Chess.js?instance=chess&boardPosition=0 1.1 -2&lighting=lit"&gt;&lt;/script&gt;</code></pre>
+              </div>
+              <div class="card-actions">
+                <a href="https://github.com/FireRat666/Banter-Chess" class="buttonss buttonG" target="_blank">GitHub</a>
+              </div>
             </div>
 
             <!-- Banter Reversi -->
             <div class="project-card">
+              <div>
+                <div class="tech-badges">
+                  <span class="badge vr">Reversi</span>
+                  <span class="badge api">Embeddable</span>
+                </div>
                 <h3>Banter Reversi</h3>
-                <p>Othello-style disk flipping strategy game.</p>
-                <div class="code-header">Embed Code</div>
+                <p>Othello-style disk flipping strategy game with a reactive interface.</p>
+                <div class="code-header">Embed Script (Click to copy)</div>
                 <pre><code>&lt;script src="https://banter-reversi.firer.at/Reversi.js?instance=reversi&boardPosition=0 1.1 -2&hideUI=false"&gt;&lt;/script&gt;</code></pre>
+              </div>
+              <div class="card-actions">
                 <a href="https://github.com/FireRat666/Banter-Reversi" class="buttonss buttonG" target="_blank">GitHub</a>
+              </div>
             </div>
 
             <!-- Banter Connect 4 -->
             <div class="project-card">
-              <h3>Banter Connect 4</h3>
-              <p>The vertical four-in-a-row strategy game. Supports custom models.</p>
-              <div class="code-header">Embed Code</div>
-              <pre><code>&lt;script src="https://banter-connect4.firer.at/Connect4.js?instance=c4&boardPosition=0 1.1 0&useCustomModels=true&lighting=lit"&gt;&lt;/script&gt;</code></pre>
-              <a href="https://github.com/FireRat666/Banter-Connect4" class="buttonss buttonG" target="_blank">GitHub</a>
+              <div>
+                <div class="tech-badges">
+                  <span class="badge vr">Connect 4</span>
+                  <span class="badge api">Embeddable</span>
+                </div>
+                <h3>Banter Connect 4</h3>
+                <p>Vertical four-in-a-row checker-dropping game. Includes support for custom board models.</p>
+                <div class="code-header">Embed Script (Click to copy)</div>
+                <pre><code>&lt;script src="https://banter-connect4.firer.at/Connect4.js?instance=c4&boardPosition=0 1.1 0&useCustomModels=true&lighting=lit"&gt;&lt;/script&gt;</code></pre>
+              </div>
+              <div class="card-actions">
+                <a href="https://github.com/FireRat666/Banter-Connect4" class="buttonss buttonG" target="_blank">GitHub</a>
+              </div>
             </div>
 
             <!-- Banter Go -->
             <div class="project-card">
+              <div>
+                <div class="tech-badges">
+                  <span class="badge vr">Go / Weiqi</span>
+                  <span class="badge api">Embeddable</span>
+                </div>
                 <h3>Banter Go (Weiqi)</h3>
-                <p>Full-featured Go with liberties, ko rule, and suicide prevention.</p>
-                <div class="code-header">Embed Code</div>
+                <p>Full-featured board game of Go. Implements liberty tracking, ko rule validation, and suicide prevention.</p>
+                <div class="code-header">Embed Script (Click to copy)</div>
                 <pre><code>&lt;script src="https://banter-go.firer.at/Go.js?instance=go&boardSize=19&boardPosition=0 1.5 0&scoreboardPosition=0 2 -2"&gt;&lt;/script&gt;</code></pre>
+              </div>
+              <div class="card-actions">
                 <a href="https://github.com/FireRat666/Banter-Go" class="buttonss buttonG" target="_blank">GitHub</a>
+              </div>
             </div>
 
             <!-- Banter Gomoku -->
             <div class="project-card">
+              <div>
+                <div class="tech-badges">
+                  <span class="badge vr">Gomoku</span>
+                  <span class="badge api">Embeddable</span>
+                </div>
                 <h3>Banter Gomoku</h3>
-                <p>Five-in-a-row on a Go board.</p>
-                <div class="code-header">Embed Code</div>
+                <p>Five-in-a-row alignment game played on a Go grid board.</p>
+                <div class="code-header">Embed Script (Click to copy)</div>
                 <pre><code>&lt;script src="https://banter-gomoku.firer.at/Gomoku.js?instance=gomoku&boardSize=15&boardPosition=0 1.5 0"&gt;&lt;/script&gt;</code></pre>
+              </div>
+              <div class="card-actions">
                 <a href="https://github.com/FireRat666/Banter-Gomoku" class="buttonss buttonG" target="_blank">GitHub</a>
+              </div>
             </div>
 
             <!-- Banter Mancala -->
             <div class="project-card">
-                <h3>Banter Mancala (WIP)</h3>
-                <p>Ancient stone-moving game. Capture opponent's stones.</p>
-                <div class="code-header">Embed Code</div>
+              <div>
+                <div class="tech-badges">
+                  <span class="badge vr">Mancala</span>
+                  <span class="badge api">Embeddable</span>
+                </div>
+                <h3>Banter Mancala</h3>
+                <p>Traditional stone sow-and-capture game (Work in Progress).</p>
+                <div class="code-header">Embed Script (Click to copy)</div>
                 <pre><code>&lt;script src="https://banter-mancala.firer.at/Mancala.js?instance=mancala&boardPosition=0 1.1 -2&lighting=lit"&gt;&lt;/script&gt;</code></pre>
+              </div>
+              <div class="card-actions">
                 <a href="https://github.com/FireRat666/Banter-Mancala" class="buttonss buttonG" target="_blank">GitHub</a>
+              </div>
             </div>
 
             <!-- Banter Tic-Tac-Toe -->
             <div class="project-card">
+              <div>
+                <div class="tech-badges">
+                  <span class="badge vr">Tic-Tac-Toe</span>
+                  <span class="badge api">Embeddable</span>
+                </div>
                 <h3>Banter Tic-Tac-Toe</h3>
-                <p>Simple 3x3 game for quick decisions.</p>
-                <div class="code-header">Embed Code</div>
+                <p>Simple 3x3 grid game, perfect for quick decisions and simple layouts.</p>
+                <div class="code-header">Embed Script (Click to copy)</div>
                 <pre><code>&lt;script src="https://banter-tic-tac-toe.firer.at/TicTacToe.js?instance=tictactoe&boardPosition=0 1.2 0&boardScale=1"&gt;&lt;/script&gt;</code></pre>
+              </div>
+              <div class="card-actions">
                 <a href="https://github.com/FireRat666/Banter-Tic-Tac-Toe" class="buttonss buttonG" target="_blank">GitHub</a>
+              </div>
             </div>
         </section>
       </main>
+      
       <footer>
         <p>&copy; <span id="year"></span> FireR.at. All Rights Reserved.</p>
+        
         <script>
             document.getElementById('year').textContent = new Date().getFullYear();
 
             // Click-to-copy functionality
             document.querySelectorAll('.project-card pre code').forEach(block => {
                 block.parentElement.addEventListener('click', async () => {
-                    // Copy text
                     try {
+                        // Copy text
                         await navigator.clipboard.writeText(block.innerText);
                         
                         // Select text for visual feedback
@@ -186,7 +270,7 @@
                         if (header && header.classList.contains('code-header')) {
                             const originalText = header.innerText;
                             header.innerText = 'Copied!';
-                            header.style.color = 'var(--primary-green)';
+                            header.style.color = 'var(--accent-green)';
                             
                             setTimeout(() => {
                                 header.innerText = originalText;

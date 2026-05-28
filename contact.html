@@ -1,61 +1,79 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <meta name='viewport' content='width=device-width'>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <link id="favicon" rel="icon" href="./files/favicon.ico" type="image/x-icon" />
     <meta name="color-scheme" content="dark">
-		<link id="favicon" rel="icon" href="https://firer.at/files/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="/pages/nstyle.css" />
-    <title>Contact Information</title>
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-		<!-- Analytics and Cookie Stuff Start -->
-		<script>
-      if(window.isBanter) { console.log("index.html Window is Banter, Not adding cookie chimp scripts");
+    
+    <!-- SEO Meta Tags -->
+    <meta property="og:title" content="FireR.at - Contact Info">
+    <meta property="og:description" content="Reach out to FireR.at. Connect via GitHub, Telegram, or Email for collaborations and VR inquiries.">
+    <meta name="description" content="Contact details and support channels for FireR.at. Connect on GitHub, Telegram, or email. Donate on Ko-fi or PayPal.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Me | FireR.at</title>
+    
+    <!-- Typography & Stylesheets -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./pages/nstyle.css" />
+    
+    <!-- Dynamic Background Script -->
+    <script src="./scripts/RandomBG.js"></script>
+    
+    <!-- Analytics & Privacy Consent -->
+    <script>
+      if(window.isBanter) { 
+        console.log("Window is Banter, skipping analytics.");
       } else {
-          console.log("Adding Cookie Chimp Script")
-          const cookiechimpscript = document.createElement("script");
-          cookiechimpscript.id = "cookiechimpscript";
-          cookiechimpscript.setAttribute("src", "https://cookiechimp.com/widget/mV3trJ.js");
-          document.querySelector("head").appendChild(cookiechimpscript); };
+        console.log("Adding Cookie Chimp Script");
+        const cookiechimpscript = document.createElement("script");
+        cookiechimpscript.id = "cookiechimpscript";
+        cookiechimpscript.setAttribute("src", "https://cookiechimp.com/widget/mV3trJ.js");
+        document.querySelector("head").appendChild(cookiechimpscript);
+      };
     </script>
-		<script type="text/plain" data-src="https://www.googletagmanager.com/gtag/js?id=G-HSMS8JERQ2"
-		  data-category="analytics" data-service="Google Analytics" ></script>
-		<script type="text/plain" data-category="analytics" data-service="Google Analytics" >
-		  window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
-		  gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
-		<!-- Analytics and Cookie Stuff END -->
-  </head>
-  <body>
+    <script type="text/plain" data-src="https://www.googletagmanager.com/gtag/js?id=G-HSMS8JERQ2"
+      data-category="analytics" data-service="Google Analytics" ></script>
+    <script type="text/plain" data-category="analytics" data-service="Google Analytics" >
+      window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
+</head>
+<body>
+    <div class="ambient-glow-2"></div>
     <div class="container">
       <header>
-        <h1>Welcome to FireR.at</h1>
-        <p>Your portal to the metaverse and beyond.</p>
+        <h1><span class="text-gradient">Get In Touch</span></h1>
+        <p>Your portal to the metaverse and beyond. Reach out for collaborations, ideas, or support.</p>
       </header>
+      
       <nav>
         <a href="index.html" class="buttonss buttonMain">Home</a>
         <a href="contact.html" class="buttonss buttonMain buttonActive">Contact</a>
         <a href="privacy.html" class="buttonss buttonMain">Privacy</a>
-        <a href="games.html" class="buttonG buttonss buttonss">Banter Games</a>
-        <a href="https://firer.at/pages/games.html" class="buttonG buttonss">Browser Games</a>
+        <a href="games.html" class="buttonG buttonss">Banter Games</a>
+        <a href="/pages/games.html" class="buttonG buttonss">Browser Games</a>
         <a href="https://github.com/FireRat666" class="buttonW buttonss" target="_blank">GitHub</a>
         <a href="https://ko-fi.com/FireRat666" class="buttonGY buttonss" target="_blank">Ko-fi</a>
         <a href="https://paypal.me/FireRat666" class="buttonY buttonss" target="_blank">PayPal</a>
       </nav>
+      
       <main>
-        <center>
+        <section id="connect">
           <h2>Connect With Me</h2>
-          <p>I'm always open to new ideas, collaborations, or just a friendly chat. Feel free to reach out!</p>
-          <a href="https://github.com/FireRat666" class="buttonW buttonss" target="_blank">GitHub</a>
-          <a href="https://t.me/FireRat666" class="buttonGY buttonss" target="_blank">Telegram</a>
-          <a href="mailto:hello@firer.at" class="buttonR buttonss">Email Me</a>
-        </center>
+          <p>I'm always open to new ideas, collaborations, or just a friendly chat. Feel free to reach out through any of these platforms!</p>
+          <div class="social-links">
+            <a href="https://github.com/FireRat666" class="buttonW buttonss" target="_blank">GitHub</a>
+            <a href="https://t.me/FireRat666" class="buttonGY buttonss" target="_blank">Telegram</a>
+            <a href="mailto:hello@firer.at" class="buttonR buttonss">Email Me</a>
+          </div>
+        </section>
       </main>
+      
       <footer>
         <p>&copy; <span id="year"></span> FireR.at. All Rights Reserved.</p>
         <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
       </footer>
     </div>
-  </body>
+</body>
 </html>

@@ -1,114 +1,219 @@
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<link id="favicon" rel="icon" href="/files/favicon.ico" type="image/x-icon" />
+		<link id="favicon" rel="icon" href="./files/favicon.ico" type="image/x-icon" />
 		<meta name="color-scheme" content="dark">
-		<meta property="og:title" content="FireR.at">
-		<meta property="og:description" content="FireR.at, A Place for things">
-		<meta name="description" content="The personal website and portfolio for FireR.at, a programmer and VR enthusiast creating immersive experiences and practical tools.">
+		
+		<!-- SEO Meta Tags -->
+		<meta property="og:title" content="FireR.at - Portfolio">
+		<meta property="og:description" content="Personal portfolio and project showcase for FireR.at, developer building serverless APIs, multiplayer web tools, and VR integrations.">
+		<meta name="description" content="Explore open-source developer tools, projects and immersive multiplayer VR utilities built by FireR.at.">
 		<meta property="og:image" content="https://firer.at/files/FireRat-(7).jpeg">  
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>FireR.at's Website/Space</title>
-		<link rel="stylesheet" href="/pages/nstyle.css" />
+		<title>FireR.at | Developer & VR Enthusiast</title>
+		
+		<!-- Typography & Stylesheets -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-		<script src="/scripts/RandomBG.js"></script>
-		<!-- Analytics and Cookie Stuff Start -->
-		<!-- <script src="https://cookiechimp.com/widget/mV3trJ.js"></script> -->
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="./pages/nstyle.css" />
+		
+		<!-- Dynamic Background Script -->
+		<script src="./scripts/RandomBG.js"></script>
+		
+		<!-- Analytics & Privacy Consent (Cookie Chimp) -->
 		<script>
-      if(window.isBanter) { console.log("Window is Banter, Not adding cookie chimp scripts");
-      } else {
-          console.log("Adding Cookie Chimp Script")
-          const cookiechimpscript = document.createElement("script");
-          cookiechimpscript.id = "cookiechimpscript";
-          cookiechimpscript.setAttribute("src", "https://cookiechimp.com/widget/mV3trJ.js");
-          document.querySelector("head").appendChild(cookiechimpscript); };
+        console.log("Adding Cookie Chimp Script");
+        const cookiechimpscript = document.createElement("script");
+        cookiechimpscript.id = "cookiechimpscript";
+        cookiechimpscript.setAttribute("src", "https://cookiechimp.com/widget/mV3trJ.js");
+        document.querySelector("head").appendChild(cookiechimpscript);
     </script>
 		<script type="text/plain" data-src="https://www.googletagmanager.com/gtag/js?id=G-HSMS8JERQ2"
 		  data-category="analytics" data-service="Google Analytics" ></script>
 		<script type="text/plain" data-category="analytics" data-service="Google Analytics" >
 		  window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
 		  gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
-		<!-- Analytics and Cookie Stuff END -->
-</head>
-<body>
-    <div class="container">
-      <header>
-        <h1>Welcome to FireR.at: Innovating in VR and Beyond</h1>
-        <p>As a dedicated programmer and VR enthusiast, I help build immersive experiences and practical tools for VR and Beyond. Your support helps fuel these creations and push the boundaries of what's possible.</p>
-      </header>
-      <nav>
-        <a href="index.html" class="buttonss buttonMain buttonActive">Home</a>
-        <a href="contact.html" class="buttonss buttonMain">Contact</a>
-        <a href="privacy.html" class="buttonss buttonMain">Privacy</a>
-        <a href="games.html" class="buttonG buttonss buttonss">Banter Games</a>
-        <a href="https://firer.at/pages/games.html" class="buttonG buttonss">Browser Games</a>
-        <a href="https://github.com/FireRat666" class="buttonW buttonss" target="_blank">GitHub</a>
-        <a href="https://ko-fi.com/FireRat666" class="buttonGY buttonss" target="_blank">Ko-fi</a>
-        <a href="https://paypal.me/FireRat666" class="buttonY buttonss" target="_blank">PayPal</a>
-      </nav>
-      <main>
-        <section id="about">
-          <h2>About Me</h2>
-          <p>I'm a programmer at heart, with a strong interest in the ever-evolving world of VR.<br/>I'm on a path to becoming a creator of immersive experiences, focusing on building practical tools and utilities.<br/>You can see some of my work below.</p>
-        </section>
-        <section id="projects">
-          <div class="project-card">
-          <h2>Some Things</h2>
-          <p>These just some of my projects,</p>
-          <p>You can see more of my work on GitHub.</p>
-          <a href="https://github.com/FireRat666" class="buttonss buttonW" target="_blank">Github</a>
-          </div>
-          <div class="project-card">
-            <h3>Banter Games</h3>
-            <p>A collection of multiplayer games developed for BanterVR. Play Checkers, Chess, Connect4, Go, and more with friends across VR and 2D platforms.</p>
-            <a href="games.html" class="buttonss buttonG">View Games</a>
-          </div>
-          <div class="project-card">
-            <h3>shorter</h3>
-            <p>A powerful, self-hostable link shortener and text sharing service with multi-domain support. Features: URL & text sharing, custom keys, password-protected links, and more.</p>
-            <a href="https://github.com/FireRat666/shorter" class="buttonss buttonG" target="_blank">GitHub</a>
-            <a href="https://s.firer.at/" class="buttonss buttonW" target="_blank">Live Service</a>
-          </div>
-          <div class="project-card">
-            <h3>RenderVerify</h3>
-            <p>An event registration and verification system with a public API. Users register with unique codes, and admins manage events and users from a dashboard.</p>
-            <a href="https://github.com/FireRat666/RenderVerify" class="buttonss buttonG" target="_blank">Learn More</a>
-          </div>
-          <div class="project-card">
-            <h3>Ready Player Me ID Extractor</h3>
-            <p>A simple tool to extract your Avatar ID and User ID from Ready Player Me via their IFrame API.</p>
-            <a href="https://firer.at/pages/rpm-id/index.html" class="buttonss buttonG" target="_blank">Learn More</a>
-          </div>
-          <div class="project-card">
-            <h3>Fire-V-Player</h3>
-            <p>A collaborative, embeddable YouTube video player designed for virtual worlds inside Banter VR. It allows users to create shared playlists, vote on songs, and watch together in a synchronized real-time environment.</p>
-            <a href="https://github.com/FireRat666/Fire-V-Player/" class="buttonss buttonG" target="_blank">Learn More</a>
-          </div>
-          <div class="project-card">
-            <h3>Banter Remote Console Logger</h3>
-            <p>A robust, real-time logging solution for Banter VR spaces. It uses a WebSocket server to capture console.log messages from a Banter space and forward them to a server's system logs, making debugging on devices like the Quest much easier.</p>
-            <a href="https://github.com/FireRat666/Quest-Console-Logger" class="buttonss buttonG" target="_blank">Learn More</a>
-          </div>
-          <div class="project-card">
-            <h3>Holograms Against Humanity</h3>
-            <p>A clone of Cards Against Humanity adapted for social VR platforms. Supports up to 10 players, custom card decks, and easy embedding into web-based virtual worlds.</p>
-            <a href="https://github.com/FireRat666/Holograms-Against-Humanity" class="buttonss buttonG" target="_blank">Learn More</a>
-          </div>
-        </section>
-        <section id="connect">
-          <h2>Connect With Me</h2>
-          <p>I'm always open to new ideas, collaborations, or just a friendly chat. Feel free to reach out!</p>
-          <a href="https://github.com/FireRat666" class="buttonW buttonss" target="_blank">GitHub</a>
-          <a href="https://t.me/FireRat666" class="buttonGY buttonss" target="_blank">Telegram</a>
-          <a href="mailto:hello@firer.at" class="buttonR buttonss">Email Me</a>
-        </section>
-      </main>
-      <footer>
-        <p>&copy; <span id="year"></span> FireR.at. All Rights Reserved.</p>
-        <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
-      </footer>
-    </div>
-  </body>
+	</head>
+	<body>
+		<div class="ambient-glow-2"></div>
+		<div class="container">
+			<header>
+				<h1>Welcome to <span class="text-gradient">FireR.at</span></h1>
+				<p>Developer and VR enthusiast creating interactive experiences, high-performance APIs, and open-source utilities for VR and the modern web.</p>
+			</header>
+			
+			<nav>
+				<a href="index.html" class="buttonss buttonMain buttonActive">Home</a>
+				<a href="contact.html" class="buttonss buttonMain">Contact</a>
+				<a href="privacy.html" class="buttonss buttonMain">Privacy</a>
+				<a href="games.html" class="buttonG buttonss">Banter Games</a>
+				<a href="/pages/games.html" class="buttonG buttonss">Browser Games</a>
+				<a href="https://github.com/FireRat666" class="buttonW buttonss" target="_blank">GitHub</a>
+				<a href="https://ko-fi.com/FireRat666" class="buttonGY buttonss" target="_blank">Ko-fi</a>
+				<a href="https://paypal.me/FireRat666" class="buttonY buttonss" target="_blank">PayPal</a>
+			</nav>
+			
+			<main>
+				<section id="about">
+					<h2>About Me</h2>
+					<p>I'm a programmer at heart, with a strong interest in the ever-evolving world of VR.<br/>I'm on a path to becoming a creator of immersive experiences, focusing on building practical tools and utilities.<br/>You can see some of my work below.</p>
+				</section>
+				
+				<h2 class="section-title">Projects & Creations</h2>
+				<section id="projects">
+					
+					<!-- JSON Against Humanity -->
+					<div class="project-card featured-green">
+						<div>
+							<div class="tech-badges">
+								<span class="badge json">Dataset</span>
+								<span class="badge api">Open-Source</span>
+							</div>
+							<h3>JSON Against Humanity</h3>
+							<p>A comprehensive Cards Against Humanity card dataset in clean plaintext and optimized JSON formats. Features official sets and community-created custom packs.</p>
+							
+							<div class="project-stats">
+								<div class="stat-item">
+									<span class="stat-val">83,410+</span>
+									<span class="stat-lbl">Cards Total</span>
+								</div>
+								<div class="stat-item">
+									<span class="stat-val">423</span>
+									<span class="stat-lbl">Packs</span>
+								</div>
+							</div>
+						</div>
+						<div class="card-actions">
+							<a href="https://jah.firer.at/" class="buttonss buttonG btn-gradient" target="_blank">Live Dataset</a>
+							<a href="https://github.com/FireRat666/json-against-humanity" class="buttonss buttonW" target="_blank">GitHub</a>
+						</div>
+					</div>
+					
+					<!-- Cards Against Humanity API -->
+					<div class="project-card featured-green">
+						<div>
+							<div class="tech-badges">
+								<span class="badge api">REST API</span>
+								<span class="badge json">Serverless</span>
+							</div>
+							<h3>CAH Serverless API</h3>
+							<p>A serverless, database-free REST API serving Cards Against Humanity. Optimized for Vercel/Netlify with in-memory caching and zero setup overhead.</p>
+						</div>
+						<div class="card-actions">
+							<a href="https://cah-api.firer.at/" class="buttonss buttonG btn-gradient" target="_blank">API Portal</a>
+							<a href="https://github.com/FireRat666/CAH-Serverless-API" class="buttonss buttonW" target="_blank">GitHub</a>
+						</div>
+					</div>
+					
+					<!-- Banter Games -->
+					<div class="project-card">
+						<div>
+							<div class="tech-badges">
+								<span class="badge vr">VR Integration</span>
+								<span class="badge websocket">Multiplayer</span>
+							</div>
+							<h3>Banter Games</h3>
+							<p>A collection of real-time multiplayer games designed specifically for Banter VR. Easily embed Checkers, Chess, Connect 4, Go, and more into virtual spaces using a simple script tag.</p>
+						</div>
+						<div class="card-actions">
+							<a href="games.html" class="buttonss buttonG">View Integration Guide</a>
+						</div>
+					</div>
+					
+					<!-- shorter -->
+					<div class="project-card">
+						<div>
+							<div class="tech-badges">
+								<span class="badge app">Web Service</span>
+								<span class="badge api">Database</span>
+							</div>
+							<h3>shorter</h3>
+							<p>A powerful, self-hostable link shortener and text sharing service. Supports multi-domain operations, custom short-keys, expiration times, and password protection.</p>
+						</div>
+						<div class="card-actions">
+							<a href="https://s.firer.at/" class="buttonss buttonG" target="_blank">Live Service</a>
+							<a href="https://github.com/FireRat666/shorter" class="buttonss buttonW" target="_blank">GitHub</a>
+						</div>
+					</div>
+					
+					<!-- RenderVerify -->
+					<div class="project-card">
+						<div>
+							<div class="tech-badges">
+								<span class="badge api">API</span>
+								<span class="badge app">Dashboard</span>
+							</div>
+							<h3>RenderVerify</h3>
+							<p>An event registration and verification system. Features a secure verification API, unique user codes, and a comprehensive administrative dashboard for entry management.</p>
+						</div>
+						<div class="card-actions">
+							<a href="https://github.com/FireRat666/RenderVerify" class="buttonss buttonG" target="_blank">GitHub Repo</a>
+						</div>
+					</div>
+					
+					<!-- Fire-V-Player -->
+					<div class="project-card">
+						<div>
+							<div class="tech-badges">
+								<span class="badge vr">VR Script</span>
+								<span class="badge websocket">Sync Playback</span>
+							</div>
+							<h3>Fire-V-Player</h3>
+							<p>A collaborative, embeddable YouTube video player built for virtual environments in Banter VR. Allows users to vote on queues and watch videos together in real-time sync.</p>
+						</div>
+						<div class="card-actions">
+							<a href="https://github.com/FireRat666/Fire-V-Player/" class="buttonss buttonG" target="_blank">GitHub Repo</a>
+						</div>
+					</div>
+					
+					<!-- Banter Remote Console Logger -->
+					<div class="project-card">
+						<div>
+							<div class="tech-badges">
+								<span class="badge vr">Debugging</span>
+								<span class="badge websocket">WebSockets</span>
+							</div>
+							<h3>Banter Remote Logger</h3>
+							<p>A real-time logging solution for Banter VR. Captures console.log errors inside VR spaces and forwards them to a remote WebSocket server, simplifying standalone device debugging.</p>
+						</div>
+						<div class="card-actions">
+							<a href="https://github.com/FireRat666/Quest-Console-Logger" class="buttonss buttonG" target="_blank">GitHub Repo</a>
+						</div>
+					</div>
+					
+					<!-- Holograms Against Humanity -->
+					<div class="project-card">
+						<div>
+							<div class="tech-badges">
+								<span class="badge vr">VR Game</span>
+								<span class="badge websocket">Cards Game</span>
+							</div>
+							<h3>Holograms Against Humanity</h3>
+							<p>A clone of Cards Against Humanity adapted for social VR platforms. Supports up to 10 players, custom card decks, and seamless virtual space embedding.</p>
+						</div>
+						<div class="card-actions">
+							<a href="https://github.com/FireRat666/Holograms-Against-Humanity" class="buttonss buttonG" target="_blank">GitHub Repo</a>
+						</div>
+					</div>
+				</section>
+				
+				<section id="connect">
+					<h2>Connect With Me</h2>
+					<p>I am always open to new ideas, project collaborations, or developer discussions. Reach out or support my work through the channels below.</p>
+					<div class="social-links">
+						<a href="https://github.com/FireRat666" class="buttonW buttonss" target="_blank">GitHub</a>
+						<a href="https://t.me/FireRat666" class="buttonGY buttonss" target="_blank">Telegram</a>
+						<a href="mailto:hello@firer.at" class="buttonR buttonss">Email Me</a>
+					</div>
+				</section>
+			</main>
+			
+			<footer>
+				<p>&copy; <span id="year"></span> FireR.at. All Rights Reserved.</p>
+				<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+			</footer>
+		</div>
+	</body>
 </html>
