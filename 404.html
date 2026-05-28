@@ -19,22 +19,13 @@
     <script src="/scripts/RandomBG.js"></script>
     
     <!-- Analytics & Privacy Consent -->
-    <script>
-      if(window.isBanter) { 
-        console.log("Window is Banter, skipping analytics.");
-      } else {
-        console.log("Adding Cookie Chimp Script");
-        const cookiechimpscript = document.createElement("script");
-        cookiechimpscript.id = "cookiechimpscript";
-        cookiechimpscript.setAttribute("src", "https://cookiechimp.com/widget/mV3trJ.js");
-        document.querySelector("head").appendChild(cookiechimpscript);
-      };
-    </script>
+    <script src="https://cookiechimp.com/widget/mV3trJ.js"></script>
     <script type="text/plain" data-src="https://www.googletagmanager.com/gtag/js?id=G-HSMS8JERQ2"
-      data-category="analytics" data-service="Google Analytics" ></script>
+    data-category="analytics" data-service="Google Analytics" ></script>
     <script type="text/plain" data-category="analytics" data-service="Google Analytics" >
-      window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
+    window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
+    <!-- Analytics & Privacy Consent END -->
 </head>
 <body>
     <div class="ambient-glow-2"></div>
