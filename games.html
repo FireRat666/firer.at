@@ -70,14 +70,14 @@
       <main>
         <section id="guide">
             <h2>How to Embed Banter Games</h2>
-            <p>Banter games are simple to embed. Just insert a <code>&lt;script&gt;</code> tag into your space's HTML. Depending on the game, configuration is done either via <strong>URL Query Parameters</strong> or <strong>HTML Script Attributes</strong>.</p>
+            <p>Banter games are simple to embed. Just insert a <code>&lt;script&gt;</code> tag into your space's HTML. Configuration can be done via <strong>HTML Script Attributes</strong> (recommended) or legacy <strong>URL Query Parameters</strong> (for backwards compatibility).</p>
             
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
                 <!-- URL Configured Games -->
                 <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
                     <div>
-                        <h3 style="color: var(--accent-green); margin-bottom: 0.5rem;">1. URL-Configured Games</h3>
-                        <p style="font-size: 0.85rem; margin-bottom: 1rem; line-height: 1.5;">Used by: <em>Checkers, Chess, Reversi, Connect 4, Go, Gomoku, Mancala, Tic-Tac-Toe</em>. Options are appended as query parameters in the <code>src</code> URL.</p>
+                        <h3 style="color: var(--accent-green); margin-bottom: 0.5rem;">1. Board Games</h3>
+                        <p style="font-size: 0.85rem; margin-bottom: 1rem; line-height: 1.5;">Used by: <em>Checkers, Chess, Reversi, Connect 4, Go, Gomoku, Mancala, Tic-Tac-Toe</em>. Options can be written as script attributes (e.g. <code>position="..."</code>) or appended as URL query parameters in the <code>src</code> URL.</p>
                         
                         <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem; color: #ffffff; font-family: 'Outfit', sans-serif;">Parameters (URL Query)</h4>
                         <table style="margin: 0.5rem 0; font-size: 0.75rem; border: none; display: table;">
@@ -176,7 +176,7 @@
                 <h3>Banter Checkers</h3>
                 <p>Classic checkers with forced jumps, turn validation, and automatic king promotion.</p>
                 <div class="code-header">Embed Script (Click to copy)</div>
-                <pre><code>&lt;script src="https://banter-checkers.firer.at/checkers.js?instance=checkers&boardPosition=0 1.1 -2&boardScale=1"&gt;&lt;/script&gt;</code></pre>
+                <pre><code>&lt;script src="https://banter-checkers.firer.at/checkers.js" instance="checkers" position="0 1.1 -2" scale="1 1 1"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
                 <a href="https://github.com/FireRat666/Banter-Checkers" class="buttonss buttonG" target="_blank">GitHub</a>
@@ -193,7 +193,7 @@
                 <h3>Banter Chess</h3>
                 <p>3D serverless chess featuring real-time move validation and custom lighting options.</p>
                 <div class="code-header">Embed Script (Click to copy)</div>
-                <pre><code>&lt;script src="https://banter-chess.firer.at/Chess.js?instance=chess&boardPosition=0 1.1 -2&lighting=lit"&gt;&lt;/script&gt;</code></pre>
+                <pre><code>&lt;script src="https://banter-chess.firer.at/Chess.js" instance="chess" position="0 1.1 -2" lighting="lit"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
                 <a href="https://github.com/FireRat666/Banter-Chess" class="buttonss buttonG" target="_blank">GitHub</a>
@@ -210,7 +210,7 @@
                 <h3>Banter Reversi</h3>
                 <p>Othello-style disk flipping strategy game with a reactive interface.</p>
                 <div class="code-header">Embed Script (Click to copy)</div>
-                <pre><code>&lt;script src="https://banter-reversi.firer.at/Reversi.js?instance=reversi&boardPosition=0 1.1 -2&hideUI=false"&gt;&lt;/script&gt;</code></pre>
+                <pre><code>&lt;script src="https://banter-reversi.firer.at/Reversi.js" instance="reversi" position="0 1.1 -2" hide-ui="false"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
                 <a href="https://github.com/FireRat666/Banter-Reversi" class="buttonss buttonG" target="_blank">GitHub</a>
@@ -227,7 +227,7 @@
                 <h3>Banter Connect 4</h3>
                 <p>Vertical four-in-a-row checker-dropping game. Includes support for custom board models.</p>
                 <div class="code-header">Embed Script (Click to copy)</div>
-                <pre><code>&lt;script src="https://banter-connect4.firer.at/Connect4.js?instance=c4&boardPosition=0 1.1 0&useCustomModels=true&lighting=lit"&gt;&lt;/script&gt;</code></pre>
+                <pre><code>&lt;script src="https://banter-connect4.firer.at/Connect4.js" instance="c4" position="0 1.1 0" use-custom-models="true" lighting="lit"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
                 <a href="https://github.com/FireRat666/Banter-Connect4" class="buttonss buttonG" target="_blank">GitHub</a>
@@ -244,7 +244,7 @@
                 <h3>Banter Go (Weiqi)</h3>
                 <p>Full-featured board game of Go. Implements liberty tracking, ko rule validation, and suicide prevention.</p>
                 <div class="code-header">Embed Script (Click to copy)</div>
-                <pre><code>&lt;script src="https://banter-go.firer.at/Go.js?instance=go&boardSize=19&boardPosition=0 1.5 0&scoreboardPosition=0 2 -2"&gt;&lt;/script&gt;</code></pre>
+                <pre><code>&lt;script src="https://banter-go.firer.at/Go.js" instance="go" board-size="19" position="0 1.5 0" scoreboard-position="0 2 -2"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
                 <a href="https://github.com/FireRat666/Banter-Go" class="buttonss buttonG" target="_blank">GitHub</a>
@@ -261,7 +261,7 @@
                 <h3>Banter Gomoku</h3>
                 <p>Five-in-a-row alignment game played on a Go grid board.</p>
                 <div class="code-header">Embed Script (Click to copy)</div>
-                <pre><code>&lt;script src="https://banter-gomoku.firer.at/Gomoku.js?instance=gomoku&boardSize=15&boardPosition=0 1.5 0"&gt;&lt;/script&gt;</code></pre>
+                <pre><code>&lt;script src="https://banter-gomoku.firer.at/Gomoku.js" instance="gomoku" board-size="15" position="0 1.5 0"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
                 <a href="https://github.com/FireRat666/Banter-Gomoku" class="buttonss buttonG" target="_blank">GitHub</a>
@@ -278,7 +278,7 @@
                 <h3>Banter Mancala</h3>
                 <p>Traditional stone sow-and-capture game (Work in Progress).</p>
                 <div class="code-header">Embed Script (Click to copy)</div>
-                <pre><code>&lt;script src="https://banter-mancala.firer.at/Mancala.js?instance=mancala&boardPosition=0 1.1 -2&lighting=lit"&gt;&lt;/script&gt;</code></pre>
+                <pre><code>&lt;script src="https://banter-mancala.firer.at/Mancala.js" instance="mancala" position="0 1.1 -2" lighting="lit"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
                 <a href="https://github.com/FireRat666/Banter-Mancala" class="buttonss buttonG" target="_blank">GitHub</a>
@@ -295,7 +295,7 @@
                 <h3>Banter Tic-Tac-Toe</h3>
                 <p>Simple 3x3 grid game, perfect for quick decisions and simple layouts.</p>
                 <div class="code-header">Embed Script (Click to copy)</div>
-                <pre><code>&lt;script src="https://banter-tic-tac-toe.firer.at/TicTacToe.js?instance=tictactoe&boardPosition=0 1.2 0&boardScale=1"&gt;&lt;/script&gt;</code></pre>
+                <pre><code>&lt;script src="https://banter-tic-tac-toe.firer.at/TicTacToe.js" instance="tictactoe" position="0 1.2 0" scale="1 1 1"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
                 <a href="https://github.com/FireRat666/Banter-Tic-Tac-Toe" class="buttonss buttonG" target="_blank">GitHub</a>
