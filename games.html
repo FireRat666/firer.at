@@ -53,47 +53,98 @@
       <main>
         <section id="guide">
             <h2>How to Embed Banter Games</h2>
-            <p>Adding these games to your Banter space is simple. Just insert a <code>&lt;script&gt;</code> tag into your space's HTML pointing to the game's script URL.</p>
+            <p>Banter games are simple to embed. Just insert a <code>&lt;script&gt;</code> tag into your space's HTML. Depending on the game, configuration is done either via <strong>URL Query Parameters</strong> or <strong>HTML Script Attributes</strong>.</p>
             
-            <h3>Common Configuration Parameters</h3>
-            <p>All games support the following URL query parameters to control their position, size, and layout inside virtual spaces:</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Parameter</th>
-                        <th>Default Value</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>instance</code></td>
-                        <td>(Page URL)</td>
-                        <td><strong>Recommended.</strong> A unique ID (e.g., <code>?instance=lobby-chess</code>) to isolate game states if you have multiple games of the same type in your space.</td>
-                    </tr>
-                    <tr>
-                        <td><code>boardPosition</code></td>
-                        <td><code>0 1.1 0</code></td>
-                        <td>The center position of the board in 3D world space coordinates (x y z).</td>
-                    </tr>
-                    <tr>
-                        <td><code>boardRotation</code></td>
-                        <td><code>0 0 0</code></td>
-                        <td>The rotation angles of the board in Euler space (x y z).</td>
-                    </tr>
-                    <tr>
-                        <td><code>boardScale</code></td>
-                        <td><code>1 1 1</code></td>
-                        <td>The overall scale of the 3D game objects.</td>
-                    </tr>
-                    <tr>
-                        <td><code>hideUI</code></td>
-                        <td><code>false</code></td>
-                        <td>Set to <code>true</code> to hide the floating 3D control panels (reset/undo buttons).</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p><em>Note: Coordinates are space-separated. In URLs, spaces must be encoded as <code>%20</code> or <code>+</code>.</em></p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
+                <!-- URL Configured Games -->
+                <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <h3 style="color: var(--accent-green); margin-bottom: 0.5rem;">1. URL-Configured Games</h3>
+                        <p style="font-size: 0.85rem; margin-bottom: 1rem; line-height: 1.5;">Used by: <em>Checkers, Chess, Reversi, Connect 4, Go, Gomoku, Mancala, Tic-Tac-Toe</em>. Options are appended as query parameters in the <code>src</code> URL.</p>
+                        
+                        <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem; color: #ffffff; font-family: 'Outfit', sans-serif;">Parameters (URL Query)</h4>
+                        <table style="margin: 0.5rem 0; font-size: 0.75rem; border: none; display: table;">
+                            <thead>
+                                <tr>
+                                    <th>Parameter</th>
+                                    <th>Default</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>instance</code></td>
+                                    <td>(Page URL)</td>
+                                    <td>Unique room state (e.g. <code>?instance=lobby-chess</code>).</td>
+                                </tr>
+                                <tr>
+                                    <td><code>boardPosition</code></td>
+                                    <td><code>0 1.1 0</code></td>
+                                    <td>3D position coordinates (x y z).</td>
+                                </tr>
+                                <tr>
+                                    <td><code>boardRotation</code></td>
+                                    <td><code>0 0 0</code></td>
+                                    <td>Euler rotation angles (x y z).</td>
+                                </tr>
+                                <tr>
+                                    <td><code>boardScale</code></td>
+                                    <td><code>1 1 1</code></td>
+                                    <td>Scale size of board objects.</td>
+                                </tr>
+                                <tr>
+                                    <td><code>hideUI</code></td>
+                                    <td><code>false</code></td>
+                                    <td>Set <code>true</code> to hide reset/undo buttons.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 1rem; margin-bottom: 0;"><em>Note: Separate coordinates with spaces (encoded as <code>%20</code> or <code>+</code> in URLs).</em></p>
+                </div>
+
+                <!-- Attribute Configured Games -->
+                <div style="background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <h3 style="color: var(--accent-lime); margin-bottom: 0.5rem;">2. Attribute-Configured Games</h3>
+                        <p style="font-size: 0.85rem; margin-bottom: 1rem; line-height: 1.5;">Used by: <em>Blackjack, UNO, Rummy10, Holograms Against Humanity (HAH)</em>. Options are written directly as attributes on the script tag itself.</p>
+                        
+                        <h4 style="font-size: 0.9rem; margin-bottom: 0.5rem; color: #ffffff; font-family: 'Outfit', sans-serif;">Parameters (Script Attributes)</h4>
+                        <table style="margin: 0.5rem 0; font-size: 0.75rem; border: none; display: table;">
+                            <thead>
+                                <tr>
+                                    <th>Attribute</th>
+                                    <th>Default</th>
+                                    <th>Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>instance</code></td>
+                                    <td>(Game specific)</td>
+                                    <td>Unique room state (e.g. <code>instance="lobby-uno"</code>).</td>
+                                </tr>
+                                <tr>
+                                    <td><code>position</code></td>
+                                    <td><code>0 0 2</code></td>
+                                    <td>3D coordinates where table is spawned (x y z).</td>
+                                </tr>
+                                <tr>
+                                    <td><code>rotation</code></td>
+                                    <td><code>0 0 0</code></td>
+                                    <td>Euler rotation of table (x y z).</td>
+                                </tr>
+                                <tr>
+                                    <td><code>debug</code></td>
+                                    <td><code>false</code></td>
+                                    <td>Set to <code>"true"</code> to enable developer logging.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 1rem; margin-bottom: 0;"><em>Note: Coordinates are standard space-separated attributes.</em></p>
+                </div>
+            </div>
         </section>
 
         <h2 class="section-title">Available Game Scripts</h2>
@@ -231,6 +282,74 @@
               </div>
               <div class="card-actions">
                 <a href="https://github.com/FireRat666/Banter-Tic-Tac-Toe" class="buttonss buttonG" target="_blank">GitHub</a>
+              </div>
+            </div>
+
+            <!-- Banter Blackjack -->
+            <div class="project-card">
+              <div>
+                <div class="tech-badges">
+                  <span class="badge vr">Blackjack</span>
+                  <span class="badge api">Embeddable</span>
+                </div>
+                <h3>Banter Blackjack</h3>
+                <p>Multiplayer Blackjack for Banter VR spaces. Supports 1-7 players, turn handling, host migration, Split, and Double Down options.</p>
+                <div class="code-header">Embed Script (Click to copy)</div>
+                <pre><code>&lt;script src="https://blackjack.firer.at/blackjack.js" position="0 0 2" rotation="0 0 0" instance="lobby-bj"&gt;&lt;/script&gt;</code></pre>
+              </div>
+              <div class="card-actions">
+                <a href="https://github.com/FireRat666/Banter-BlackJack" class="buttonss buttonG" target="_blank">GitHub</a>
+              </div>
+            </div>
+
+            <!-- Banter UNO -->
+            <div class="project-card">
+              <div>
+                <div class="tech-badges">
+                  <span class="badge vr">UNO</span>
+                  <span class="badge api">Embeddable</span>
+                </div>
+                <h3>Banter UNO</h3>
+                <p>Classic multiplayer UNO cards fully synchronized for Banter VR. Supports 2-10 players, turn management, and special card actions.</p>
+                <div class="code-header">Embed Script (Click to copy)</div>
+                <pre><code>&lt;script src="https://uno.firer.at/uno.js" position="0 0 2" rotation="0 180 0" instance="lobby-uno"&gt;&lt;/script&gt;</code></pre>
+              </div>
+              <div class="card-actions">
+                <a href="https://github.com/FireRat666/Banter-UNO" class="buttonss buttonG" target="_blank">GitHub</a>
+              </div>
+            </div>
+
+            <!-- Banter Rummy10 -->
+            <div class="project-card">
+              <div>
+                <div class="tech-badges">
+                  <span class="badge vr">Rummy10</span>
+                  <span class="badge api">Embeddable</span>
+                </div>
+                <h3>Banter Rummy10</h3>
+                <p>Multiplayer Rummy10 card game for Banter VR. Supports 2-10 players with automatic hand dealing and real-time state sync.</p>
+                <div class="code-header">Embed Script (Click to copy)</div>
+                <pre><code>&lt;script src="https://rummy10.firer.at/rummy10.js" position="0 0 2" rotation="0 180 0" instance="lobby-rummy10"&gt;&lt;/script&gt;</code></pre>
+              </div>
+              <div class="card-actions">
+                <a href="https://github.com/FireRat666/Banter-Rummy10" class="buttonss buttonG" target="_blank">GitHub</a>
+              </div>
+            </div>
+
+            <!-- Holograms Against Humanity -->
+            <div class="project-card">
+              <div>
+                <div class="tech-badges">
+                  <span class="badge vr">HAH</span>
+                  <span class="badge api">Embeddable</span>
+                </div>
+                <h3>Holograms Against Humanity</h3>
+                <p>Serverless Cards Against Humanity clone for social VR spaces. Runs client-side using space state properties. Supports up to 10 players and over 70 expansions.</p>
+                <div class="code-header">Embed Script (Click to copy)</div>
+                <pre><code>&lt;script src="https://hah.firer.at/hah.js" position="0 -0.4 -5" instance="demo-game"&gt;&lt;/script&gt;</code></pre>
+              </div>
+              <div class="card-actions">
+                <a href="https://github.com/FireRat666/HaH" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
         </section>
