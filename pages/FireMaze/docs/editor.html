@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link id="favicon" rel="icon" href="../../../files/favicon.ico" type="image/x-icon" />
+		<meta name="color-scheme" content="dark">
+		<meta name="theme-color" content="#00ff44">
+		
+		<!-- Primary SEO Metadata -->
+		<title>Interactive Editor | FireMaze Documentation | FireR.at</title>
+		<meta name="title" content="Interactive Editor | FireMaze Documentation | FireR.at">
+		<meta name="description" content="FireMaze Interactive Editor reference: entering and exiting edit mode, wall toggling per grid type, mesh cycling with Shift+click, the stair tool, entrance/exit editing, and incremental rebuild.">
+		<meta name="author" content="FireRat">
+		<meta name="robots" content="index, follow">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://firer.at/pages/FireMaze/docs/editor.html">
+		<meta property="og:title" content="Interactive Editor | FireMaze Documentation | FireR.at">
+		<meta property="og:description" content="FireMaze Interactive Editor reference: wall toggling, mesh cycling, stairs, and incremental rebuild.">
+		<meta property="og:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		<meta property="og:site_name" content="FireR.at">
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image">
+		<meta property="twitter:url" content="https://firer.at/pages/FireMaze/docs/editor.html">
+		<meta property="twitter:title" content="Interactive Editor | FireMaze Documentation | FireR.at">
+		<meta property="twitter:description" content="FireMaze Interactive Editor reference: wall toggling, mesh cycling, stairs, and incremental rebuild.">
+		<meta property="twitter:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		
+		<!-- Typography & Stylesheets -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="../../nstyle.css" />
+		<link rel="stylesheet" href="../firemaze.css" />
+		
+		<!-- Dynamic Background Script -->
+		<script src="../../../scripts/RandomBG.js"></script>
+		
+		<!-- Analytics & Privacy Consent (Cookie Chimp) -->
+		<script src="https://cookiechimp.com/widget/mV3trJ.js"></script>
+		<script type="text/plain" data-src="https://www.googletagmanager.com/gtag/js?id=G-HSMS8JERQ2"
+		data-category="analytics" data-service="Google Analytics" ></script>
+		<script type="text/plain" data-category="analytics" data-service="Google Analytics" >
+		window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
+		<!-- Analytics & Privacy Consent END -->
+	</head>
+	<body>
+		<div class="ambient-glow-2"></div>
+		<div class="container">
+			<header>
+				<h1><span class="text-gradient">FireMaze</span> &mdash; Interactive Editor</h1>
+				<p>A modal viewport editor for painting, modifying, and customizing maze layout in real time. Every left-click or shift+click updates the cell data and incrementally rebuilds only the affected geometry.</p>
+			</header>
+			
+			<nav>
+				<a href="../../../index.html" class="buttonss buttonMain">Home</a>
+				<a href="../../../contact.html" class="buttonss buttonMain">Contact</a>
+				<a href="../../../privacy.html" class="buttonss buttonMain">Privacy</a>
+				<a href="../../../games.html" class="buttonss buttonG">Banter Games</a>
+				<a href="../../../pages/games.html" class="buttonss buttonG">Browser Games</a>
+				<a href="https://github.com/FireRat666" class="buttonss buttonW" target="_blank">GitHub</a>
+				<a href="https://ko-fi.com/FireRat666" class="buttonss buttonGY" target="_blank">Ko-fi</a>
+				<a href="https://paypal.me/FireRat666" class="buttonss buttonY" target="_blank">PayPal</a>
+			</nav>
+			
+			<nav class="docnav">
+				<a href="../index.html" class="buttonss buttonMain">FireMaze Home</a>
+				<a href="features.html" class="buttonss">Features</a>
+				<a href="usage.html" class="buttonss">Usage</a>
+				<a href="editor.html" class="buttonss active">Editor</a>
+				<a href="vertex-painting.html" class="buttonss">Vertex Paint</a>
+				<a href="props.html" class="buttonss">Props</a>
+				<a href="multilevel.html" class="buttonss">Multilevel</a>
+				<a href="shapes.html" class="buttonss">Shapes</a>
+				<a href="polar.html" class="buttonss">Polar</a>
+				<a href="faq.html" class="buttonss">FAQ</a>
+			</nav>
+			
+			<main class="doc-content">
+				<a href="../index.html" class="backlink">&larr; Back to FireMaze</a>
+				
+				<section id="overview">
+					<h2>1. Overview</h2>
+					<p>The Interactive Editor is a Blender modal operator (<code>MAZE_OT_interactive_edit</code> &mdash; <code>fire_maze.interactive_edit</code>) that:</p>
+					<ul>
+						<li>Raycasts against a hidden helper mesh for mathematically exact cell detection.</li>
+						<li>Toggles walls, cycles custom mesh indices, and places/removes stairs.</li>
+						<li>Incrementally rebuilds only dirty cells for instant response.</li>
+						<li>Recomputes the BFS guide path on every edit for live connectivity feedback.</li>
+						<li>Automatically exits when switching workspaces, clicking outside the 3D viewport, or pressing <kbd>Esc</kbd>/<kbd>Enter</kbd>.</li>
+					</ul>
+				</section>
+				
+				<section id="entering-exiting">
+					<h2>2. Entering &amp; Exiting</h2>
+					
+					<h3>Enter</h3>
+					<ul>
+						<li>Click <strong>Interactive Edit</strong> in the sidebar (Generation &amp; Editing section).</li>
+						<li>The viewport status bar displays active shortcuts.</li>
+					</ul>
+					
+					<h3>Exit</h3>
+					<table>
+						<thead>
+							<tr><th>Method</th><th>Behavior</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><kbd>Esc</kbd> / <kbd>Enter</kbd></td><td>Exits edit mode. If any cells were dirtied, triggers a full rebuild with all post-processing applied.</td></tr>
+							<tr><td><strong>Exit Edit Mode</strong> button</td><td>Same as Esc/Enter.</td></tr>
+							<tr><td><strong>Workspace switch</strong></td><td>Auto-exits &mdash; switching to Texture Paint, Shading, or any other workspace terminates the modal and releases event grabs.</td></tr>
+							<tr><td><strong>Viewport region change</strong></td><td>Clicking outside the main 3D viewport window region passes the event through and auto-exits.</td></tr>
+							<tr><td><strong>Sidebar click</strong></td><td>Ignored by the modal &mdash; you can adjust settings, materials, or click buttons without leaving edit mode.</td></tr>
+						</tbody>
+					</table>
+				</section>
+				
+				<section id="controls">
+					<h2>3. Controls Reference</h2>
+					<table>
+						<thead>
+							<tr><th>Action</th><th>Tool = Toggle Walls</th><th>Tool = Toggle Stairs</th></tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><strong>Left-click</strong> on wall/floor</td>
+								<td>Toggle cell between wall and open floor. Perimeter toggles also add/remove entrances (floor 0) or exits (top floor).</td>
+								<td>Place a stair connecting the current floor to the level above, or remove an existing stair. Cannot place on top floor.</td>
+							</tr>
+							<tr>
+								<td><strong>Shift+left-click</strong> on face</td>
+								<td>Cycle the mesh index for that face from its custom collection (wall, floor, or roof).</td>
+								<td>Rotate an existing stair's orientation (N&rarr;E&rarr;S&rarr;W for rect; CCW&rarr;Out&rarr;CW&rarr;In for polar).</td>
+							</tr>
+							<tr>
+								<td><kbd>Esc</kbd> / <kbd>Enter</kbd></td>
+								<td>Exit edit mode.</td>
+								<td>Exit edit mode.</td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+				
+				<section id="floor-targeting">
+					<h2>4. Floor Level Targeting</h2>
+					<p>When the maze has multiple floors, the editor targets a specific floor:</p>
+					<ul>
+						<li><strong>Floor Level</strong> &mdash; <code>edit_floor_level</code> &mdash; 0 to <code>floors &minus; 1</code> (default 0). All clicks apply to this floor.</li>
+						<li><strong>Edit Roof</strong> &mdash; <code>edit_roof</code> &mdash; Polar thin mode only. When enabled, roof faces are edited instead of walls.</li>
+					</ul>
+					<p>Floor level is clamped to valid range on entering edit mode based on the stored maze data.</p>
+					
+					<h3>Auto-Detection from Raycast</h3>
+					<p>When not explicitly editing a floor (<code>props.is_editing = False</code>), the Z-coordinate of the hit point determines the floor:</p>
+					<pre><code>z_hit = floor(offset_loc.z / level_height)</code></pre>
+					<p>where <code>level_height = wall_height + floor_thickness</code>. This allows generating a maze and immediately clicking any visible cell on any floor.</p>
+				</section>
+				
+				<section id="wall-toggling">
+					<h2>5. Wall Toggling</h2>
+					
+					<h3>Rectangular &mdash; Thin Wall Mode</h3>
+					<p>Distance-to-edge calculation determines which of the four cell boundaries was clicked (N, S, E, W):</p>
+					<table>
+						<thead>
+							<tr><th>Clicked edge</th><th>Wall flag toggled</th><th>Synchronization</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>North</strong> (d_N smallest)</td><td><code>cells[y][x][0]</code></td><td>Adjacent cell's South flag (<code>cells[y+1][x][1]</code>) synced</td></tr>
+							<tr><td><strong>South</strong> (d_S smallest)</td><td><code>cells[y][x][1]</code></td><td>Adjacent cell's North flag (<code>cells[y-1][x][0]</code>) synced</td></tr>
+							<tr><td><strong>East</strong> (d_E smallest)</td><td><code>cells[y][x][2]</code></td><td>Adjacent cell's West flag (<code>cells[y][x+1][3]</code>) synced</td></tr>
+							<tr><td><strong>West</strong> (d_W smallest)</td><td><code>cells[y][x][3]</code></td><td>Adjacent cell's East flag (<code>cells[y][x-1][2]</code>) synced</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Rectangular &mdash; Cube Mode</h3>
+					<p>The clicked cell's <code>cells[y][x][0]</code> flag is toggled. If the raycast hit a face with a strong normal direction (N/S/E/W), the neighboring cell along that direction is checked &mdash; the wall cube on that side gets toggled instead.</p>
+					<p><strong>Perimeter behavior:</strong> When toggling a border cell:</p>
+					<ul>
+						<li><strong>Wall &rarr; Floor on floor 0:</strong> Old entrance is closed (set back to wall), new entrance created at this cell with the appropriate side direction (N/S/E/W).</li>
+						<li><strong>Wall &rarr; Floor on top floor:</strong> Exit added at this cell.</li>
+						<li><strong>Floor &rarr; Wall on floor 0:</strong> Entrance removed if it was at this cell.</li>
+						<li><strong>Floor &rarr; Wall on top floor:</strong> Exit removed if it was at this cell.</li>
+					</ul>
+					
+					<h3>Polar &mdash; Thin Wall Mode</h3>
+					<p>Distance-to-edge determines which boundary edge was clicked (CW radial, CCW radial, inward angular, outward angular). The corresponding wall flag on the appropriate cell is toggled.</p>
+					<p><strong>Outermost ring (r_idx = rings &minus; 1):</strong> Clicking outward edge toggles entrance/exit placement:</p>
+					<ul>
+						<li><strong>Floor 0:</strong> Opens a new entrance (or closes existing one).</li>
+						<li><strong>Top floor:</strong> Toggles exit on/off.</li>
+						<li><strong>Middle floors:</strong> Reports warning &mdash; cannot place entrance/exit on middle floors.</li>
+					</ul>
+					
+					<h3>Polar &mdash; Cube Mode</h3>
+					<p>The clicked wedge cell's <code>cells[r][theta][0]</code> flag is toggled. Distance-to-edge determines which of the four boundaries was hit to identify the correct cell (since two wedge cells share each boundary).</p>
+					<p><strong>Perimeter behavior (outermost ring):</strong> Same as rectangular cube mode &mdash; wall-to-floor on the perimeter creates entrance (floor 0) or exit (top floor), with old entrance cleanup.</p>
+				</section>
+				
+				<section id="mesh-cycling">
+					<h2>6. Mesh Cycling (Shift+Click)</h2>
+					<p>Shift+left-click cycles the mesh index for the clicked face, rotating through available meshes in the assigned custom collection.</p>
+					
+					<h3>Rectangular &mdash; Cube Mode</h3>
+					<table>
+						<thead>
+							<tr><th>Face detected</th><th>Index updated</th><th>Notes</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Floor</strong> (normal up, <code>face_dir = 'FLOOR'</code>)</td><td><code>cells[y][x][5]</code></td><td>Only on open cells. Cycles through floor collection.</td></tr>
+							<tr><td><strong>Roof</strong> (normal down, <code>face_dir = 'ROOF'</code>)</td><td><code>cells[y][x][6]</code></td><td>Only on wall cells. Cycles through roof collection.</td></tr>
+							<tr><td><strong>Wall</strong> (N/S/E/W via normal)</td><td>Per-direction index (1=N, 2=S, 3=E, 4=W)</td><td>Cycles through wall collection independently per face.</td></tr>
+							<tr><td><strong>Pillar Mode</strong> (any wall face)</td><td>All indices (1&ndash;4) set together</td><td>Whole pillar cycles as one unit.</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Rectangular &mdash; Thin Wall Mode</h3>
+					<table>
+						<thead>
+							<tr><th>Face detected</th><th>Index updated</th><th>Synchronization</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Floor</strong></td><td><code>cells[y][x][6]</code> (legacy) or <code>cells[y][x][8]</code> (expanded format)</td><td>&mdash;</td></tr>
+							<tr><td><strong>Roof</strong></td><td><code>cells[y][x][7]</code> (legacy) or <code>cells[y][x][9]</code> (expanded format)</td><td>&mdash;</td></tr>
+							<tr><td><strong>Wall (North)</strong></td><td><code>cells[y][x][4]</code></td><td><code>cells[y+1][x][5]</code> synced</td></tr>
+							<tr><td><strong>Wall (South)</strong></td><td><code>cells[y][x][5]</code></td><td><code>cells[y-1][x][4]</code> synced</td></tr>
+							<tr><td><strong>Wall (East)</strong></td><td><code>cells[y][x][6]</code></td><td><code>cells[y][x+1][7]</code> synced</td></tr>
+							<tr><td><strong>Wall (West)</strong></td><td><code>cells[y][x][7]</code></td><td><code>cells[y][x-1][6]</code> synced</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Polar &mdash; Cube Mode</h3>
+					<table>
+						<thead>
+							<tr><th>Face detected</th><th>Index updated</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Floor</strong></td><td><code>cells[r][theta][4]</code></td></tr>
+							<tr><td><strong>Roof</strong></td><td><code>cells[r][theta][5]</code></td></tr>
+							<tr><td><strong>Wall (CW radial)</strong></td><td>Index 2 or 3 on the owning cell (non-wall cell takes priority)</td></tr>
+							<tr><td><strong>Wall (CCW radial)</strong></td><td>Index 2 or 3 on the owning cell</td></tr>
+							<tr><td><strong>Wall (Inward angular)</strong></td><td>Index 7 or 8 on the owning cell</td></tr>
+							<tr><td><strong>Wall (Outward angular)</strong></td><td>Index 7 or 8 on the owning cell</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Polar &mdash; Thin Wall Mode</h3>
+					<table>
+						<thead>
+							<tr><th>Face detected</th><th>Index updated</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>CW radial wall</strong></td><td><code>cells[r][theta][2]</code></td></tr>
+							<tr><td><strong>CCW radial wall</strong></td><td><code>cells[r][theta_next][2]</code></td></tr>
+							<tr><td><strong>Inward angular wall</strong></td><td><code>cells[r][theta][3]</code></td></tr>
+							<tr><td><strong>Outward angular wall</strong></td><td><code>cells[r_next][theta_out][3]</code></td></tr>
+						</tbody>
+					</table>
+				</section>
+				
+				<section id="stair-tool">
+					<h2>7. Stair Tool</h2>
+					<p>Available when <code>floors &gt; 1</code>. Tool selector appears in the sidebar during edit mode.</p>
+					
+					<h3>Placement</h3>
+					<p>Left-click on a cell to place a stair:</p>
+					<ol class="steps">
+						<li>Forces both the clicked cell and the cell directly above it to be open (wall removed).</li>
+						<li>Creates a stair entry in the maze data with the current <code>stair_style</code>, <code>stair_footprint</code>, and <code>stair_direction</code>.</li>
+						<li>Cannot place stairs on the top floor.</li>
+						<li>For polar grids, direction is mapped from compass notation to polar orientation (N&rarr;CCW, E&rarr;OUT, S&rarr;CW, W&rarr;IN).</li>
+					</ol>
+					
+					<h3>Removal</h3>
+					<p>Left-click on an existing stair cell to remove it.</p>
+					
+					<h3>Rotation</h3>
+					<p>Shift+left-click on an existing stair cycles its orientation:</p>
+					<table>
+						<thead>
+							<tr><th>Grid type</th><th>Cycle order</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Rectangular</strong></td><td>N &rarr; E &rarr; S &rarr; W &rarr; N</td></tr>
+							<tr><td><strong>Polar</strong></td><td>CCW &rarr; OUT &rarr; CW &rarr; IN &rarr; CCW</td></tr>
+						</tbody>
+					</table>
+				</section>
+				
+				<section id="entrance-editing">
+					<h2>8. Entrance &amp; Exit Editing</h2>
+					<p>The editor automatically manages entrance/exit placement when toggling perimeter cells:</p>
+					<ul>
+						<li><strong>New entrance on floor 0:</strong> The old entrance cell (if any) is restored to a wall, and the clicked cell becomes the new entrance with the appropriate side direction.</li>
+						<li><strong>New exit on top floor:</strong> The clicked cell is added to the exits list.</li>
+						<li><strong>Closing an entrance/exit:</strong> Toggling a perimeter cell back to wall removes it from the entrance or exits list.</li>
+						<li><strong>Old entrance dirty tracking:</strong> The previous entrance cell coordinates are stored in <code>_old_entrance_dirty</code> and included in the dirty cell set for incremental rebuild.</li>
+					</ul>
+				</section>
+				
+				<section id="incremental-rebuild">
+					<h2>9. Incremental Rebuild</h2>
+					
+					<h3>Helper Mesh</h3>
+					<p>Before entering edit mode, a hidden flat-faced mesh (<code>_FireMaze_Edit_Helper</code>) is generated by building a simplified version of the maze with <code>force_simple=True</code>. This helper:</p>
+					<ul>
+						<li>Provides mathematically exact raycast targets, preventing misrouting on complex custom meshes.</li>
+						<li>Is hidden from viewport (<code>hide_viewport = True</code>) during idle.</li>
+						<li>Is temporarily unhidden during raycasting while all other maze objects are hidden.</li>
+						<li>Is rebuilt incrementally alongside the visual meshes.</li>
+					</ul>
+					
+					<h3>Dirty Cell Set</h3>
+					<p>After any edit, the affected cells are collected into a <code>dirty_cells</code> set:</p>
+					<table>
+						<thead>
+							<tr><th>Grid type</th><th>Dirty neighborhood</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Rectangular</strong></td><td>(z, y, x) plus all 8 neighbors (Moore neighborhood). Old entrance cells also included.</td></tr>
+							<tr><td><strong>Polar</strong></td><td>(z, r, theta) plus adjacent sectors in the same ring and overlapping sectors in adjacent rings (angular overlap check).</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Rebuild Pipeline</h3>
+					<ol class="steps">
+						<li>Serialize updated cell data to <code>col["fire_maze_data"]</code>.</li>
+						<li>Call <code>rebuild_maze_incrementally()</code> which:
+							<ul>
+								<li>Deletes existing faces in the dirty cell IDs from floor, wall, cap, roof, and stair BMeshes.</li>
+								<li>Rebuilds geometry for only the dirty cells using the same builder functions as full generation.</li>
+								<li>Updates the helper mesh.</li>
+								<li>Rebuilds the guide path.</li>
+							</ul>
+						</li>
+						<li>All post-processing (lightmap UV, vertex painting, planar dissolve, prop spawning, colliders) is skipped during incremental rebuild for instantaneous response.</li>
+					</ol>
+					
+					<h3>Full Rebuild on Exit</h3>
+					<p>When exiting edit mode with dirty cells, a full <code>rebuild_maze_from_collection()</code> is triggered, applying all post-processing settings.</p>
+				</section>
+				
+				<section id="live-guide">
+					<h2>10. Live Guide Path</h2>
+					<p>The BFS shortest path is recomputed on every edit click:</p>
+					<pre><code>maze_data.guide_path = find_shortest_path(maze_data, wall_mode=wall_mode)</code></pre>
+					<p>This provides immediate visual feedback &mdash; the green/red path updates to show connectivity changes as you paint walls. The guide path curve/tube/ribbon object is deleted and rebuilt within the incremental rebuild.</p>
+				</section>
+				
+				<section id="ui-edit-mode">
+					<h2>11. UI Panel in Edit Mode</h2>
+					<p>When edit mode is active, the Generation &amp; Editing section of the FireMaze panel changes:</p>
+					<table>
+						<thead>
+							<tr><th>Element</th><th>Appearance</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Interactive Edit button</strong></td><td>Depressed toggle labeled "Exit Edit Mode" with CANCEL icon</td></tr>
+							<tr><td><strong>Edit Roof</strong> checkbox</td><td>Visible only for polar thin mode</td></tr>
+							<tr><td><strong>Tool selector</strong></td><td>"Toggle Walls" / "Toggle Stairs" row, only when <code>floors &gt; 1</code></td></tr>
+							<tr><td><strong>Stair Direction</strong></td><td>Shown when stair tool is selected</td></tr>
+							<tr><td><strong>Alert box</strong></td><td>Red box with "Edit Mode Active" warning, current floor level, and shortcut legend</td></tr>
+						</tbody>
+					</table>
+					<p>The alert box shows context-sensitive shortcut hints:</p>
+					<ul>
+						<li><strong>Wall tool:</strong> "Left-click: Toggle wall on/off" and "Shift+click: Cycle custom mesh index"</li>
+						<li><strong>Stair tool:</strong> "Left-click: Place / remove stair" and "Shift+click: Rotate stair direction"</li>
+					</ul>
+				</section>
+				
+				<section id="technical-notes">
+					<h2>12. Technical Notes</h2>
+					<ul>
+						<li>The editor stores a reference to the original maze data (<code>self._maze_raw</code>) and workspace name (<code>self.init_workspace</code>) on entry for auto-exit detection.</li>
+						<li>A dirty flag (<code>self._is_dirty</code>) tracks whether any changes were made, preventing unnecessary full rebuilds on clean exits.</li>
+						<li>The old entrance cell for dirty tracking (<code>self._old_entrance_dirty</code>) ensures the previous entrance location is also rebuilt when the entrance moves.</li>
+						<li><code>getattr(props, 'floor_thickness', 0.0)</code> accounts for floor slab depth in Z-level calculations, preventing mis-targeting when <code>floor_thickness &gt; 0</code>.</li>
+					</ul>
+				</section>
+			</main>
+			
+			<footer>
+				<p>&copy; <span id="year"></span> FireR.at. All Rights Reserved. FireMaze is licensed under GPL-3.0-or-later.</p>
+				<script>
+					document.getElementById('year').textContent = new Date().getFullYear();
+					document.querySelectorAll('pre').forEach(block => {
+						block.addEventListener('click', async () => {
+							try { await navigator.clipboard.writeText(block.innerText); } catch (err) { console.error(err); }
+						});
+					});
+				</script>
+			</footer>
+		</div>
+	</body>
+</html>

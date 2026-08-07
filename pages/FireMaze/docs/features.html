@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link id="favicon" rel="icon" href="../../../files/favicon.ico" type="image/x-icon" />
+		<meta name="color-scheme" content="dark">
+		<meta name="theme-color" content="#00ff44">
+		
+		<!-- Primary SEO Metadata -->
+		<title>Features &amp; Settings | FireMaze Documentation | FireR.at</title>
+		<meta name="title" content="Features &amp; Settings | FireMaze Documentation | FireR.at">
+		<meta name="description" content="Complete reference of every FireMaze feature, property, and UI control: wall modes, grid types, 10 generation algorithms with bias parameters, rooms, loops, entrances/exits, guide paths, custom tiles, transforms, and post-processing.">
+		<meta name="author" content="FireRat">
+		<meta name="robots" content="index, follow">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://firer.at/pages/FireMaze/docs/features.html">
+		<meta property="og:title" content="Features &amp; Settings | FireMaze Documentation | FireR.at">
+		<meta property="og:description" content="Complete reference of every FireMaze feature, property, and UI control.">
+		<meta property="og:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		<meta property="og:site_name" content="FireR.at">
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image">
+		<meta property="twitter:url" content="https://firer.at/pages/FireMaze/docs/features.html">
+		<meta property="twitter:title" content="Features &amp; Settings | FireMaze Documentation | FireR.at">
+		<meta property="twitter:description" content="Complete reference of every FireMaze feature, property, and UI control.">
+		<meta property="twitter:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		
+		<!-- Typography & Stylesheets -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="../../nstyle.css" />
+		<link rel="stylesheet" href="../firemaze.css" />
+		
+		<!-- Dynamic Background Script -->
+		<script src="../../../scripts/RandomBG.js"></script>
+		
+		<!-- Analytics & Privacy Consent (Cookie Chimp) -->
+		<script src="https://cookiechimp.com/widget/mV3trJ.js"></script>
+		<script type="text/plain" data-src="https://www.googletagmanager.com/gtag/js?id=G-HSMS8JERQ2"
+		data-category="analytics" data-service="Google Analytics" ></script>
+		<script type="text/plain" data-category="analytics" data-service="Google Analytics" >
+		window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
+		<!-- Analytics & Privacy Consent END -->
+	</head>
+	<body>
+		<div class="ambient-glow-2"></div>
+		<div class="container">
+			<header>
+				<h1><span class="text-gradient">FireMaze</span> &mdash; Features &amp; Settings</h1>
+				<p>A complete reference of every feature, property, and UI control in FireMaze. Each section notes which sidebar panel it belongs to and includes exact defaults, ranges, and restrictions.</p>
+			</header>
+			
+			<nav>
+				<a href="../../../index.html" class="buttonss buttonMain">Home</a>
+				<a href="../../../contact.html" class="buttonss buttonMain">Contact</a>
+				<a href="../../../privacy.html" class="buttonss buttonMain">Privacy</a>
+				<a href="../../../games.html" class="buttonss buttonG">Banter Games</a>
+				<a href="../../../pages/games.html" class="buttonss buttonG">Browser Games</a>
+				<a href="https://github.com/FireRat666" class="buttonss buttonW" target="_blank">GitHub</a>
+				<a href="https://ko-fi.com/FireRat666" class="buttonss buttonGY" target="_blank">Ko-fi</a>
+				<a href="https://paypal.me/FireRat666" class="buttonss buttonY" target="_blank">PayPal</a>
+			</nav>
+			
+			<nav class="docnav">
+				<a href="../index.html" class="buttonss buttonMain">FireMaze Home</a>
+				<a href="features.html" class="buttonss active">Features</a>
+				<a href="usage.html" class="buttonss">Usage</a>
+				<a href="editor.html" class="buttonss">Editor</a>
+				<a href="vertex-painting.html" class="buttonss">Vertex Paint</a>
+				<a href="props.html" class="buttonss">Props</a>
+				<a href="multilevel.html" class="buttonss">Multilevel</a>
+				<a href="shapes.html" class="buttonss">Shapes</a>
+				<a href="polar.html" class="buttonss">Polar</a>
+				<a href="faq.html" class="buttonss">FAQ</a>
+			</nav>
+			
+			<main class="doc-content">
+				<a href="../index.html" class="backlink">&larr; Back to FireMaze</a>
+				
+				<section id="wall-modes">
+					<h2>1. Wall Construction Modes</h2>
+					<p class="panel-note">Maze Settings panel</p>
+					
+					<h3>Thin Wall Mode</h3>
+					<p>Walls are rendered as thin box segments aligned along grid lines with customizable thickness. Ideal for classic dungeon layouts.</p>
+					<ul>
+						<li><strong>Wall Thickness</strong> &mdash; <code>wall_thickness</code> &mdash; 0.01&ndash;10.0 (default 0.1)</li>
+						<li><strong>Double-Sided Thin Walls</strong> &mdash; <code>thin_wall_double_sided</code> &mdash; When enabled, a single-sided custom wall tile is duplicated on both sides of the grid line to fake thickness. Disable when your custom wall tile already has built-in thickness.</li>
+						<li><strong>Clean Wall Corners</strong> &mdash; <code>clean_wall_corners</code> &mdash; Extends thin wall and roof faces at intersections to close gaps and eliminate visible seams. UV coordinates are adjusted proportionally so textures remain perfectly stretched. Roof faces may overlap slightly at corners.</li>
+					</ul>
+					
+					<h3>Cube Mode</h3>
+					<p>Walls are full tile-sized cubes centered on grid cells. The generated maze respects exact layout dimensions, and path cell centers are placed perfectly within the grid.</p>
+					<ul>
+						<li><strong>Instanced Pillars (Pillar Mode)</strong> &mdash; <code>cube_mode_pillar</code> &mdash; Use whole meshes from your Wall Collection as single pillars/cubes rather than assembling them face-by-face. Roof tile generation is automatically suppressed. Clicking the top/roof area of these pillars in the interactive editor works seamlessly to toggle or cycle them.
+							<ul>
+								<li>Mesh alignment requirement: meshes <strong>must</strong> be centered horizontally (local X=0, Y=0) with the bottom aligned at local Z=0. If the origin is at the mesh center (like default Blender cubes), it will sink halfway into the floor.</li>
+							</ul>
+						</li>
+					</ul>
+					
+					<h3>Tiled Height</h3>
+					<p>Optionally stack walls in tile-height increments for consistent UV mapping across segmented wall stacks.</p>
+					<ul>
+						<li><strong>Tiled Height</strong> &mdash; <code>wall_height_tiled</code> &mdash; Toggle (default off)</li>
+						<li><strong>Tiles High</strong> &mdash; <code>wall_height_tiles</code> &mdash; 1&ndash;100 (default 1) &mdash; Only visible when Tiled Height is on.</li>
+						<li><strong>Wall Height</strong> &mdash; <code>wall_height</code> &mdash; 0.1&ndash;100.0 (default 1.0) &mdash; Used when Tiled Height is off.</li>
+					</ul>
+				</section>
+				
+				<section id="grid-types">
+					<h2>2. Grid Types</h2>
+					<p class="panel-note">Maze Settings panel</p>
+					<p>FireMaze supports two grid layouts, each with its own generation and mesh construction logic.</p>
+					
+					<h3>Rectangular Grid</h3>
+					<p>Standard width &times; depth cell layout. All algorithms, rooms, loops, and entrances/exits work as documented. Image masking is available.</p>
+					<ul>
+						<li><strong>Width</strong> &mdash; <code>width</code> &mdash; 3&ndash;200 cells (default 10)</li>
+						<li><strong>Depth</strong> &mdash; <code>depth</code> &mdash; 3&ndash;200 cells (default 10)</li>
+						<li><strong>Maze Shape</strong> &mdash; <code>maze_shape</code> &mdash; Outer boundary shape for the maze:
+							<ul>
+								<li><code>Rectangle</code> &mdash; Standard rectangular boundary.</li>
+								<li><code>Diamond</code> &mdash; Diamond/rhombus silhouette.</li>
+								<li><code>Triangle</code> &mdash; Triangular silhouette.</li>
+								<li><code>Hexagon</code> &mdash; Hexagonal silhouette.</li>
+							</ul>
+						</li>
+						<li><strong>Shape Rotation</strong> &mdash; <code>shape_rotation</code> &mdash; 0&deg;, 90&deg;, 180&deg;, 270&deg;.</li>
+						<li><strong>Smooth Shape Edges</strong> &mdash; <code>smooth_shape_edges</code> &mdash; Toggle. Clips boundary tiles to the shape contour for a smoother outline.
+							<ul>
+								<li><strong>Boundary Method</strong> &mdash; <code>smooth_boundary_method</code>:
+									<ul>
+										<li><code>Filler Triangles</code> &mdash; Generates extra triangular faces to fill boundary gaps.</li>
+										<li><code>Clipped Tiles</code> &mdash; Clips floor/roof tiles to the boundary contour.</li>
+									</ul>
+								</li>
+								<li><strong>Boundary Offset</strong> &mdash; <code>smooth_boundary_offset</code> &mdash; 0.0&ndash;2.0 (default 0.15). Extends the shape boundary outward to clear stray corner fragments.</li>
+							</ul>
+						</li>
+					</ul>
+					<div class="callout info">Full details on shape silhouettes and smooth-edge methods: see the <a href="shapes.html">Shape Boundaries &amp; Image Masking</a> guide.</div>
+					
+					<h3>Polar (Circular) Grid</h3>
+					<p>Maze generated in concentric rings with radially-divided sectors. Each ring's sector count increases outward for a natural circular look.</p>
+					<ul>
+						<li><strong>Rings</strong> &mdash; <code>polar_rings</code> &mdash; 2&ndash;100 (default 5)</li>
+						<li><strong>Custom Tile Alignment</strong> &mdash; <code>polar_custom_alignment</code> &mdash; How custom tiles are aligned to wedge-shaped polar cells:
+							<ul>
+								<li><strong>Procedural Only</strong> &mdash; Uses procedurally generated curved meshes (wedges, circular arcs, radial walls). Custom tiles are ignored.</li>
+								<li><strong>Trapezoidal Scaling</strong> &mdash; Stretches custom tiles to fit the wedge-shaped cells (straight walls, segmented appearance).</li>
+								<li><strong>Polar Bending (Warp)</strong> &mdash; Dynamically bends/warps custom tile vertices along circular arcs for a smooth organic look. Resolves the inherent left-handed Jacobian reflection of polar coordinates by applying compensating negative scales to keep normals, geometry, and texture orientations correct. Subdivision cuts are automatically capped (max 2 for detailed meshes, max 4 for simple proxy tiles) to prevent vertex explosion.</li>
+							</ul>
+						</li>
+					</ul>
+					<div class="callout info">Polar grids have their own detailed reference: see the <a href="polar.html">Polar (Circular) Grids</a> guide.</div>
+				</section>
+				
+				<section id="algorithms">
+					<h2>3. Generation Algorithms</h2>
+					<p class="panel-note">Algorithm &amp; Rooms panel</p>
+					<p>FireMaze supports 10 maze generation algorithms, each producing distinct corridor architectures. All algorithms work on rectangular grids; polar grids natively use DFS (others fall back to a random spanning tree / Kruskal-style equivalent).</p>
+					
+					<table>
+						<thead>
+							<tr><th>Algorithm</th><th>ID</th><th>Characteristics</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Depth-First Search</strong></td><td><code>dfs</code></td><td>Recursive backtracker. Long winding corridors, perfect maze.</td></tr>
+							<tr><td><strong>Kruskal's</strong></td><td><code>kruskal</code></td><td>Random edge merging. Short corridors, many dead-ends.</td></tr>
+							<tr><td><strong>Eller's</strong></td><td><code>eller</code></td><td>Row-by-row generation. Memory-efficient. Distinct row structure.</td></tr>
+							<tr><td><strong>Binary Tree</strong></td><td><code>binary_tree</code></td><td>Simple, fast. Bias toward north/east corridors.</td></tr>
+							<tr><td><strong>Prim's</strong></td><td><code>prims</code></td><td>Randomized MST. Balanced, highly branching.</td></tr>
+							<tr><td><strong>Hunt-and-Kill</strong></td><td><code>hunt_and_kill</code></td><td>Random walk + scan. Long winding corridors.</td></tr>
+							<tr><td><strong>Sidewinder</strong></td><td><code>sidewinder</code></td><td>Row-by-row horizontal runs. Strong horizontal bias.</td></tr>
+							<tr><td><strong>Wilson's</strong></td><td><code>wilsons</code></td><td>Loop-erased random walk. Unbiased uniform spanning tree.</td></tr>
+							<tr><td><strong>Recursive Division</strong></td><td><code>recursive_division</code></td><td>Recursive subdivision with single doors. Nested chambers.</td></tr>
+							<tr><td><strong>Growing Tree</strong></td><td><code>growing_tree</code></td><td>Hybrid frontier. Highly customizable via selection bias.</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Algorithm Bias Parameters</h3>
+					<p>All bias values range from <strong>0.0 to 1.0</strong> with a default of <strong>0.5</strong>. Only the parameters relevant to the selected algorithm are shown in the UI.</p>
+					<table>
+						<thead>
+							<tr><th>Parameter</th><th>Property</th><th>Default</th><th>Affects</th><th>Description</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>GT Selection Bias</strong></td><td><code>selection_bias</code></td><td>0.5</td><td>Growing Tree</td><td>0.0 = always newest cell (DFS style, long corridors). 1.0 = always random cell (Prim's style, branched clusters).</td></tr>
+							<tr><td><strong>Corridor Straightness</strong></td><td><code>straightness</code></td><td>0.5</td><td>DFS, Hunt-and-Kill</td><td>Probability of continuing in the same direction. Higher = longer, straighter corridors.</td></tr>
+							<tr><td><strong>Radial Bias</strong></td><td><code>radial_bias</code></td><td>0.5</td><td>Polar DFS</td><td>0.0 = prefer tangential (concentric) movements, ring-like pathways. 1.0 = prefer radial (in/out) movements, spoke-like pathways.</td></tr>
+							<tr><td><strong>Diagonal Bias</strong></td><td><code>direction_bias</code></td><td>0.5</td><td>Binary Tree</td><td>0.0 = always carve North (horizontal lanes). 1.0 = always carve East (vertical lanes).</td></tr>
+							<tr><td><strong>Sidewinder East Bias</strong></td><td><code>east_bias</code></td><td>0.5</td><td>Sidewinder</td><td>Higher = longer horizontal runs. Lower = more frequent vertical exits to the North.</td></tr>
+							<tr><td><strong>Split Orientation Bias</strong></td><td><code>orientation_bias</code></td><td>0.5</td><td>Recursive Division</td><td>0.0 = bias vertical splits. 1.0 = bias horizontal splits.</td></tr>
+							<tr><td><strong>Passage Location Bias</strong></td><td><code>passage_bias</code></td><td>0.5</td><td>Recursive Division</td><td>0.0 = push doors toward center of wall segment. 1.0 = push doors toward edges/corners.</td></tr>
+							<tr><td><strong>Eller Merge Prob</strong></td><td><code>eller_merge_prob</code></td><td>0.5</td><td>Eller's</td><td>Horizontal set merging rate. Higher = more horizontal connections within the same row.</td></tr>
+						</tbody>
+					</table>
+				</section>
+				
+				<section id="rooms">
+					<h2>4. Procedural Rooms</h2>
+					<p class="panel-note">Algorithm &amp; Rooms panel &mdash; Rectangular grids only</p>
+					<p>Pre-carve open rectangular clearings within the maze. Rooms auto-connect to the corridor network and are guaranteed to contain no stray pillars or internal walls in both Thin and Cube modes. Rooms respect the blocked mask &mdash; any placement overlapping a blocked cell is skipped, keeping image-masked layouts intact.</p>
+					<ul>
+						<li><strong>Enable Rooms</strong> &mdash; <code>rooms_enable</code> &mdash; Toggle (default off)</li>
+						<li><strong>Room Count</strong> &mdash; <code>rooms_count</code> &mdash; 1&ndash;50 (default 3)</li>
+						<li><strong>Min Room Size</strong> &mdash; <code>min_room_size</code> &mdash; 2&ndash;20 cells (default 2)</li>
+						<li><strong>Max Room Size</strong> &mdash; <code>max_room_size</code> &mdash; 2&ndash;20 cells (default 4)</li>
+					</ul>
+				</section>
+				
+				<section id="loops">
+					<h2>5. Loops &amp; Isolated Obstacles</h2>
+					<p class="panel-note">Loops &amp; Layout panel &mdash; Rectangular grids only</p>
+					<ul>
+						<li><strong>Loop Probability</strong> &mdash; <code>loop_probability</code> &mdash; 0.0&ndash;1.0 (default 0.0). Randomly removes additional walls to create alternative paths and loops. 0.0 = perfect maze (exactly one path between any two points). Higher values create more circular corridors and shortcuts.</li>
+						<li><strong>Isolated Wall Prob</strong> &mdash; <code>isolated_wall_prob</code> &mdash; 0.0&ndash;1.0 (default 0.0). Places standalone wall columns or pillars in floor regions as obstacles.</li>
+					</ul>
+				</section>
+				
+				<section id="entrances">
+					<h2>6. Entrances &amp; Exits</h2>
+					<p class="panel-note">Entrances &amp; Exits panel &mdash; Rectangular grids only</p>
+					
+					<h3>Completion Modes</h3>
+					<ul>
+						<li><strong>Find Center</strong> (<code>center</code>) &mdash; Entrance on an edge leading to a goal cell in the center of the maze.</li>
+						<li><strong>Find Exit</strong> (<code>exit</code>) &mdash; Entrance on one side, exit on the opposite side.</li>
+					</ul>
+					
+					<h3>Settings</h3>
+					<ul>
+						<li><strong>Entrance Side</strong> &mdash; <code>entrance_side</code> &mdash; Random/Any, North (+Y), South (&minus;Y), East (+X), West (&minus;X)</li>
+						<li><strong>Exit Side</strong> &mdash; <code>exit_side</code> &mdash; Random/Any, North (+Y), South (&minus;Y), East (+X), West (&minus;X)</li>
+						<li><strong>Entrances</strong> &mdash; <code>num_entrances</code> &mdash; 1&ndash;10 (default 1)</li>
+						<li><strong>Exits</strong> &mdash; <code>num_exits</code> &mdash; 1&ndash;10 (default 1)</li>
+						<li><strong>Emergency Exits</strong> &mdash; <code>emergency_exits</code> &mdash; Toggle (default off). Center mode only. Adds extra random openings on outer edges that lead out of the maze, providing multiple escape points.</li>
+					</ul>
+				</section>
+				
+				<section id="editor">
+					<h2>7. Interactive Viewport Editor</h2>
+					<p class="panel-note">Generation &amp; Editing section &mdash; FireMaze root panel</p>
+					<p>Paint, modify, and customize the maze layout in real time directly from the 3D viewport.</p>
+					<ol class="steps">
+						<li>Click <strong>Interactive Edit</strong> in the sidebar.</li>
+						<li>The viewport status bar displays editing shortcuts.</li>
+						<li>Left-click on any cell or wall face to toggle it on/off.</li>
+						<li>Shift+left-click to cycle that face's mesh from its custom collection.</li>
+						<li>Press <kbd>Esc</kbd> or <kbd>Enter</kbd> (or click <strong>Exit Edit Mode</strong>) to return to normal interaction.</li>
+					</ol>
+					<p>The editor monitors workspace and window state &mdash; switching to another workspace tab or clicking in another viewport region automatically terminates edit mode to prevent UI lockout. Clicks on the sidebar (N-panel) are ignored so you can adjust settings without leaving edit mode.</p>
+					<div class="callout info">Every click action, mesh-cycling rule, and technical detail: see the <a href="editor.html">Interactive Editor</a> guide.</div>
+				</section>
+				
+				<section id="guide-path">
+					<h2>8. Real-Time Guide Paths</h2>
+					<p class="panel-note">Guide Path panel</p>
+					<p>Generate and display the BFS-calculated shortest route from the entrance to the exit(s) or center.</p>
+					<ul>
+						<li><strong>Generate Guide</strong> &mdash; <code>generate_guide</code> &mdash; Toggle (default off)</li>
+						<li><strong>Guide Type</strong> &mdash; <code>guide_type</code>:
+							<ul>
+								<li><code>Curve</code> &mdash; A simple NURBS curve object.</li>
+								<li><code>Tube (Mesh)</code> &mdash; A solid 3D tube mesh.</li>
+								<li><code>Ribbon</code> &mdash; A flat ribbon path.</li>
+							</ul>
+						</li>
+						<li><strong>Guide Width</strong> &mdash; <code>guide_width</code> &mdash; 0.01&ndash;10.0 (default 0.1). Thickness of the tube/ribbon.</li>
+						<li><strong>Height Offset</strong> &mdash; <code>guide_height_offset</code> &mdash; &minus;10.0&ndash;10.0 (default 0.1). Vertical position above the floor.</li>
+						<li><strong>Wave Amplitude</strong> &mdash; <code>guide_wave_amplitude</code> &mdash; 0.0&ndash;5.0 (default 0.0). Sine wave amplitude for floating animation.</li>
+						<li><strong>Wave Frequency</strong> &mdash; <code>guide_wave_frequency</code> &mdash; 0.1&ndash;20.0 (default 1.0). Sine wave frequency.</li>
+					</ul>
+					<p>The guide path automatically loads a bright neon-green glowing emissive material (<code>FireMaze_Guide</code>) to visually stand out in Eevee or Cycles.</p>
+				</section>
+				
+				<section id="custom-tiles">
+					<h2>9. Custom Tiles &amp; Collections</h2>
+					<p class="panel-note">Custom Meshes &amp; Collections panel</p>
+					<p>Replace standard procedural geometry with your own meshes or randomized collections.</p>
+					
+					<h3>Tile Origin</h3>
+					<ul>
+						<li><strong>Tiles Centered</strong> &mdash; <code>tiles_centered</code> &mdash; Toggle (default on). Enable if your custom tiles have their origin at the center (like Blender primitives). Disable if tiles have their bottom-left corner at the origin.</li>
+					</ul>
+					
+					<h3>Floors &amp; Roofs</h3>
+					<table>
+						<thead>
+							<tr><th>Property</th><th>Label</th><th>Type</th><th>Description</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><code>custom_floor_mesh</code></td><td>Floor Mesh</td><td>Mesh</td><td>Single custom mesh for all floor tiles</td></tr>
+							<tr><td><code>custom_floor_collection</code></td><td>Floor Collection</td><td>Collection</td><td>Randomly distribute meshes from this collection as floor tiles</td></tr>
+							<tr><td><code>custom_roof_mesh</code></td><td>Roof Mesh</td><td>Mesh</td><td>Single custom mesh for all roof tiles</td></tr>
+							<tr><td><code>custom_roof_collection</code></td><td>Roof Collection</td><td>Collection</td><td>Randomly distribute meshes from this collection as roof tiles</td></tr>
+						</tbody>
+					</table>
+					<div class="callout warn"><strong>Note:</strong> When <code>floor_thickness &gt; 0</code>, custom floors/roofs do not scale with thickness &mdash; they are placed as-is at the top surface.</div>
+					
+					<h3>Walls</h3>
+					<table>
+						<thead>
+							<tr><th>Property</th><th>Label</th><th>Type</th><th>Description</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><code>custom_wall_mesh</code></td><td>Wall Mesh</td><td>Mesh</td><td>Single custom mesh for all wall segments</td></tr>
+							<tr><td><code>custom_wall_collection</code></td><td>Wall Collection</td><td>Collection</td><td>Randomly distribute meshes from this collection as walls</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Stairs &amp; Ramps</h3>
+					<table>
+						<thead>
+							<tr><th>Property</th><th>Label</th><th>Type</th><th>Description</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><code>custom_stair_mesh</code></td><td>Stair Mesh</td><td>Object</td><td>Custom object to instantiate at stair cells</td></tr>
+							<tr><td><code>custom_ramp_mesh</code></td><td>Ramp Mesh</td><td>Object</td><td>Custom object to instantiate at ramp cells</td></tr>
+						</tbody>
+					</table>
+					<p>For larger footprints (1&times;2, 2&times;2), only the starting candidate cell receives the custom mesh; the other footprint cells are carved open on both floors (no floor or roof tiles) to serve as a landing or open vertical shaft.</p>
+					
+					<h3>Independent Face/Tile Swapping</h3>
+					<p>In Interactive Edit Mode, Shift+left-clicking a face cycles its mesh index from the respective collection:</p>
+					<ul>
+						<li><strong>Cube Mode</strong> &mdash; Raycast hit normals detect the clicked direction, allowing independent cycling of North, South, East, and West wall faces (when not in Instanced Pillar Mode), plus floor and roof tiles.</li>
+						<li><strong>Thin Wall Mode</strong> &mdash; Distance-to-edge calculations precisely target the clicked thin wall segment, floor, or roof. Shared walls between adjacent cells are automatically synchronized.</li>
+					</ul>
+					
+					<h3>Mesh Origin Requirements</h3>
+					<table>
+						<thead>
+							<tr><th>Element</th><th>X/Y (horizontal)</th><th>Z (vertical)</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Pillars / Walls</strong></td><td>Centered (local X=0, Y=0)</td><td>Bottom at local Z=0</td></tr>
+							<tr><td><strong>Floors</strong></td><td>Centered (local X=0, Y=0)</td><td>Bottom face at local Z=0</td></tr>
+							<tr><td><strong>Roofs</strong></td><td>Centered (local X=0, Y=0)</td><td>Top surface at local Z=0</td></tr>
+						</tbody>
+					</table>
+				</section>
+				
+				<section id="transforms">
+					<h2>10. Detailed Transform Offsets</h2>
+					<p class="panel-note">Detailed Transforms panel</p>
+					<p>Add variety and organic offsets to standard or custom tiles using local matrix transforms applied relative to each individual tile segment's local center.</p>
+					<table>
+						<thead>
+							<tr><th>Element</th><th>Translate (XYZ)</th><th>Rotate (Euler degrees)</th><th>Scale (XYZ)</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Wall Offsets</strong></td><td><code>wall_translate</code> (0,0,0)</td><td><code>wall_rotate</code> (0,0,0)</td><td><code>wall_scale</code> (1,1,1)</td></tr>
+							<tr><td><strong>Floor Offsets</strong></td><td><code>floor_translate</code> (0,0,0)</td><td><code>floor_rotate</code> (0,0,0)</td><td><code>floor_scale</code> (1,1,1)</td></tr>
+							<tr><td><strong>Roof Offsets</strong></td><td><code>roof_translate</code> (0,0,0)</td><td><code>roof_rotate</code> (0,0,0)</td><td><code>roof_scale</code> (1,1,1)</td></tr>
+						</tbody>
+					</table>
+					<p>Translation uses <code>TRANSLATION</code> subtype (LENGTH unit), rotation uses <code>EULER</code> subtype (ROTATION unit).</p>
+				</section>
+				
+				<section id="masking">
+					<h2>11. Image Masking</h2>
+					<p class="panel-note">Session &amp; Image Management panel &mdash; Rectangular grids only</p>
+					<p>Use a black-and-white image to define the walkable shape of the maze. White pixels = walkable (path), black pixels = blocked (wall).</p>
+					<ul>
+						<li><strong>Load Mask from Disk</strong> &mdash; Imports a PNG, JPG, BMP, or TGA file from disk as the mask image.</li>
+						<li><strong>Mask Image</strong> &mdash; <code>mask_image</code> &mdash; Select an existing Blender Image datablock.</li>
+						<li><strong>Invert Mask Colors</strong> &mdash; <code>mask_invert</code> &mdash; Toggle. Swap interpretation (black = walkable, white = blocked).</li>
+					</ul>
+					<p>The mask image is sampled at each cell's position, making it easy to create mazes shaped like logos, text, or custom silhouettes. Masking is disabled when <code>floors &gt; 1</code>.</p>
+					<div class="callout info">Full mask workflow, sampling math, and combination with shape boundaries: see the <a href="shapes.html">Shape Boundaries &amp; Image Masking</a> guide.</div>
+				</section>
+				
+				<section id="vertex-painting">
+					<h2>12. Vertex Painting</h2>
+					<p class="panel-note">Post-Processing panel</p>
+					<p>Procedurally paint vertex colors on maze meshes for shading, texturing, or game engine blending.</p>
+					<ul>
+						<li><strong>Enable Vertex Painting</strong> &mdash; <code>vertex_paint_enable</code> &mdash; Toggle (default off)</li>
+						<li><strong>Paint Intensity</strong> &mdash; <code>vertex_paint_intensity</code> &mdash; 0.0&ndash;1.0 (default 1.0). Controls opacity/strength of the effect.</li>
+					</ul>
+					<table>
+						<thead>
+							<tr><th>Mode</th><th>ID</th><th>Description</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Ambient Occlusion</strong></td><td><code>ao</code></td><td>Procedural darkening in corners, seams, and near floor/roof boundaries for a natural shadowed look.</td></tr>
+							<tr><td><strong>Texture Blend Weights</strong></td><td><code>blend</code></td><td>RGBA channels encode material blends: R=Moss (near floor), G=Cracks (in corners), B=Wetness (on flat floors), A=Soot (in dead-ends).</td></tr>
+							<tr><td><strong>Path Highlight</strong></td><td><code>path</code></td><td>Greens the floor tiles along the shortest path to the exit/center.</td></tr>
+							<tr><td><strong>Distance Gradient</strong></td><td><code>distance</code></td><td>Black-to-white gradient mapped by BFS distance from the entrance.</td></tr>
+						</tbody>
+					</table>
+					<div class="callout info">Exact per-mode formulas and pipeline order: see the <a href="vertex-painting.html">Vertex Painting &amp; Post-Processing</a> guide.</div>
+				</section>
+				
+				<section id="props">
+					<h2>13. Prop &amp; Decor Spawner</h2>
+					<p class="panel-note">Prop &amp; Decor Spawner panel &mdash; Experimental</p>
+					<p>Automatically place decorative objects on wall faces, dead-ends, and entrances/exits. Spawned props are grouped under a scoped sub-collection (<code>FireMaze_Props_{parent_name}</code>), linked as a child of the maze collection, and tagged with a <code>fire_maze_data</code> custom property for reliable cleanup.</p>
+					<table>
+						<thead>
+							<tr><th>Prop</th><th>Property</th><th>Density</th><th>Placement</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Torches</strong></td><td><code>prop_torch_mesh</code></td><td><code>prop_torch_density</code> &mdash; 0.0&ndash;1.0 (default 0.2)</td><td>On valid wall faces bordering open space, at 60% of wall height, facing the open area.</td></tr>
+							<tr><td><strong>Chests</strong></td><td><code>prop_chest_mesh</code></td><td><code>prop_chest_density</code> &mdash; 0.0&ndash;1.0 (default 0.5)</td><td>In dead-end cells, oriented toward the only open direction. Excludes stairs, entrances, and exits.</td></tr>
+							<tr><td><strong>Doors</strong></td><td><code>prop_door_mesh</code></td><td>Always spawns at valid locations</td><td>At entrance (floor 0) and exit (top floor) openings.</td></tr>
+						</tbody>
+					</table>
+					<div class="callout info">Full placement rules and orientation math: see the <a href="props.html">Prop &amp; Decor Spawner</a> guide.</div>
+				</section>
+				
+				<section id="post-processing">
+					<h2>14. Post-Processing &amp; Colliders</h2>
+					<p class="panel-note">Post-Processing panel</p>
+					
+					<h3>Merge Options</h3>
+					<ul>
+						<li><strong>Single Wall Object</strong> &mdash; <code>single_wall_object</code> &mdash; Toggle (default on). Merges all wall and cap faces into a single <code>FireMaze_Walls</code> object.</li>
+						<li><strong>Merge Objects</strong> &mdash; <code>merge_objects</code> &mdash; Toggle (default off). Combines floors, walls, roofs, and caps into one <code>FireMaze_Merged</code> mesh.</li>
+					</ul>
+					
+					<h3>Geometry Optimization</h3>
+					<ul>
+						<li><strong>Remove Doubles</strong> &mdash; <code>remove_doubles</code> &mdash; Toggle (default off). Final vertex weld to merge touching corners and stacked tiled wall segments.</li>
+						<li><strong>Optimize Geometry (Dissolve Planar)</strong> &mdash; <code>optimize_coplanar</code> &mdash; Toggle (default off). Simplifies mesh by dissolving coplanar faces. Reduces poly count but may stretch seamless tiled textures.</li>
+					</ul>
+					
+					<h3>Lightmap UVs</h3>
+					<ul>
+						<li><strong>Generate Lightmap UVs</strong> &mdash; <code>generate_lightmap</code> &mdash; Toggle (default off). Generates a second UV map named "Lightmap" on all final visual mesh objects.
+							<ul>
+								<li><strong>Method</strong> &mdash; <code>lightmap_method</code>:
+									<ul>
+										<li><code>Smart UV Project</code> &mdash; Groups adjacent/co-planar faces into contiguous UV islands (reduces seam-bleeding in game engines).</li>
+										<li><code>Lightmap Pack</code> &mdash; Projects and packs each face individually (zero distortion, maximum packing density, but splits every face).</li>
+									</ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+					
+					<h3>Colliders</h3>
+					<ul>
+						<li><strong>Generate Colliders</strong> &mdash; <code>generate_colliders</code> &mdash; Toggle (default off). Generates simple flat-faced helper meshes (<code>FireMaze_Floor_Collider</code>, <code>FireMaze_Walls_Collider</code>, <code>FireMaze_Roof_Collider</code>) matching the maze layout. Hidden in renders by default.
+							<ul>
+								<li>Roof colliders are generated even when Instanced Pillars mode is enabled.</li>
+							</ul>
+						</li>
+						<li><strong>Merge Colliders</strong> &mdash; <code>merge_colliders</code> &mdash; Combines all active colliders into a single <code>FireMaze_Collider</code> mesh.</li>
+						<li><strong>Optimize Colliders</strong> &mdash; <code>optimize_colliders_coplanar</code> &mdash; Applies planar dissolve to collider meshes to reduce polygon count.</li>
+					</ul>
+					<div class="callout info">Detailed behavior of every post-processing step: see the <a href="vertex-painting.html">Vertex Painting &amp; Post-Processing</a> guide.</div>
+				</section>
+				
+				<section id="multilevel">
+					<h2>15. Multilevel Stairs &amp; Ramps</h2>
+					<p class="panel-note">Maze Settings panel</p>
+					<p>Configure vertical floor transitions for multi-floor mazes.</p>
+					
+					<h3>Floor Settings</h3>
+					<ul>
+						<li><strong>Floors</strong> &mdash; <code>floors</code> &mdash; 1&ndash;20 (default 1). Number of vertical levels.</li>
+						<li><strong>Floor Thickness</strong> &mdash; <code>floor_thickness</code> &mdash; 0.0&ndash;10.0 (default 0.0). Thickness of the floor slab between levels. Adds visual depth with physical box geometry.</li>
+					</ul>
+					
+					<h3>Stair Settings</h3>
+					<p class="panel-note">Shown when <code>floors &gt; 1</code>.</p>
+					<ul>
+						<li><strong>Stairs Per Level</strong> &mdash; <code>stair_count</code> &mdash; 1&ndash;50 (default 1). Number of staircases per floor transition.</li>
+						<li><strong>Stair Style</strong> &mdash; <code>stair_style</code>:
+							<ul>
+								<li><code>Staircase</code> &mdash; Standard stepped staircase geometry.</li>
+								<li><code>Ramp</code> &mdash; Smooth sloped ramp geometry.</li>
+							</ul>
+						</li>
+						<li><strong>Stair Footprint</strong> &mdash; <code>stair_footprint</code> &mdash; Rectangular grids only:
+							<ul>
+								<li><code>1x1</code> &mdash; Single-cell spiral staircase/ramp.</li>
+								<li><code>1x2</code> &mdash; Two-cell straight staircase.</li>
+								<li><code>2x2</code> &mdash; Two-by-two U-turn staircase with landing.</li>
+								<li><em>Polar grids only support <code>1x1</code> footprints.</em></li>
+							</ul>
+						</li>
+						<li><strong>Stair Direction</strong> &mdash; <code>stair_direction</code>:
+							<ul>
+								<li>Rectangular: North (N), East (E), South (S), West (W).</li>
+								<li>Polar: CCW (N), Outward (E), CW (S), Inward (W).</li>
+							</ul>
+						</li>
+					</ul>
+					
+					<h3>Custom Stair Objects</h3>
+					<p>Assign custom Blender Object pointers (meshes or other object types) to instantiate at stair/ramp cells instead of procedural geometry:</p>
+					<ul>
+						<li><strong>Staircase Object</strong> &mdash; <code>custom_stair_mesh</code> (Object pointer)</li>
+						<li><strong>Ramp Object</strong> &mdash; <code>custom_ramp_mesh</code> (Object pointer)</li>
+					</ul>
+					<div class="callout info">Footprint geometry, 3D cell expansion, and level-height math: see the <a href="multilevel.html">Multilevel Mazes</a> guide.</div>
+				</section>
+				
+				<section id="property-reference">
+					<h2>16. Property Quick Reference</h2>
+					<p>All properties are stored on <code>context.scene.fire_maze</code> as a Blender PointerProperty.</p>
+					<table>
+						<thead>
+							<tr><th>UI Panel</th><th>Properties</th></tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><strong>FireMaze (root)</strong></td>
+								<td><code>grid_type</code>, <code>maze_shape</code>, <code>shape_rotation</code>, <code>smooth_shape_edges</code>, <code>smooth_boundary_method</code>, <code>smooth_boundary_offset</code>, <code>width</code>, <code>depth</code>, <code>polar_rings</code>, <code>polar_custom_alignment</code>, <code>wall_height_tiled</code>, <code>wall_height_tiles</code>, <code>wall_height</code>, <code>wall_mode</code>, <code>wall_thickness</code>, <code>thin_wall_double_sided</code>, <code>clean_wall_corners</code>, <code>tile_size</code>, <code>floors</code>, <code>floor_thickness</code>, <code>stair_footprint</code>, <code>stair_style</code>, <code>stair_direction</code>, <code>stair_count</code>, <code>seed</code>, <code>edit_floor_level</code>, <code>edit_roof</code>, <code>edit_tool</code>, <code>is_editing</code></td>
+							</tr>
+							<tr>
+								<td><strong>Algorithm &amp; Rooms</strong></td>
+								<td><code>algorithm</code>, <code>selection_bias</code>, <code>straightness</code>, <code>radial_bias</code>, <code>direction_bias</code>, <code>east_bias</code>, <code>orientation_bias</code>, <code>passage_bias</code>, <code>eller_merge_prob</code>, <code>rooms_enable</code>, <code>rooms_count</code>, <code>min_room_size</code>, <code>max_room_size</code></td>
+							</tr>
+							<tr>
+								<td><strong>Session &amp; Image Management</strong></td>
+								<td><code>mask_image</code>, <code>mask_invert</code></td>
+							</tr>
+							<tr>
+								<td><strong>Entrances &amp; Exits</strong></td>
+								<td><code>mode</code>, <code>entrance_side</code>, <code>exit_side</code>, <code>num_entrances</code>, <code>num_exits</code>, <code>emergency_exits</code></td>
+							</tr>
+							<tr>
+								<td><strong>Loops &amp; Layout</strong></td>
+								<td><code>loop_probability</code>, <code>isolated_wall_prob</code></td>
+							</tr>
+							<tr>
+								<td><strong>Guide Path</strong></td>
+								<td><code>generate_guide</code>, <code>guide_type</code>, <code>guide_width</code>, <code>guide_height_offset</code>, <code>guide_wave_amplitude</code>, <code>guide_wave_frequency</code></td>
+							</tr>
+							<tr>
+								<td><strong>Custom Meshes &amp; Collections</strong></td>
+								<td><code>tiles_centered</code>, <code>custom_floor_mesh</code>, <code>custom_floor_collection</code>, <code>custom_roof_mesh</code>, <code>custom_roof_collection</code>, <code>custom_stair_mesh</code>, <code>custom_ramp_mesh</code>, <code>custom_wall_mesh</code>, <code>custom_wall_collection</code>, <code>cube_mode_pillar</code></td>
+							</tr>
+							<tr>
+								<td><strong>Detailed Transforms</strong></td>
+								<td><code>wall_translate</code>, <code>wall_rotate</code>, <code>wall_scale</code>, <code>floor_translate</code>, <code>floor_rotate</code>, <code>floor_scale</code>, <code>roof_translate</code>, <code>roof_rotate</code>, <code>roof_scale</code></td>
+							</tr>
+							<tr>
+								<td><strong>Post-Processing</strong></td>
+								<td><code>single_wall_object</code>, <code>merge_objects</code>, <code>remove_doubles</code>, <code>generate_lightmap</code>, <code>lightmap_method</code>, <code>optimize_coplanar</code>, <code>vertex_paint_enable</code>, <code>vertex_paint_mode</code>, <code>vertex_paint_intensity</code>, <code>generate_colliders</code>, <code>merge_colliders</code>, <code>optimize_colliders_coplanar</code></td>
+							</tr>
+							<tr>
+								<td><strong>Prop &amp; Decor Spawner</strong></td>
+								<td><code>prop_torch_mesh</code>, <code>prop_torch_density</code>, <code>prop_chest_mesh</code>, <code>prop_chest_density</code>, <code>prop_door_mesh</code></td>
+							</tr>
+						</tbody>
+					</table>
+				</section>
+			</main>
+			
+			<footer>
+				<p>&copy; <span id="year"></span> FireR.at. All Rights Reserved. FireMaze is licensed under GPL-3.0-or-later.</p>
+				<script>
+					document.getElementById('year').textContent = new Date().getFullYear();
+					document.querySelectorAll('pre').forEach(block => {
+						block.addEventListener('click', async () => {
+							try { await navigator.clipboard.writeText(block.innerText); } catch (err) { console.error(err); }
+						});
+					});
+				</script>
+			</footer>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link id="favicon" rel="icon" href="../../../files/favicon.ico" type="image/x-icon" />
+		<meta name="color-scheme" content="dark">
+		<meta name="theme-color" content="#00ff44">
+		
+		<!-- Primary SEO Metadata -->
+		<title>Polar (Circular) Grids | FireMaze Documentation | FireR.at</title>
+		<meta name="title" content="Polar (Circular) Grids | FireMaze Documentation | FireR.at">
+		<meta name="description" content="FireMaze polar grid reference: rings and sectors, cell structure, maze generation with radial bias, the center fan, entrances and exits, and the three custom tile alignment modes including polar bending (warp).">
+		<meta name="author" content="FireRat">
+		<meta name="robots" content="index, follow">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://firer.at/pages/FireMaze/docs/polar.html">
+		<meta property="og:title" content="Polar (Circular) Grids | FireMaze Documentation | FireR.at">
+		<meta property="og:description" content="FireMaze polar grid reference: rings, sectors, radial bias, and custom tile alignment modes.">
+		<meta property="og:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		<meta property="og:site_name" content="FireR.at">
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image">
+		<meta property="twitter:url" content="https://firer.at/pages/FireMaze/docs/polar.html">
+		<meta property="twitter:title" content="Polar (Circular) Grids | FireMaze Documentation | FireR.at">
+		<meta property="twitter:description" content="FireMaze polar grid reference: rings, sectors, radial bias, and custom tile alignment modes.">
+		<meta property="twitter:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		
+		<!-- Typography & Stylesheets -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="../../nstyle.css" />
+		<link rel="stylesheet" href="../firemaze.css" />
+		
+		<!-- Dynamic Background Script -->
+		<script src="../../../scripts/RandomBG.js"></script>
+		
+		<!-- Analytics & Privacy Consent (Cookie Chimp) -->
+		<script src="https://cookiechimp.com/widget/mV3trJ.js"></script>
+		<script type="text/plain" data-src="https://www.googletagmanager.com/gtag/js?id=G-HSMS8JERQ2"
+		data-category="analytics" data-service="Google Analytics" ></script>
+		<script type="text/plain" data-category="analytics" data-service="Google Analytics" >
+		window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
+		<!-- Analytics & Privacy Consent END -->
+	</head>
+	<body>
+		<div class="ambient-glow-2"></div>
+		<div class="container">
+			<header>
+				<h1><span class="text-gradient">FireMaze</span> &mdash; Polar (Circular) Grids</h1>
+				<ul style="list-style:none; padding:0; margin:0 auto 1.5rem; max-width: 780px; text-align:center;">
+					<li><strong>Introduced in:</strong> FireMaze v3.0.0</li>
+					<li><strong>Grid dimension:</strong> Radial rings &times; angular sectors per ring</li>
+					<li><strong>Cell shape:</strong> Wedge / trapezoidal sector</li>
+					<li><strong>Custom tile alignment:</strong> Procedural Only (native mesh), Trapezoidal Scaling, or Polar Bending (Warp)</li>
+				</ul>
+			</header>
+			
+			<nav>
+				<a href="../../../index.html" class="buttonss buttonMain">Home</a>
+				<a href="../../../contact.html" class="buttonss buttonMain">Contact</a>
+				<a href="../../../privacy.html" class="buttonss buttonMain">Privacy</a>
+				<a href="../../../games.html" class="buttonss buttonG">Banter Games</a>
+				<a href="../../../pages/games.html" class="buttonss buttonG">Browser Games</a>
+				<a href="https://github.com/FireRat666" class="buttonss buttonW" target="_blank">GitHub</a>
+				<a href="https://ko-fi.com/FireRat666" class="buttonss buttonGY" target="_blank">Ko-fi</a>
+				<a href="https://paypal.me/FireRat666" class="buttonss buttonY" target="_blank">PayPal</a>
+			</nav>
+			
+			<nav class="docnav">
+				<a href="../index.html" class="buttonss buttonMain">FireMaze Home</a>
+				<a href="features.html" class="buttonss">Features</a>
+				<a href="usage.html" class="buttonss">Usage</a>
+				<a href="editor.html" class="buttonss">Editor</a>
+				<a href="vertex-painting.html" class="buttonss">Vertex Paint</a>
+				<a href="props.html" class="buttonss">Props</a>
+				<a href="multilevel.html" class="buttonss">Multilevel</a>
+				<a href="shapes.html" class="buttonss">Shapes</a>
+				<a href="polar.html" class="buttonss active">Polar</a>
+				<a href="faq.html" class="buttonss">FAQ</a>
+			</nav>
+			
+			<main class="doc-content">
+				<a href="../index.html" class="backlink">&larr; Back to FireMaze</a>
+				
+				<section id="cell-structure">
+					<h2>1. Cell Structure</h2>
+					<p>A polar cell lives at <code>(ring, sector)</code> and is composed of <strong>6 mesh faces</strong> and <strong>4 wall slots</strong>:</p>
+					<table>
+						<thead>
+							<tr><th>Slot</th><th>Type</th><th>Description</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><code>floor_mesh</code></td><td>Face</td><td>Bottom face (wedge quad)</td></tr>
+							<tr><td><code>roof_mesh</code></td><td>Face</td><td>Top face (wedge quad)</td></tr>
+							<tr><td><code>cw_mesh</code></td><td>Face</td><td>Clockwise radial wall</td></tr>
+							<tr><td><code>ccw_mesh</code></td><td>Face</td><td>Counter-clockwise radial wall</td></tr>
+							<tr><td><code>out_mesh</code></td><td>Face</td><td>Outer arc wall</td></tr>
+							<tr><td><code>in_mesh</code></td><td>Face</td><td>Inner arc wall</td></tr>
+							<tr><td><code>cw_wall</code></td><td>Wall</td><td>Boundary wall on CW side</td></tr>
+							<tr><td><code>ccw_wall</code></td><td>Wall</td><td>Boundary wall on CCW side</td></tr>
+							<tr><td><code>out_wall</code></td><td>Wall</td><td>Boundary wall on outer arc</td></tr>
+							<tr><td><code>in_wall</code></td><td>Wall</td><td>Boundary wall on inner arc</td></tr>
+						</tbody>
+					</table>
+					<p>The <strong>inner-most ring</strong> (ring 0) has no inner wall; instead the center fan fills the gap.<br>
+					The <strong>outer-most ring</strong> (ring <code>polar_rings - 1</code>) always has an <code>out_wall</code> rendered as <code>WALL_ALWAYS</code>.</p>
+					<p>Additional slots for 2-faced cell construction:</p>
+					<table>
+						<thead>
+							<tr><th>Slot</th><th>Purpose</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><code>out2_mesh</code> / <code>in2_mesh</code></td><td>Mirror face for double-sided walls</td></tr>
+						</tbody>
+					</table>
+				</section>
+				
+				<section id="ring-sectors">
+					<h2>2. Ring Sectors</h2>
+					<p>Sector counts across rings are computed by <code>get_polar_sector_counts()</code> in <code>utils.py</code>.</p>
+					<p><strong>Rules:</strong></p>
+					<ul>
+						<li>Outermost ring has at least <strong>4 sectors</strong></li>
+						<li>Adjacent rings differ by at most <strong>2&times;</strong> in sector count (factor &le; 2)</li>
+						<li>Counts are powers-of-two multiples of the outermost count, descending inward</li>
+						<li>Minimum sectors in any ring: <strong>2</strong></li>
+						<li>The innermost ring may be further sub-sampled to keep sector count &ge; 1</li>
+					</ul>
+					<p><strong>Example &mdash; 5 rings, 16 outermost sectors:</strong></p>
+					<table>
+						<thead>
+							<tr><th>Ring</th><th>Sectors</th><th>Notes</th></tr>
+						</thead>
+						<tbody>
+							<tr><td>0</td><td>1</td><td>center fan</td></tr>
+							<tr><td>1</td><td>2</td><td></td></tr>
+							<tr><td>2</td><td>4</td><td></td></tr>
+							<tr><td>3</td><td>8</td><td></td></tr>
+							<tr><td>4</td><td>16</td><td>outermost</td></tr>
+						</tbody>
+					</table>
+				</section>
+				
+				<section id="generation">
+					<h2>3. Maze Generation</h2>
+					<p><code>generate_polar_maze()</code> in <code>polar_maze.py</code> handles all algorithm variants.</p>
+					<table>
+						<thead>
+							<tr><th>Algorithm</th><th>Behavior</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>DFS / Recursive Backtracker</strong></td><td>Native polar implementation. Walks ring&times;sector cells, picks unvisited neighbor using ring-adjacent neighbour mapping</td></tr>
+							<tr><td><strong>All other algorithms</strong> (Kruskal, Prim, Aldous-Broder, Hunt-and-Kill, Wilson, Eller, Growing Tree, Binary Tree, Sidewinder)</td><td>Fall back to a <strong>Kruskal-style spanning tree</strong>: randomly shuffle all cell-wall pairings, union cells until the tree is complete. Wall directions are weighted by <code>radial_bias</code></td></tr>
+						</tbody>
+					</table>
+					
+					<h3><code>radial_bias</code></h3>
+					<ul>
+						<li><strong>Property:</strong> <code>fire_maze.radial_bias</code> &mdash; <code>FloatProperty</code>, range <code>[0.0, 1.0]</code>, default <code>0.5</code></li>
+						<li>At <strong>0.0</strong> &mdash; strong <strong>tangential</strong> preference (walls broken on CW/CCW paths &rarr; wrap-around corridors)</li>
+						<li>At <strong>1.0</strong> &mdash; strong <strong>radial</strong> preference (walls broken on IN/OUT paths &rarr; spoke-like corridors)</li>
+						<li>At <strong>0.5</strong> &mdash; balanced (equal probability for any wall direction)</li>
+					</ul>
+				</section>
+				
+				<section id="entrances-exits">
+					<h2>4. Entrances &amp; Exits</h2>
+					<ul>
+						<li>Entrance and exit are placed on the <strong>outermost ring</strong> (ring <code>polar_rings - 1</code>)</li>
+						<li>Candidate cells are gathered from <code>outer_candidates</code> (all outermost sectors)</li>
+						<li>If only 1 candidate and fewer than 3 sectors, falls back to cell <code>(0, 0)</code></li>
+						<li>Entrance/exit cell is removed from the other pool to avoid overlap</li>
+						<li>Entrance wall = <code>out_wall</code>, Exit wall = <code>out_wall</code> (both break the outer boundary)</li>
+					</ul>
+				</section>
+				
+				<section id="center-fan">
+					<h2>5. Center Fan</h2>
+					<p>The center of the polar grid is filled by <code>_add_polar_center_fan()</code> in <code>polar_builder.py</code>.</p>
+					<ul>
+						<li><strong>Segments:</strong> 24 triangles</li>
+						<li><strong>Construction:</strong>
+							<ul>
+								<li>9 vertices in a ring around the origin (disc)</li>
+								<li>If <code>thickness &gt; 0</code>, duplicated at <code>z = thickness</code> &rarr; 18 vertices total</li>
+							</ul>
+						</li>
+						<li>Each vertex stores a UV coordinate <code>(cos(&theta;)/2 + 0.5, sin(&theta;)/2 + 0.5)</code></li>
+						<li>Fan edges connect to <code>(0, 0, z)</code> for the bottom/top face</li>
+						<li>Wall faces are generated around the perimeter using triangle pairs</li>
+						<li>Collider mesh: vertex-only triangle fan (no thickness)</li>
+					</ul>
+				</section>
+				
+				<section id="walls">
+					<h2>6. Walls</h2>
+					<p>Polar walls support two categories:</p>
+					<table>
+						<thead>
+							<tr><th>Wall</th><th>Direction</th><th>Wall Tag</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Radial (IN / OUT)</strong></td><td>Along the spoke (inner / outer arc)</td><td><code>in_wall</code>, <code>out_wall</code></td></tr>
+							<tr><td><strong>Tangential (CW / CCW)</strong></td><td>Along the angular direction (clockwise / counter-clockwise side)</td><td><code>cw_wall</code>, <code>ccw_wall</code></td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Thin Wall Offset</h3>
+					<p>Polar walls accept <code>thin_wall_offset</code> (in wall/builder calls) to shift the wall plane inward/outward relative to the cell boundary, preventing z-fighting with adjacent walls.</p>
+					
+					<h3>Radial Extrusion</h3>
+					<p>When generating boundary walls:</p>
+					<ul>
+						<li><code>dr_inner</code> / <code>dr_outer</code> &mdash; extra radial length added to the wall quad beyond the cell edge</li>
+						<li><code>dphi_start</code> / <code>dphi_end</code> &mdash; angular overshoot for IN/OUT walls using bend alignment</li>
+					</ul>
+					
+					<h3>Wall Meshes (Custom Alignment)</h3>
+					<ul>
+						<li><strong>CW / CCW walls</strong> &mdash; placed via <code>_add_wall_polar_bend()</code> with a rotation and offset matrix. No angular bending; instead uses a scaled/translated instance at the sector boundary</li>
+						<li><strong>IN / OUT walls</strong> &mdash; built with <code>_add_mesh_polar_bend_with_matrix()</code>, applying the full angular warp transformation to a flat wall quad</li>
+					</ul>
+				</section>
+				
+				<section id="alignment-modes">
+					<h2>7. Custom Tile Alignment Modes</h2>
+					<p>Controlled by <code>fire_maze.polar_custom_alignment</code> &mdash; <code>EnumProperty</code>, default <code>Procedural Only</code>.</p>
+					<table>
+						<thead>
+							<tr><th>Value</th><th>Enum</th><th>Description</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><code>procedural</code></td><td><strong>Procedural Only</strong></td><td>No custom tile geometry is used. All cells use native wedge/quad meshes generated by <code>_add_polar_wedge()</code> and <code>_add_polar_fences()</code></td></tr>
+							<tr><td><code>trapezoidal</code></td><td><strong>Trapezoidal Scaling</strong></td><td>Custom tile mesh is stretched via bilinear interpolation to fit the wedge shape. Each vertex <code>(x, y)</code> is mapped to a polar coordinate <code>(r, &theta;)</code> by blending the four corner values. Materials are preserved</td></tr>
+							<tr><td><code>bending</code></td><td><strong>Polar Bending (Warp)</strong></td><td>Custom tile mesh is first centered at origin, then warped by <code>(x_rel, y_rel) &rarr; (r_local * cos(&theta;_local), r_local * sin(&theta;_local))</code>. The mesh is subdivided (up to 4 cuts) for smoother curvature. <code>reverse_faces=True</code> flips normals to face outward</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Warp Formula (bending mode)</h3>
+					<pre><code>&alpha;_r = 2&pi; / Nr
+r_mid = (r + 0.5) &times; ts
+&theta;_mid = (&theta; + 0.5) &times; &alpha;_r
+r_local = r_mid + y_rel
+u = (x_rel + ts/2) / ts
+&theta;_local = (1 - u) &times; (&theta;_mid - &alpha;_r/2) + u &times; (&theta;_mid + &alpha;_r/2)
+
+x' = r_local &times; cos(&theta;_local)
+y' = r_local &times; sin(&theta;_local)
+z' = z + z_off</code></pre>
+				</section>
+				
+				<section id="stairs">
+					<h2>8. Stairs</h2>
+					<p>Stairs in polar mode are restricted to <strong>1&times;1 footprint</strong> only.</p>
+					<table>
+						<thead>
+							<tr><th>Feature</th><th>Detail</th></tr>
+						</thead>
+						<tbody>
+							<tr><td>Min&ndash;Max Footprint</td><td>1&times;1 (no 1&times;2 or 2&times;2 in polar)</td></tr>
+							<tr><td>Orientation Mapping</td><td><code>CCW</code> &rarr; sector - 1, <code>OUT</code> &rarr; ring + 1, <code>CW</code> &rarr; sector + 1, <code>IN</code> &rarr; ring - 1</td></tr>
+							<tr><td>Inner Ring</td><td>Orientation <code>IN</code> at ring 0 &rarr; maps to center (allowed)</td></tr>
+							<tr><td>Two-tile footprints</td><td>Two <strong>yoked single-cell stairs</strong> placed at adjacent rings</td></tr>
+						</tbody>
+					</table>
+					<p>The stair builder detects polar grid type and forces 1&times;1 placement even if 1&times;2 or 2&times;2 is set in the UI.</p>
+				</section>
+				
+				<section id="editor">
+					<h2>9. Interactive Editor</h2>
+					<p><code>_get_polar_coords()</code> in <code>operators.py</code> converts a mouse hit position <code>(hit_x, hit_y)</code> into a <code>(ring, sector)</code> index:</p>
+					<ol class="steps">
+						<li>Compute radial distance <code>r = hypot(hit_x, hit_y)</code></li>
+						<li>Compute angle <code>theta = atan2(hit_y, hit_x)</code> normalized to <code>[0, 2&pi;)</code></li>
+						<li>Map <code>r</code> and <code>theta</code> through <code>ring_sectors</code> to find the matching cell</li>
+					</ol>
+					<p>Wall toggling maps the 4 polar wall slots:</p>
+					<ul>
+						<li><strong>Radial (CW / CCW)</strong> &rarr; <code>cw_wall</code> / <code>ccw_wall</code></li>
+						<li><strong>Tangential (IN / OUT)</strong> &rarr; <code>in_wall</code> / <code>out_wall</code></li>
+						<li>The editor identifies which wall is being pointed at by hit position and sector boundary angles</li>
+					</ul>
+				</section>
+				
+				<section id="pathfinding">
+					<h2>10. Pathfinding</h2>
+					<p><code>_get_polar_neighbors()</code> in <code>pathfinder.py</code> returns adjacent <code>(r, &theta;)</code> tuples:</p>
+					<ul>
+						<li>Same ring: <code>&theta; &plusmn; 1</code> (wraps around the ring)</li>
+						<li>Adjacent ring: maps sector via <code>ring_sectors[r &plusmn; 1]</code> using sector-majority mapping &mdash; if the adjacent ring has fewer sectors, multiple old-sectors map to the same new-sector; if it has more, one old-sector maps to ~2 new-sectors</li>
+						<li>Outer ring direction: <code>(r+1, sector)</code> mapped to next ring's sector count</li>
+						<li>Inner ring direction: <code>(r-1, sector)</code> mapped to previous ring's sector count</li>
+					</ul>
+				</section>
+				
+				<section id="properties">
+					<h2>11. Properties Reference</h2>
+					<table>
+						<thead>
+							<tr><th>Property</th><th>Type</th><th>Default</th><th>Range</th><th>Description</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><code>fire_maze.polar_rings</code></td><td>Int</td><td>5</td><td>2&ndash;100</td><td>Number of concentric rings</td></tr>
+							<tr><td><code>fire_maze.polar_custom_alignment</code></td><td>Enum</td><td><code>procedural</code></td><td>&mdash;</td><td>Custom tile alignment mode</td></tr>
+							<tr><td><code>fire_maze.radial_bias</code></td><td>Float</td><td>0.5</td><td>0.0&ndash;1.0</td><td>0 = tangential preference, 1 = radial preference</td></tr>
+						</tbody>
+					</table>
+				</section>
+				
+				<section id="limitations">
+					<h2>12. Limitations</h2>
+					<ul>
+						<li>Custom tiles must be <strong>axis-aligned</strong> and centered at the origin for bending alignment to work correctly</li>
+						<li><strong>Trapezoidal Scaling</strong> and <strong>Polar Bending</strong> modes are computationally more expensive than Procedural Only; large meshes may slow rebuild</li>
+						<li>Stairs are limited to <strong>1&times;1 footprint</strong>; 1&times;2 and 2&times;2 footprints are not supported in polar grids</li>
+						<li>Polar grid does <strong>not</strong> support all shape boundary modes (rect, diamond, triangle, hexagon are Cartesian-only)</li>
+						<li>The center fan is always a perfect disc &mdash; no custom tile is applied to the center</li>
+					</ul>
+				</section>
+			</main>
+			
+			<footer>
+				<p>&copy; <span id="year"></span> FireR.at. All Rights Reserved. FireMaze is licensed under GPL-3.0-or-later.</p>
+				<script>
+					document.getElementById('year').textContent = new Date().getFullYear();
+					document.querySelectorAll('pre').forEach(block => {
+						block.addEventListener('click', async () => {
+							try { await navigator.clipboard.writeText(block.innerText); } catch (err) { console.error(err); }
+						});
+					});
+				</script>
+			</footer>
+		</div>
+	</body>
+</html>

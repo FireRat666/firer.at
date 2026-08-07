@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link id="favicon" rel="icon" href="../../files/favicon.ico" type="image/x-icon" />
+		<meta name="color-scheme" content="dark">
+		<meta name="theme-color" content="#00ff44">
+		
+		<!-- Primary SEO Metadata -->
+		<title>FireMaze | Blender 4.2+ Maze Generator Extension | FireR.at</title>
+		<meta name="title" content="FireMaze | Blender 4.2+ Maze Generator Extension | FireR.at">
+		<meta name="description" content="FireMaze is a free, open-source Blender 4.2+ extension for generating, editing, and customizing tile-based 3D mazes. Rectangular & polar grids, 10 algorithms, interactive viewport editing, custom tiles, image masking, multilevel stairs, vertex painting, and more.">
+		<meta name="keywords" content="FireMaze, Blender addon, Blender extension, maze generator, 3D maze, Blender 4.2, procedural maze, polar maze, tile maze, FireRat">
+		<meta name="author" content="FireRat">
+		<meta name="robots" content="index, follow">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://firer.at/pages/FireMaze/">
+		<meta property="og:title" content="FireMaze | Blender 4.2+ Maze Generator Extension | FireR.at">
+		<meta property="og:description" content="A free, open-source Blender 4.2+ extension for generating, editing, and customizing tile-based 3D mazes. Rectangular & polar grids, 10 algorithms, interactive editing, custom tiles, and more.">
+		<meta property="og:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		<meta property="og:site_name" content="FireR.at">
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image">
+		<meta property="twitter:url" content="https://firer.at/pages/FireMaze/">
+		<meta property="twitter:title" content="FireMaze | Blender 4.2+ Maze Generator Extension | FireR.at">
+		<meta property="twitter:description" content="A free, open-source Blender 4.2+ extension for generating, editing, and customizing tile-based 3D mazes.">
+		<meta property="twitter:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		
+		<!-- Typography & Stylesheets -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="../nstyle.css" />
+		<link rel="stylesheet" href="firemaze.css" />
+		
+		<!-- Dynamic Background Script -->
+		<script src="../../scripts/RandomBG.js"></script>
+		
+		<!-- Analytics & Privacy Consent (Cookie Chimp) -->
+		<script src="https://cookiechimp.com/widget/mV3trJ.js"></script>
+		<script type="text/plain" data-src="https://www.googletagmanager.com/gtag/js?id=G-HSMS8JERQ2"
+		data-category="analytics" data-service="Google Analytics" ></script>
+		<script type="text/plain" data-category="analytics" data-service="Google Analytics" >
+		window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
+		<!-- Analytics & Privacy Consent END -->
+	</head>
+	<body>
+		<div class="ambient-glow-2"></div>
+		<div class="container">
+			<header class="firemaze-hero">
+				<div class="version-badges">
+					<span class="version-badge">Blender 4.2+</span>
+					<span class="version-badge green">v3.3.0</span>
+					<span class="version-badge yellow">GPL-3.0-or-later</span>
+				</div>
+				<h1><span class="text-gradient">FireMaze</span></h1>
+				<p>A free, open-source Blender 4.2+ extension for generating, editing, and customizing tile-based mazes. Create classic dungeon layouts or radial circular mazes, paint them in real time, and export game-ready geometry.</p>
+				<img src="FireMaze.jpg" alt="FireMaze maze render" class="hero-shot" />
+				<div class="hero-ctas">
+					<a href="#quickstart" class="buttonss btn-gradient">Quick Start</a>
+					<a href="docs/features.html" class="buttonss buttonG">Full Documentation</a>
+					<a href="https://github.com/FireRat666/FireMaze" class="buttonss buttonW" target="_blank">GitHub Repo</a>
+					<a href="https://ko-fi.com/FireRat666" class="buttonss buttonGY" target="_blank">Support on Ko-fi</a>
+				</div>
+			</header>
+			
+			<nav>
+				<a href="../../index.html" class="buttonss buttonMain">Home</a>
+				<a href="../../contact.html" class="buttonss buttonMain">Contact</a>
+				<a href="../../privacy.html" class="buttonss buttonMain">Privacy</a>
+				<a href="../../games.html" class="buttonss buttonG">Banter Games</a>
+				<a href="../../pages/games.html" class="buttonss buttonG">Browser Games</a>
+				<a href="https://github.com/FireRat666" class="buttonss buttonW" target="_blank">GitHub</a>
+				<a href="https://ko-fi.com/FireRat666" class="buttonss buttonGY" target="_blank">Ko-fi</a>
+				<a href="https://paypal.me/FireRat666" class="buttonss buttonY" target="_blank">PayPal</a>
+			</nav>
+			
+			<main>
+				<section id="about">
+					<h2>What is FireMaze?</h2>
+					<p>FireMaze is a fully open-source Blender extension built around the <code>FireRat</code> sidebar tab. It generates perfect tile-based mazes (exactly one path between any two points) using a range of classic algorithms, then gives you the tools to shape, decorate, and polish them: interactive viewport painting, custom tile collections, image masks, shape boundaries, multilevel staircases, vertex painting, prop spawning, and full session save/load to disk.</p>
+					<div class="mini-stats">
+						<div class="mini-stat">
+							<span class="val">10</span>
+							<span class="lbl">Generation Algorithms</span>
+						</div>
+						<div class="mini-stat">
+							<span class="val">2</span>
+							<span class="lbl">Grid Types</span>
+						</div>
+						<div class="mini-stat">
+							<span class="val">200×200</span>
+							<span class="lbl">Max Cells</span>
+						</div>
+						<div class="mini-stat">
+							<span class="val">20</span>
+							<span class="lbl">Floors</span>
+						</div>
+						<div class="mini-stat">
+							<span class="val">4</span>
+							<span class="lbl">Vertex Paint Modes</span>
+						</div>
+						<div class="mini-stat">
+							<span class="val">100%</span>
+							<span class="lbl">Free &amp; Open Source</span>
+						</div>
+					</div>
+				</section>
+				
+				<h2 class="section-title">Features</h2>
+				<section id="features">
+					<div class="feature-grid">
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge api">Grid Types</span></div>
+							<h3>Rectangular &amp; Polar Grids</h3>
+							<p>Standard width × depth layouts or radial circular mazes with concentric rings and wedge-shaped cells. Polar grids support three custom tile alignment modes including organic vertex warping.</p>
+							<div class="card-link"><a href="docs/polar.html">Polar Grids &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge vr">Algorithms</span></div>
+							<h3>10 Generation Algorithms</h3>
+							<p>Depth-First Search, Kruskal's, Eller's, Binary Tree, Prim's, Hunt-and-Kill, Sidewinder, Wilson's, Recursive Division, and Growing Tree — each with tunable bias parameters for custom corridor flow.</p>
+							<div class="card-link"><a href="docs/features.html">Algorithm Reference &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge app">Construction</span></div>
+							<h3>Thin &amp; Cube Wall Modes</h3>
+							<p>Classic dungeon-style thin wall segments with adjustable thickness, or full tile-sized cube pillars. Optionally stack walls in tile-height increments for consistent UVs.</p>
+							<div class="card-link"><a href="docs/features.html">Wall Modes &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge websocket">Editing</span></div>
+							<h3>Interactive Viewport Editor</h3>
+							<p>Paint walls directly in the 3D viewport. Left-click toggles walls, Shift+click cycles custom meshes per face, and a stair tool places staircases on multilevel mazes — all rebuilt in real time.</p>
+							<div class="card-link"><a href="docs/editor.html">Editor Guide &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge api">Pathfinding</span></div>
+							<h3>Real-Time Guide Paths</h3>
+							<p>Display the BFS shortest route as a neon emissive curve, tube, or ribbon. Optional sine-wave animation makes the guide path float and pulse through your maze.</p>
+							<div class="card-link"><a href="docs/features.html">Guide Path &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge json">Customization</span></div>
+							<h3>Custom Tiles &amp; Collections</h3>
+							<p>Replace floors, walls, roofs, stairs, and ramps with your own meshes or randomly distributed collections. Swap individual faces per cell direction while editing.</p>
+							<div class="card-link"><a href="docs/features.html">Custom Tiles &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge app">Layout</span></div>
+							<h3>Shape Boundaries &amp; Image Masking</h3>
+							<p>Mold mazes into diamond, triangle, or hexagon silhouettes with smooth clipped edges — or drive the layout from any black-and-white image mask (logos, text, custom shapes).</p>
+							<div class="card-link"><a href="docs/shapes.html">Shapes &amp; Masking &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge vr">Vertical</span></div>
+							<h3>Multilevel Mazes &amp; Stairs</h3>
+							<p>Stack up to 20 floors with spiral, straight, or U-turn staircases — or smooth ramps. Physical floor thickness adds slab depth between levels with dedicated material slots.</p>
+							<div class="card-link"><a href="docs/multilevel.html">Multilevel Guide &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge api">Post-Processing</span></div>
+							<h3>Vertex Painting</h3>
+							<p>Four procedural paint modes: ambient occlusion, texture blend weights (moss, cracks, wetness, soot), path highlighting, and distance gradients — perfect for game engine blending.</p>
+							<div class="card-link"><a href="docs/vertex-painting.html">Painting Guide &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge websocket">Decor</span></div>
+							<h3>Prop &amp; Decor Spawner</h3>
+							<p>Automatically place torches on walls, chests in dead-ends, and doors at entrances and exits. Density controls and deterministic seeding keep placements stable.</p>
+							<div class="card-link"><a href="docs/props.html">Prop Spawner &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge json">Management</span></div>
+							<h3>Session Save / Load</h3>
+							<p>Export complete mazes to <code>.json</code> session files, restore them in any .blend, and recover from crashes automatically. Export layouts as PNG minimaps.</p>
+							<div class="card-link"><a href="docs/usage.html">Session Guide &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge app">Optimization</span></div>
+							<h3>Post-Processing &amp; Colliders</h3>
+							<p>Merge objects, weld doubles, generate lightmap UVs, dissolve planar faces, and produce simple game-ready collider meshes for floor, walls, and roof.</p>
+							<div class="card-link"><a href="docs/vertex-painting.html">Post-Processing &rarr;</a></div>
+						</div>
+					</div>
+				</section>
+				
+				<h2 class="section-title">Quick Start</h2>
+				<section id="quickstart">
+					<ol class="steps">
+						<li><strong>Install</strong> the extension — see the <a href="#install">Installation</a> section below.</li>
+						<li>Open the 3D Viewport, press <kbd>N</kbd> to open the sidebar, and select the <strong>FireRat</strong> tab.</li>
+						<li>In the <strong>Maze Settings</strong> panel, pick a <strong>Grid Type</strong> (Rectangular or Polar), set <strong>Width/Depth</strong> or <strong>Rings</strong>, and choose a <strong>Wall Mode</strong> (Thin or Cube).</li>
+						<li>Click <strong>Generate Maze</strong>. The default Depth-First Search algorithm works great for a first run.</li>
+						<li><em>(Optional)</em> Click <strong>Interactive Edit</strong> to paint walls in the viewport. Left-click toggles walls on/off; Shift+left-click cycles the meshes in your custom collection.</li>
+					</ol>
+				</section>
+				
+				<h2 class="section-title">Installation</h2>
+				<section id="install">
+					<p>FireMaze is structured as a standard Blender 4.2+ extension.</p>
+					<ol class="steps">
+						<li>Zip the <code>FireMaze/</code> subdirectory to create <code>FireMaze.zip</code> (or use the pre-packaged ZIP in the repository).</li>
+						<li>In Blender, navigate to <strong>Edit &rarr; Preferences &rarr; Get Extensions</strong>.</li>
+						<li>Click the dropdown arrow (&#9660;) in the top-right corner and choose <strong>Install from Disk...</strong></li>
+						<li>Select <code>FireMaze.zip</code> and click <strong>Install</strong>.</li>
+						<li>Enable the extension. The interface appears in the Sidebar (<kbd>N</kbd> key) under the <strong>FireRat</strong> tab.</li>
+					</ol>
+					<div class="callout info"><strong>Note:</strong> FireMaze requires <strong>Blender 4.2 or newer</strong>. It does not run on Blender 3.x or 4.0.</div>
+				</section>
+				
+				<h2 class="section-title">Documentation</h2>
+				<section id="docs">
+					<p>The complete FireMaze reference — every feature, setting, property, default, and range — is organized into the guides below.</p>
+					<div class="feature-grid">
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge api">Reference</span></div>
+							<h3>Features &amp; Settings</h3>
+							<p>Wall modes, grid types, all 10 algorithms with bias parameters, rooms, loops, entrances/exits, guide paths, custom tiles, transforms, and the full property quick reference.</p>
+							<div class="card-link"><a href="docs/features.html">Open Guide &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge json">Reference</span></div>
+							<h3>Usage &amp; Management</h3>
+							<p>Object categories, material slots, collection structure, session save/load, autosave crash recovery, image export, and scene cleanup.</p>
+							<div class="card-link"><a href="docs/usage.html">Open Guide &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge websocket">Guide</span></div>
+							<h3>Interactive Editor</h3>
+							<p>Viewport editing controls, wall toggling per grid type, mesh cycling, stair placement, dirty-cell tracking, and the precision helper mesh.</p>
+							<div class="card-link"><a href="docs/editor.html">Open Guide &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge app">Guide</span></div>
+							<h3>Vertex Painting &amp; Post-Processing</h3>
+							<p>All 4 vertex paint modes, merge options, lightmap UV generation, planar dissolve, collider generation, and the full pipeline order.</p>
+							<div class="card-link"><a href="docs/vertex-painting.html">Open Guide &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge app">Guide</span></div>
+							<h3>Prop &amp; Decor Spawner</h3>
+							<p>Torch, chest, and door placement rules, density controls, dead-end detection, orientation logic, and sub-collection scoping.</p>
+							<div class="card-link"><a href="docs/props.html">Open Guide &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge vr">Guide</span></div>
+							<h3>Multilevel Mazes</h3>
+							<p>Floor configuration, stair footprints and styles, ramp geometry, floor thickness material slots, and level-targeted editing.</p>
+							<div class="card-link"><a href="docs/multilevel.html">Open Guide &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge api">Guide</span></div>
+							<h3>Shape Boundaries &amp; Image Masking</h3>
+							<p>Diamond, triangle, and hexagon silhouettes with rotation and smooth edges, plus the black-and-white image mask workflow.</p>
+							<div class="card-link"><a href="docs/shapes.html">Open Guide &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge json">Guide</span></div>
+							<h3>Polar (Circular) Grids</h3>
+							<p>Rings, sectors, cell structure, radial bias, the center fan, and all three custom tile alignment modes including vertex warping.</p>
+							<div class="card-link"><a href="docs/polar.html">Open Guide &rarr;</a></div>
+						</div>
+						<div class="feature-card">
+							<div class="tech-badges"><span class="badge websocket">Support</span></div>
+							<h3>FAQ &amp; Troubleshooting</h3>
+							<p>Common errors and their fixes, performance tips, crash recovery workflow, known limitations, and how to get help.</p>
+							<div class="card-link"><a href="docs/faq.html">Open Guide &rarr;</a></div>
+						</div>
+					</div>
+				</section>
+				
+				<section id="connect">
+					<h2>Support FireMaze</h2>
+					<p>FireMaze is free and open source (GPL-3.0). Issues and feature requests are welcome via the GitHub issue tracker — and if FireMaze helps your project, consider supporting the development.</p>
+					<div class="social-links">
+						<a href="https://github.com/FireRat666/FireMaze" class="buttonW buttonss" target="_blank">GitHub Repo</a>
+						<a href="https://github.com/FireRat666/FireMaze/issues" class="buttonG buttonss" target="_blank">Issue Tracker</a>
+						<a href="https://ko-fi.com/FireRat666" class="buttonGY buttonss" target="_blank">Ko-fi</a>
+					</div>
+				</section>
+			</main>
+			
+			<footer>
+				<p>&copy; <span id="year"></span> FireR.at. All Rights Reserved. FireMaze is licensed under GPL-3.0-or-later.</p>
+				<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+			</footer>
+		</div>
+	</body>
+</html>

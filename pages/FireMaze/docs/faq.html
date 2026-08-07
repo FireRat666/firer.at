@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link id="favicon" rel="icon" href="../../../files/favicon.ico" type="image/x-icon" />
+		<meta name="color-scheme" content="dark">
+		<meta name="theme-color" content="#00ff44">
+		
+		<!-- Primary SEO Metadata -->
+		<title>FAQ &amp; Troubleshooting | FireMaze Documentation | FireR.at</title>
+		<meta name="title" content="FAQ &amp; Troubleshooting | FireMaze Documentation | FireR.at">
+		<meta name="description" content="FireMaze FAQ and troubleshooting: common errors and their fixes, installation and panel help, interactive editor tips, polar grid questions, session and autosave recovery, and known limitations.">
+		<meta name="author" content="FireRat">
+		<meta name="robots" content="index, follow">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://firer.at/pages/FireMaze/docs/faq.html">
+		<meta property="og:title" content="FAQ &amp; Troubleshooting | FireMaze Documentation | FireR.at">
+		<meta property="og:description" content="FireMaze FAQ and troubleshooting: common errors, fixes, and known limitations.">
+		<meta property="og:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		<meta property="og:site_name" content="FireR.at">
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image">
+		<meta property="twitter:url" content="https://firer.at/pages/FireMaze/docs/faq.html">
+		<meta property="twitter:title" content="FAQ &amp; Troubleshooting | FireMaze Documentation | FireR.at">
+		<meta property="twitter:description" content="FireMaze FAQ and troubleshooting: common errors, fixes, and known limitations.">
+		<meta property="twitter:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		
+		<!-- Typography & Stylesheets -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="../../nstyle.css" />
+		<link rel="stylesheet" href="../firemaze.css" />
+		
+		<!-- Dynamic Background Script -->
+		<script src="../../../scripts/RandomBG.js"></script>
+		
+		<!-- Analytics & Privacy Consent (Cookie Chimp) -->
+		<script src="https://cookiechimp.com/widget/mV3trJ.js"></script>
+		<script type="text/plain" data-src="https://www.googletagmanager.com/gtag/js?id=G-HSMS8JERQ2"
+		data-category="analytics" data-service="Google Analytics" ></script>
+		<script type="text/plain" data-category="analytics" data-service="Google Analytics" >
+		window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
+		<!-- Analytics & Privacy Consent END -->
+	</head>
+	<body>
+		<div class="ambient-glow-2"></div>
+		<div class="container">
+			<header>
+				<h1><span class="text-gradient">FireMaze</span> &mdash; FAQ &amp; Troubleshooting</h1>
+				<p>Common issues, performance tips, crash recovery workflow, and known limitations.</p>
+			</header>
+			
+			<nav>
+				<a href="../../../index.html" class="buttonss buttonMain">Home</a>
+				<a href="../../../contact.html" class="buttonss buttonMain">Contact</a>
+				<a href="../../../privacy.html" class="buttonss buttonMain">Privacy</a>
+				<a href="../../../games.html" class="buttonss buttonG">Banter Games</a>
+				<a href="../../../pages/games.html" class="buttonss buttonG">Browser Games</a>
+				<a href="https://github.com/FireRat666" class="buttonss buttonW" target="_blank">GitHub</a>
+				<a href="https://ko-fi.com/FireRat666" class="buttonss buttonGY" target="_blank">Ko-fi</a>
+				<a href="https://paypal.me/FireRat666" class="buttonss buttonY" target="_blank">PayPal</a>
+			</nav>
+			
+			<nav class="docnav">
+				<a href="../index.html" class="buttonss buttonMain">FireMaze Home</a>
+				<a href="features.html" class="buttonss">Features</a>
+				<a href="usage.html" class="buttonss">Usage</a>
+				<a href="editor.html" class="buttonss">Editor</a>
+				<a href="vertex-painting.html" class="buttonss">Vertex Paint</a>
+				<a href="props.html" class="buttonss">Props</a>
+				<a href="multilevel.html" class="buttonss">Multilevel</a>
+				<a href="shapes.html" class="buttonss">Shapes</a>
+				<a href="polar.html" class="buttonss">Polar</a>
+				<a href="faq.html" class="buttonss active">FAQ</a>
+			</nav>
+			
+			<main class="doc-content">
+				<a href="../index.html" class="backlink">&larr; Back to FireMaze</a>
+				
+				<section id="general">
+					<h2>1. General</h2>
+					
+					<h3>Where is the FireMaze panel?</h3>
+					<p>Open the 3D Viewport, press <kbd>N</kbd> to open the sidebar, and select the <strong>FireRat</strong> tab. If the tab is missing, ensure FireMaze is enabled in <strong>Edit &rarr; Preferences &rarr; Extensions</strong>.</p>
+					
+					<h3>How do I install FireMaze?</h3>
+					<p>Zip the <code>FireMaze/</code> subdirectory, then in Blender go to <strong>Edit &rarr; Preferences &rarr; Get Extensions</strong>, click the dropdown arrow (&#9660;) in the top-right corner, choose <strong>Install from Disk...</strong>, select the ZIP, and enable it.</p>
+					
+					<h3>Does FireMaze work in Blender 3.x or 4.0?</h3>
+					<p>No. FireMaze requires <strong>Blender 4.2+</strong>.</p>
+				</section>
+				
+				<section id="generation">
+					<h2>2. Maze Generation</h2>
+					
+					<h3>"Width and Depth must be at least 3"</h3>
+					<p>Rectangular grids require both dimensions &ge; 3. Increase <strong>Width</strong> and/or <strong>Depth</strong> in the Maze Settings panel.</p>
+					
+					<h3>"Rings must be at least 2"</h3>
+					<p>Polar grids need at least 2 rings. Increase <strong>Rings</strong> (range 3&ndash;15) in the Maze Settings panel.</p>
+					
+					<h3>"Rings must be even when wall_mode='cube'"</h3>
+					<p>Cube mode with a polar grid requires an <strong>even</strong> number of rings. If you see this warning, adjust the <strong>Rings</strong> spinner to an even value (4, 6, 8, &hellip;).</p>
+					
+					<h3>"All cells are blocked; cannot generate maze"</h3>
+					<p>Every cell was excluded &mdash; usually because an image mask left zero walkable cells. Check your <strong>Mask Image</strong> and <strong>Invert</strong> settings. Try clearing the mask and generating again.</p>
+					
+					<h3>"All candidate entrance/exit cells were blocked by mask."</h3>
+					<p>The mask left no valid cells on the boundary to place the entrance or exit. Adjust the mask or disable it.</p>
+					
+					<h3>"Failed to carve the requested count of {count} border openings on side {side}."</h3>
+					<p>The maze has fewer boundary cells than the requested openings. Reduce <strong>Entrance/Exit Count</strong> or increase the grid size.</p>
+					
+					<h3>"Mask image ignored when Floors &gt; 1"</h3>
+					<p>Masking is not supported on multilevel mazes. Set <strong>Floors</strong> to 1 to use image masking.</p>
+					
+					<h3>Why does my maze keep looking the same?</h3>
+					<p>Check whether <strong>Random Seed</strong> is set to a fixed value in the <strong>Advanced</strong> section. Set it to <code>0</code> (auto) for a different maze on each generation.</p>
+					
+					<h3>Why aren't my custom tiles appearing?</h3>
+					<ul>
+						<li>Ensure you have assigned a <strong>Custom Collection</strong> in the <strong>Custom Tiles</strong> panel.</li>
+						<li>For polar grids, set <strong>Polar Custom Alignment</strong> to <strong>Trapezoidal Scaling</strong> or <strong>Polar Bending (Warp)</strong> &mdash; Procedural Only mode ignores custom tiles.</li>
+						<li>Make sure the collection contains valid mesh objects centered at the origin.</li>
+					</ul>
+				</section>
+				
+				<section id="editor">
+					<h2>3. Interactive Editor</h2>
+					
+					<h3>"No generated maze found to edit. Please generate a maze first."</h3>
+					<p>Generate a maze before entering the interactive editor.</p>
+					
+					<h3>How do I enter/exit the interactive editor?</h3>
+					<ul>
+						<li><strong>Enter:</strong> Click <strong>Interactive Edit</strong> in the sidebar (or press the mapped key).</li>
+						<li><strong>Exit:</strong> Press <kbd>Esc</kbd> or <kbd>Enter</kbd> to exit edit mode.</li>
+					</ul>
+					
+					<h3>How do I toggle walls?</h3>
+					<p><strong>Left-click</strong> on a wall to toggle it on/off. The wall reappears after the next rebuild.</p>
+					
+					<h3>How do I cycle meshes?</h3>
+					<p><strong>Shift + Left-click</strong> on a cell face to cycle through the meshes in your custom tile collection.</p>
+					
+					<h3>How do I place stairs?</h3>
+					<p>Select the <strong>Toggle Stairs</strong> tool from the sidebar during edit mode (only shown when <code>floors &gt; 1</code>). <strong>Left-click</strong> on a floor cell to place a stair or toggle an existing one. <strong>Shift+Left-click</strong> on an existing stair to rotate its orientation. Stairs cannot be placed on the top floor.</p>
+					
+					<h3>How do I set entrance/exit?</h3>
+					<p>Entrances and exits are managed automatically &mdash; toggling a <strong>perimeter cell</strong> on floor 0 creates an entrance, toggling one on the top floor creates an exit. Switching to a different perimeter cell moves the entrance/exit. Toggling a perimeter cell back to wall removes it.</p>
+				</section>
+				
+				<section id="multilevel">
+					<h2>4. Multilevel Mazes</h2>
+					
+					<h3>"Cannot place stair on the top floor"</h3>
+					<p>Stairs must lead to a floor above. Place stairs on floors &le; (Floors &minus; 1).</p>
+					
+					<h3>"Cannot place entrance/exit on middle floors"</h3>
+					<p>Entrances and exits are only valid on floor 0 (ground floor).</p>
+					
+					<h3>Stairs look disconnected or misaligned</h3>
+					<p>Ensure stair <strong>Style</strong> matches your wall mode &mdash; use <strong>Stair</strong> for Thin mode, <strong>Ramp</strong> for Cube mode. Check the <strong>Footprint</strong> setting: 1&times;1, 1&times;2, or 2&times;2. Polar grids only support 1&times;1.</p>
+				</section>
+				
+				<section id="polar">
+					<h2>5. Polar (Circular) Grids</h2>
+					
+					<h3>What do the three Polar Custom Alignment modes do?</h3>
+					<table>
+						<thead>
+							<tr><th>Mode</th><th>Behavior</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Procedural Only</strong></td><td>No custom tiles &mdash; uses native wedge/arc meshes</td></tr>
+							<tr><td><strong>Trapezoidal Scaling</strong></td><td>Stretches custom tiles into wedge shapes via bilinear interpolation</td></tr>
+							<tr><td><strong>Polar Bending (Warp)</strong></td><td>Warps custom tile vertices along circular arcs with subdivision for smooth curvature</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>What does <code>radial_bias</code> control?</h3>
+					<ul>
+						<li><strong>0.0</strong> &mdash; tangential preference (corridors wrap around rings)</li>
+						<li><strong>1.0</strong> &mdash; radial preference (corridors run along spokes)</li>
+						<li><strong>0.5</strong> &mdash; balanced</li>
+					</ul>
+					
+					<h3>Why is my custom tile distorted in polar mode?</h3>
+					<p>Polar Bending and Trapezoidal Scaling both deform tile geometry. For best results, use a simple, axis-aligned mesh centered at the origin. Highly detailed meshes may perform poorly &mdash; subdivision cuts are automatically capped (max 2 for dense meshes) to prevent vertex explosion.</p>
+				</section>
+				
+				<section id="vertex-paint">
+					<h2>6. Vertex Painting &amp; Post-Processing</h2>
+					
+					<h3>The vertex colors don't look right</h3>
+					<p>Check the <strong>Paint Mode</strong>:</p>
+					<table>
+						<thead>
+							<tr><th>Mode</th><th>Formula</th></tr>
+						</thead>
+						<tbody>
+							<tr><td>AO</td><td><code>1 &minus; (distance_to_closest_wall / max_dist)</code></td></tr>
+							<tr><td>Blend</td><td><code>(rx + ry + rz + cx + cy + cz) / 6</code> where <code>(rx, ry, rz)</code> = distance to cell walls and <code>(cx, cy, cz)</code> = world center falloff</td></tr>
+							<tr><td>Path</td><td>Distance from cell to guide path, inverted</td></tr>
+							<tr><td>Distance</td><td>Raw distance to entrance cell</td></tr>
+						</tbody>
+					</table>
+					<p>Run <strong>Post-Processing</strong> after painting to apply merge, dissolve, and collider steps.</p>
+					
+					<h3>Colliders are not visible in viewport</h3>
+					<p>Colliders are generated as separate meshes with the <code>_Collider</code> suffix. Enable <strong>Viewport Display &rarr; Wireframe</strong> or <strong>Bounds</strong> on those objects. They are invisible in Solid/Viewport shading by default.</p>
+				</section>
+				
+				<section id="props">
+					<h2>7. Props &amp; Decors</h2>
+					
+					<h3>Why are no props spawning?</h3>
+					<ul>
+						<li>Ensure the <strong>Prop Collection</strong> is assigned in the <strong>Prop Spawner</strong> panel.</li>
+						<li>Check <strong>Spawn Chance</strong> &mdash; if set to <code>0</code>, nothing spawns.</li>
+						<li>Regenerate or rebuild the maze after assigning the collection.</li>
+					</ul>
+					
+					<h3>Why did my props disappear after regenerating?</h3>
+					<p>Rebuilding the maze clears all existing prop meshes (the prop sub-collection is deleted and recreated). Props are re-spawned from scratch using the seeded RNG, so the same seed will produce identical placements.</p>
+				</section>
+				
+				<section id="sessions">
+					<h2>8. Sessions &amp; Autosave</h2>
+					
+					<h3>"No autosave file found"</h3>
+					<p>There is no recovery file to restore. This can happen if you already discarded it or if no maze was generated in the previous session.</p>
+					
+					<h3>How do I restore after a crash?</h3>
+					<ol class="steps">
+						<li>Open Blender and enable FireMaze.</li>
+						<li>In the <strong>Session &amp; Image Management</strong> panel, a yellow recovery box appears.</li>
+						<li>Click <strong>Restore Session</strong> to recover the last generated maze.</li>
+						<li>Click <strong>Discard</strong> to dismiss the recovery data permanently.</li>
+					</ol>
+					
+					<h3>Can I move a maze between Blender files?</h3>
+					<p>Yes &mdash; use <strong>Save Session to Disk</strong> to export a <code>.json</code> file, then <strong>Load Session from Disk</strong> in the other file. External mesh/collection/image references are matched by <strong>name</strong> &mdash; they must already exist in the target <code>.blend</code>.</p>
+					
+					<h3>"File not found" when loading a session</h3>
+					<p>The <code>.json</code> file was moved, renamed, or deleted. Check the file path.</p>
+					
+					<h3>Why are my custom meshes missing after loading a session?</h3>
+					<p>Session files store references by name (not by pointer). If the custom collection or mesh objects have different names in the target <code>.blend</code>, they won't re-link. Rename them to match the original names, or ensure they exist before loading.</p>
+				</section>
+				
+				<section id="export">
+					<h2>9. Image Export &amp; Masking</h2>
+					
+					<h3>The exported PNG is all black or all white</h3>
+					<ul>
+						<li>Check the <strong>Invert</strong> toggle.</li>
+						<li>Ensure you have a valid maze layout. Generate or load a maze before exporting.</li>
+					</ul>
+					
+					<h3>"Failed to save image file"</h3>
+					<p>The destination path may be read-only or the disk may be full. Choose a different directory.</p>
+					
+					<h3>The mask image had no effect</h3>
+					<ul>
+						<li>Verify the mask is assigned in the <strong>Masking &amp; Image Export</strong> section.</li>
+						<li>Masking only works with <strong>Floors = 1</strong>.</li>
+						<li>Check <strong>Invert</strong> if the mask is using opposite luminance values.</li>
+						<li>Masks use <strong>luminance threshold</strong>: pixels brighter than the threshold become walkable (or blocked when inverted).</li>
+					</ul>
+				</section>
+				
+				<section id="error-reference">
+					<h2>10. Error &amp; Warning Reference</h2>
+					<table>
+						<thead>
+							<tr><th>Message</th><th>Likely Cause</th><th>Solution</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><code>Width and Depth must be at least 3</code></td><td>Grid too small</td><td>Increase Width/Depth to &ge; 3</td></tr>
+							<tr><td><code>Rings must be at least 2</code></td><td>Polar rings too low</td><td>Set Rings &ge; 2</td></tr>
+							<tr><td><code>Rings must be even when wall_mode='cube'</code></td><td>Odd rings + Cube mode</td><td>Use an even ring count</td></tr>
+							<tr><td><code>All cells are blocked</code></td><td>Mask covers everything</td><td>Disable or adjust the mask</td></tr>
+							<tr><td><code>No generated maze found</code></td><td>Nothing to edit</td><td>Generate a maze first</td></tr>
+							<tr><td><code>Cannot place stair on top floor</code></td><td>Stair on last floor</td><td>Place on floor &lt; Floors</td></tr>
+							<tr><td><code>Cannot place entrance/exit on middle floors</code></td><td>Multilevel restriction</td><td>Use floor 0 only</td></tr>
+							<tr><td><code>No autosave file found</code></td><td>No recovery data</td><td>Generate a new maze</td></tr>
+							<tr><td><code>File not found</code></td><td>Session/mask path invalid</td><td>Verify the file exists and path is correct</td></tr>
+							<tr><td><code>Failed to save image file</code></td><td>Disk/path issue</td><td>Use a different directory</td></tr>
+						</tbody>
+					</table>
+				</section>
+				
+				<section id="help">
+					<h2>11. Getting Help</h2>
+					<p>If your issue isn't listed here, open an issue on the GitHub tracker:</p>
+					<p><a href="https://github.com/FireRat666/FireMaze/issues" class="buttonss buttonG" target="_blank">https://github.com/FireRat666/FireMaze/issues</a></p>
+					<p>Include:</p>
+					<ul>
+						<li>FireMaze version (from <code>__init__.py</code>)</li>
+						<li>Blender version</li>
+						<li>Steps to reproduce</li>
+						<li>Full error message (from Blender's <strong>Window &rarr; Toggle System Console</strong>)</li>
+					</ul>
+				</section>
+			</main>
+			
+			<footer>
+				<p>&copy; <span id="year"></span> FireR.at. All Rights Reserved. FireMaze is licensed under GPL-3.0-or-later.</p>
+				<script>
+					document.getElementById('year').textContent = new Date().getFullYear();
+					document.querySelectorAll('pre').forEach(block => {
+						block.addEventListener('click', async () => {
+							try { await navigator.clipboard.writeText(block.innerText); } catch (err) { console.error(err); }
+						});
+					});
+				</script>
+			</footer>
+		</div>
+	</body>
+</html>

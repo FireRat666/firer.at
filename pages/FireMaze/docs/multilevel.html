@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link id="favicon" rel="icon" href="../../../files/favicon.ico" type="image/x-icon" />
+		<meta name="color-scheme" content="dark">
+		<meta name="theme-color" content="#00ff44">
+		
+		<!-- Primary SEO Metadata -->
+		<title>Multilevel Mazes | FireMaze Documentation | FireR.at</title>
+		<meta name="title" content="Multilevel Mazes | FireMaze Documentation | FireR.at">
+		<meta name="description" content="FireMaze multilevel maze guide: up to 20 floors, stair footprints (1x1 spiral, 1x2 straight, 2x2 U-turn), stair and ramp geometry, floor thickness material slots, and level-targeted viewport editing.">
+		<meta name="author" content="FireRat">
+		<meta name="robots" content="index, follow">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://firer.at/pages/FireMaze/docs/multilevel.html">
+		<meta property="og:title" content="Multilevel Mazes | FireMaze Documentation | FireR.at">
+		<meta property="og:description" content="FireMaze multilevel maze guide: floors, stair footprints, styles, and floor thickness.">
+		<meta property="og:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		<meta property="og:site_name" content="FireR.at">
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image">
+		<meta property="twitter:url" content="https://firer.at/pages/FireMaze/docs/multilevel.html">
+		<meta property="twitter:title" content="Multilevel Mazes | FireMaze Documentation | FireR.at">
+		<meta property="twitter:description" content="FireMaze multilevel maze guide: floors, stair footprints, styles, and floor thickness.">
+		<meta property="twitter:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		
+		<!-- Typography & Stylesheets -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="../../nstyle.css" />
+		<link rel="stylesheet" href="../firemaze.css" />
+		
+		<!-- Dynamic Background Script -->
+		<script src="../../../scripts/RandomBG.js"></script>
+		
+		<!-- Analytics & Privacy Consent (Cookie Chimp) -->
+		<script src="https://cookiechimp.com/widget/mV3trJ.js"></script>
+		<script type="text/plain" data-src="https://www.googletagmanager.com/gtag/js?id=G-HSMS8JERQ2"
+		data-category="analytics" data-service="Google Analytics" ></script>
+		<script type="text/plain" data-category="analytics" data-service="Google Analytics" >
+		window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
+		<!-- Analytics & Privacy Consent END -->
+	</head>
+	<body>
+		<div class="ambient-glow-2"></div>
+		<div class="container">
+			<header>
+				<h1><span class="text-gradient">FireMaze</span> &mdash; Multilevel Mazes</h1>
+				<p>Configure vertical floor transitions, stair geometry, and floor thickness for multi-floor mazes.</p>
+			</header>
+			
+			<nav>
+				<a href="../../../index.html" class="buttonss buttonMain">Home</a>
+				<a href="../../../contact.html" class="buttonss buttonMain">Contact</a>
+				<a href="../../../privacy.html" class="buttonss buttonMain">Privacy</a>
+				<a href="../../../games.html" class="buttonss buttonG">Banter Games</a>
+				<a href="../../../pages/games.html" class="buttonss buttonG">Browser Games</a>
+				<a href="https://github.com/FireRat666" class="buttonss buttonW" target="_blank">GitHub</a>
+				<a href="https://ko-fi.com/FireRat666" class="buttonss buttonGY" target="_blank">Ko-fi</a>
+				<a href="https://paypal.me/FireRat666" class="buttonss buttonY" target="_blank">PayPal</a>
+			</nav>
+			
+			<nav class="docnav">
+				<a href="../index.html" class="buttonss buttonMain">FireMaze Home</a>
+				<a href="features.html" class="buttonss">Features</a>
+				<a href="usage.html" class="buttonss">Usage</a>
+				<a href="editor.html" class="buttonss">Editor</a>
+				<a href="vertex-painting.html" class="buttonss">Vertex Paint</a>
+				<a href="props.html" class="buttonss">Props</a>
+				<a href="multilevel.html" class="buttonss active">Multilevel</a>
+				<a href="shapes.html" class="buttonss">Shapes</a>
+				<a href="polar.html" class="buttonss">Polar</a>
+				<a href="faq.html" class="buttonss">FAQ</a>
+			</nav>
+			
+			<main class="doc-content">
+				<a href="../index.html" class="backlink">&larr; Back to FireMaze</a>
+				
+				<section id="overview">
+					<h2>1. Overview</h2>
+					<p>FireMaze supports up to 20 vertical levels. When <code>floors &gt; 1</code>:</p>
+					<ol class="steps">
+						<li>The 2D maze grid is cloned into a 3D array <code>cells[z][y][x]</code> via <code>_expand_cells_to_3d</code>.</li>
+						<li>Staircases are generated to connect adjacent floor levels.</li>
+						<li>All vertical positioning (walls, floors, roofs, props, vertex painting, editor raycasts) uses <code>level_height = wall_height + floor_thickness</code> instead of <code>wall_height</code> alone.</li>
+						<li>The interactive editor provides a stair tool for placing, removing, and rotating stairs in the viewport.</li>
+					</ol>
+				</section>
+				
+				<section id="floor-config">
+					<h2>2. Floor Configuration</h2>
+					<p class="panel-note">Maze Settings panel</p>
+					
+					<h3>Floors</h3>
+					<p><em><code>floors</code> &mdash; Integer, 1&ndash;20, default 1</em></p>
+					<p>The number of vertical levels in the maze. When set to 1, the maze is single-level (no stairs, no 3D cell expansion).</p>
+					<p>When <code>floors &gt; 1</code>:</p>
+					<ul>
+						<li>The generation algorithm expands the 2D grid to 3D by copying the base layer to all floors.</li>
+						<li>Stairs are placed on random open cells between each floor transition.</li>
+						<li>Image masking is automatically disabled (masked cells would break stair connectivity).</li>
+						<li>The <strong>Stairs Per Level</strong> (<code>stair_count</code>), <strong>Stair Footprint</strong>, <strong>Stair Style</strong>, and <strong>Stair Direction</strong> controls appear in the panel.</li>
+					</ul>
+					
+					<h3>3D Cell Expansion</h3>
+					<p>The function <code>_expand_cells_to_3d</code> in <code>common_helpers.py</code>:</p>
+					<ol class="steps">
+						<li>Copies the 2D cell grid to <code>floors</code> layers: <code>cells_3d = [deepcopy(cells_2d) for _ in range(floors)]</code>.</li>
+						<li>Calls <code>_place_stairs</code> to carve openings and place stair records.</li>
+						<li>Returns the 3D cell array and the list of placed stair definitions.</li>
+					</ol>
+					<p>Stair footprint cells are force-opened on both the source floor and the destination floor by <code>_force_cell_open</code>.</p>
+				</section>
+				
+				<section id="level-height">
+					<h2>3. Level Height</h2>
+					<p>When <code>floor_thickness &gt; 0</code>, the effective height of each floor level changes:</p>
+					<pre><code>level_height = wall_height + floor_thickness</code></pre>
+					<p>This value is used across the entire codebase for vertical positioning:</p>
+					<table>
+						<thead>
+							<tr><th>System</th><th>Usage</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Mesh builders</strong> (rect, polar)</td><td><code>z_off = z * level_height</code> for floor, wall, roof, stair placement</td></tr>
+							<tr><td><strong>Guide path</strong></td><td>Spline point Z = <code>ho + z_coord * level_height</code></td></tr>
+							<tr><td><strong>Vertex painting</strong></td><td>Floor level mapping from vertex Z: <code>z = int((pz - 1e-6) / level_height)</code></td></tr>
+							<tr><td><strong>Prop spawning</strong></td><td>Prop Z = <code>z * level_height + 0.6 * wh</code> (torches) or <code>z * level_height</code> (chests/doors)</td></tr>
+							<tr><td><strong>Interactive editor</strong></td><td>Floor hit detection: <code>z_hit = int(offset_loc.z / level_height)</code>, face direction: <code>ROOF if loc.z &gt; (z_hit * level_height + wh * 0.5)</code></td></tr>
+						</tbody>
+					</table>
+				</section>
+				
+				<section id="stair-generation">
+					<h2>4. Stair Generation</h2>
+					<p><em>Algorithm: <code>_place_stairs</code> in <code>maze_algorithms/common_helpers.py</code> (rectangular) and inline in <code>polar_maze.py</code></em></p>
+					
+					<h3>Candidate Selection</h3>
+					<p>For each floor transition (from floor <code>z</code> to <code>z+1</code>), the algorithm collects candidate cells that are:</p>
+					<ul>
+						<li>Open (not walls).</li>
+						<li>Not on the outer perimeter (at least 1 cell away from all borders for rectangular grids).</li>
+						<li>Not already occupied by another stair footprint.</li>
+					</ul>
+					<p>For polar mazes, candidates are open cells on rings <code>r &gt;= 2</code> (not the center or first ring).</p>
+					
+					<h3>Stairs Per Level</h3>
+					<p><em><code>stair_count</code> &mdash; Integer, 1&ndash;50, default 1</em></p>
+					<p>The number of staircases to place between each adjacent floor pair. If <code>stair_count</code> exceeds available candidate cells, all available candidates are used.</p>
+					
+					<h3>Stair Footprint</h3>
+					<p><em><code>stair_footprint</code> &mdash; Enum: <code>1x1</code>, <code>1x2</code>, <code>2x2</code> (rectangular only). Polar always uses <code>1x1</code>.</em></p>
+					<p>The footprint defines how many cells a staircase occupies on each floor.</p>
+					
+					<h4>1x1 (Spiral)</h4>
+					<ul>
+						<li>A single cell footprint.</li>
+						<li>The stair occupies exactly one cell on both the source and destination floors.</li>
+						<li>The procedural geometry is a spiral staircase: central post + 12 wedge steps with a 360&deg; rotation, rising the full <code>wall_height</code>.</li>
+					</ul>
+					
+					<h4>1x2 (Straight)</h4>
+					<ul>
+						<li>Two cells in a line.</li>
+						<li>The second cell's position depends on orientation:
+							<ul>
+								<li><strong>N</strong>: <code>(x, y-1)</code></li>
+								<li><strong>S</strong>: <code>(x, y+1)</code></li>
+								<li><strong>E</strong>: <code>(x+1, y)</code></li>
+								<li><strong>W</strong>: <code>(x-1, y)</code></li>
+							</ul>
+						</li>
+						<li>The starting cell receives the procedural stair geometry or custom stair mesh; the second cell is carved open on both floors to serve as a landing.</li>
+					</ul>
+					
+					<h4>2x2 (U-Turn)</h4>
+					<ul>
+						<li>Four cells forming a 2&times;2 block: <code>(x, y), (x+1, y), (x, y+1), (x+1, y+1)</code>.</li>
+						<li>The starting cell receives the procedural stair geometry or custom stair mesh. The remaining three cells are carved open on both floors as landing/open shaft.</li>
+					</ul>
+					
+					<h3>Stair Style</h3>
+					<p><em><code>stair_style</code> &mdash; Enum: <code>stair</code> (Staircase), <code>ramp</code> (Ramp)</em></p>
+					<p>Controls the procedural geometry type:</p>
+					<table>
+						<thead>
+							<tr><th>Style</th><th>Geometry</th><th>Steps</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Staircase</strong> (<code>stair</code>)</td><td>Spiral staircase: central cylindrical post + 12 wedge-shaped steps, 360&deg; rotation. Includes top landing platform.</td><td>12 steps, <code>rise_per_step = wh / 12</code></td></tr>
+							<tr><td><strong>Ramp</strong> (<code>ramp</code>)</td><td>Sloped quadrilateral top surface with solid wedge side panels. Runs in the +Y direction.</td><td>Continuous slope</td></tr>
+						</tbody>
+					</table>
+					
+					<h4>Procedural Geometry Details</h4>
+					<p><strong>Spiral Staircase</strong> (<code>_build_spiral_stair_1x1</code>):</p>
+					<ol class="steps">
+						<li><strong>Top landing platform</strong> &mdash; A flat rectangular slab at <code>z_offset + wh</code> (aligned to +Y side).</li>
+						<li><strong>Central post</strong> &mdash; 8-segment cylindrical column from <code>z_offset</code> to <code>z_offset + wh</code>.</li>
+						<li><strong>12 wedge steps</strong> &mdash; Each step:
+							<ul>
+								<li>Top face (winding corrected for upward normal).</li>
+								<li>Bottom face (downward normal).</li>
+								<li>Outer riser, inner riser, CW side (back riser), CCW side (front riser).</li>
+							</ul>
+						</li>
+					</ol>
+					<p><strong>Ramp</strong> (<code>_build_ramp_1x1</code>):</p>
+					<ol class="steps">
+						<li><strong>Top surface</strong> &mdash; Sloped quadrilateral rising from <code>z_offset</code> at <code>-y</code> to <code>z_offset + wh</code> at <code>+y</code>.</li>
+						<li><strong>Bottom face</strong> &mdash; Flat rectangle at <code>z_offset</code>.</li>
+						<li><strong>Side panels</strong> &mdash; Triangular wedge at x = -t2 (left) and x = t2 (right).</li>
+						<li><strong>Front face</strong> &mdash; Vertical wall at the high end (<code>y = t2</code>).</li>
+					</ol>
+					
+					<h3>Stair Direction</h3>
+					<p><em><code>stair_direction</code> &mdash; Enum: N, E, S, W</em></p>
+					<p>Controls the orientation/facing of placed stairs:</p>
+					<table>
+						<thead>
+							<tr><th>Grid type</th><th>Compass</th><th>Polar equivalent</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Rectangular</strong></td><td>N / E / S / W</td><td>&mdash;</td></tr>
+							<tr><td><strong>Polar</strong></td><td>N &rarr; CCW, E &rarr; OUT, S &rarr; CW, W &rarr; IN</td><td>CCW / OUT / CW / IN</td></tr>
+						</tbody>
+					</table>
+					<p>When set to <code>'random'</code> (during generation), a random orientation is chosen for each stair.</p>
+					
+					<h3>Polar Stair Placement</h3>
+					<p>In <code>polar_maze.py</code>, stair placement follows the same pattern with polar-specific coordinate mapping:</p>
+					<ol class="steps">
+						<li>Candidate open cells on rings <code>r &gt;= 2</code> are collected per floor.</li>
+						<li>Orientation is chosen randomly or mapped from <code>stair_direction</code> to polar orientation.</li>
+						<li>Each stair is defined as <code>{'z': z, 'x': theta, 'y': r, 'type': style, 'footprint': '1x1', 'orientation': polar_orient}</code>.</li>
+						<li>Footprint cells are force-opened on both levels.</li>
+						<li>All polar stairs use <code>1x1</code> footprint only.</li>
+					</ol>
+				</section>
+				
+				<section id="floor-thickness">
+					<h2>5. Floor Thickness</h2>
+					<p><em><code>floor_thickness</code> &mdash; Float, 0.0&ndash;10.0, default 0.0</em></p>
+					<p>Adds physical depth to the floor slab between levels. When greater than zero:</p>
+					<ul>
+						<li>Floor tiles are generated as 6-face boxes (top, bottom, 4 sides) instead of single quads.</li>
+						<li>The function <code>_add_floor_tile_transformed</code> generates:
+							<ul>
+								<li><strong>Top face</strong> (walkable surface, Z=0 local).</li>
+								<li><strong>Bottom face</strong> (underside, Z=-thickness local).</li>
+								<li><strong>4 side faces</strong> joining top and bottom edges.</li>
+							</ul>
+						</li>
+						<li>Each face receives its own material index (0 for top, 1 for bottom, 2 for sides).</li>
+						<li>Custom floor/roof meshes are placed at the top surface and do not scale with thickness (a UI warning is shown when custom meshes are used with thickness).</li>
+						<li>All vertical positioning uses <code>level_height</code> as described above.</li>
+					</ul>
+					
+					<h3>Material Slots</h3>
+					<p>When <code>floor_thickness &gt; 0</code>, generated floor tiles use three material slots:</p>
+					<table>
+						<thead>
+							<tr><th>Slot</th><th>Face</th><th>Usage</th></tr>
+						</thead>
+						<tbody>
+							<tr><td>0</td><td>Top</td><td>Walkable surface &mdash; typically same as floor material</td></tr>
+							<tr><td>1</td><td>Bottom</td><td>Underside slab</td></tr>
+							<tr><td>2</td><td>Sides</td><td>Edge faces of the slab</td></tr>
+						</tbody>
+					</table>
+				</section>
+				
+				<section id="editing">
+					<h2>6. Interactive Editing</h2>
+					<p>When <code>floors &gt; 1</code>, the editor provides stair-specific controls.</p>
+					
+					<h3>Floor Level Selector</h3>
+					<p><em><code>edit_floor_level</code> &mdash; Integer, 0 to floors-1</em></p>
+					<p>Targets a specific floor for editing. All clicks (wall toggle, mesh cycle, stair tool) apply to this floor level. Automatically clamped to valid range on entering edit mode.</p>
+					
+					<h3>Stair Tool</h3>
+					<p>When the edit tool is set to <strong>Toggle Stairs</strong> (<code>edit_tool = 'stair'</code>):</p>
+					<table>
+						<thead>
+							<tr><th>Action</th><th>Result</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Left-click</strong> on open cell</td><td>Places a stair connecting the current floor to the level above. Both the clicked cell and the cell above are force-opened.</td></tr>
+							<tr><td><strong>Left-click</strong> on existing stair</td><td>Removes the stair.</td></tr>
+							<tr><td><strong>Shift+left-click</strong> on existing stair</td><td>Rotates orientation: N&rarr;E&rarr;S&rarr;W&rarr;N (rect) or CCW&rarr;OUT&rarr;CW&rarr;IN&rarr;CCW (polar).</td></tr>
+							<tr><td><strong>Left-click</strong> on top floor</td><td>Reports warning &mdash; cannot place stairs on the top floor.</td></tr>
+						</tbody>
+					</table>
+					<p>The stair is created with the current property values (<code>stair_style</code>, <code>stair_footprint</code>, <code>stair_direction</code>). For polar mazes, compass direction is mapped to polar orientation.</p>
+					
+					<h3>Dirty Cell Tracking</h3>
+					<p>Stair edits mark cells on both the source floor (<code>z_hit</code>) and destination floor (<code>z_hit + 1</code>) as dirty, plus their Moore neighborhoods (rectangular) or overlapping sectors (polar). Both floors are incrementally rebuilt.</p>
+					
+					<h3>Edit Helper</h3>
+					<p>The hidden helper mesh is generated with <code>force_simple=True</code>, producing flat-faced geometry across all floors for precise raycasting.</p>
+				</section>
+				
+				<section id="integration">
+					<h2>7. Prop &amp; Vertex Integration</h2>
+					
+					<h3>Vertex Painting</h3>
+					<p>Vertex painting maps each vertex to its floor level:</p>
+					<pre><code>z = max(0, min(maze_data.floors - 1, int((pz - 1e-6) / level_height)))</code></pre>
+					<p>Dead-end detection, path highlighting, and distance gradients all operate per-floor across all levels.</p>
+					
+					<h3>Prop Spawning</h3>
+					<p>Props are spawned per floor:</p>
+					<ul>
+						<li><strong>Torches</strong> at <code>z * level_height + 0.6 * wh</code>.</li>
+						<li><strong>Chests</strong> at <code>z * level_height</code>.</li>
+						<li><strong>Doors</strong> at entrance (floor 0) and exits (top floor).</li>
+					</ul>
+					<p>Stair cells are excluded from chest placement via <code>_build_stair_top_bottom_sets</code>, which returns all cells occupied by stair footprints on both the source and destination floors.</p>
+					
+					<h3>Guide Path</h3>
+					<p>The BFS guide path operates in 3D across all floors, finding the shortest route through the multilevel maze including stair connections between levels.</p>
+				</section>
+				
+				<section id="ui-reference">
+					<h2>8. UI Reference</h2>
+					
+					<h3>Maze Settings Panel</h3>
+					<table>
+						<thead>
+							<tr><th>Control</th><th>Property</th><th>Shown when</th></tr>
+						</thead>
+						<tbody>
+							<tr><td>Floors</td><td><code>floors</code></td><td>Always</td></tr>
+							<tr><td>Floor Thickness</td><td><code>floor_thickness</code></td><td>Always</td></tr>
+							<tr><td>Stair Footprint</td><td><code>stair_footprint</code></td><td><code>floors &gt; 1</code> and rect grid</td></tr>
+							<tr><td>Stair Style</td><td><code>stair_style</code></td><td><code>floors &gt; 1</code></td></tr>
+							<tr><td>Stair Direction</td><td><code>stair_direction</code></td><td><code>floors &gt; 1</code></td></tr>
+							<tr><td>Stairs Per Level</td><td><code>stair_count</code></td><td><code>floors &gt; 1</code></td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Generation &amp; Editing Section</h3>
+					<table>
+						<thead>
+							<tr><th>Control</th><th>Property</th><th>Shown when</th></tr>
+						</thead>
+						<tbody>
+							<tr><td>Floor Level</td><td><code>edit_floor_level</code></td><td><code>floors &gt; 1</code></td></tr>
+							<tr><td>Edit Tool</td><td><code>edit_tool</code></td><td><code>floors &gt; 1</code> and editing</td></tr>
+							<tr><td>Stair Direction (editor)</td><td><code>stair_direction</code></td><td><code>edit_tool == 'stair'</code> and editing</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Alert Box (Edit Mode)</h3>
+					<p>When editing with <code>floors &gt; 1</code>, the alert box shows:</p>
+					<ul>
+						<li>"Floor {n} of {total}"</li>
+						<li>Tool-specific shortcut hints for stair placement/rotation.</li>
+					</ul>
+				</section>
+			</main>
+			
+			<footer>
+				<p>&copy; <span id="year"></span> FireR.at. All Rights Reserved. FireMaze is licensed under GPL-3.0-or-later.</p>
+				<script>
+					document.getElementById('year').textContent = new Date().getFullYear();
+					document.querySelectorAll('pre').forEach(block => {
+						block.addEventListener('click', async () => {
+							try { await navigator.clipboard.writeText(block.innerText); } catch (err) { console.error(err); }
+						});
+					});
+				</script>
+			</footer>
+		</div>
+	</body>
+</html>

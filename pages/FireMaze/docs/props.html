@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link id="favicon" rel="icon" href="../../../files/favicon.ico" type="image/x-icon" />
+		<meta name="color-scheme" content="dark">
+		<meta name="theme-color" content="#00ff44">
+		
+		<!-- Primary SEO Metadata -->
+		<title>Prop &amp; Decor Spawner | FireMaze Documentation | FireR.at</title>
+		<meta name="title" content="Prop &amp; Decor Spawner | FireMaze Documentation | FireR.at">
+		<meta name="description" content="FireMaze Prop & Decor Spawner reference: torch, chest, and door placement rules, density controls, dead-end detection, orientation logic, seeded randomness, and sub-collection scoping.">
+		<meta name="author" content="FireRat">
+		<meta name="robots" content="index, follow">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://firer.at/pages/FireMaze/docs/props.html">
+		<meta property="og:title" content="Prop &amp; Decor Spawner | FireMaze Documentation | FireR.at">
+		<meta property="og:description" content="FireMaze Prop & Decor Spawner reference: torches, chests, doors, and placement rules.">
+		<meta property="og:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		<meta property="og:site_name" content="FireR.at">
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image">
+		<meta property="twitter:url" content="https://firer.at/pages/FireMaze/docs/props.html">
+		<meta property="twitter:title" content="Prop &amp; Decor Spawner | FireMaze Documentation | FireR.at">
+		<meta property="twitter:description" content="FireMaze Prop & Decor Spawner reference: torches, chests, doors, and placement rules.">
+		<meta property="twitter:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		
+		<!-- Typography & Stylesheets -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="../../nstyle.css" />
+		<link rel="stylesheet" href="../firemaze.css" />
+		
+		<!-- Dynamic Background Script -->
+		<script src="../../../scripts/RandomBG.js"></script>
+		
+		<!-- Analytics & Privacy Consent (Cookie Chimp) -->
+		<script src="https://cookiechimp.com/widget/mV3trJ.js"></script>
+		<script type="text/plain" data-src="https://www.googletagmanager.com/gtag/js?id=G-HSMS8JERQ2"
+		data-category="analytics" data-service="Google Analytics" ></script>
+		<script type="text/plain" data-category="analytics" data-service="Google Analytics" >
+		window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
+		<!-- Analytics & Privacy Consent END -->
+	</head>
+	<body>
+		<div class="ambient-glow-2"></div>
+		<div class="container">
+			<header>
+				<h1><span class="text-gradient">FireMaze</span> &mdash; Prop &amp; Decor Spawner</h1>
+				<p>Automatically place decorative objects on wall faces, in dead-end cells, and at entrance/exit openings. Marked as <strong>EXPERIMENTAL</strong> &mdash; props are spawned at generation time and cleaned up on maze clear or regeneration.</p>
+			</header>
+			
+			<nav>
+				<a href="../../../index.html" class="buttonss buttonMain">Home</a>
+				<a href="../../../contact.html" class="buttonss buttonMain">Contact</a>
+				<a href="../../../privacy.html" class="buttonss buttonMain">Privacy</a>
+				<a href="../../../games.html" class="buttonss buttonG">Banter Games</a>
+				<a href="../../../pages/games.html" class="buttonss buttonG">Browser Games</a>
+				<a href="https://github.com/FireRat666" class="buttonss buttonW" target="_blank">GitHub</a>
+				<a href="https://ko-fi.com/FireRat666" class="buttonss buttonGY" target="_blank">Ko-fi</a>
+				<a href="https://paypal.me/FireRat666" class="buttonss buttonY" target="_blank">PayPal</a>
+			</nav>
+			
+			<nav class="docnav">
+				<a href="../index.html" class="buttonss buttonMain">FireMaze Home</a>
+				<a href="features.html" class="buttonss">Features</a>
+				<a href="usage.html" class="buttonss">Usage</a>
+				<a href="editor.html" class="buttonss">Editor</a>
+				<a href="vertex-painting.html" class="buttonss">Vertex Paint</a>
+				<a href="props.html" class="buttonss active">Props</a>
+				<a href="multilevel.html" class="buttonss">Multilevel</a>
+				<a href="shapes.html" class="buttonss">Shapes</a>
+				<a href="polar.html" class="buttonss">Polar</a>
+				<a href="faq.html" class="buttonss">FAQ</a>
+			</nav>
+			
+			<main class="doc-content">
+				<a href="../index.html" class="backlink">&larr; Back to FireMaze</a>
+				
+				<section id="overview">
+					<h2>1. Overview</h2>
+					<p>The prop spawner operates as the final step of maze generation (inside <code>_spawn_decorations</code>). It:</p>
+					<ul>
+						<li>Scans every cell in the maze for valid placement locations.</li>
+						<li>Uses per-cell seeded random number generation for deterministic placement.</li>
+						<li>Places copies of the assigned source objects, not linked duplicates.</li>
+						<li>Groups all spawned props under a scoped sub-collection.</li>
+						<li>Supports incremental rebuild during interactive editing &mdash; only props on dirty cells are re-evaluated.</li>
+					</ul>
+				</section>
+				
+				<section id="prop-collection">
+					<h2>2. Prop Collection</h2>
+					<p>All spawned props are organized into a sub-collection:</p>
+					<pre><code>FireMaze_Props_{parent_collection_name}</code></pre>
+					<p>For example, a maze in the <code>FireMaze</code> collection gets props in <code>FireMaze_Props_FireMaze</code>.</p>
+					
+					<h3>Lifecycle</h3>
+					<ul>
+						<li>The props collection is created if it doesn't exist and linked as a child of the main maze collection.</li>
+						<li>Before repopulating, all existing props in the collection with the <code>fire_maze</code> custom property are removed.</li>
+						<li>Each prop object is tagged with:
+							<ul>
+								<li><code>fire_maze</code> (True) &mdash; Marks it for scene cleanup (Clear Maze).</li>
+								<li><code>fire_maze_cell</code> (cell_id) &mdash; Links the prop to its parent cell for incremental updates.</li>
+							</ul>
+						</li>
+					</ul>
+					
+					<h3>Incremental Editing</h3>
+					<p>When <code>dirty_cells</code> are provided (interactive editing), only props whose <code>fire_maze_cell</code> is in the dirty set are removed and re-spawned. Props on clean cells are left untouched.</p>
+				</section>
+				
+				<section id="placement-helper">
+					<h2>3. Placement Helper</h2>
+					<p>All props are placed via <code>place_prop(src_obj, pos, rot_z, cell_id)</code>:</p>
+					<ol class="steps">
+						<li><strong>Copy</strong> the source object with <code>src_obj.copy()</code>.</li>
+						<li><strong>Link</strong> the copy to the props collection.</li>
+						<li><strong>Set location</strong> to the target world position.</li>
+						<li><strong>Set rotation</strong> &mdash; preserves the source's X and Y euler rotation; overrides Z rotation to the calculated facing angle.</li>
+						<li><strong>Set scale</strong> to match the source.</li>
+						<li><strong>Tag</strong> with <code>fire_maze</code> and <code>fire_maze_cell</code> custom properties.</li>
+					</ol>
+				</section>
+				
+				<section id="torches">
+					<h2>4. Torches</h2>
+					<p><em>Source: <code>prop_torch_mesh</code> (Object pointer). Density: <code>prop_torch_density</code> (0.0&ndash;1.0, default 0.2)</em></p>
+					<p>Torches are placed on wall faces that border open space, at 60% of wall height above the floor (<code>z * level_height + 0.6 * wh</code>). A small offset (0.02 &times; <code>tile_size</code>) moves the torch slightly away from the wall surface.</p>
+					
+					<h3>Rectangular &mdash; Thin Wall Mode</h3>
+					<p>Each of the four wall flags (N, S, E, W) is checked independently. A torch is placed on every wall segment that is present, subject to density:</p>
+					<table>
+						<thead>
+							<tr><th>Wall flag</th><th>Position</th><th>Rotation (Z)</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>North</strong> (c[0])</td><td><code>(x*ts + ts/2, (y+1)*ts - offset, ...)</code></td><td><code>&pi;</code> (facing south)</td></tr>
+							<tr><td><strong>South</strong> (c[1])</td><td><code>(x*ts + ts/2, y*ts + offset, ...)</code></td><td><code>0</code> (facing north)</td></tr>
+							<tr><td><strong>East</strong> (c[2])</td><td><code>((x+1)*ts - offset, y*ts + ts/2, ...)</code></td><td><code>&pi;/2</code> (facing west)</td></tr>
+							<tr><td><strong>West</strong> (c[3])</td><td><code>(x*ts + offset, y*ts + ts/2, ...)</code></td><td><code>&minus;&pi;/2</code> (facing east)</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Rectangular &mdash; Cube Mode</h3>
+					<p>Wall cubes are checked. A torch is placed on each side of a wall cube that faces an open (non-wall) neighbor cell:</p>
+					<table>
+						<thead>
+							<tr><th>Direction</th><th>Condition</th><th>Position</th><th>Rotation</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>North</strong></td><td><code>cells[y+1][x][0] == False</code></td><td>0.02 &times; ts outside north face</td><td>0 (north)</td></tr>
+							<tr><td><strong>South</strong></td><td><code>cells[y-1][x][0] == False</code></td><td>0.02 &times; ts outside south face</td><td><code>&pi;</code> (south)</td></tr>
+							<tr><td><strong>East</strong></td><td><code>cells[y][x+1][0] == False</code></td><td>0.02 &times; ts outside east face</td><td><code>&pi;/2</code> (east)</td></tr>
+							<tr><td><strong>West</strong></td><td><code>cells[y][x-1][0] == False</code></td><td>0.02 &times; ts outside west face</td><td><code>&minus;&pi;/2</code> (west)</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Polar &mdash; Cube Mode</h3>
+					<p>Checks boundary walls between wedge-shaped cells:</p>
+					<table>
+						<thead>
+							<tr><th>Boundary</th><th>Condition</th><th>Placement</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>CW radial</strong></td><td>Wall cell has open CW neighbor</td><td>Torch on CW boundary facing CW</td></tr>
+							<tr><td><strong>CW radial (open)</strong></td><td>Open cell has wall CW neighbor</td><td>Torch on CW boundary facing CCW/inward</td></tr>
+							<tr><td><strong>IN angular</strong></td><td>Wall cell has open inward neighbor</td><td>Torch on IN boundary facing IN</td></tr>
+							<tr><td><strong>IN angular (open)</strong></td><td>Open cell has wall inward neighbor</td><td>Torch on IN boundary facing OUT</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Polar &mdash; Thin Wall Mode</h3>
+					<p>Checks the CW and IN wall flags on each cell:</p>
+					<table>
+						<thead>
+							<tr><th>Wall flag</th><th>Placement</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>CW</strong> (<code>cells[r][theta][0]</code>)</td><td>Torch on clockwise radial boundary</td></tr>
+							<tr><td><strong>IN</strong> (<code>cells[r][theta][1]</code>)</td><td>Torch on inward angular boundary</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Outermost Ring (Polar)</h3>
+					<p>On the outermost ring (<code>r == rings &minus; 1</code>), torches are also placed on the outer boundary of open cells, skipping entrance and exit cells.</p>
+				</section>
+				
+				<section id="chests">
+					<h2>5. Chests</h2>
+					<p><em>Source: <code>prop_chest_mesh</code> (Object pointer). Density: <code>prop_chest_density</code> (0.0&ndash;1.0, default 0.5)</em></p>
+					<p>Chests are placed in dead-end cells &mdash; cells with exactly one open neighbor (one accessible direction). Stair cells, entrances, and exits are excluded.</p>
+					
+					<h3>Dead-End Detection</h3>
+					<h4>Rectangular &mdash; Thin Wall Mode</h4>
+					<p>A cell is a dead-end when exactly 3 of its 4 wall flags are set (i.e., <code>sum(c[:4]) == 3</code>). The single open direction becomes the chest's orientation.</p>
+					<h4>Rectangular &mdash; Cube Mode</h4>
+					<p>An open cell (not a wall) is a dead-end when exactly 1 of its 4 orthogonal neighbors is also open.</p>
+					<h4>Polar</h4>
+					<p>Accessible neighbors are counted by checking:</p>
+					<ul>
+						<li><strong>CW/CCW radial boundaries</strong> &mdash; open if the adjacent cell in the same ring is not a wall (or is a stair cell).</li>
+						<li><strong>IN/OUT angular boundaries</strong> &mdash; open if the adjacent cell in the neighboring ring is not a wall (or is a stair cell). Overlapping sector cells in the adjacent ring are resolved according to the ring sector ratio.</li>
+					</ul>
+					<p>A cell with exactly 1 accessible neighbor (and <code>r &gt; 0</code> to exclude the center) is a dead-end.</p>
+					
+					<h3>Chest Orientation</h3>
+					<p>The chest faces toward its single open direction, placed 0.15 &times; <code>tile_size</code> from the cell center toward the opening:</p>
+					<table>
+						<thead>
+							<tr><th>Open direction</th><th>Position offset</th><th>Rotation (Z)</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>North</strong></td><td><code>+Y</code> from center</td><td><code>0</code></td></tr>
+							<tr><td><strong>South</strong></td><td><code>&minus;Y</code> from center</td><td><code>&pi;</code></td></tr>
+							<tr><td><strong>East</strong></td><td><code>+X</code> from center</td><td><code>&pi;/2</code></td></tr>
+							<tr><td><strong>West</strong></td><td><code>&minus;X</code> from center</td><td><code>&minus;&pi;/2</code></td></tr>
+						</tbody>
+					</table>
+					<p>For polar, directional mapping:</p>
+					<ul>
+						<li><strong>IN</strong> &rarr; positioned toward inner ring, faces IN (rotation + <code>&pi;</code>)</li>
+						<li><strong>OUT</strong> &rarr; positioned toward outer ring, faces OUT</li>
+						<li><strong>CW</strong> &rarr; positioned toward CW neighbor, rotation <code>theta_mid &minus; &pi;/2</code></li>
+						<li><strong>CCW</strong> &rarr; positioned toward CCW neighbor, rotation <code>theta_mid + &pi;/2</code></li>
+					</ul>
+					
+					<h3>Exclusions</h3>
+					<p>Chests are not placed on:</p>
+					<ul>
+						<li>Stair cells (any floor).</li>
+						<li>Entrance cell (floor 0).</li>
+						<li>Exit cells (top floor).</li>
+					</ul>
+				</section>
+				
+				<section id="doors">
+					<h2>6. Doors</h2>
+					<p><em>Source: <code>prop_door_mesh</code> (Object pointer). No density control &mdash; doors always spawn at valid locations.</em></p>
+					<p>Doors are placed at entrance and exit openings on the maze boundary.</p>
+					
+					<h3>Entrance Door (Floor 0)</h3>
+					<p>One door at the entrance cell, positioned at the center of the boundary opening:</p>
+					<table>
+						<thead>
+							<tr><th>Entrance side</th><th>Position</th><th>Rotation (Z)</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>North</strong></td><td><code>(ex*ts + ts/2, (ey+1)*ts, z*level_height)</code></td><td><code>0</code></td></tr>
+							<tr><td><strong>South</strong></td><td><code>(ex*ts + ts/2, ey*ts, z*level_height)</code></td><td><code>0</code></td></tr>
+							<tr><td><strong>East</strong></td><td><code>((ex+1)*ts, ey*ts + ts/2, z*level_height)</code></td><td><code>&pi;/2</code></td></tr>
+							<tr><td><strong>West</strong></td><td><code>(ex*ts, ey*ts + ts/2, z*level_height)</code></td><td><code>&minus;&pi;/2</code></td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Exit Doors (Top Floor)</h3>
+					<p>One door at each exit cell, same positioning logic as the entrance door.</p>
+					<p>For polar mazes, doors are placed at the outer boundary of the entrance/exit cell, oriented toward the cell's mid-angle.</p>
+				</section>
+				
+				<section id="seeded-randomness">
+					<h2>7. Seeded Randomness</h2>
+					<p>Each cell receives a deterministic random number generator to control torch and chest placement:</p>
+					<pre><code>global_seed = props.seed if props.seed is not None else 0
+cell_seed = global_seed + z * 1000000 + y * 1000 + x
+cell_rng = random.Random(cell_seed)</code></pre>
+					<ul>
+						<li>The same <code>props.seed</code> value always produces identical prop placement.</li>
+						<li>A seed of 0 uses a different random layout each generation.</li>
+						<li>Per-cell seeding ensures stability during incremental edits &mdash; cells outside the dirty set retain their existing props.</li>
+					</ul>
+				</section>
+				
+				<section id="ui-reference">
+					<h2>8. UI Reference</h2>
+					<p><em>Panel: <code>VIEW3D_PT_fire_maze_props</code> &mdash; Prop &amp; Decor Spawner EXPERIMENTAL</em></p>
+					<table>
+						<thead>
+							<tr><th>Control</th><th>Property</th><th>Type</th><th>Default</th></tr>
+						</thead>
+						<tbody>
+							<tr><td>Torch Object</td><td><code>prop_torch_mesh</code></td><td>Object pointer</td><td>None</td></tr>
+							<tr><td>Torch Density</td><td><code>prop_torch_density</code></td><td>Float 0.0&ndash;1.0</td><td>0.2</td></tr>
+							<tr><td>Chest Object</td><td><code>prop_chest_mesh</code></td><td>Object pointer</td><td>None</td></tr>
+							<tr><td>Chest Density</td><td><code>prop_chest_density</code></td><td>Float 0.0&ndash;1.0</td><td>0.5</td></tr>
+							<tr><td>Door Object</td><td><code>prop_door_mesh</code></td><td>Object pointer</td><td>None</td></tr>
+						</tbody>
+					</table>
+					<p>Density sliders only appear when the corresponding object pointer is assigned.</p>
+				</section>
+			</main>
+			
+			<footer>
+				<p>&copy; <span id="year"></span> FireR.at. All Rights Reserved. FireMaze is licensed under GPL-3.0-or-later.</p>
+				<script>
+					document.getElementById('year').textContent = new Date().getFullYear();
+					document.querySelectorAll('pre').forEach(block => {
+						block.addEventListener('click', async () => {
+							try { await navigator.clipboard.writeText(block.innerText); } catch (err) { console.error(err); }
+						});
+					});
+				</script>
+			</footer>
+		</div>
+	</body>
+</html>

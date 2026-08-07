@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link id="favicon" rel="icon" href="../../../files/favicon.ico" type="image/x-icon" />
+		<meta name="color-scheme" content="dark">
+		<meta name="theme-color" content="#00ff44">
+		
+		<!-- Primary SEO Metadata -->
+		<title>Vertex Painting &amp; Post-Processing | FireMaze Documentation | FireR.at</title>
+		<meta name="title" content="Vertex Painting &amp; Post-Processing | FireMaze Documentation | FireR.at">
+		<meta name="description" content="FireMaze post-processing reference: all 4 vertex paint modes (AO, blend weights, path highlight, distance gradient), merge options, remove doubles, lightmap UVs, planar dissolve, and collider generation.">
+		<meta name="author" content="FireRat">
+		<meta name="robots" content="index, follow">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://firer.at/pages/FireMaze/docs/vertex-painting.html">
+		<meta property="og:title" content="Vertex Painting &amp; Post-Processing | FireMaze Documentation | FireR.at">
+		<meta property="og:description" content="FireMaze post-processing reference: vertex paint modes, merging, lightmap UVs, planar dissolve, and colliders.">
+		<meta property="og:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		<meta property="og:site_name" content="FireR.at">
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image">
+		<meta property="twitter:url" content="https://firer.at/pages/FireMaze/docs/vertex-painting.html">
+		<meta property="twitter:title" content="Vertex Painting &amp; Post-Processing | FireMaze Documentation | FireR.at">
+		<meta property="twitter:description" content="FireMaze post-processing reference: vertex paint modes, merging, lightmap UVs, planar dissolve, and colliders.">
+		<meta property="twitter:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		
+		<!-- Typography & Stylesheets -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="../../nstyle.css" />
+		<link rel="stylesheet" href="../firemaze.css" />
+		
+		<!-- Dynamic Background Script -->
+		<script src="../../../scripts/RandomBG.js"></script>
+		
+		<!-- Analytics & Privacy Consent (Cookie Chimp) -->
+		<script src="https://cookiechimp.com/widget/mV3trJ.js"></script>
+		<script type="text/plain" data-src="https://www.googletagmanager.com/gtag/js?id=G-HSMS8JERQ2"
+		data-category="analytics" data-service="Google Analytics" ></script>
+		<script type="text/plain" data-category="analytics" data-service="Google Analytics" >
+		window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
+		<!-- Analytics & Privacy Consent END -->
+	</head>
+	<body>
+		<div class="ambient-glow-2"></div>
+		<div class="container">
+			<header>
+				<h1><span class="text-gradient">FireMaze</span> &mdash; Vertex Painting &amp; Post-Processing</h1>
+				<p>Reference for procedural vertex coloring, geometry optimization, lightmap UV generation, collider creation, and all other post-processing features available in the Post-Processing panel.</p>
+			</header>
+			
+			<nav>
+				<a href="../../../index.html" class="buttonss buttonMain">Home</a>
+				<a href="../../../contact.html" class="buttonss buttonMain">Contact</a>
+				<a href="../../../privacy.html" class="buttonss buttonMain">Privacy</a>
+				<a href="../../../games.html" class="buttonss buttonG">Banter Games</a>
+				<a href="../../../pages/games.html" class="buttonss buttonG">Browser Games</a>
+				<a href="https://github.com/FireRat666" class="buttonss buttonW" target="_blank">GitHub</a>
+				<a href="https://ko-fi.com/FireRat666" class="buttonss buttonGY" target="_blank">Ko-fi</a>
+				<a href="https://paypal.me/FireRat666" class="buttonss buttonY" target="_blank">PayPal</a>
+			</nav>
+			
+			<nav class="docnav">
+				<a href="../index.html" class="buttonss buttonMain">FireMaze Home</a>
+				<a href="features.html" class="buttonss">Features</a>
+				<a href="usage.html" class="buttonss">Usage</a>
+				<a href="editor.html" class="buttonss">Editor</a>
+				<a href="vertex-painting.html" class="buttonss active">Vertex Paint</a>
+				<a href="props.html" class="buttonss">Props</a>
+				<a href="multilevel.html" class="buttonss">Multilevel</a>
+				<a href="shapes.html" class="buttonss">Shapes</a>
+				<a href="polar.html" class="buttonss">Polar</a>
+				<a href="faq.html" class="buttonss">FAQ</a>
+			</nav>
+			
+			<main class="doc-content">
+				<a href="../index.html" class="backlink">&larr; Back to FireMaze</a>
+				
+				<section id="overview">
+					<h2>1. Overview</h2>
+					<p>Post-processing runs automatically at the end of every full maze generation, in a fixed sequential pipeline. All post-processing is <strong>skipped during interactive editing</strong> (incremental rebuilds bypass it for instant response). Exiting edit mode triggers a full rebuild with all post-processing applied.</p>
+				</section>
+				
+				<section id="vertex-painting">
+					<h2>2. Vertex Painting</h2>
+					<p class="panel-note">Post-Processing panel &mdash; <code>vertex_paint_enable</code>, <code>vertex_paint_mode</code>, <code>vertex_paint_intensity</code></p>
+					<p>Procedurally paints vertex colors on maze meshes for shading, texturing, or game engine blending. Operates on final visual meshes (<code>FireMaze_Merged</code> or individual floor/wall/roof objects depending on merge settings).</p>
+					
+					<h3>Common Behavior</h3>
+					<ul>
+						<li>Creates or updates a loop float color layer named <code>"Color"</code>.</li>
+						<li>Each vertex maps to a cell (via world-coordinate grid alignment) and a floor level (via Z-height).</li>
+						<li>Intensity (<code>vertex_paint_intensity</code>, 0.0&ndash;1.0) scales the effect opacity.</li>
+						<li>Vertex painting is applied <strong>after</strong> coplanar optimization (if enabled) and <strong>before</strong> lightmap UV generation.</li>
+					</ul>
+					
+					<h3>Ambient Occlusion Mode</h3>
+					<p><em><code>vertex_paint_mode = 'ao'</code></em></p>
+					<p>Darkens corners, seams, and floor/roof boundaries for a natural shadowed look.</p>
+					<table>
+						<thead>
+							<tr><th>Factor</th><th>Calculation</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Floor proximity</strong></td><td>Distance from vertex Z to bounding-box floor, clamped to 0.15 &times; <code>tile_size</code>.</td></tr>
+							<tr><td><strong>Roof proximity</strong></td><td>Distance from vertex Z to bounding-box roof, same seam width.</td></tr>
+							<tr><td><strong>Corner distance</strong></td><td>Grid-aligned corner distance &mdash; for rect: distance from (px, py) to nearest integer grid intersection; for polar: distance from (R, phi) to nearest ring/sector boundary.</td></tr>
+							<tr><td><strong>Final AO</strong></td><td><code>max(floor_factor, roof_factor, corner_factor)</code> reduced by <code>intensity &times; 0.7</code>.</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Texture Blend Weights Mode</h3>
+					<p><em><code>vertex_paint_mode = 'blend'</code></em></p>
+					<p>Encodes material blend weights across RGBA channels for shader-driven texturing.</p>
+					<table>
+						<thead>
+							<tr><th>Channel</th><th>Label</th><th>Calculation</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>R</strong></td><td>Moss</td><td>Proximity to floor: <code>max(0, 1 - h/0.25)</code> where <code>h</code> is relative height within the floor level.</td></tr>
+							<tr><td><strong>G</strong></td><td>Cracks</td><td>Proximity to nearest grid corner / seam (0.15 &times; <code>tile_size</code> radius).</td></tr>
+							<tr><td><strong>B</strong></td><td>Wetness</td><td>1.0 on near-horizontal faces (<code>normal.z &gt; 0.9</code>) within 2% of floor; fades linearly to 5% height.</td></tr>
+							<tr><td><strong>A</strong></td><td>Soot</td><td>1.0 in dead-end cells (excludes entrances, exits, and stair cells), 0.0 elsewhere.</td></tr>
+						</tbody>
+					</table>
+					<p><strong>Dead-end detection</strong> scans all open cells and counts accessible neighbors (via wall flags for thin mode, cell <code>[0]</code> flag for cube mode). Cells with exactly one open neighbor (and not a stair, entrance, or exit) are marked as soot zones.</p>
+					
+					<h3>Path Highlight Mode</h3>
+					<p><em><code>vertex_paint_mode = 'path'</code></em></p>
+					<p>Highlights floor tiles along the shortest BFS path from entrance to exit/center in green.</p>
+					<ul>
+						<li>Converts <code>maze_data.guide_path</code> coordinates to world positions (cell centers).</li>
+						<li>For each vertex, finds the minimum distance to any guide path cell center.</li>
+						<li>Within a 0.75 &times; <code>tile_size</code> radius, applies green with falloff: <code>G = (1 - d/radius) &times; intensity</code>.</li>
+						<li>Vertices outside the radius remain white.</li>
+					</ul>
+					
+					<h3>Distance Gradient Mode</h3>
+					<p><em><code>vertex_paint_mode = 'distance'</code></em></p>
+					<p>Black-to-white gradient mapped by BFS distance from the entrance.</p>
+					<ul>
+						<li>Precomputes <code>_compute_grid_distances(maze_data, wall_mode)</code> for all cells.</li>
+						<li>Normalizes each cell's distance by the maximum distance in the maze.</li>
+						<li>Applies <code>val = normalized_distance &times; intensity</code> to all RGB channels.</li>
+						<li>Provides a heatmap-style visualization of path length from the entrance.</li>
+					</ul>
+				</section>
+				
+				<section id="merge">
+					<h2>3. Merge Options</h2>
+					<p class="panel-note">Post-Processing panel</p>
+					<p>Controls how the generated mesh objects are combined.</p>
+					
+					<h3>Single Wall Object</h3>
+					<p><em><code>single_wall_object</code> &mdash; Toggle, default ON</em></p>
+					<p>When enabled, all wall faces and wall-end cap faces are merged into a single <code>FireMaze_Walls</code> object. The outliner stays cleaner with one wall object instead of separate wall and cap objects.</p>
+					
+					<h3>Merge Objects</h3>
+					<p><em><code>merge_objects</code> &mdash; Toggle, default OFF</em></p>
+					<p>Combines floors, walls, roofs, and caps into a single merged mesh object named <code>FireMaze_Merged</code>. Useful for exporting a single mesh to game engines.</p>
+					<p>When enabled:</p>
+					<ol class="steps">
+						<li>All mesh objects in the maze collection are collected.</li>
+						<li><code>_merge_maze_objects</code> selects all of them and calls <code>bpy.ops.object.join()</code>.</li>
+						<li>The merged object replaces the individual objects.</li>
+					</ol>
+				</section>
+				
+				<section id="remove-doubles">
+					<h2>4. Remove Doubles</h2>
+					<p><em><code>remove_doubles</code> &mdash; Toggle, default OFF</em></p>
+					<p>Performs a vertex weld operation on all generated mesh objects. Calls <code>bmesh.ops.remove_doubles</code> with a merge distance of 0.001 Blender units. This merges touching corners, stacked tiled wall segments, and any vertices that were split during mesh construction.</p>
+					<p>Runs <strong>before</strong> merge operations &mdash; when both Remove Doubles and Merge Objects are enabled, doubles are removed from individual objects first, then the merge joins them.</p>
+				</section>
+				
+				<section id="lightmap">
+					<h2>5. Lightmap UV Generation</h2>
+					<p class="panel-note">Post-Processing panel &mdash; <code>generate_lightmap</code>, <code>lightmap_method</code></p>
+					<p>Generates a second UV map named <code>"Lightmap"</code> on all final visual mesh objects for baking or lightmapping in game engines. Operates via Blender's native UV operators.</p>
+					
+					<h3>Smart UV Project</h3>
+					<p><em><code>lightmap_method = 'smart'</code></em></p>
+					<p>Groups adjacent/co-planar faces into contiguous UV islands. Recommended for reducing seam-bleeding in game engines. Uses Blender's Smart UV Project operator with default settings.</p>
+					
+					<h3>Lightmap Pack</h3>
+					<p><em><code>lightmap_method = 'pack'</code></em></p>
+					<p>Projects and packs each face individually. Guarantees zero distortion and maximum packing efficiency, but splits every face into its own UV island. Uses Blender's Lightmap Pack operator.</p>
+					
+					<h3>Technical Notes</h3>
+					<ul>
+						<li>UV generation runs <strong>after</strong> vertex painting &mdash; painted vertex colors are preserved.</li>
+						<li>An existing <code>"Lightmap"</code> UV layer is reused if present; otherwise a new one is created.</li>
+						<li>The active UV map is temporarily switched to <code>"Lightmap"</code> during generation, then restored. The original UV map (typically <code>"UVMap"</code>) is preserved as the first UV layer.</li>
+					</ul>
+				</section>
+				
+				<section id="planar-dissolve">
+					<h2>6. Planar Dissolve</h2>
+					<p><em>Post-Processing panel &mdash; <code>optimize_coplanar</code></em></p>
+					<p>Simplifies mesh geometry by dissolving coplanar faces. Reduces polygon count for better performance in game engines or rendering.</p>
+					
+					<h3>Process</h3>
+					<ol class="steps">
+						<li><strong>Remove doubles</strong> first (merge distance 0.001) so adjacent faces share edges and vertices.</li>
+						<li><strong>Limited dissolve</strong> (<code>bmesh.ops.dissolve_limit</code>) with an angle limit of 0.5&deg;.</li>
+					</ol>
+					
+					<div class="callout warn"><strong>Warning:</strong> Planar dissolve <strong>may stretch or break seamless tiled textures</strong> because it merges faces across grid boundaries. A warning is displayed in the UI when this option is enabled. Use with custom-unwrapped or unique textures rather than tiled repeating textures.</div>
+				</section>
+				
+				<section id="colliders">
+					<h2>7. Collider Generation</h2>
+					<p class="panel-note">Post-Processing panel &mdash; <code>generate_colliders</code>, <code>merge_colliders</code>, <code>optimize_colliders_coplanar</code></p>
+					<p>Generates simple, flat-faced helper meshes matching the maze layout for easy game engine integration.</p>
+					
+					<h3>How It Works</h3>
+					<p>Colliders are built by calling <code>build_maze_objects(props, maze_data, context, collection=col, force_simple=True, name_suffix="_Collider")</code>. This re-runs the full maze builder (floor, walls, roof, stairs) with <code>force_simple=True</code>, producing simplified flat-faced geometry without custom meshes or complex UVs.</p>
+					
+					<h3>Collider Objects</h3>
+					<table>
+						<thead>
+							<tr><th>Object Name</th><th>Description</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><code>FireMaze_Floor_Collider</code></td><td>Flat floor collider mesh</td></tr>
+							<tr><td><code>FireMaze_Walls_Collider</code></td><td>Wall collider mesh</td></tr>
+							<tr><td><code>FireMaze_Roof_Collider</code></td><td>Roof collider mesh</td></tr>
+						</tbody>
+					</table>
+					<p>All collider objects are:</p>
+					<ul>
+						<li>Hidden from renders (<code>hide_render = True</code>).</li>
+						<li>Set to wireframe display (<code>display_type = 'WIRE'</code>) for easy visualization.</li>
+						<li>Tagged with the <code>fire_maze</code> custom property for scene cleanup.</li>
+					</ul>
+					<div class="callout info"><strong>Note:</strong> Roof colliders are generated even when Instanced Pillars (Pillar Mode) is enabled, ensuring collision meshes exist for the entire maze volume.</div>
+					
+					<h3>Merge Colliders</h3>
+					<p><em><code>merge_colliders</code> &mdash; Toggle, default OFF</em></p>
+					<p>When enabled, all individual collider objects are joined into a single <code>FireMaze_Collider</code> mesh via <code>_merge_maze_objects</code>. The merge runs <strong>after</strong> individual coplanar optimization if both are enabled.</p>
+					
+					<h3>Optimize Colliders</h3>
+					<p><em><code>optimize_colliders_coplanar</code> &mdash; Toggle, default OFF</em></p>
+					<p>Applies <code>_optimize_coplanar_on_obj</code> (planar dissolve, 0.5&deg; angle limit) to collider meshes. When both Merge and Optimize are enabled:</p>
+					<ol class="steps">
+						<li>Each collider object is optimized individually.</li>
+						<li>The optimized colliders are merged into <code>FireMaze_Collider</code>.</li>
+						<li>The merged collider is optimized again.</li>
+					</ol>
+				</section>
+				
+				<section id="execution-order">
+					<h2>8. Execution Order</h2>
+					<p>The full post-processing pipeline runs in sequence at the end of every maze generation (inside <code>build_maze_objects_impl</code>, after all mesh objects are built):</p>
+					<pre><code>1. Remove Doubles          (if enabled, on all generated objects)
+2. Merge Walls/Caps        (if Single Wall Object enabled)
+3. Merge All Objects       (if Merge Objects enabled)
+4. Optimize Coplanar       (if enabled, on final visual meshes)
+5. Vertex Painting         (if enabled, on final visual meshes)
+6. Lightmap UV Generation  (if enabled, on final visual meshes)
+7. Prop/Decor Spawning     (if any prop meshes assigned)
+8. Collider Generation     (if enabled, separate build pass)</code></pre>
+					
+					<h3>Interactive Edit Mode</h3>
+					<p>During interactive editing:</p>
+					<ul>
+						<li>Steps 4&ndash;8 are completely skipped.</li>
+						<li>Only the basic mesh geometry is rebuilt incrementally.</li>
+						<li>Exiting edit mode triggers <code>rebuild_maze_from_collection()</code>, which runs the full pipeline.</li>
+					</ul>
+				</section>
+				
+				<section id="ui-reference">
+					<h2>9. UI Reference</h2>
+					<p><em>Panel: <code>VIEW3D_PT_fire_maze_cleanup</code> &mdash; Post-Processing</em></p>
+					<table>
+						<thead>
+							<tr><th>Control</th><th>Property</th><th>Type</th><th>Default</th></tr>
+						</thead>
+						<tbody>
+							<tr><td>Single Wall Object</td><td><code>single_wall_object</code></td><td>Toggle</td><td>ON</td></tr>
+							<tr><td>Merge Objects</td><td><code>merge_objects</code></td><td>Toggle</td><td>OFF</td></tr>
+							<tr><td>Remove Doubles</td><td><code>remove_doubles</code></td><td>Toggle</td><td>OFF</td></tr>
+							<tr><td>Generate Lightmap UVs</td><td><code>generate_lightmap</code></td><td>Toggle</td><td>OFF</td></tr>
+							<tr><td>Method</td><td><code>lightmap_method</code></td><td>Enum (Smart UV Project / Lightmap Pack)</td><td>Smart UV Project</td></tr>
+							<tr><td>Optimize Geometry (Dissolve Planar)</td><td><code>optimize_coplanar</code></td><td>Toggle</td><td>OFF</td></tr>
+							<tr><td>Enable Vertex Painting</td><td><code>vertex_paint_enable</code></td><td>Toggle</td><td>OFF</td></tr>
+							<tr><td>Vertex Paint Mode</td><td><code>vertex_paint_mode</code></td><td>Enum (AO / Blend / Path / Distance)</td><td>AO</td></tr>
+							<tr><td>Paint Intensity</td><td><code>vertex_paint_intensity</code></td><td>Float 0.0&ndash;1.0</td><td>1.0</td></tr>
+							<tr><td>Generate Colliders</td><td><code>generate_colliders</code></td><td>Toggle</td><td>OFF</td></tr>
+							<tr><td>Merge Colliders</td><td><code>merge_colliders</code></td><td>Toggle</td><td>OFF</td></tr>
+							<tr><td>Optimize Colliders</td><td><code>optimize_colliders_coplanar</code></td><td>Toggle</td><td>OFF</td></tr>
+						</tbody>
+					</table>
+				</section>
+			</main>
+			
+			<footer>
+				<p>&copy; <span id="year"></span> FireR.at. All Rights Reserved. FireMaze is licensed under GPL-3.0-or-later.</p>
+				<script>
+					document.getElementById('year').textContent = new Date().getFullYear();
+					document.querySelectorAll('pre').forEach(block => {
+						block.addEventListener('click', async () => {
+							try { await navigator.clipboard.writeText(block.innerText); } catch (err) { console.error(err); }
+						});
+					});
+				</script>
+			</footer>
+		</div>
+	</body>
+</html>

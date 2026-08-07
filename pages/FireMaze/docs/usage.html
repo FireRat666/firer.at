@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link id="favicon" rel="icon" href="../../../files/favicon.ico" type="image/x-icon" />
+		<meta name="color-scheme" content="dark">
+		<meta name="theme-color" content="#00ff44">
+		
+		<!-- Primary SEO Metadata -->
+		<title>Usage &amp; Management | FireMaze Documentation | FireR.at</title>
+		<meta name="title" content="Usage &amp; Management | FireMaze Documentation | FireR.at">
+		<meta name="description" content="FireMaze usage guide: object categories and material slots, collection structure, session save/load, autosave crash recovery, image export, and scene cleanup.">
+		<meta name="author" content="FireRat">
+		<meta name="robots" content="index, follow">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://firer.at/pages/FireMaze/docs/usage.html">
+		<meta property="og:title" content="Usage &amp; Management | FireMaze Documentation | FireR.at">
+		<meta property="og:description" content="FireMaze usage guide: object categories, sessions, autosave recovery, image export, and cleanup.">
+		<meta property="og:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		<meta property="og:site_name" content="FireR.at">
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image">
+		<meta property="twitter:url" content="https://firer.at/pages/FireMaze/docs/usage.html">
+		<meta property="twitter:title" content="Usage &amp; Management | FireMaze Documentation | FireR.at">
+		<meta property="twitter:description" content="FireMaze usage guide: object categories, sessions, autosave recovery, image export, and cleanup.">
+		<meta property="twitter:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		
+		<!-- Typography & Stylesheets -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="../../nstyle.css" />
+		<link rel="stylesheet" href="../firemaze.css" />
+		
+		<!-- Dynamic Background Script -->
+		<script src="../../../scripts/RandomBG.js"></script>
+		
+		<!-- Analytics & Privacy Consent (Cookie Chimp) -->
+		<script src="https://cookiechimp.com/widget/mV3trJ.js"></script>
+		<script type="text/plain" data-src="https://www.googletagmanager.com/gtag/js?id=G-HSMS8JERQ2"
+		data-category="analytics" data-service="Google Analytics" ></script>
+		<script type="text/plain" data-category="analytics" data-service="Google Analytics" >
+		window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
+		<!-- Analytics & Privacy Consent END -->
+	</head>
+	<body>
+		<div class="ambient-glow-2"></div>
+		<div class="container">
+			<header>
+				<h1><span class="text-gradient">FireMaze</span> &mdash; Usage &amp; Management</h1>
+				<p>Details on object categories, collection structure, session management, autosave recovery, image export, and scene cleanup.</p>
+			</header>
+			
+			<nav>
+				<a href="../../../index.html" class="buttonss buttonMain">Home</a>
+				<a href="../../../contact.html" class="buttonss buttonMain">Contact</a>
+				<a href="../../../privacy.html" class="buttonss buttonMain">Privacy</a>
+				<a href="../../../games.html" class="buttonss buttonG">Banter Games</a>
+				<a href="../../../pages/games.html" class="buttonss buttonG">Browser Games</a>
+				<a href="https://github.com/FireRat666" class="buttonss buttonW" target="_blank">GitHub</a>
+				<a href="https://ko-fi.com/FireRat666" class="buttonss buttonGY" target="_blank">Ko-fi</a>
+				<a href="https://paypal.me/FireRat666" class="buttonss buttonY" target="_blank">PayPal</a>
+			</nav>
+			
+			<nav class="docnav">
+				<a href="../index.html" class="buttonss buttonMain">FireMaze Home</a>
+				<a href="features.html" class="buttonss">Features</a>
+				<a href="usage.html" class="buttonss active">Usage</a>
+				<a href="editor.html" class="buttonss">Editor</a>
+				<a href="vertex-painting.html" class="buttonss">Vertex Paint</a>
+				<a href="props.html" class="buttonss">Props</a>
+				<a href="multilevel.html" class="buttonss">Multilevel</a>
+				<a href="shapes.html" class="buttonss">Shapes</a>
+				<a href="polar.html" class="buttonss">Polar</a>
+				<a href="faq.html" class="buttonss">FAQ</a>
+			</nav>
+			
+			<main class="doc-content">
+				<a href="../index.html" class="backlink">&larr; Back to FireMaze</a>
+				
+				<section id="objects">
+					<h2>1. Object Categories &amp; Material Slots</h2>
+					<p>When generated, the addon creates separate objects based on your merge configuration. Each object carries a <code>fire_maze</code> custom property tag for reliable cleanup.</p>
+					<table>
+						<thead>
+							<tr><th>Object Name</th><th>Material Slot</th><th>Description</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><code>FireMaze_Floor</code></td><td><code>FireMaze_Floor</code> (Dark gray)</td><td>All floor tiles.</td></tr>
+							<tr><td><code>FireMaze_Walls</code></td><td><code>FireMaze_Walls</code> (Mid-gray)</td><td>Side faces of walls, optimized to remove hidden internal faces.</td></tr>
+							<tr><td><code>FireMaze_Roof</code></td><td><code>FireMaze_Roof</code> (Medium gray)</td><td>All roof/ceiling tiles.</td></tr>
+							<tr><td><code>FireMaze_WallEndCaps</code></td><td><code>FireMaze_WallEndCaps</code> (Reddish)</td><td>Caps on wall endpoints in Thin Wall mode. Merged into <code>FireMaze_Walls</code> when Single Wall Object is enabled.</td></tr>
+							<tr><td><code>FireMaze_Stairs</code></td><td><code>FireMaze_Walls</code> (Mid-gray)</td><td>Generated staircase or ramp geometry.</td></tr>
+							<tr><td><code>FireMaze_Guide</code></td><td><code>FireMaze_Guide</code> (Neon green)</td><td>Neon emissive path curve, tube, or ribbon showing the shortest route.</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Material Notes</h3>
+					<ul>
+						<li>All materials are auto-generated with a simple principled BSDF shader using a unique color per category.</li>
+						<li>You can replace or modify materials after generation &mdash; the addon does not overwrite existing materials on rebuild.</li>
+					</ul>
+				</section>
+				
+				<section id="collections">
+					<h2>2. Collection Structure</h2>
+					
+					<h3>Maze Collection</h3>
+					<p>Each maze generation creates a new top-level collection (e.g. <code>FireMaze</code>, <code>FireMaze.001</code>, <code>FireMaze.002</code>, etc.) containing all generated objects. The naming auto-increments to avoid conflicts.</p>
+					<p>The collection stores a serialized JSON custom property named <code>fire_maze_data</code> containing:</p>
+					<ul>
+						<li>Grid dimensions (width, depth, rings)</li>
+						<li>3D cell states (wall flags, mesh indices per direction, floor/roof/stair indices)</li>
+						<li>Entrance and exit coordinates with side orientations</li>
+						<li>Wall mode and grid type</li>
+						<li>Shape boundary and smooth edge settings</li>
+						<li>Schema version</li>
+					</ul>
+					<p>This data property is the single source of truth for interactive editing and session management. The viewport editor and rebuild operators read it directly, ensuring seamless operation across file loads and session restores.</p>
+					
+					<h3>Prop Sub-Collections</h3>
+					<p>Prop and decor objects are grouped under a scoped sub-collection named <code>FireMaze_Props_{parent_name}</code> (e.g. <code>FireMaze_Props_FireMaze</code>). This sub-collection is:</p>
+					<ul>
+						<li>Linked as a child of the main maze collection.</li>
+						<li>Tagged with a <code>fire_maze_data</code> custom property so it is included in Clear Maze operations.</li>
+					</ul>
+					
+					<h3>Active Collection Detection</h3>
+					<p>The addon resolves the active maze collection through <code>_get_active_maze_collection()</code>:</p>
+					<ol class="steps">
+						<li>First checks <code>scene.fire_maze.fire_maze_collection_name</code> for a stored collection name.</li>
+						<li>Falls back to scanning <code>bpy.data.collections</code> for any collection with a <code>fire_maze_data</code> custom property.</li>
+						<li>If exactly one candidate is found, it is used as the active collection.</li>
+					</ol>
+				</section>
+				
+				<section id="sessions">
+					<h2>3. Session Management</h2>
+					<p>FireMaze supports full session serialization to <code>.json</code> files, allowing you to save and reload complete maze configurations.</p>
+					
+					<h3>Save Session</h3>
+					<p><em>Operator: <code>MAZE_OT_save_session</code> &mdash; <code>fire_maze.save_session</code> (ExportHelper, <code>.json</code> extension)</em></p>
+					<p>Exports the following to a JSON file via a file dialog:</p>
+					<ul>
+						<li><strong>All scalar properties</strong> &mdash; Every property in <code>PROP_NAMES</code> (integers, floats, strings, booleans, and vector tuples) is serialized by value.</li>
+						<li><strong>Pointer references</strong> &mdash; Mesh, collection, image, and object pointers are stored <strong>by name</strong> (not packed into the JSON). This includes:
+							<ul>
+								<li><code>custom_floor_mesh</code>, <code>custom_wall_mesh</code>, <code>custom_roof_mesh</code> (Mesh datablocks)</li>
+								<li><code>custom_floor_collection</code>, <code>custom_wall_collection</code>, <code>custom_roof_collection</code> (Collections)</li>
+								<li><code>custom_stair_mesh</code>, <code>custom_ramp_mesh</code> (Object pointers)</li>
+								<li><code>prop_torch_mesh</code>, <code>prop_chest_mesh</code>, <code>prop_door_mesh</code> (Object pointers)</li>
+								<li><code>mask_image</code> (Image datablock)</li>
+							</ul>
+						</li>
+						<li><strong>Full maze layout data</strong> &mdash; The serialized cell grid (<code>fire_maze_data</code> JSON from the maze collection).</li>
+					</ul>
+					<div class="callout warn"><strong>Important:</strong> Pointer references are stored by name only. When loading on a different machine or <code>.blend</code> file, matching datablocks must already exist in the scene. External custom assets are not packed or recreated.</div>
+					
+					<h3>Load Session</h3>
+					<p><em>Operator: <code>MAZE_OT_load_session</code> &mdash; <code>fire_maze.load_session</code> (ImportHelper, <code>.json</code> extension)</em></p>
+					<p>Opens a <code>.json</code> session file and:</p>
+					<ol class="steps">
+						<li>Reads the schema version for forward-compatibility handling.</li>
+						<li>Restores all scalar properties from the <code>properties</code> dict.</li>
+						<li>Re-links pointer references by looking up datablock names with <code>bpy.data.images.get()</code>, <code>bpy.data.collections.get()</code>, <code>bpy.data.meshes.get()</code>, and <code>bpy.data.objects.get()</code>.</li>
+						<li>Recreates the maze collection, applies the serialized cell data, and triggers a full rebuild of all mesh objects.</li>
+						<li>Clears the autosave recovery warning if one was present.</li>
+					</ol>
+					<p>If a referenced datablock no longer exists, the corresponding property is set to <code>None</code> rather than failing the entire load.</p>
+					
+					<h3>Serialization Format</h3>
+					<pre><code>{
+  "schema_version": 1,
+  "properties": {
+    "width": 10,
+    "depth": 10,
+    "algorithm": "dfs",
+    "custom_wall_collection": "MyWalls",
+    "mask_image": "my_mask.png",
+    ...
+  },
+  "maze_data": "{...serialized cell JSON...}"
+}</code></pre>
+				</section>
+				
+				<section id="autosave">
+					<h2>4. Autosave &amp; Crash Recovery</h2>
+					<p>The addon automatically saves the current session to a temporary file every time a maze is generated, providing crash recovery.</p>
+					
+					<h3>Autosave File</h3>
+					<ul>
+						<li><strong>Location:</strong> System temp directory &mdash; <code>{tempdir}/firemaze_autosave.json</code></li>
+						<li><strong>Trigger:</strong> Written at the end of every successful maze generation.</li>
+						<li><strong>Content:</strong> Same format as a manual session save (all properties + cell data).</li>
+						<li><strong>Threading:</strong> Written on a background thread using atomic file replacement to avoid corruption.</li>
+					</ul>
+					
+					<h3>Recovery Flow</h3>
+					<ol class="steps">
+						<li>On addon registration, <code>has_autosave()</code> checks for the existence of <code>firemaze_autosave.json</code> in the temp directory.</li>
+						<li>If found, a warning box appears in the <strong>Session &amp; Image Management</strong> panel with two buttons:
+							<ul>
+								<li><strong>Restore Session</strong> &mdash; Loads the autosave file, deserializes all properties and cell data, rebuilds the maze, and writes an acknowledgement file.</li>
+								<li><strong>Discard</strong> &mdash; Deletes the autosave file and acknowledgement file from disk.</li>
+							</ul>
+						</li>
+						<li>An acknowledgement sidecar file (<code>firemaze_autosave_ack.json</code>) is written on successful restore to prevent the recovery prompt from reappearing on subsequent Blender restarts.</li>
+					</ol>
+					
+					<h3>Acknowledgement File</h3>
+					<ul>
+						<li><strong>Location:</strong> <code>{tempdir}/firemaze_autosave_ack.json</code></li>
+						<li><strong>Purpose:</strong> Persists the fact that the user has acknowledged/restored the autosave. On addon startup, if this file exists, the recovery warning is suppressed.</li>
+					</ul>
+				</section>
+				
+				<section id="image-export">
+					<h2>5. Image Export</h2>
+					<p>Export the maze layout as a black-and-white image showing walls as black and walkable cells as white.</p>
+					
+					<h3>Create Blender Image</h3>
+					<p><em>Operator: <code>MAZE_OT_save_as_image</code> &mdash; <code>fire_maze.save_as_image</code></em></p>
+					<p>Generates an in-memory Blender Image datablock named <code>FireMaze_Layout</code>. Useful as a reference minimap or for external editing in the Image Editor.</p>
+					<ul>
+						<li><strong>Cube Mode:</strong> 1 pixel per cell (width &times; depth resolution).</li>
+						<li><strong>Thin Mode:</strong> 3&times; upscaled (width &times; 3 by depth &times; 3 resolution) to render individual wall segments at pixel resolution.</li>
+						<li>Only available for Rectangular grids. Returns an error for Polar grids.</li>
+					</ul>
+					
+					<h3>Save PNG to Disk</h3>
+					<p><em>Operator: <code>MAZE_OT_save_image_file</code> &mdash; <code>fire_maze.save_image_file</code> (ExportHelper, <code>.png</code> extension)</em></p>
+					<p>Same rendering logic as Create Blender Image, but saves directly to a PNG file on disk via a file dialog. A temporary Image datablock is created, saved, and immediately removed from the database.</p>
+				</section>
+				
+				<section id="clear-maze">
+					<h2>6. Clear Maze</h2>
+					<p><em>Operator: <code>MAZE_OT_clear</code> &mdash; <code>fire_maze.clear</code></em></p>
+					<p>Completely removes all maze-generated content from the scene:</p>
+					<ol class="steps">
+						<li><strong>Object removal</strong> &mdash; Scans <code>bpy.data.objects</code> for any object with a <code>fire_maze</code> custom property tag, removes each object, and cleans up orphaned mesh and curve datablocks (those with zero users whose name starts with <code>FireMaze</code>).</li>
+						<li><strong>Collection removal</strong> &mdash; Iterates <code>bpy.data.collections</code> and removes any collection that carries a <code>fire_maze_data</code> custom property. Handles parent-child unlinking to avoid RuntimeErrors.</li>
+						<li><strong>State reset</strong> &mdash; Clears <code>fire_maze_collection_name</code> on the scene properties.</li>
+						<li><strong>Memory sweep</strong> &mdash; Orphaned datablocks (meshes, curves) that were left with zero users are purged from the database to prevent memory leaks.</li>
+					</ol>
+				</section>
+				
+				<section id="panel">
+					<h2>7. Session &amp; Image Management Panel</h2>
+					<p><em>UI Location: <code>VIEW3D_PT_fire_maze_session</code> &mdash; Session &amp; Image Management</em></p>
+					<p>The panel is divided into two sections:</p>
+					
+					<h3>Session Management Box</h3>
+					<ul>
+						<li><strong>Save Session...</strong> / <strong>Load Session...</strong> &mdash; Side-by-side buttons for manual session file operations.</li>
+						<li><strong>Conditional Crash Recovery</strong> &mdash; Only visible when a leftover autosave file exists:
+							<ul>
+								<li>Warning alert box with info icon.</li>
+								<li><strong>Restore Session</strong> button &mdash; Triggers <code>fire_maze.restore_autosave</code>.</li>
+								<li><strong>Discard</strong> button &mdash; Triggers <code>fire_maze.discard_autosave</code>.</li>
+							</ul>
+						</li>
+					</ul>
+					
+					<h3>Masking &amp; Image Export Box</h3>
+					<ul>
+						<li><strong>Load Mask from Disk...</strong> &mdash; Opens file browser for PNG, JPG, BMP, or TGA images. Assigns the loaded image to the mask property.</li>
+						<li><strong>Selected Mask</strong> &mdash; Dropdown to pick an existing Blender Image datablock.</li>
+						<li><strong>Invert Mask Colors</strong> &mdash; Toggle.</li>
+						<li><em>(Masking controls are hidden when grid type is Polar, with a label explaining the restriction.)</em></li>
+						<li><strong>Save PNG to Disk...</strong> &mdash; Exports layout to <code>.png</code>.</li>
+						<li><strong>Create Blender Image</strong> &mdash; Creates <code>FireMaze_Layout</code> datablock.</li>
+					</ul>
+				</section>
+				
+				<section id="best-practices">
+					<h2>8. Best Practices</h2>
+					
+					<h3>Custom Assets Across Machines</h3>
+					<p>Pointer references (meshes, collections, images) are stored by name only. To reliably share sessions:</p>
+					<ul>
+						<li>Use consistent datablock naming across <code>.blend</code> files.</li>
+						<li>Consider appending or linking common asset libraries before loading a session.</li>
+						<li>External image files for masking should be available at the same relative paths or re-assigned after loading.</li>
+					</ul>
+					
+					<h3>Scene Cleanup</h3>
+					<ul>
+						<li>Use <strong>Clear Maze</strong> before generating a new maze in the same scene to prevent collection name collisions.</li>
+						<li>The <code>fire_maze</code> object tag and <code>fire_maze_data</code> collection property are the authoritative markers. Manually renaming maze collections or objects may cause the addon to lose track of them.</li>
+					</ul>
+					
+					<h3>Autosave</h3>
+					<ul>
+						<li>The autosave file is stored in the system temp directory &mdash; it may be cleared by temporary file cleanup utilities or disk space management. Save important work as a named <code>.json</code> session file.</li>
+						<li>Only the most recent generation is autosaved. Each generation overwrites the previous autosave.</li>
+					</ul>
+				</section>
+			</main>
+			
+			<footer>
+				<p>&copy; <span id="year"></span> FireR.at. All Rights Reserved. FireMaze is licensed under GPL-3.0-or-later.</p>
+				<script>
+					document.getElementById('year').textContent = new Date().getFullYear();
+					document.querySelectorAll('pre').forEach(block => {
+						block.addEventListener('click', async () => {
+							try { await navigator.clipboard.writeText(block.innerText); } catch (err) { console.error(err); }
+						});
+					});
+				</script>
+			</footer>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link id="favicon" rel="icon" href="../../../files/favicon.ico" type="image/x-icon" />
+		<meta name="color-scheme" content="dark">
+		<meta name="theme-color" content="#00ff44">
+		
+		<!-- Primary SEO Metadata -->
+		<title>Shape Boundaries &amp; Image Masking | FireMaze Documentation | FireR.at</title>
+		<meta name="title" content="Shape Boundaries &amp; Image Masking | FireMaze Documentation | FireR.at">
+		<meta name="description" content="FireMaze shape boundary and image masking guide: diamond, triangle, and hexagon silhouettes with rotation, smooth edge methods (filler triangles, clipped tiles), and the black-and-white image mask workflow.">
+		<meta name="author" content="FireRat">
+		<meta name="robots" content="index, follow">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://firer.at/pages/FireMaze/docs/shapes.html">
+		<meta property="og:title" content="Shape Boundaries &amp; Image Masking | FireMaze Documentation | FireR.at">
+		<meta property="og:description" content="FireMaze shape boundary and image masking guide.">
+		<meta property="og:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		<meta property="og:site_name" content="FireR.at">
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary_large_image">
+		<meta property="twitter:url" content="https://firer.at/pages/FireMaze/docs/shapes.html">
+		<meta property="twitter:title" content="Shape Boundaries &amp; Image Masking | FireMaze Documentation | FireR.at">
+		<meta property="twitter:description" content="FireMaze shape boundary and image masking guide.">
+		<meta property="twitter:image" content="https://firer.at/pages/FireMaze/FireMaze.jpg">
+		
+		<!-- Typography & Stylesheets -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="../../nstyle.css" />
+		<link rel="stylesheet" href="../firemaze.css" />
+		
+		<!-- Dynamic Background Script -->
+		<script src="../../../scripts/RandomBG.js"></script>
+		
+		<!-- Analytics & Privacy Consent (Cookie Chimp) -->
+		<script src="https://cookiechimp.com/widget/mV3trJ.js"></script>
+		<script type="text/plain" data-src="https://www.googletagmanager.com/gtag/js?id=G-HSMS8JERQ2"
+		data-category="analytics" data-service="Google Analytics" ></script>
+		<script type="text/plain" data-category="analytics" data-service="Google Analytics" >
+		window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
+		<!-- Analytics & Privacy Consent END -->
+	</head>
+	<body>
+		<div class="ambient-glow-2"></div>
+		<div class="container">
+			<header>
+				<h1><span class="text-gradient">FireMaze</span> &mdash; Shape Boundaries &amp; Image Masking</h1>
+				<p>Define the walkable area of your maze using geometric shape boundaries or a black-and-white image mask. Both systems produce a <code>blocked[y][x]</code> boolean grid that the generation algorithms respect.</p>
+			</header>
+			
+			<nav>
+				<a href="../../../index.html" class="buttonss buttonMain">Home</a>
+				<a href="../../../contact.html" class="buttonss buttonMain">Contact</a>
+				<a href="../../../privacy.html" class="buttonss buttonMain">Privacy</a>
+				<a href="../../../games.html" class="buttonss buttonG">Banter Games</a>
+				<a href="../../../pages/games.html" class="buttonss buttonG">Browser Games</a>
+				<a href="https://github.com/FireRat666" class="buttonss buttonW" target="_blank">GitHub</a>
+				<a href="https://ko-fi.com/FireRat666" class="buttonss buttonGY" target="_blank">Ko-fi</a>
+				<a href="https://paypal.me/FireRat666" class="buttonss buttonY" target="_blank">PayPal</a>
+			</nav>
+			
+			<nav class="docnav">
+				<a href="../index.html" class="buttonss buttonMain">FireMaze Home</a>
+				<a href="features.html" class="buttonss">Features</a>
+				<a href="usage.html" class="buttonss">Usage</a>
+				<a href="editor.html" class="buttonss">Editor</a>
+				<a href="vertex-painting.html" class="buttonss">Vertex Paint</a>
+				<a href="props.html" class="buttonss">Props</a>
+				<a href="multilevel.html" class="buttonss">Multilevel</a>
+				<a href="shapes.html" class="buttonss active">Shapes</a>
+				<a href="polar.html" class="buttonss">Polar</a>
+				<a href="faq.html" class="buttonss">FAQ</a>
+			</nav>
+			
+			<main class="doc-content">
+				<a href="../index.html" class="backlink">&larr; Back to FireMaze</a>
+				
+				<section id="overview">
+					<h2>1. Overview</h2>
+					<p>Shape boundaries and image masks serve the same purpose &mdash; they mark cells as blocked (outside the shape/mask) or unblocked (inside). The two systems are <strong>merged</strong> during generation: a cell is blocked if either the shape mask or the image mask marks it as blocked.</p>
+					<p>Blocked cells are treated as solid walls by all generation algorithms. Rooms, entrances, exits, and stairs all respect the blocked mask.</p>
+				</section>
+				
+				<section id="shape-boundaries">
+					<h2>2. Shape Boundaries</h2>
+					<p class="panel-note">Maze Settings panel &mdash; Rectangular grids only</p>
+					
+					<h3>Available Shapes</h3>
+					<table>
+						<thead>
+							<tr><th>Shape</th><th>Description</th><th>Test function</th></tr>
+						</thead>
+						<tbody>
+							<tr><td><strong>Rectangle</strong> (<code>rect</code>)</td><td>Standard rectangular boundary. No masking applied.</td><td>(always returns True)</td></tr>
+							<tr><td><strong>Diamond</strong> (<code>diamond</code>)</td><td>Manhattan-distance diamond: <code>|u-0.5| + |v-0.5| &le; 0.5</code></td><td><code>_inside_diamond</code></td></tr>
+							<tr><td><strong>Triangle</strong> (<code>triangle</code>)</td><td>Equilateral triangle inscribed in the grid, pointing upward.</td><td><code>_inside_triangle</code> (ray-casting polygon test)</td></tr>
+							<tr><td><strong>Hexagon</strong> (<code>hexagon</code>)</td><td>Regular flat-top hexagon inscribed in the grid.</td><td><code>_inside_hexagon</code> (ray-casting polygon test)</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Shape Rotation</h3>
+					<p><em><code>shape_rotation</code> &mdash; Enum: 0&deg;, 90&deg;, 180&deg;, 270&deg;</em></p>
+					<p>Rotates the shape boundary around the grid center. The rotation is implemented by transforming the test point backwards:</p>
+					<pre><code>def _rotate_point(u, v, angle_rad):
+    cu, cv = u - 0.5, v - 0.5
+    ru = cu * cos(angle) - cv * sin(angle) + 0.5
+    rv = cu * sin(angle) + cv * cos(angle) + 0.5
+    return ru, rv</code></pre>
+					
+					<h3>How It Works</h3>
+					<ol class="steps">
+						<li><code>get_shape_mask(width, depth, shape, rotation)</code> produces a <code>blocked[y][x]</code> grid.</li>
+						<li>Each cell centre <code>(x+0.5, y+0.5)</code> is normalised to <code>(u, v)</code> in <code>[0,1]&times;[0,1]</code>.</li>
+						<li>The point is rotated backwards by the shape rotation angle.</li>
+						<li>The appropriate shape test function determines if the point is inside.</li>
+						<li>Cells outside the shape are marked <code>blocked[y][x] = True</code>.</li>
+					</ol>
+					
+					<h3>Smooth Shape Edges</h3>
+					<p><em><code>smooth_shape_edges</code> &mdash; Toggle (default OFF)</em></p>
+					<p>When enabled, boundary cells at the shape contour receive additional geometry to create a smoother outline. Two methods are available:</p>
+					
+					<h4>Filler Triangles</h4>
+					<p><em><code>smooth_boundary_method = 'filler'</code></em></p>
+					<p>Generates extra triangular faces at the shape contour to fill gaps between the square grid and the shape boundary.</p>
+					<ul>
+						<li><strong>Floor filler triangles</strong> (<code>_build_smooth_floor_triangles</code>): Adds triangles at floor height for boundary cells that intersect the shape contour. The contour polygon is built from cell corners that fall outside the shape, sorted by angle around the grid center. For each boundary edge segment, a triangular face is fan-triangulated from two contour vertices and the nearest inside-grid corner.</li>
+						<li><strong>Roof filler triangles</strong> (<code>_build_smooth_roof_triangles</code>): Same logic at roof height.</li>
+					</ul>
+					<p>The filler triangles:</p>
+					<ul>
+						<li>Are generated per-floor (multilevel mazes get filler on each level).</li>
+						<li>Use the same material offsets as regular tiles.</li>
+						<li>Respect dirty-cell tracking during incremental rebuilds.</li>
+						<li>Skip edges where the associated cells are not all wall cells (open cells don't get filler geometry).</li>
+					</ul>
+					
+					<h4>Clipped Tiles</h4>
+					<p><em><code>smooth_boundary_method = 'clip'</code></em></p>
+					<p>Clips floor and roof tiles to the shape boundary contour instead of generating extra filler triangles. The clipping is handled by <code>clip_cell</code> in <code>shape_boundaries.py</code>, which:</p>
+					<ol class="steps">
+						<li>Identifies cells with mixed inside/outside corner status.</li>
+						<li>Finds the exact boundary crossing point via binary search (<code>_intersect_segment</code>).</li>
+						<li>Constructs a clipped polygon from the inside corners and crossing points.</li>
+						<li>Fan-triangulates the polygon and returns world-space vertices and triangle indices.</li>
+					</ol>
+					
+					<h3>Shape Boundary Vertices</h3>
+					<p><code>get_shape_boundary_verts(width, depth, shape, tile_size, rotation)</code> returns the world-space polygon vertices of the shape contour. Used for debug visualization and future mesh-clipping features.</p>
+					
+					<h3>Boundary Candidates for Entrances/Exits</h3>
+					<p><code>_get_shape_boundary_candidates(blocked, width, depth)</code> finds cells on the shape boundary &mdash; unblocked cells adjacent to blocked or out-of-bounds cells &mdash; and returns them with their outward-facing direction (N/S/E/W). This ensures entrances and exits can be placed on the actual shape contour rather than the grid rectangle.</p>
+				</section>
+				
+				<section id="image-masking">
+					<h2>3. Image Masking</h2>
+					<p class="panel-note">Session &amp; Image Management panel &mdash; Rectangular grids only</p>
+					<p>Use a black-and-white image to define the walkable shape of the maze. White pixels = walkable (path), black pixels = blocked (wall).</p>
+					
+					<h3>Loading a Mask</h3>
+					<ul>
+						<li><strong>Load Mask from Disk</strong> &mdash; <code>MAZE_OT_load_mask_image</code> (ImportHelper). Supports PNG, JPG, BMP, and TGA files. Loads the image as a Blender Image datablock and assigns it to <code>mask_image</code>.</li>
+						<li><strong>Selected Mask</strong> &mdash; <code>mask_image</code> (Image pointer). Manually pick an existing Blender Image datablock.</li>
+					</ul>
+					
+					<h3>How Sampling Works</h3>
+					<p><code>_get_image_mask_data(mask_image, invert, width, depth)</code>:</p>
+					<ol class="steps">
+						<li>For each cell <code>(x, y)</code>:
+							<ul>
+								<li>Compute the pixel coordinate at the cell centre:</li>
+							</ul>
+							<pre><code>px = int(((x + 0.5) / width) * img_w)
+py = int(((y + 0.5) / depth) * img_h)</code></pre>
+							<ul>
+								<li>Sample the pixel's RGB channels.</li>
+								<li>Compute luminance: <code>brightness = 0.299R + 0.587G + 0.114B</code></li>
+								<li>If <code>brightness &lt; 0.5</code>, the cell is blocked.</li>
+							</ul>
+						</li>
+						<li>Returns a <code>blocked[y][x]</code> boolean grid matching the maze dimensions.</li>
+					</ol>
+					
+					<h3>Invert Mask</h3>
+					<p><em><code>mask_invert</code> &mdash; Toggle (default OFF)</em></p>
+					<p>When enabled, the luminance is inverted before the threshold test:</p>
+					<pre><code>if invert:
+    brightness = 1.0 - brightness</code></pre>
+					<p>This swaps the interpretation: black pixels become walkable, white pixels become blocked.</p>
+					
+					<h3>Restrictions</h3>
+					<ul>
+						<li>Image masking is <strong>only available for Rectangular grids</strong>.</li>
+						<li>Image masking is <strong>automatically disabled when <code>floors &gt; 1</code></strong> &mdash; a warning label appears in the UI: "Mask disabled when floors &gt; 1". The mask is silently ignored during generation if <code>floors &gt; 1</code>.</li>
+						<li>The mask image is not packed into session files &mdash; pointer references are stored by name and must exist in the current <code>.blend</code> file on load.</li>
+					</ul>
+				</section>
+				
+				<section id="mask-merging">
+					<h2>4. Mask Merging</h2>
+					<p>During generation, the shape mask and image mask are merged into a single <code>blocked</code> grid via <code>_merge_shape_mask</code>:</p>
+					<pre><code>blocked = _get_image_mask_data(mask_image, mask_invert, width, depth)
+if shape_blocked is not None:
+    blocked = _merge_shape_mask(blocked, shape_blocked)</code></pre>
+					<p>A cell is blocked if <strong>either</strong> the image mask or the shape mask marks it as blocked (logical OR). The merge function handles dimension mismatches (e.g., when the maze uses doubled internal resolution) by mapping coordinates appropriately.</p>
+				</section>
+				
+				<section id="integration">
+					<h2>5. Integration with Generation</h2>
+					
+					<h3>Algorithm Handling</h3>
+					<p>All generation algorithms accept a <code>blocked</code> grid and use it to:</p>
+					<ul>
+						<li><strong>DFS, Kruskal's, Prim's, Wilson's, Growing Tree</strong>: Initialize <code>visited</code> with blocked cells so they are never traversed. Start cell selection uses <code>_get_start_cell</code>, which scans for the first unblocked cell near the grid center.</li>
+						<li><strong>Eller's</strong>: Skips blocked rows/cells during row processing. Horizontal runs only merge across unblocked cells. Vertical connections only go to unblocked cells in the next row.</li>
+						<li><strong>Binary Tree / Sidewinder</strong>: Checks blocked neighbors before carving passages in the biased direction.</li>
+						<li><strong>Recursive Division</strong>: Excludes blocked regions from subdivision. Only subdivides non-blocked rectangular areas.</li>
+					</ul>
+					
+					<h3>Room Placement</h3>
+					<p>Rooms respect the blocked mask. If a room's placement overlaps any blocked cell, the room is skipped entirely, ensuring image-masked and shape-masked layouts remain intact.</p>
+					
+					<h3>Entrance &amp; Exit Placement</h3>
+					<p>Entrances and exits are placed on the outer boundary. When shape boundaries are active, <code>_get_shape_boundary_candidates</code> provides the actual contour cells for placement. The generation code validates that entrance and exit cells are not blocked and raises errors if all candidates are blocked.</p>
+					
+					<h3>Stair Placement</h3>
+					<p>Stairs are filtered after placement to remove any stair that landed on a masked cell (for thin wall mode rectangular grids).</p>
+				</section>
+				
+				<section id="smooth-edges-tech">
+					<h2>6. Shape Boundary Edges (Smooth Mode)</h2>
+					<p>When <code>smooth_shape_edges</code> is enabled, the smooth floor/roof triangle generation uses <code>get_boundary_edges</code> and <code>get_segmented_boundary_polygon</code> from <code>shape_boundaries.py</code>:</p>
+					<ul>
+						<li><strong><code>get_segmented_boundary_polygon</code></strong>: Computes and caches the boundary polygon by finding cell corners that fall outside the shape, adjacent to inside cells, sorted by angle around the grid center.</li>
+						<li><strong><code>get_boundary_edges</code></strong>: Returns world-space edge segments representing the shape boundary contour inside a given cell. Used for wall clipping at the shape contour.</li>
+					</ul>
+				</section>
+				
+				<section id="ui-reference">
+					<h2>7. UI Reference</h2>
+					
+					<h3>Maze Settings Panel</h3>
+					<table>
+						<thead>
+							<tr><th>Control</th><th>Property</th><th>Shown when</th></tr>
+						</thead>
+						<tbody>
+							<tr><td>Shape</td><td><code>maze_shape</code></td><td>Rectangular grid</td></tr>
+							<tr><td>Rotation</td><td><code>shape_rotation</code></td><td>Shape is not Rectangle</td></tr>
+							<tr><td>Smooth Shape Edges</td><td><code>smooth_shape_edges</code></td><td>Shape is not Rectangle</td></tr>
+							<tr><td>Boundary Method</td><td><code>smooth_boundary_method</code></td><td>Smooth Shape Edges is ON</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Session &amp; Image Management Panel</h3>
+					<table>
+						<thead>
+							<tr><th>Control</th><th>Property</th><th>Shown when</th></tr>
+						</thead>
+						<tbody>
+							<tr><td>Load Mask from Disk</td><td>(operator)</td><td>Rectangular grid</td></tr>
+							<tr><td>Selected Mask</td><td><code>mask_image</code></td><td>Rectangular grid</td></tr>
+							<tr><td>Invert Mask Colors</td><td><code>mask_invert</code></td><td>A mask is assigned</td></tr>
+						</tbody>
+					</table>
+					
+					<h3>Limitations</h3>
+					<ul>
+						<li>Shape boundaries and image masking are <strong>rectangular grid only</strong>.</li>
+						<li>Image masking is <strong>disabled when <code>floors &gt; 1</code></strong>.</li>
+						<li>When <strong>both</strong> shape and image masks are active, the blocked area is the union of both (a cell is blocked if either mask blocks it).</li>
+					</ul>
+				</section>
+			</main>
+			
+			<footer>
+				<p>&copy; <span id="year"></span> FireR.at. All Rights Reserved. FireMaze is licensed under GPL-3.0-or-later.</p>
+				<script>
+					document.getElementById('year').textContent = new Date().getFullYear();
+					document.querySelectorAll('pre').forEach(block => {
+						block.addEventListener('click', async () => {
+							try { await navigator.clipboard.writeText(block.innerText); } catch (err) { console.error(err); }
+						});
+					});
+				</script>
+			</footer>
+		</div>
+	</body>
+</html>
