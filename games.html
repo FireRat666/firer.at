@@ -73,6 +73,7 @@
         <section id="guide">
             <h2>How to Embed Games in Altspace &amp; Banter Worlds</h2>
             <p>Games are simple to embed into both <strong>AltspaceVR</strong> (the new Altspace on <a href="https://altvr.app" target="_blank" style="color: var(--accent-green);">altvr.app</a>) and <strong>BanterVR</strong> worlds. Just insert a <code>&lt;script&gt;</code> tag into your space's HTML. Configuration can be done via <strong>HTML Script Attributes</strong> (recommended) or legacy <strong>URL Query Parameters</strong> (for backwards compatibility).</p>
+            <p>In Altspace you can also add each game as a <strong>snippet</strong>: when editing your world on <a href="https://altvr.app" target="_blank" style="color: var(--accent-green);">altvr.app</a>, open <strong>Snippets</strong> and choose <strong>All</strong>, or in Unity add a <strong>BS &gt; Snippet</strong> component and type the snippet name shown on each game below. <strong>Details</strong> opens each game's own page with setup steps and how to play.</p>
             
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 1.5rem;">
                 <!-- URL Configured Games -->
@@ -175,12 +176,14 @@
                   <span class="badge vr">Checkers</span>
                   <span class="badge api">Embeddable</span>
                 </div>
-                <h3>Altspace &amp; Banter Checkers</h3>
-                <p>Classic checkers with forced jumps, turn validation, and automatic king promotion. Fully compatible with AltspaceVR (altvr.app) and BanterVR spaces.</p>
+                <h3>Checkers</h3>
+                <p>Classic checkers with forced jumps, turn validation, and automatic king promotion.</p>
+                <p class="snippet-slug">Altspace snippet: <code>checkers</code></p>
                 <div class="code-header">Embed Script (Click to copy)</div>
-                <pre><code>&lt;script src="https://banter-checkers.firer.at/checkers.js" instance="checkers" position="0 1.1 -2" scale="1 1 1"&gt;&lt;/script&gt;</code></pre>
+                <pre><code>&lt;script src="https://checkers.firer.at/Checkers.js" position="0 1.1 -2" scale="1.5" rotation="0 45 0"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
+                <a href="https://checkers.firer.at" class="buttonss btn-gradient">Details</a>
                 <a href="https://github.com/FireRat666/Banter-Checkers" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -192,12 +195,14 @@
                   <span class="badge vr">Chess</span>
                   <span class="badge api">Embeddable</span>
                 </div>
-                <h3>Altspace &amp; Banter Chess</h3>
-                <p>3D serverless chess featuring real-time move validation and custom lighting options for Altspace and Banter worlds.</p>
+                <h3>Chess</h3>
+                <p>3D serverless chess featuring real-time move validation and custom lighting options.</p>
+                <p class="snippet-slug">Altspace snippet: <code>chess</code></p>
                 <div class="code-header">Embed Script (Click to copy)</div>
-                <pre><code>&lt;script src="https://banter-chess.firer.at/Chess.js" instance="chess" position="0 1.1 -2" lighting="lit"&gt;&lt;/script&gt;</code></pre>
+                <pre><code>&lt;script src="https://chess.firer.at/Chess.js" position="0 1.1 -2" scale="0.8"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
+                <a href="https://chess.firer.at" class="buttonss btn-gradient">Details</a>
                 <a href="https://github.com/FireRat666/Banter-Chess" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -209,12 +214,14 @@
                   <span class="badge vr">Reversi</span>
                   <span class="badge api">Embeddable</span>
                 </div>
-                <h3>Altspace &amp; Banter Reversi</h3>
-                <p>Othello-style disk flipping strategy game with a reactive interface for AltspaceVR and Banter spaces.</p>
+                <h3>Reversi</h3>
+                <p>Othello-style disk flipping strategy game with a reactive interface.</p>
+                <p class="snippet-slug">Altspace snippet: <code>reversi</code></p>
                 <div class="code-header">Embed Script (Click to copy)</div>
-                <pre><code>&lt;script src="https://banter-reversi.firer.at/Reversi.js" instance="reversi" position="0 1.1 -2" hide-ui="false"&gt;&lt;/script&gt;</code></pre>
+                <pre><code>&lt;script src="https://reversi.firer.at/Reversi.js" position="0 1.1 -2"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
+                <a href="https://reversi.firer.at" class="buttonss btn-gradient">Details</a>
                 <a href="https://github.com/FireRat666/Banter-Reversi" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -226,12 +233,14 @@
                   <span class="badge vr">Connect 4</span>
                   <span class="badge api">Embeddable</span>
                 </div>
-                <h3>Altspace &amp; Banter Connect 4</h3>
-                <p>Vertical four-in-a-row checker-dropping game for AltspaceVR (the new Altspace) and BanterVR. Includes support for custom board models.</p>
+                <h3>Connect 4</h3>
+                <p>Vertical four-in-a-row checker-dropping game. Includes support for custom board models.</p>
+                <p class="snippet-slug">Altspace snippet: <code>connect4</code></p>
                 <div class="code-header">Embed Script (Click to copy)</div>
-                <pre><code>&lt;script src="https://banter-connect4.firer.at/Connect4.js" instance="c4" position="0 1.1 0" use-custom-models="true" lighting="lit"&gt;&lt;/script&gt;</code></pre>
+                <pre><code>&lt;script src="https://connect4.firer.at/Connect4.js" position="0 1.5 5"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
+                <a href="https://connect4.firer.at" class="buttonss btn-gradient">Details</a>
                 <a href="https://github.com/FireRat666/Banter-Connect4" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -243,12 +252,14 @@
                   <span class="badge vr">Go / Weiqi</span>
                   <span class="badge api">Embeddable</span>
                 </div>
-                <h3>Altspace &amp; Banter Go (Weiqi)</h3>
-                <p>Full-featured board game of Go for Altspace and Banter worlds. Implements liberty tracking, ko rule validation, and suicide prevention.</p>
+                <h3>Go (Weiqi)</h3>
+                <p>Full-featured board game of Go. Implements liberty tracking, ko rule validation, and suicide prevention.</p>
+                <p class="snippet-slug">Altspace snippet: <code>go</code></p>
                 <div class="code-header">Embed Script (Click to copy)</div>
-                <pre><code>&lt;script src="https://banter-go.firer.at/Go.js" instance="go" board-size="19" position="0 1.5 0" scoreboard-position="0 2 -2"&gt;&lt;/script&gt;</code></pre>
+                <pre><code>&lt;script src="https://go.firer.at/Go.js" position="0 1.5 2" board-size="13"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
+                <a href="https://go.firer.at" class="buttonss btn-gradient">Details</a>
                 <a href="https://github.com/FireRat666/Banter-Go" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -260,12 +271,14 @@
                   <span class="badge vr">Gomoku</span>
                   <span class="badge api">Embeddable</span>
                 </div>
-                <h3>Altspace &amp; Banter Gomoku</h3>
-                <p>Five-in-a-row alignment game played on a Go grid board across AltspaceVR and Banter spaces.</p>
+                <h3>Gomoku</h3>
+                <p>Five-in-a-row alignment game played on a Go grid board.</p>
+                <p class="snippet-slug">Altspace snippet: <code>gomoku</code></p>
                 <div class="code-header">Embed Script (Click to copy)</div>
-                <pre><code>&lt;script src="https://banter-gomoku.firer.at/Gomoku.js" instance="gomoku" board-size="15" position="0 1.5 0"&gt;&lt;/script&gt;</code></pre>
+                <pre><code>&lt;script src="https://gomoku.firer.at/Gomoku.js" position="0 1.5 -3" scale="0.8" board-size="19"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
+                <a href="https://gomoku.firer.at" class="buttonss btn-gradient">Details</a>
                 <a href="https://github.com/FireRat666/Banter-Gomoku" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -277,12 +290,14 @@
                   <span class="badge vr">Mancala</span>
                   <span class="badge api">Embeddable</span>
                 </div>
-                <h3>Altspace &amp; Banter Mancala</h3>
-                <p>Traditional stone sow-and-capture game for Altspace and Banter worlds (Work in Progress).</p>
+                <h3>Mancala</h3>
+                <p>Traditional stone sow-and-capture game (Work in Progress).</p>
+                <p class="snippet-slug">Altspace snippet: <code>mancala</code></p>
                 <div class="code-header">Embed Script (Click to copy)</div>
-                <pre><code>&lt;script src="https://banter-mancala.firer.at/Mancala.js" instance="mancala" position="0 1.1 -2" lighting="lit"&gt;&lt;/script&gt;</code></pre>
+                <pre><code>&lt;script src="https://mancala.firer.at/Mancala.js" position="0 1.1 -2" lighting="lit"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
+                <a href="https://mancala.firer.at" class="buttonss btn-gradient">Details</a>
                 <a href="https://github.com/FireRat666/Banter-Mancala" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -294,12 +309,14 @@
                   <span class="badge vr">Tic-Tac-Toe</span>
                   <span class="badge api">Embeddable</span>
                 </div>
-                <h3>Altspace &amp; Banter Tic-Tac-Toe</h3>
-                <p>Simple 3x3 grid game for AltspaceVR and BanterVR, perfect for quick decisions and simple layouts.</p>
+                <h3>Tic-Tac-Toe</h3>
+                <p>Simple 3x3 grid game, perfect for quick decisions and simple layouts.</p>
+                <p class="snippet-slug">Altspace snippet: <code>tic-tac-toe</code></p>
                 <div class="code-header">Embed Script (Click to copy)</div>
-                <pre><code>&lt;script src="https://banter-tic-tac-toe.firer.at/TicTacToe.js" instance="tictactoe" position="0 1.2 0" scale="1 1 1"&gt;&lt;/script&gt;</code></pre>
+                <pre><code>&lt;script src="https://tic-tac-toe.firer.at/TicTacToe.js" position="0 1.2 2" scale="1.5"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
+                <a href="https://tic-tac-toe.firer.at" class="buttonss btn-gradient">Details</a>
                 <a href="https://github.com/FireRat666/Banter-Tic-Tac-Toe" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -311,12 +328,14 @@
                   <span class="badge vr">Blackjack</span>
                   <span class="badge api">Embeddable</span>
                 </div>
-                <h3>Altspace &amp; Banter Blackjack</h3>
-                <p>Multiplayer Blackjack for AltspaceVR (altvr.app) and BanterVR spaces. Supports 1-7 players, turn handling, host migration, Split, and Double Down options.</p>
+                <h3>Blackjack</h3>
+                <p>Multiplayer Blackjack. Supports 1-7 players, turn handling, host migration, Split, and Double Down options.</p>
+                <p class="snippet-slug">Altspace snippet: <code>blackjack</code></p>
                 <div class="code-header">Embed Script (Click to copy)</div>
-                <pre><code>&lt;script src="https://blackjack.firer.at/blackjack.js" position="0 0 2" rotation="0 0 0" instance="lobby-bj"&gt;&lt;/script&gt;</code></pre>
+                <pre><code>&lt;script src="https://blackjack.firer.at/blackjack.js" position="0 0 2" rotation="0 180 0" instance="lobby-bj"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
+                <a href="https://blackjack.firer.at" class="buttonss btn-gradient">Details</a>
                 <a href="https://github.com/FireRat666/Banter-BlackJack" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -328,13 +347,14 @@
                   <span class="badge vr">UNO</span>
                   <span class="badge api">Embeddable</span>
                 </div>
-                <h3>Altspace &amp; Banter UNO</h3>
-                <p>Classic multiplayer UNO cards fully synchronized for AltspaceVR (the new Altspace, altvr.app) and BanterVR. Supports 2-10 players, turn management, and special card actions.</p>
+                <h3>UNO</h3>
+                <p>Classic multiplayer UNO cards, fully synchronized. Supports 2-10 players, turn management, and special card actions.</p>
+                <p class="snippet-slug">Altspace snippet: <code>uno</code></p>
                 <div class="code-header">Embed Script (Click to copy)</div>
                 <pre><code>&lt;script src="https://uno.firer.at/uno.js" position="0 0 2" rotation="0 180 0" instance="lobby-uno"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
-                <a href="/pages/scuffeduno.html" class="buttonss btn-gradient">Play Scuffed UNO</a>
+                <a href="https://uno.firer.at" class="buttonss btn-gradient">Details</a>
                 <a href="https://github.com/FireRat666/Banter-UNO" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -346,12 +366,14 @@
                   <span class="badge vr">Rummy10</span>
                   <span class="badge api">Embeddable</span>
                 </div>
-                <h3>Altspace &amp; Banter Rummy10</h3>
-                <p>Multiplayer Rummy10 card game for AltspaceVR and BanterVR spaces. Supports 2-10 players with automatic hand dealing and real-time state sync.</p>
+                <h3>Rummy10</h3>
+                <p>Multiplayer Rummy10 card game. Supports 2-10 players with automatic hand dealing and real-time state sync.</p>
+                <p class="snippet-slug">Altspace snippet: <code>rummy10</code></p>
                 <div class="code-header">Embed Script (Click to copy)</div>
                 <pre><code>&lt;script src="https://rummy10.firer.at/rummy10.js" position="0 0 2" rotation="0 180 0" instance="lobby-rummy10"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
+                <a href="https://rummy10.firer.at" class="buttonss btn-gradient">Details</a>
                 <a href="https://github.com/FireRat666/Banter-Rummy10" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -364,11 +386,13 @@
                   <span class="badge api">Embeddable</span>
                 </div>
                 <h3>Holograms Against Humanity (HAH)</h3>
-                <p>Serverless Cards Against Humanity clone for social VR spaces across AltspaceVR (the new Altspace, altvr.app) and BanterVR. Runs client-side using space state properties. Supports up to 10 players and over 70 expansions.</p>
+                <p>Serverless Cards Against Humanity clone for social VR. Runs client-side using space state properties. Supports up to 10 players and over 70 expansions.</p>
+                <p class="snippet-slug">Altspace snippet: <code>hah</code></p>
                 <div class="code-header">Embed Script (Click to copy)</div>
-                <pre><code>&lt;script src="https://hah.firer.at/hah.js" position="0 -0.4 -5" instance="demo-game"&gt;&lt;/script&gt;</code></pre>
+                <pre><code>&lt;script src="https://hah.firer.at/hah.js" position="0 -0.4 -5" instance="my-private-game"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
+                <a href="https://hah.firer.at" class="buttonss btn-gradient">Details</a>
                 <a href="https://github.com/FireRat666/HaH" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
