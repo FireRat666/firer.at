@@ -1,0 +1,143 @@
+/* Fire-V-Player guide styles — extends the main theme (pages/nstyle.css) */
+
+/* ---------- Hero ---------- */
+.fvp-hero { text-align: center; margin-bottom: 2.5rem; }
+.fvp-hero p { font-size: 1.12rem; max-width: 780px; margin: 0 auto 1.5rem; line-height: 1.7; }
+
+.version-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; margin: 0 0 1.25rem; }
+.version-badge {
+	font-size: 0.72rem; font-weight: 700; padding: 5px 14px; border-radius: 999px;
+	border: 1px solid var(--border-strong); background: rgba(255, 255, 255, 0.04);
+	color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.07em;
+}
+.version-badge.green { color: var(--accent-green); border-color: rgba(0, 255, 68, 0.4); background: rgba(0, 255, 68, 0.07); }
+.version-badge.yellow { color: var(--accent-yellow); border-color: rgba(255, 233, 77, 0.4); background: rgba(255, 233, 77, 0.07); }
+
+/* ---------- Page contents (jump links) ---------- */
+.toc {
+	display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem; padding: 0.6rem;
+	background: rgba(0, 0, 0, 0.45); border: 1px solid var(--border-color); border-radius: var(--radius-md);
+	margin: 0 auto 3rem; max-width: 1050px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.toc a.buttonss { font-size: 0.75rem; padding: 8px 13px; color: var(--text-secondary); }
+.toc a.buttonss:hover { color: var(--accent-green); border-color: var(--accent-green); transform: none; }
+
+/* ---------- Guide sections ---------- */
+.guide section {
+	background: var(--surface); border: 1px solid var(--border-color); border-radius: var(--radius-lg);
+	padding: 2.25rem; margin-bottom: 2.5rem; scroll-margin-top: 1.5rem;
+}
+.guide section > h2 { margin-top: 0; font-size: 1.7rem; }
+.guide h3 { margin-top: 1.75rem; font-size: 1.2rem; }
+.guide li { color: var(--text-secondary); }
+.guide .lead { font-size: 1.02rem; }
+
+/* ---------- Choose-a-way cards ---------- */
+.choice-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin: 1.5rem 0 0; }
+.choice-card {
+	background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-color); border-radius: 18px;
+	padding: 1.6rem; display: flex; flex-direction: column; transition: all 0.35s var(--ease);
+}
+.choice-card:hover { transform: translateY(-3px); border-color: var(--border-hover); box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), 0 0 22px rgba(0, 255, 68, 0.09); }
+.choice-card h3 { margin-top: 0.4rem; color: #fff; }
+.choice-card p { flex-grow: 1; font-size: 0.92rem; }
+.choice-card a.buttonss { align-self: flex-start; margin: 0; }
+
+/* ---------- Numbered steps ---------- */
+.steps { counter-reset: step; list-style: none; padding-left: 0 !important; margin: 1.25rem 0; }
+.steps > li {
+	position: relative; padding-left: 3rem; margin-bottom: 1.25rem; counter-increment: step;
+	font-size: 0.98rem; line-height: 1.65;
+}
+.steps > li::before {
+	content: counter(step); position: absolute; left: 0; top: 0; width: 2rem; height: 2rem; border-radius: 50%;
+	background: var(--accent-gradient); color: #000; font-weight: 800; font-size: 0.9rem;
+	display: flex; align-items: center; justify-content: center; font-family: 'Outfit', sans-serif;
+}
+.steps > li > strong:first-child { color: #fff; }
+.steps .sub { display: block; margin-top: 0.35rem; font-size: 0.88rem; color: var(--text-muted); }
+
+/* ---------- Callouts ---------- */
+.callout { border-radius: 14px; padding: 1rem 1.4rem; margin: 1.25rem 0; border: 1px solid; font-size: 0.93rem; line-height: 1.6; color: var(--text-secondary); }
+.callout p { margin: 0; }
+.callout p + p { margin-top: 0.5rem; }
+.callout strong { color: #fff; }
+.callout.info { background: rgba(0, 255, 68, 0.05); border-color: rgba(0, 255, 68, 0.28); }
+.callout.warn { background: rgba(255, 233, 77, 0.05); border-color: rgba(255, 233, 77, 0.32); }
+.callout.danger { background: rgba(255, 77, 94, 0.05); border-color: rgba(255, 77, 94, 0.32); }
+
+/* ---------- Copy chip (slug) ---------- */
+.copy-chip {
+	display: inline-flex; align-items: center; gap: 0.5rem; vertical-align: middle;
+	font-family: 'JetBrains Mono', 'Consolas', 'Monaco', 'Courier New', monospace; font-size: 0.95rem;
+	color: var(--accent-green); background: rgba(0, 255, 68, 0.06); border: 1px solid rgba(0, 255, 68, 0.4);
+	border-radius: 999px; padding: 4px 6px 4px 14px; cursor: pointer; transition: all 0.25s var(--ease);
+}
+.copy-chip:hover { background: rgba(0, 255, 68, 0.12); box-shadow: 0 0 14px var(--glow-green); }
+.copy-chip .copy-label {
+	font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+	color: #000; background: var(--accent-gradient); border-radius: 999px; padding: 3px 9px;
+}
+
+/* ---------- Menu paths and keys ---------- */
+.menu {
+	font-weight: 600; color: var(--accent-yellow); white-space: nowrap;
+}
+kbd {
+	background: rgba(255, 255, 255, 0.06); border: 1px solid var(--border-strong); border-bottom-width: 2px;
+	border-radius: 6px; padding: 2px 7px; font-size: 0.8em; font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+	color: var(--accent-lime); white-space: nowrap;
+}
+
+/* ---------- Colour key for the preview ---------- */
+.swatch { display: inline-block; width: 0.85em; height: 0.85em; border-radius: 3px; vertical-align: -0.08em; margin-right: 0.35em; border: 2px solid; }
+.swatch.orange { border-color: #ff8c1a; background: rgba(255, 140, 26, 0.18); }
+.swatch.pink { border-color: #ff4db3; background: rgba(255, 77, 179, 0.18); }
+.swatch.blue { border-color: #3d8bff; background: rgba(61, 139, 255, 0.18); }
+
+/* ---------- Button row diagram ---------- */
+.button-row { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0 1.5rem; }
+.button-row span {
+	flex: 1 1 110px; text-align: center; font-size: 0.8rem; font-weight: 600; color: var(--text-secondary);
+	padding: 0.65rem 0.5rem; border-radius: 12px; border: 1px solid var(--border-strong); background: rgba(0, 0, 0, 0.35);
+}
+.button-row span b { display: block; font-size: 0.7rem; color: var(--text-muted); font-weight: 600; margin-top: 2px; }
+
+/* ---------- Troubleshooting ---------- */
+details.fix {
+	border: 1px solid var(--border-color); border-radius: 14px; background: rgba(0, 0, 0, 0.3);
+	margin: 0.75rem 0; transition: border-color 0.25s ease;
+}
+details.fix[open], details.fix:hover { border-color: rgba(0, 255, 68, 0.4); }
+details.fix summary {
+	cursor: pointer; list-style: none; padding: 1rem 1.25rem; font-weight: 700; color: #fff;
+	font-family: 'Outfit', sans-serif; font-size: 1.02rem; display: flex; gap: 0.75rem; align-items: baseline;
+}
+details.fix summary::-webkit-details-marker { display: none; }
+details.fix summary::before { content: '+'; color: var(--accent-green); font-weight: 800; width: 1rem; flex-shrink: 0; }
+details.fix[open] summary::before { content: '\2212'; }
+details.fix .fix-body { padding: 0 1.25rem 1.1rem 3rem; }
+details.fix .fix-body p:last-child, details.fix .fix-body ul:last-child, details.fix .fix-body ol:last-child { margin-bottom: 0; }
+
+/* ---------- Tables ---------- */
+.guide table { font-size: 0.88rem; }
+.guide td:first-child { white-space: nowrap; }
+
+.backlink { display: inline-flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 700; color: var(--accent-green); text-decoration: none; margin-bottom: 1.5rem; }
+.backlink:hover { text-shadow: 0 0 12px var(--glow-green); }
+
+@media (max-width: 700px) {
+	.guide section { padding: 1.4rem 1.1rem; }
+	.steps > li { padding-left: 2.6rem; }
+	details.fix .fix-body { padding-left: 1.25rem; }
+	.guide table { display: block; overflow-x: auto; }
+	.guide td:first-child { white-space: normal; }
+}
+
+/* The site menu sticks to the top on wide screens: keep jumped-to titles below it */
+@media (min-width: 1000px) {
+	.guide section { scroll-margin-top: 8rem; }
+}
+
+/* Long paths wrap on narrow screens instead of running off the edge */
+.guide :not(pre) > code { overflow-wrap: anywhere; }

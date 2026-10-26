@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<link id="favicon" rel="icon" href="../../files/favicon.ico" type="image/x-icon" />
+		<meta name="color-scheme" content="dark">
+		<meta name="theme-color" content="#00ff44">
+
+		<!-- Primary SEO Metadata -->
+		<title>Fire-V-Player | Synced YouTube Player for Altspace Worlds | FireR.at</title>
+		<meta name="title" content="Fire-V-Player | Synced YouTube Player for Altspace Worlds | FireR.at">
+		<meta name="description" content="Step-by-step guide to adding Fire-V-Player, a free synced YouTube and karaoke player, to your Altspace (altvr.app) world with the fire-v-player snippet, plus the Unity live preview script.">
+		<meta name="author" content="FireRat">
+		<meta name="robots" content="index, follow">
+		<link rel="canonical" href="https://firer.at/pages/FireVPlayer/">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://firer.at/pages/FireVPlayer/">
+		<meta property="og:title" content="Fire-V-Player | Synced YouTube Player for Altspace Worlds">
+		<meta property="og:description" content="Add a synced YouTube and karaoke player to your Altspace world in a few clicks with the fire-v-player snippet.">
+		<meta property="og:image" content="https://firer.at/files/FireRat-Transparentv3.webp">
+		<meta property="og:site_name" content="FireR.at">
+
+		<!-- Twitter -->
+		<meta property="twitter:card" content="summary">
+		<meta property="twitter:url" content="https://firer.at/pages/FireVPlayer/">
+		<meta property="twitter:title" content="Fire-V-Player | Synced YouTube Player for Altspace Worlds">
+		<meta property="twitter:description" content="Add a synced YouTube and karaoke player to your Altspace world in a few clicks with the fire-v-player snippet.">
+		<meta property="twitter:image" content="https://firer.at/files/FireRat-Transparentv3.webp">
+
+		<!-- Typography & Stylesheets -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="../nstyle.css" />
+		<link rel="stylesheet" href="fvp.css" />
+
+		<!-- Dynamic Background Script -->
+		<script src="../../scripts/RandomBG.js"></script>
+
+		<!-- Analytics & Privacy Consent (Cookie Chimp) -->
+		<script src="https://cookiechimp.com/widget/mV3trJ.js"></script>
+		<script type="text/plain" data-src="https://www.googletagmanager.com/gtag/js?id=G-HSMS8JERQ2"
+		data-category="analytics" data-service="Google Analytics" ></script>
+		<script type="text/plain" data-category="analytics" data-service="Google Analytics" >
+		window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date()); gtag('config', 'G-HSMS8JERQ2'); </script>
+		<!-- Analytics & Privacy Consent END -->
+	</head>
+	<body>
+		<div class="ambient-glow-2"></div>
+		<div class="container">
+			<header class="fvp-hero">
+				<div class="version-badges">
+					<span class="version-badge green">Altspace / altvr.app</span>
+					<span class="version-badge">Creator SDK snippet</span>
+					<span class="version-badge yellow">Free</span>
+				</div>
+				<h1><span class="text-gradient">Fire-V-Player</span></h1>
+				<p>A YouTube player for your Altspace world that everyone watches together, in sync. Build a shared playlist, vote on what plays next, or switch to karaoke mode with a singer queue. Adding it takes a few minutes and no coding.</p>
+				<div class="hero-actions">
+					<a href="#unity" class="buttonss btn-gradient">Add it in Unity</a>
+					<a href="#website" class="buttonss buttonG">Add it on the website</a>
+					<a href="#preview" class="buttonss buttonG">Get the preview script</a>
+					<a href="https://github.com/FireRat666/Fire-V-Player" class="buttonss buttonW" target="_blank" rel="noopener">GitHub</a>
+				</div>
+			</header>
+
+			<nav>
+				<a href="/" class="buttonss buttonMain">Home</a>
+				<a href="../../contact.html" class="buttonss buttonMain">Contact</a>
+				<a href="../../privacy.html" class="buttonss buttonMain">Privacy</a>
+				<a href="../../games.html" class="buttonss buttonG">Altspace &amp; Banter Games</a>
+				<a href="../../pages/games.html" class="buttonss buttonG">Browser Games</a>
+				<a href="https://shader.firer.at/" class="buttonss buttonG nav-feature">FireRatShader</a>
+				<a href="https://github.com/FireRat666" class="buttonss buttonW" target="_blank">GitHub</a>
+				<a href="https://ko-fi.com/FireRat666" class="buttonss buttonGY" target="_blank">Ko-fi</a>
+				<a href="https://paypal.me/FireRat666" class="buttonss buttonY" target="_blank">PayPal</a>
+			</nav>
+
+			<div class="toc">
+				<a href="#start" class="buttonss">1. Pick a way</a>
+				<a href="#unity" class="buttonss">2a. Unity</a>
+				<a href="#website" class="buttonss">2b. Website</a>
+				<a href="#preview" class="buttonss">3. Preview script</a>
+				<a href="#settings" class="buttonss">4. Settings</a>
+				<a href="#using" class="buttonss">5. Using it in world</a>
+				<a href="#help" class="buttonss">Help, it's not working</a>
+			</div>
+
+			<main class="guide">
+				<a href="/" class="backlink">&larr; Back to FireR.at</a>
+
+				<!-- 1. Pick a way -->
+				<section id="start">
+					<h2>1. Pick how you build your world</h2>
+					<p class="lead">Fire-V-Player is a <strong>snippet</strong>: a ready-made piece you drop into your world. Its name (the "slug") is always:</p>
+					<p><button type="button" class="copy-chip" data-copy="fire-v-player">fire-v-player <span class="copy-label">Copy</span></button></p>
+					<p>Type it exactly like that: <strong>all lowercase, with the two dashes</strong>. Then pick the way you build your world and follow only that part of this page.</p>
+
+					<div class="choice-grid">
+						<div class="choice-card">
+							<div class="tech-badges"><span class="badge vr">Recommended</span></div>
+							<h3>I build my world in Unity</h3>
+							<p>You use the Altspace / Banter <strong>Creator SDK</strong> in Unity. You get the settings in the Inspector and can drag the screen around in the Scene view.</p>
+							<a href="#unity" class="buttonss btn-gradient">Go to the Unity steps</a>
+						</div>
+						<div class="choice-card">
+							<div class="tech-badges"><span class="badge json">No Unity needed</span></div>
+							<h3>I edit my world on the website</h3>
+							<p>You edit your world on <strong>altvr.app</strong> in your browser. You copy the snippet from the Snippets section and paste it into your world's HTML.</p>
+							<a href="#website" class="buttonss buttonG">Go to the website steps</a>
+						</div>
+					</div>
+
+					<div class="callout warn">
+						<p><strong>Only one Fire-V-Player per world.</strong> If you add it twice, only the first one works. If it looks like it didn't work, don't add another one: check <a href="#help">Help, it's not working</a> first.</p>
+					</div>
+				</section>
+
+				<!-- 2a. Unity -->
+				<section id="unity">
+					<h2>2a. Add it in Unity</h2>
+					<p>You need a Unity project with the Altspace / Banter <strong>Creator SDK</strong> already set up, and your world's scene open.</p>
+
+					<ol class="steps">
+						<li><strong>Make an empty object.</strong> In the top menu choose <span class="menu">GameObject &rsaquo; Create Empty</span>. Rename it to <code>Fire-V-Player</code> so you can find it later (the name of the object doesn't matter, only the slug does).</li>
+						<li><strong>Put it at the middle of the world.</strong> With the new object selected, look at <strong>Transform</strong> in the Inspector and set <strong>Position</strong> to <code>0 0 0</code> and <strong>Rotation</strong> to <code>0 0 0</code>.
+							<span class="sub">Why: you don't move the player by moving this object. You move it with the snippet's own settings (step 6). If the object isn't at 0 0 0, the outlines in the Scene view won't line up with where the screen really appears.</span></li>
+						<li><strong>Add the Snippet component.</strong> Click <span class="menu">Add Component</span>, type <code>Snippet</code> in the search box, and pick <span class="menu">BS &rsaquo; Snippet</span>.</li>
+						<li><strong>Type the slug and press Enter.</strong> In the Snippet's <strong>Slug</strong> box type <button type="button" class="copy-chip" data-copy="fire-v-player">fire-v-player <span class="copy-label">Copy</span></button> and press <kbd>Enter</kbd> (the box only takes it after Enter or clicking somewhere else).
+							<span class="sub">It downloads the player and adds it to your world's <code>Assets/WebRoot/index.html</code> for you. After a moment the Inspector shows the title <strong>Fire-V-Player</strong> and a list of settings. If nothing happens, click <strong>Refresh from server</strong>.</span></li>
+						<li><strong>Save the scene.</strong> Press <kbd>Ctrl</kbd> + <kbd>S</kbd> (Windows / Linux) or <kbd>Cmd</kbd> + <kbd>S</kbd> (Mac).
+							<span class="sub">Do this every time you add or remove a snippet. Closing Unity without saving is the main way extra copies of the snippet end up in <code>index.html</code>.</span></li>
+						<li><strong>Place the screen.</strong> Change the settings in the Inspector, or drag the handles in the Scene view to move the <strong>screen</strong>, the <strong>buttons</strong> and the <strong>playlist panel</strong>. See <a href="#settings">Settings</a> for what each one does.</li>
+						<li><strong>(Strongly recommended) Install the preview script</strong> so you can see the real size and angle of everything while you place it. It takes one minute: <a href="#preview">Preview script steps</a>.</li>
+						<li><strong>Upload your world</strong> the same way you always do, then join it and press <strong>Playlist</strong> under the screen.</li>
+					</ol>
+
+					<div class="callout info">
+						<p><strong>Without the preview script</strong> you only see the SDK's plain <span class="swatch blue"></span>blue boxes. They show <em>where</em> things go but not their real size or angle. That's normal, not a bug. The preview script adds the <span class="swatch orange"></span>orange outlines that match what you'll see in the world.</p>
+					</div>
+				</section>
+
+				<!-- 2b. Website -->
+				<section id="website">
+					<h2>2b. Add it on the website</h2>
+					<ol class="steps">
+						<li><strong>Open your world for editing</strong> on <a href="https://altvr.app" target="_blank" rel="noopener">altvr.app</a> and go to the <strong>Snippets</strong> section.</li>
+						<li><strong>Find Fire-V-Player.</strong> Set the list to show <strong>All</strong> snippets, then search for <code>Fire-V-Player</code> (or scroll to it) and open it.</li>
+						<li><strong>Copy it.</strong> Click <strong>Copy &amp; open index.html</strong>. This copies the snippet's code and opens your world's HTML.</li>
+						<li><strong>Paste it in the right place.</strong> If your HTML has these two lines, paste <em>between</em> them:
+<pre><code>&lt;!-- snippet section --&gt;
+   paste here
+&lt;!-- end snippet section --&gt;</code></pre>
+							<span class="sub">If it doesn't have them, paste it just before <code>&lt;/body&gt;</code>. Paste it <strong>once</strong>: check there isn't already a <code>&lt;bs-snippet name="fire-v-player"</code> in there.</span></li>
+						<li><strong>Change the settings</strong> by editing the values in quotes in the pasted code, for example <code>volume="10"</code> to <code>volume="30"</code>. See <a href="#settings">Settings</a>.</li>
+						<li><strong>Save</strong>, then join your world and press <strong>Playlist</strong> under the screen.</li>
+					</ol>
+					<div class="callout warn">
+						<p><strong>Keep the code tidy.</strong> Every value needs quotes around it (<code>volume="30"</code>, not <code>volume=30</code>), and a <code>&amp;</code> in a link must be written as <code>&amp;amp;</code>. Unity reads this part strictly, and one mistake can break the whole snippet section.</p>
+					</div>
+				</section>
+
+				<!-- 3. Preview script -->
+				<section id="preview">
+					<h2>3. The Unity preview script (optional, Unity only)</h2>
+					<p class="lead">A small helper file for the Unity editor. While the Fire-V-Player object is selected, it draws exactly where the player will put things, at their real size and angle, and updates the moment you change a setting:</p>
+					<ul>
+						<li><span class="swatch orange"></span><strong>Orange</strong>: the screen, the row of buttons and the playlist panel.</li>
+						<li><span class="swatch pink"></span><strong>Pink</strong>: the Singers button (karaoke mode only).</li>
+					</ul>
+					<p>It only runs inside the Unity editor. It never goes into your uploaded world and does nothing for visitors.</p>
+
+					<div class="hero-actions" style="justify-content:flex-start">
+						<a href="https://raw.githubusercontent.com/FireRat666/Fire-V-Player/master/unity/Editor/FireVPlayerSnippetPreview.cs" class="buttonss btn-gradient" id="download-preview" download="FireVPlayerSnippetPreview.cs">Download FireVPlayerSnippetPreview.cs</a>
+						<a href="https://github.com/FireRat666/Fire-V-Player/blob/master/unity/Editor/FireVPlayerSnippetPreview.cs" class="buttonss buttonW" target="_blank" rel="noopener">View it on GitHub</a>
+					</div>
+					<p id="download-status" class="sub" style="font-size:0.85rem;color:var(--text-muted);min-height:1.2em"></p>
+
+					<h3>Install it</h3>
+					<ol class="steps">
+						<li><strong>Download the file</strong> with the button above. It's called <code>FireVPlayerSnippetPreview.cs</code>.
+							<span class="sub"><strong>Windows:</strong> make sure it didn't get saved as <code>FireVPlayerSnippetPreview.cs.txt</code>. Windows hides the end of file names by default; in File Explorer turn on <span class="menu">View &rsaquo; Show &rsaquo; File name extensions</span> to check. If it ends in <code>.txt</code>, rename it to end in <code>.cs</code>.</span></li>
+						<li><strong>Make a folder called <code>Editor</code>.</strong> In Unity's <strong>Project</strong> window, right-click the <strong>Assets</strong> folder and choose <span class="menu">Create &rsaquo; Folder</span>. Name it exactly <code>Editor</code>: capital E, no spaces, nothing else.
+							<span class="sub">If you already have an <code>Assets/Editor</code> folder, just use that one.</span></li>
+						<li><strong>Drag the file into that <code>Editor</code> folder</strong> from your Downloads folder (File Explorer on Windows, Finder on Mac).
+							<span class="sub">It must end up at <code>Assets/Editor/FireVPlayerSnippetPreview.cs</code>. In any other folder Unity can't build it and shows red errors.</span></li>
+						<li><strong>Wait for Unity to finish loading</strong> (the spinner in the bottom-right corner stops).</li>
+						<li><strong>Click your Fire-V-Player object</strong> in the Hierarchy. The orange outlines appear in the Scene view.</li>
+					</ol>
+
+					<div class="callout danger">
+						<p><strong>Updating it?</strong> Replace the old file, don't add a second one. Two copies of this script anywhere in your project (even in different folders) stop Unity building any of your scripts. Search the Project window for <code>FireVPlayerSnippetPreview</code> to make sure there's only one.</p>
+					</div>
+				</section>
+
+				<!-- 4. Settings -->
+				<section id="settings">
+					<h2>4. The settings you'll actually use</h2>
+					<p>In Unity these are in the Snippet's Inspector. On the website they're the values in quotes in the pasted code. You can leave everything else as it is.</p>
+					<table>
+						<thead><tr><th>Setting</th><th>What it does</th><th>Example</th></tr></thead>
+						<tbody>
+							<tr><td><code>karaoke</code></td><td>Tick it (<code>true</code>) for karaoke mode: people join a queue and take turns singing. Leave it unticked for a normal shared playlist.</td><td><code>false</code></td></tr>
+							<tr><td><code>playlist</code></td><td>A YouTube playlist to start with when the room is empty. Paste the part after <code>list=</code> in a YouTube playlist link.</td><td><code>PLZWiw-xxQ4...</code></td></tr>
+							<tr><td><code>room</code></td><td>Worlds with the same room share the same player and playlist. Leave it empty and each world gets its own.</td><td><code>my-bar</code></td></tr>
+							<tr><td><code>volume</code></td><td>Starting volume, 0 to 100. Everyone can change their own volume in world.</td><td><code>10</code></td></tr>
+							<tr><td><code>hand-controls</code></td><td>Puts small buttons on your left wrist in VR (mute, volume, skip, Playlist).</td><td><code>true</code></td></tr>
+							<tr><td><code>position</code></td><td>Where the screen is (x y z, in metres). Easiest to set by dragging its handle in the Scene view.</td><td><code>0 1.5 2</code></td></tr>
+							<tr><td><code>rotation</code></td><td>Which way the screen faces (in degrees). <code>0 180 0</code> turns it around.</td><td><code>0 0 0</code></td></tr>
+							<tr><td><code>scale</code></td><td>Size of the screen. <code>2</code> is 2 m wide; <code>4</code> is 4 m wide.</td><td><code>2</code></td></tr>
+							<tr><td><code>button-position</code></td><td>Where the row of buttons goes. Has its own drag handle.</td><td><code>0 0.83 2</code></td></tr>
+							<tr><td><code>playlist-panel-position</code></td><td>Where the playlist panel goes. Has its own drag handle. Empty puts it beside the screen.</td><td><code>-1.8 1.5 1.85</code></td></tr>
+							<tr><td><code>controls-follow-screen</code></td><td>Tick it and the buttons and panel move and turn with the screen. Their drag handles then won't show where they really go, so use the <a href="#preview">preview script</a>.</td><td><code>false</code></td></tr>
+							<tr><td><code>spatial</code></td><td>Sound gets quieter as you walk away from the screen.</td><td><code>true</code></td></tr>
+							<tr><td><code>untrusted-links</code></td><td>Also allow video files, streams and VDO.Ninja links from any site. Off by default because those aren't moderated.</td><td><code>false</code></td></tr>
+						</tbody>
+					</table>
+					<p>Every other setting is explained in the <a href="https://github.com/FireRat666/Fire-V-Player/blob/master/USAGE.md#parameter-reference" target="_blank" rel="noopener">full settings list on GitHub</a>.</p>
+				</section>
+
+				<!-- 5. Using it -->
+				<section id="using">
+					<h2>5. Using it in your world</h2>
+					<h3>The buttons under the screen</h3>
+					<p>From left to right:</p>
+					<div class="button-row">
+						<span>Playlist<b>(Singers in karaoke)</b></span>
+						<span>Skip back<b>your screen only</b></span>
+						<span>Skip forward<b>your screen only</b></span>
+						<span>Mute<b>you only</b></span>
+						<span>Volume down<b>you only</b></span>
+						<span>Volume up<b>you only</b></span>
+					</div>
+
+					<h3>The playlist panel</h3>
+					<ul>
+						<li>Press <strong>Playlist</strong> to open the panel next to the screen.</li>
+						<li>Use <strong>Search</strong> to find a YouTube video, then add it to the playlist or play it. You can also paste a YouTube, Twitch or Vimeo link into the search box.</li>
+						<li>In VR, grab the bar under the panel to carry it somewhere else. Pressing <strong>Playlist</strong> by the screen puts it back.</li>
+						<li><strong>More...</strong> has the host controls and your own player settings (captions, picture sharpness, auto sync).</li>
+					</ul>
+
+					<h3>Who's in charge (the host)</h3>
+					<ul>
+						<li>The <strong>host</strong> controls what plays for everyone. If you can't skip or change the video, someone else is the host.</li>
+						<li>To become the host, open <strong>More...</strong> and press <strong>Take Over</strong>. The host can <strong>Lock</strong> the player so nobody else can take over, and can turn on <strong>Voting</strong> so people vote on what plays next.</li>
+					</ul>
+
+					<h3>Karaoke mode</h3>
+					<ul>
+						<li>Whoever runs the karaoke should press <strong>Take Over</strong> first.</li>
+						<li>Singers press <strong>Singers</strong>, search for a song and press <strong>Sing It</strong> to join the queue.</li>
+						<li>The host starts each singer with <strong>Play &amp; Sing</strong>, and can move people up or down or remove them.</li>
+					</ul>
+
+					<div class="callout info">
+						<p><strong>World owners and moderators</strong> can switch between playlist and karaoke without re-uploading: <strong>Playlist</strong> &rsaquo; <strong>More...</strong> &rsaquo; <strong>Mode</strong> at the bottom. It switches for everyone and goes back to your snippet's setting after a day with no changes.</p>
+					</div>
+				</section>
+
+				<!-- Help -->
+				<section id="help">
+					<h2>Help, it's not working</h2>
+					<p>Click a problem to see the fix.</p>
+
+					<details class="fix">
+						<summary>I only see blue boxes in Unity, not the orange preview</summary>
+						<div class="fix-body">
+							<ul>
+								<li>Blue boxes are normal on their own: they come from the SDK. The orange preview only appears once the <a href="#preview">preview script</a> is installed.</li>
+								<li>Check the file is at exactly <code>Assets/Editor/FireVPlayerSnippetPreview.cs</code>: folder named <code>Editor</code>, file ending in <code>.cs</code> (not <code>.cs.txt</code>).</li>
+								<li>Click the Fire-V-Player object in the Hierarchy: the preview only shows while it's selected.</li>
+								<li>Make sure the Scene view's <strong>Gizmos</strong> button (top right of the Scene view) is turned on.</li>
+								<li>Open <span class="menu">Window &rsaquo; General &rsaquo; Console</span>. Any red errors there stop the preview; see the next two problems.</li>
+								<li>Got an old copy? <a href="#download-preview">Download it again</a>; older versions only worked if the slug was typed in lowercase.</li>
+							</ul>
+						</div>
+					</details>
+
+					<details class="fix">
+						<summary>Red errors in the Console mentioning "BS.SDKEditor", "UnityEditor" or "Handles"</summary>
+						<div class="fix-body">
+							<p>The preview script is in the wrong folder. Move it into a folder named exactly <code>Editor</code> (for example <code>Assets/Editor/</code>). If it's already there, make sure the Creator SDK is installed in this project.</p>
+						</div>
+					</details>
+
+					<details class="fix">
+						<summary>Red error: "already contains a definition for FireVPlayerSnippetPreview"</summary>
+						<div class="fix-body">
+							<p>You have two copies of the preview script. Search the Project window for <code>FireVPlayerSnippetPreview</code> and delete every copy except the one in <code>Assets/Editor</code>.</p>
+						</div>
+					</details>
+
+					<details class="fix">
+						<summary>The snippet shows up several times in index.html</summary>
+						<div class="fix-body">
+							<p>Each copy comes from a Snippet component the SDK lost track of, usually after closing Unity without saving, or after adding the snippet again because it looked like it hadn't worked. Only the first copy is used, but the extras are confusing. To clean up:</p>
+							<ol>
+								<li>Make sure your scene has only <strong>one</strong> object with the Fire-V-Player Snippet. Delete any extra ones.</li>
+								<li>In the top menu open <span class="menu">Creator SDK &rsaquo; Setup &rsaquo; Tools</span>, then <strong>Recover orphaned snippets</strong> and press <strong>Remove</strong> for the leftovers. (This tool needs Creator SDK 4.0.24 or newer. Older SDK: click <strong>Open index.html</strong> on the Snippet and delete the extra <code>&lt;bs-snippet name="fire-v-player" ... &lt;/bs-snippet&gt;</code> blocks by hand.)</li>
+								<li>Save the scene (<kbd>Ctrl</kbd>/<kbd>Cmd</kbd> + <kbd>S</kbd>).</li>
+							</ol>
+							<p>With the preview script installed, Unity's Console warns you when there's more than one copy, and the unused one is labelled <strong>NOT USED</strong>.</p>
+						</div>
+					</details>
+
+					<details class="fix">
+						<summary>The Snippet shows no settings after I typed the slug</summary>
+						<div class="fix-body">
+							<ul>
+								<li>Press <kbd>Enter</kbd> after typing, or click <strong>Refresh from server</strong>.</li>
+								<li>Check the spelling: <code>fire-v-player</code>, with two dashes and no spaces.</li>
+								<li>Check you're online: the settings are downloaded.</li>
+							</ul>
+						</div>
+					</details>
+
+					<details class="fix">
+						<summary>There's no screen when I join my world</summary>
+						<div class="fix-body">
+							<ul>
+								<li>Did you upload the world again after adding the snippet?</li>
+								<li>Look where <code>position</code> says the screen is: it might be behind you, under the floor or inside a wall. Try <code>0 1.5 2</code> to put it near the middle of the world.</li>
+								<li>If you edited the code by hand, check every value has quotes around it.</li>
+							</ul>
+						</div>
+					</details>
+
+					<details class="fix">
+						<summary>I can't skip, pause or change the video</summary>
+						<div class="fix-body">
+							<p>Someone else is the host. Open <strong>Playlist</strong> &rsaquo; <strong>More...</strong> and press <strong>Take Over</strong>. If it says the player is locked, the host has to unlock it first.</p>
+						</div>
+					</details>
+
+					<details class="fix">
+						<summary>A video won't play</summary>
+						<div class="fix-body">
+							<p>Some YouTube videos block being played on other sites, or aren't available in some countries. The panel suggests a replacement when it can; otherwise pick a different upload of the same video.</p>
+						</div>
+					</details>
+
+					<div class="callout info">
+						<p><strong>Still stuck?</strong> <a href="../../contact.html">Get in touch</a> or <a href="https://github.com/FireRat666/Fire-V-Player/issues" target="_blank" rel="noopener">open an issue on GitHub</a>. If it's a Unity problem, include a screenshot of the Snippet's Inspector and any red errors from the Console.</p>
+					</div>
+				</section>
+			</main>
+
+			<footer>
+				<p>&copy; <span id="year"></span> FireR.at. All Rights Reserved.</p>
+				<script>
+					document.getElementById('year').textContent = new Date().getFullYear();
+
+					// Copy buttons and code blocks.
+					const flash = (el, text) => {
+						const label = el.querySelector('.copy-label');
+						if (!label) return;
+						const old = label.textContent;
+						label.textContent = text;
+						setTimeout(() => { label.textContent = old; }, 1500);
+					};
+					document.querySelectorAll('[data-copy]').forEach(btn => {
+						btn.addEventListener('click', async () => {
+							try { await navigator.clipboard.writeText(btn.dataset.copy); flash(btn, 'Copied'); }
+							catch (err) { flash(btn, 'Select it'); }
+						});
+					});
+					document.querySelectorAll('pre').forEach(block => {
+						block.addEventListener('click', async () => {
+							try { await navigator.clipboard.writeText(block.innerText); } catch (err) { console.error(err); }
+						});
+					});
+
+					// Browsers ignore "download" on links to other sites, and GitHub serves .cs files as
+					// plain text, so fetch the file and save it with the right name. If that fails, the
+					// link still opens the file (then use Save As).
+					const dl = document.getElementById('download-preview');
+					const status = document.getElementById('download-status');
+					dl.addEventListener('click', async (e) => {
+						e.preventDefault();
+						status.textContent = 'Downloading...';
+						try {
+							const res = await fetch(dl.href, { cache: 'no-store' });
+							if (!res.ok) throw new Error(res.status);
+							const blob = new Blob([await res.text()], { type: 'application/octet-stream' });
+							const url = URL.createObjectURL(blob);
+							const a = document.createElement('a');
+							a.href = url;
+							a.download = 'FireVPlayerSnippetPreview.cs';
+							document.body.appendChild(a);
+							a.click();
+							a.remove();
+							setTimeout(() => URL.revokeObjectURL(url), 10000);
+							status.textContent = 'Saved as FireVPlayerSnippetPreview.cs in your Downloads folder.';
+						} catch (err) {
+							status.textContent = 'Couldn\'t download it directly, so it opened in a new tab: right-click the page, choose Save As, and name it FireVPlayerSnippetPreview.cs';
+							window.open(dl.href, '_blank', 'noopener');
+						}
+					});
+				</script>
+			</footer>
+		</div>
+	</body>
+</html>
