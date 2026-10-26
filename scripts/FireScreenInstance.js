@@ -31,6 +31,51 @@ const mediaControlScript = `
 })();
 `;
 
+// Makes the page fit the screen on Quest. There the browser is Android's WebView, which lays a
+// page out in CSS pixels several device pixels wide, so sites look zoomed in, need panning, and
+// clicks land away from the pointer. This sets the page's viewport to the screen's width at a
+// scale of 1 / devicePixelRatio, so it lays out as it does on PC. On PC the viewport tag is
+// ignored. It runs on every page the screen shows (sites can change their own tag, so it checks
+// each second); a second run on the same page does nothing. `debug` shows the numbers on the page.
+function pageFitScript(pageWidth, debug) {
+    return `
+(function() {
+  if (window.__fireScreenFit) return;
+  window.__fireScreenFit = true;
+  var W = ${Number(pageWidth) || 1024}, DEBUG = ${debug ? 'true' : 'false'}, info = null;
+  function fit() {
+    var head = document.head || document.documentElement;
+    if (!head) return;
+    var dpr = window.devicePixelRatio > 0 ? window.devicePixelRatio : 1;
+    var s = Math.round(1000 / dpr) / 1000;
+    var want = 'width=' + W + ', initial-scale=' + s + ', minimum-scale=' + s + ', maximum-scale=' + s + ', user-scalable=no';
+    var metas = document.querySelectorAll('meta[name="viewport"]');
+    for (var i = 1; i < metas.length; i++) metas[i].remove();
+    var m = metas[0];
+    if (!m) { m = document.createElement('meta'); m.name = 'viewport'; head.appendChild(m); }
+    if (m.getAttribute('content') !== want) m.setAttribute('content', want);
+    if (DEBUG && document.body) {
+      if (!info) {
+        info = document.createElement('div');
+        info.style.cssText = 'position:fixed;left:8px;bottom:8px;right:8px;z-index:2147483647;padding:6px 10px;white-space:pre-wrap;font:14px monospace;color:#fff;background:rgba(0,0,0,0.75);pointer-events:none';
+      }
+      if (!info.isConnected) document.body.appendChild(info);
+      var vv = window.visualViewport;
+      info.textContent = 'window ' + window.innerWidth + ' x ' + window.innerHeight + ', devicePixelRatio ' + dpr.toFixed(3) +
+        (vv ? ', zoom ' + vv.scale.toFixed(3) + ', showing ' + vv.width.toFixed(1) + ' x ' + vv.height.toFixed(1) : '') +
+        '\\npage ' + document.documentElement.scrollWidth + ' x ' + document.documentElement.scrollHeight + ', viewport tag: ' + want;
+    }
+  }
+  fit();
+  setInterval(fit, 1000);
+  window.addEventListener('resize', fit);
+})();
+`;
+}
+
+// Clients on the current SDK ignore pixelsperunit and draw every page at this many pixels per metre.
+const SDK_PIXELS_PER_M = 1300;
+
 const CONSTANTS = {
     SHADERS: {
         CUSTOM_BUTTON: 'Unlit/Diffuse',
@@ -55,11 +100,11 @@ const CONSTANTS = {
         CUSTOM_BUTTON_WIDTH: 0.2,
         CUSTOM_BUTTON_HEIGHT: 0.04,
         HAND_CONTROLS: {
-            CONTAINER_POS: new BS.Vector3(0, 0.046, 0.030),
+            // The Fire-V-Player's hand-controls position and rotation, in the hand's own axes.
+            WRAPPER_POS: new BS.Vector3(0, 0.046, 0.07),
+            WRAPPER_ROT: new BS.Vector3(0, 90, 180),
             CONTAINER_SCALE: new BS.Vector3(0.1, 0.1, 0.1),
-            CONTAINER_ROT: new BS.Vector4(0.25, 0, 0.8, 1),
-            BUTTON_SCALE: new BS.Vector3(0.4, 0.4, 0.4),
-            BUTTON_ROT: new BS.Vector3(180, 0, 0)
+            BUTTON_SCALE: new BS.Vector3(0.4, 0.4, 0.4)
         }
     },
     ICONS: {
@@ -79,7 +124,7 @@ export class FireScreen {
     constructor(params, manager) {
         this.params = params;
         this.id = params.thisBrowserNumber;
-        this.scene = BS.BanterScene.GetInstance();
+        this.banterscene = BS.BanterScene.GetInstance();
         this.manager = manager;
 
         // Instance State
@@ -114,7 +159,11 @@ export class FireScreen {
         this.gameObjects.push(this.screenObject);
 
         console.log(`FIRESCREEN_INSTANCE[${this.id}]: Initializing with Width:${p.width}, Height:${p.height}, URL:${p.website}`);
-        this.browserComponent = await this.screenObject.AddComponent(new BS.BanterBrowser(p.website, p.mipmaps, p.pixelsperunit, p.width, p.height, null));
+        // As the Fire-V-Player does: the page is drawn at SDK_PIXELS_PER_M (clients on the SDK ignore
+        // pixelsPerUnit and use that anyway; older ones honour it) and the screen object is scaled to
+        // the size it should be in the world (see _computeLayout). The last argument is the startup
+        // actions as JSON text; null made the client log a parse error.
+        this.browserComponent = await this.screenObject.AddComponent(new BS.BanterBrowser(p.website, p.mipmaps, SDK_PIXELS_PER_M, p.width, p.height, JSON.stringify({ actions: [] })));
         this.browserComponent.homePage = p.website;
         this.browserComponent.volumeLevel = p.volumelevel;
         this.browserComponent.muteState = false;
@@ -123,26 +172,45 @@ export class FireScreen {
         if (p['disable-interaction'] === "false") {
             this.browserComponent.ToggleInteraction(true);
         }
+        if (p['fit-page'] !== "false") {
+            // Each page needs it once, but links clicked inside the page load new pages without
+            // telling the space, so check every couple of seconds (it does nothing on a page that has it).
+            const fitScript = pageFitScript(p.width, p['screen-debug'] === "true");
+            this.intervals.push(setInterval(() => this._runBrowserActions(fitScript), 2000));
+        }
 
+        const L = this.layout = this._computeLayout();
         this.geometryObject = await new BS.GameObject(`MainParentObject${this.id}`).Async();
         this.gameObjects.push(this.geometryObject);
-        await this._createGeometry(this.geometryObject, BS.GeometryType.PlaneGeometry, { thewidth: CONSTANTS.LAYOUT.PLANE.WIDTH, theheight: CONSTANTS.LAYOUT.PLANE.HEIGHT });
+        await this._createGeometry(this.geometryObject, BS.GeometryType.PlaneGeometry, { thewidth: L.backdropWidth, theheight: L.backdropHeight });
 
         this.geometrytransform = await this.geometryObject.AddComponent(new BS.Transform());
         this.geometrytransform.position = p.position;
         this.geometrytransform.eulerAngles = p.rotation;
         this.geometrytransform.localScale = p.scale;
 
-        await this.geometryObject.AddComponent(new BS.BoxCollider(false, new BS.Vector3(0, 0, 0), new BS.Vector3(CONSTANTS.LAYOUT.PLANE.WIDTH, CONSTANTS.LAYOUT.PLANE.HEIGHT, CONSTANTS.LAYOUT.PLANE.COLLIDER_DEPTH)));
-        await this.geometryObject.SetLayer(20);
-        this.firerigidBody = await this.geometryObject.AddComponent(new BS.BanterRigidbody(1, 10, 10, true, false, new BS.Vector3(0, 0, 0), 0, false, false, false, false, false, false, new BS.Vector3(0, 0, 0), new BS.Vector3(0, 0, 0)));
+        // The screen moves only by its handle, a pill just under it, made as the Fire-V-Player's
+        // playlist panel makes its pill (see _addScreenHandle).
+        this.grabbable = p['lock-position'] !== "true";
+        if (this.grabbable) {
+            try {
+                this.gameObjects.push(await this._addScreenHandle(L.handleY, p['handle-color']));
+            } catch (e) {
+                console.warn(`FIRESCREEN_INSTANCE[${this.id}]: Could not make the screen's handle grabbable:`, e);
+            }
+        }
+        if (!this.firerigidBody) {
+            // Locked in place (or the handle failed): a still Rigidbody, as before.
+            this.firerigidBody = await this.geometryObject.AddComponent(new BS.BanterRigidbody(1, 10, 10, true, false, new BS.Vector3(0, 0, 0), 0, false, false, false, false, false, false, new BS.Vector3(0, 0, 0), new BS.Vector3(0, 0, 0)));
+        }
 
         const backdropColor = p.backdrop !== "true" ? new BS.Vector4(0, 0, 0, 0) : p['backdrop-color'];
         await this._createMaterial(this.geometryObject, { color: backdropColor });
 
         const browsertransform = await this.screenObject.AddComponent(new BS.Transform());
         browsertransform.position = p['screen-position'];
-        browsertransform.localScale = p['screen-scale'];
+        const s = p['screen-scale'];
+        browsertransform.localScale = new BS.Vector3(s.x * L.pageScale, s.y * L.pageScale, s.z);
         browsertransform.eulerAngles = p['screen-rotation'];
         await this.screenObject.SetParent(this.geometryObject, false);
 
@@ -195,9 +263,8 @@ export class FireScreen {
 
     async _createAllUI() {
         const p = this.params;
-        let TButPos = 0.38, LButPos = -0.6, RButPos = 0.6;
-        if (Number(p.height) === 720) { TButPos += 0.07; LButPos -= 0.14; RButPos += 0.14; }
-        else if (Number(p.height) === 1080) { TButPos += 0.23; LButPos -= 0.45; RButPos += 0.45; }
+        // Around the backdrop, which is sized to the page (see _computeLayout).
+        const TButPos = this.layout.top, LButPos = this.layout.left, RButPos = this.layout.right;
 
         const BUTTON_CONFIGS = {
             home: { icon: CONSTANTS.ICONS.HOME, position: new BS.Vector3(-0.2, TButPos, 0), color: p['button-color'], clickHandler: () => { this._setBrowserUrl(this.browserComponent.homePage); this._updateButtonColor(this.uiButtons.home, p['button-color']); this._dispatchButtonClickEvent("Home", `${this.browserComponent.homePage}`); } },
@@ -226,16 +293,14 @@ export class FireScreen {
         });
         this.uiButtons.hideShow = hideShowObject;
 
-        let RCButPos = 0.68, RCTexPos = 1.59;
-        if (Number(p.height) === 720) { RCButPos += 0.14; RCTexPos += 0.14; }
-        else if (Number(p.height) === 1080) { RCButPos += 0.4; RCTexPos += 0.4; }
+        const RCButPos = this.layout.customX;
 
         const customButtonConfigs = [
-            { name: 'CustomButton01', url: p['custom-button01-url'], text: p['custom-button01-text'], position: new BS.Vector3(RCButPos, 0.30, 0), textposition: new BS.Vector3(RCTexPos, -0.188, -0.005) },
-            { name: 'CustomButton02', url: p['custom-button02-url'], text: p['custom-button02-text'], position: new BS.Vector3(RCButPos, 0.25, 0), textposition: new BS.Vector3(RCTexPos, -0.237, -0.005) },
-            { name: 'CustomButton03', url: p['custom-button03-url'], text: p['custom-button03-text'], position: new BS.Vector3(RCButPos, 0.20, 0), textposition: new BS.Vector3(RCTexPos, -0.287, -0.005) },
-            { name: 'CustomButton04', url: p['custom-button04-url'], text: p['custom-button04-text'], position: new BS.Vector3(RCButPos, 0.15, 0), textposition: new BS.Vector3(RCTexPos, -0.336, -0.005) },
-            { name: 'CustomButton05', url: p['custom-button05-url'], text: p['custom-button05-text'], position: new BS.Vector3(RCButPos, -0.15, 0), textposition: new BS.Vector3(RCTexPos, -0.635, -0.005) }
+            { name: 'CustomButton01', url: p['custom-button01-url'], text: p['custom-button01-text'], position: new BS.Vector3(RCButPos, 0.30, 0) },
+            { name: 'CustomButton02', url: p['custom-button02-url'], text: p['custom-button02-text'], position: new BS.Vector3(RCButPos, 0.25, 0) },
+            { name: 'CustomButton03', url: p['custom-button03-url'], text: p['custom-button03-text'], position: new BS.Vector3(RCButPos, 0.20, 0) },
+            { name: 'CustomButton04', url: p['custom-button04-url'], text: p['custom-button04-text'], position: new BS.Vector3(RCButPos, 0.15, 0) },
+            { name: 'CustomButton05', url: p['custom-button05-url'], text: p['custom-button05-text'], position: new BS.Vector3(RCButPos, -0.15, 0) }
         ];
 
         for (const config of customButtonConfigs) {
@@ -260,24 +325,121 @@ export class FireScreen {
                 name: "SpaceSyncButton",
                 text: "Synced Button",
                 position: new BS.Vector3(RCButPos, 0.35, 0),
-                textposition: new BS.Vector3(RCTexPos, -0.139, -0.005),
                 clickHandler: async () => { var newSyncUrl = await this._getSpaceStateStuff('fireurl'); if (newSyncUrl) this._setBrowserUrl(newSyncUrl); }
             });
         }
     }
 
     _setupEventListeners() {
+        // Free to move only while held (see _addScreenHandle); let go, it stops and stays put.
         const onGrab = () => {
-            if (this.params['lock-position'] !== "true") {
-                this.firerigidBody.isKinematic = false;
-            }
+            if (this.grabbable) this._holdStill(false);
         };
-        const onDrop = () => { this.firerigidBody.isKinematic = true; };
+        const onDrop = () => {
+            if (this.grabbable) this._holdStill(true);
+        };
 
-        this.firerigidBody.gameObject.On('grab', onGrab);
-        this.firerigidBody.gameObject.On('drop', onDrop);
-        this.listeners.push({ target: this.firerigidBody.gameObject, event: 'grab', handler: onGrab });
-        this.listeners.push({ target: this.firerigidBody.gameObject, event: 'drop', handler: onDrop });
+        this.geometryObject.On('grab', onGrab);
+        this.geometryObject.On('drop', onDrop);
+        this.listeners.push({ target: this.geometryObject, event: 'grab', handler: onGrab });
+        this.listeners.push({ target: this.geometryObject, event: 'drop', handler: onDrop });
+    }
+
+    // Sizes the screen, the backdrop and the button places. As in the Fire-V-Player, width and height
+    // are the page's resolution and only make it sharper: the screen stays the same size in the
+    // world. pixelsperunit sets that size, as wide as a 1024-pixel page at that many pixels per
+    // metre (the default 1200 gives the old 0.85 m screen, 1.09 x 0.64 backdrop and button places;
+    // 1000 gives 1.02 m). The height follows the page's shape.
+    _computeLayout() {
+        const p = this.params;
+        const pagePxWide = Number(p.width) > 0 ? Number(p.width) : 1024;
+        const pagePxHigh = Number(p.height) > 0 ? Number(p.height) : 576;
+        const s = p['screen-scale'];
+        // The page is screen-width metres wide (1 by default, as the Fire-V-Player's screen) at any
+        // resolution; pixelsperunit no longer sets the size, as the SDK ignores it.
+        const screenWidthM = Number(p['screen-width']) > 0 ? Number(p['screen-width']) : 1;
+        const pageWidth = screenWidthM * s.x;
+        const pageHeight = screenWidthM * pagePxHigh / pagePxWide * s.y;
+        // A thin frame around the page.
+        const backdropWidth = pageWidth + 0.06, backdropHeight = pageHeight + 0.06;
+        return {
+            // The page is drawn at SDK_PIXELS_PER_M; this scales it to screenWidthM.
+            pageScale: screenWidthM * SDK_PIXELS_PER_M / pagePxWide,
+            backdropWidth, backdropHeight,
+            top: backdropHeight / 2 + 0.06,          // the top row of buttons
+            left: -(backdropWidth / 2 + 0.055),      // the left column
+            right: backdropWidth / 2 + 0.055,        // grow / shrink
+            customX: backdropWidth / 2 + 0.135,      // the custom buttons
+            handleY: -(backdropHeight / 2 + 0.06)    // the grab handle, just under the backdrop
+        };
+    }
+
+    // The pill under the screen, copied from the Fire-V-Player's playlist panel (playlist-panel.js,
+    // addGrabHandle): a capsule on its side, a collider, a Rigidbody, then Grababble (which adds the
+    // grab handle, a WorldObject and HeldEvents, and puts it on the Grabbable layer), all on the
+    // screen's own object so the whole screen comes along. The collider sits around the pill, below
+    // the backdrop, so only the pill can be grabbed. One difference: the panel's Rigidbody is always
+    // free to move, so a hand could nudge it; this one is held still (_holdStill) except while held.
+    async _addScreenHandle(handleY, colour) {
+        if (!BS.Rigidbody || !(BS.Grababble || BS.GrabHandle) || !BS.BoxCollider) {
+            console.log(`FIRESCREEN_INSTANCE[${this.id}]: This client has no Rigidbody / Grababble, so the screen has no handle.`);
+            return null;
+        }
+        const handle = this.geometryObject;
+        // Looks like the pill under the playlist panel. A capsule stands along its Y axis, so it's
+        // on a child turned on its side; the collider stays on the handle itself, sized to the pill.
+        const length = 0.3, thick = 0.05;
+        const pill = await new BS.GameObject({
+            name: `FireScreenHandlePill${this.id}`,
+            parent: handle,
+            localPosition: new BS.Vector3(0, handleY, 0),
+            localEulerAngles: new BS.Vector3(0, 0, 90)
+        }).Async();
+        if (BS.Capsule) await pill.AddComponent(new BS.Capsule({ radius: thick, height: length, radialSegments: 24, heightSegments: 8 }));
+        else if (BS.Box) await pill.AddComponent(new BS.Box({ width: thick, height: length, depth: thick }));
+        if (BS.Material) await pill.AddComponent(new BS.Material({ shaderName: 'Unlit/Diffuse', color: colour || new BS.Vector4(0.85, 0.87, 0.9, 1) }));
+        await handle.AddComponent(new BS.BoxCollider({ isTrigger: false, center: new BS.Vector3(0, handleY, 0), size: new BS.Vector3(length, thick + 0.02, thick + 0.02) }));
+        // No gravity, and it only turns around the vertical, so the screen stays upright. Starts
+        // held still (all frozen) until someone grabs it.
+        this.firerigidBody = await handle.AddComponent(new BS.Rigidbody({
+            mass: 1, drag: 2, angularDrag: 10, useGravity: false, isKinematic: false,
+            freezePositionX: true, freezePositionY: true, freezePositionZ: true,
+            freezeRotationX: true, freezeRotationY: true, freezeRotationZ: true
+        }));
+        // Each player's screen is their own, so its network id is too: no one else's handle matches it.
+        const user = this.banterscene.localUser;
+        const uid = (user && user.uid) || (window.user && window.user.id) || Math.random().toString(36).slice(2);
+        if (typeof handle.SetNetworkId === 'function') {
+            try { await handle.SetNetworkId(`FireScreen_Handle${this.id}_${uid}`); } catch (e) { /* not on this client */ }
+        }
+        const soft = BS.BSGrabType && BS.BSGrabType.Soft !== undefined ? BS.BSGrabType.Soft : 3;
+        if (BS.Grababble) {
+            await handle.AddComponent(new BS.Grababble({ grabType: soft, grabRadius: 0.01 }));
+        } else {
+            if (typeof handle.SetLayer === 'function') await handle.SetLayer((BS.L && BS.L.Grabbable) || 20);
+            await handle.AddComponent(new BS.GrabHandle({ grabType: soft, grabRadius: 0.01 }));
+        }
+        console.log(`FIRESCREEN_INSTANCE[${this.id}]: The pill under the screen can be grabbed to carry it.`);
+        return pill;
+    }
+
+    // still: every position and rotation frozen, so hands and bodies can't push the screen.
+    // Not still (while held): free to move, but only turning around the vertical, as the panel.
+    _holdStill(still) {
+        const b = this.firerigidBody;
+        if (!b) return;
+        try {
+            if (still) {
+                b.velocity = new BS.Vector3(0, 0, 0);
+                b.angularVelocity = new BS.Vector3(0, 0, 0);
+            }
+            b.freezePositionX = still;
+            b.freezePositionY = still;
+            b.freezePositionZ = still;
+            b.freezeRotationY = still;
+        } catch (e) {
+            console.warn(`FIRESCREEN_INSTANCE[${this.id}]: Could not change the screen's movement:`, e);
+        }
     }
 
     // --- Helper Methods (previously global functions) ---
@@ -319,15 +481,21 @@ export class FireScreen {
     }
 
     async _createCustomButton(config) {
-        const { name, url, text, position, textposition, clickHandler } = config;
+        const { name, url, text, position, clickHandler } = config;
         const buttonObject = await this._createUIButton(name, null, position, CONSTANTS.COLORS.TEXT_PLANE, this.geometryObject, null, null, CONSTANTS.LAYOUT.CUSTOM_BUTTON_WIDTH, CONSTANTS.LAYOUT.CUSTOM_BUTTON_HEIGHT, CONSTANTS.SHADERS.CUSTOM_BUTTON);
         this.customButtonObjects.push(buttonObject);
         const material = buttonObject.GetComponent(BS.ComponentType.BanterMaterial);
 
         const textObject = await new BS.GameObject(`${name}Text${this.id}`).Async();
-        await textObject.AddComponent(new BS.BanterText(text, CONSTANTS.COLORS.WHITE, "Center", "Center", 0.20, true, true, new BS.Vector2(2, 1)));
+        // The client reads each alignment as a whole number (the error it logged for the word
+        // "Center" said so). Use the SDK's own value when it is a number; 1 is the middle one
+        // (Left, Center, Right / Top, Center or Middle, Bottom). Centred, the text sits on its button.
+        const num = (...values) => values.find(v => typeof v === 'number');
+        const H = BS.HorizontalAlignment || {}, V = BS.VerticalAlignment || {};
+        const hCenter = num(H.Center, 1), vCenter = num(V.Center, V.Middle, 1);
+        await textObject.AddComponent(new BS.BanterText(text, CONSTANTS.COLORS.WHITE, hCenter, vCenter, 0.20, true, true, new BS.Vector2(2, 1)));
         const textTransform = await textObject.AddComponent(new BS.Transform());
-        textTransform.localPosition = textposition;
+        textTransform.localPosition = new BS.Vector3(position.x, position.y, position.z - 0.005);
         await textObject.SetParent(this.geometryObject, false);
         this.customButtonObjects.push(textObject);
 
@@ -440,36 +608,39 @@ export class FireScreen {
         this.handControls = await new BS.GameObject(`handContainer${this.id}`).Async();
         this.gameObjects.push(this.handControls);
 
-        await this._createGeometry(this.handControls, BS.GeometryType.PlaneGeometry);
-        await this.handControls.AddComponent(new BS.BoxCollider(true, new BS.Vector3(0, 0, 0), new BS.Vector3(1, 1, 1)));
-        await this._createMaterial(this.handControls, { color: new BS.Vector4(0, 0, 0, 0), side: 1 });
+        // Laid out as the Fire-V-Player's hand controls (core.js, setupHandControls): a bare root
+        // attached to the hand, and under it a holder that lays the buttons flat on the back of the
+        // wrist, facing out of it, so they face you when you look at your wrist.
+        const handWrapper = await new BS.GameObject(`handWrapper${this.id}`).Async();
+        const wrapperTransform = await handWrapper.AddComponent(new BS.Transform());
+        wrapperTransform.localPosition = CONSTANTS.LAYOUT.HAND_CONTROLS.WRAPPER_POS;
+        wrapperTransform.localEulerAngles = CONSTANTS.LAYOUT.HAND_CONTROLS.WRAPPER_ROT;
+        wrapperTransform.localScale = CONSTANTS.LAYOUT.HAND_CONTROLS.CONTAINER_SCALE;
+        await handWrapper.SetParent(this.handControls, false);
 
-        const handTransform = await this.handControls.AddComponent(new BS.Transform());
-        handTransform.localPosition = CONSTANTS.LAYOUT.HAND_CONTROLS.CONTAINER_POS;
-        handTransform.localScale = CONSTANTS.LAYOUT.HAND_CONTROLS.CONTAINER_SCALE;
-        handTransform.rotation = CONSTANTS.LAYOUT.HAND_CONTROLS.CONTAINER_ROT;
-
-        await this.scene.LegacyAttachObject(this.handControls, userId, BS.LegacyAttachmentPosition.LEFT_HAND);
-
+        setTimeout(async () => {
+            await this.banterscene.LegacyAttachObject(this.handControls, userId, BS.LegacyAttachmentPosition.LEFT_HAND);
+        }, 1000);
+		
         this.uiHandButtons = {};
         const handButtonConfigs = [
-            { name: 'hVolumeUpButton', icon: p['icon-volup-url'], pos: new BS.Vector3(0.4, 0.4, 0.3), color: p['volup-color'], clickHandler: (btn) => { this._adjustForAll("adjustVolume", 1); this._updateButtonColor(btn, p['volup-color']); this._dispatchButtonClickEvent("VolumeUp", 'Hand Volume Up Clicked!'); } },
-            { name: 'hVolumeDownButton', icon: p['icon-voldown-url'], pos: new BS.Vector3(0.0, 0.4, 0.3), color: p['voldown-color'], clickHandler: (btn) => { this._adjustForAll("adjustVolume", -1); this._updateButtonColor(btn, p['voldown-color']); this._dispatchButtonClickEvent("VolumeDown", 'Hand Volume Down Clicked!'); } },
-            { name: 'hMuteButton', icon: p['icon-mute-url'], pos: new BS.Vector3(-0.4, 0.4, 0.3), color: p['mute-color'], clickHandler: () => {
+            { name: 'hVolumeUpButton', icon: p['icon-volup-url'], pos: new BS.Vector3(0.4, 0.4, -0.3), color: p['volup-color'], clickHandler: (btn) => { this._adjustForAll("adjustVolume", 1); this._updateButtonColor(btn, p['volup-color']); this._dispatchButtonClickEvent("VolumeUp", 'Hand Volume Up Clicked!'); } },
+            { name: 'hVolumeDownButton', icon: p['icon-voldown-url'], pos: new BS.Vector3(0.0, 0.4, -0.3), color: p['voldown-color'], clickHandler: (btn) => { this._adjustForAll("adjustVolume", -1); this._updateButtonColor(btn, p['voldown-color']); this._dispatchButtonClickEvent("VolumeDown", 'Hand Volume Down Clicked!'); } },
+            { name: 'hMuteButton', icon: p['icon-mute-url'], pos: new BS.Vector3(-0.4, 0.4, -0.3), color: p['mute-color'], clickHandler: () => {
                 this._adjustForAll("toggleMute", true); // Pass true to ensure the command is recognized
                 this._dispatchButtonClickEvent("Mute", 'Hand Mute Clicked!');
             }},
-            { name: 'hLockButton', icon: CONSTANTS.ICONS.LOCK, pos: new BS.Vector3(0, -0.1, 0.3), color: CONSTANTS.COLORS.BUTTON_UNLOCKED, clickHandler: (btn) => { this.playerislockedv2 = !this.playerislockedv2; this.playerislockedv2 ? this.scene.LegacyLockPlayer() : this.scene.LegacyUnlockPlayer(); btn.GetComponent(BS.ComponentType.BanterMaterial).color = this.playerislockedv2 ? CONSTANTS.COLORS.BUTTON_LOCKED : CONSTANTS.COLORS.BUTTON_UNLOCKED; } },
-            { name: 'hHomeButton', icon: CONSTANTS.ICONS.HOME, pos: new BS.Vector3(0.4, -0.1, 0.3), color: p['button-color'], clickHandler: (btn) => { this._adjustForAll("goHome", true); this._updateButtonColor(btn, p['button-color']); this._dispatchButtonClickEvent("Home", 'Hand Home Clicked!'); } }
+            { name: 'hLockButton', icon: CONSTANTS.ICONS.LOCK, pos: new BS.Vector3(0, -0.1, -0.3), color: CONSTANTS.COLORS.BUTTON_UNLOCKED, clickHandler: (btn) => { this.playerislockedv2 = !this.playerislockedv2; this.playerislockedv2 ? this.banterscene.LegacyLockPlayer() : this.banterscene.LegacyUnlockPlayer(); btn.GetComponent(BS.ComponentType.BanterMaterial).color = this.playerislockedv2 ? CONSTANTS.COLORS.BUTTON_LOCKED : CONSTANTS.COLORS.BUTTON_UNLOCKED; } },
+            { name: 'hHomeButton', icon: CONSTANTS.ICONS.HOME, pos: new BS.Vector3(0.4, -0.1, -0.3), color: p['button-color'], clickHandler: (btn) => { this._adjustForAll("goHome", true); this._updateButtonColor(btn, p['button-color']); this._dispatchButtonClickEvent("Home", 'Hand Home Clicked!'); } }
         ];
 
         for (const config of handButtonConfigs) {
-            const button = await this._createUIButton(config.name, config.icon, config.pos, config.color, this.handControls, () => config.clickHandler(button), CONSTANTS.LAYOUT.HAND_CONTROLS.BUTTON_ROT, 1, 1, CONSTANTS.SHADERS.DEFAULT_TRANSPARENT, CONSTANTS.LAYOUT.HAND_CONTROLS.BUTTON_SCALE);
+            const button = await this._createUIButton(config.name, config.icon, config.pos, config.color, handWrapper, () => config.clickHandler(button), null, 1, 1, CONSTANTS.SHADERS.DEFAULT_TRANSPARENT, CONSTANTS.LAYOUT.HAND_CONTROLS.BUTTON_SCALE);
             this.uiHandButtons[config.name] = button;
         }
 
         // Track all created hand control objects so they can be cleaned up properly.
-        this.handControlGameObjects = [this.handControls, ...Object.values(this.uiHandButtons)];
+        this.handControlGameObjects = [this.handControls, handWrapper, ...Object.values(this.uiHandButtons)];
         this.gameObjects.push(...this.handControlGameObjects);
     }
 
@@ -496,11 +667,11 @@ export class FireScreen {
 
     async _getSpaceStateStuff(argument) {
         // Wait until the localUser is available before trying to access space state.
-        while (!this.scene.localUser || this.scene.localUser.uid === undefined) {
+        while (!this.banterscene.localUser || this.banterscene.localUser.uid === undefined) {
             await new Promise(resolve => setTimeout(resolve, 200));
         }
 
-        const spaceState = this.scene.spaceState;
+        const spaceState = this.banterscene.spaceState;
 
         // Safely log all properties, but only do it once per session.
         if (!this.manager.spaceStateLogged) {

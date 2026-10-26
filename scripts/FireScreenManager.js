@@ -206,14 +206,15 @@ export class FireScreenManager {
       "custom-button02-url": "false", "custom-button02-text": "Custom Button 02",
       "custom-button03-url": "false", "custom-button03-text": "Custom Button 03",
       "custom-button04-url": "false", "custom-button04-text": "Custom Button 04",
-      "custom-button05-url": "false", "custom-button05-text": "Custom Button 05"
+      "custom-button05-url": "false", "custom-button05-text": "Custom Button 05",
+      "screen-width": "1", "fit-page": "true", "screen-debug": "false", "handle-color": "0.85 0.87 0.9 1"
     };
 
     const numberAttributes = {
         position: _getV3FromStr, rotation: _getV3FromStr, scale: _getV3FromStr,
         "screen-position": _getV3FromStr, "screen-rotation": _getV3FromStr, "screen-scale": _getV3FromStr,
         "button-color": _getV4FromStr, "backdrop-color": _getV4FromStr, "volup-color": _getV4FromStr,
-        "voldown-color": _getV4FromStr, "mute-color": _getV4FromStr
+        "voldown-color": _getV4FromStr, "mute-color": _getV4FromStr, "handle-color": _getV4FromStr
     };
 
     const getParam = (key) => {

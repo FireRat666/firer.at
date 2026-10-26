@@ -78,7 +78,7 @@ You can customize each FireScreen instance using attributes on the `<script>` ta
 | :--- | :--- | :--- |
 | `width` | `1024` | The pixel width of the browser surface. |
 | `height` | `576` | The pixel height of the browser surface. |
-| `pixelsperunit` | `1200` | The resolution of the web surface. In Banter's Unity-based world, 1 world unit is equivalent to 1 meter, so this value is effectively pixels-per-meter. Higher values result in sharper text and images but can impact performance. |
+| `pixelsperunit` | `1200` | The resolution of the web surface. In Banter's Unity-based world, 1 world unit is equivalent to 1 meter, so this value is effectively pixels-per-meter: the page is `width` / `pixelsperunit` metres wide (1024 / 1200 is about 0.85 m). Clients on the current SDK always draw pages at 1300 pixels per metre, so FireScreen scales the screen to keep this size. To make the page sharper, raise `width` and `height` with `pixelsperunit` in proportion. |
 | `mipmaps` | `1` | The number of mipmaps for the browser texture. |
 | `backdrop` | `true` | If `true`, shows a dark backdrop behind the screen. |
 | `backdrop-color` | `0 0 0 0.9` | The color and alpha of the backdrop (R G B A, 0-1). |
@@ -92,7 +92,10 @@ You can customize each FireScreen instance using attributes on the `<script>` ta
 | `hand-controls` | `false` | If `true`, attaches volume and home controls to the user's left hand. |
 | `disable-interaction` | `false` | If `true`, users cannot click or interact with the browser surface. |
 | `disable-rotation` | `false` | If `true`, the screen will not billboard (face) the user. |
-| `lock-position` | `false` | If `true`, the screen cannot be grabbed and moved by users. |
+| `lock-position` | `false` | If `true`, the screen cannot be grabbed and moved by users, and has no handle. Otherwise, grab the pill under the screen to carry it; the rest of the screen can't be grabbed, and hands can't push it. Each player moves only their own screen. |
+| `handle-color` | `0.85 0.87 0.9 1` | The color of the pill under the screen that you grab to move it (R G B A, 0-1). |
+| `fit-page` | `true` | On Quest, makes each page lay out at the screen's full width, as on PC, instead of zoomed in with panning (which also put clicks away from the pointer). Set to `false` to leave pages as they are. |
+| `screen-debug` | `false` | If `true`, shows the page's size, zoom and pixel ratio in a corner of the screen, for checking how pages fit on a headset. |
 | `volumelevel` | `0.25` | The initial volume level (0.0 to 1.0). |
 | `castmode` | `false` | If `true`, simplifies the UI for casting/streaming use cases. Hides most buttons. |
 
