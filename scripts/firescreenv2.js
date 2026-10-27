@@ -23,9 +23,9 @@ if (typeof window.fireScreenV2Initialized === 'undefined') {
     // Dynamically import the manager to start the process.
     // The '.js' extension is important for ES modules in the browser.
     if (typeof window.fireScreenManager === 'undefined') {
-      const managerUrl = window.fireScreenV2BaseUrl + 'FireScreenManager.js';
-      const { FireScreenManager } = await import(managerUrl);
       try {
+        const managerUrl = window.fireScreenV2BaseUrl + 'FireScreenManager.js';
+        const { FireScreenManager } = await import(managerUrl);
         window.fireScreenManager = new FireScreenManager();
         console.log("FIRESCREEN_V2: Manager created.");
         // Add the cleanup function to the window for backward compatibility
@@ -39,7 +39,7 @@ if (typeof window.fireScreenV2Initialized === 'undefined') {
         };
       } catch (error) {
         console.error("FIRESCREEN_V2: Failed to load the FireScreenManager module.", error);
-        throw error; // re-throw to stop the setup process
+        return; // reported here; the next script tag tries again
       }
     }
 
@@ -55,6 +55,12 @@ if (typeof window.fireScreenV2Initialized === 'undefined') {
   // This function will attempt to acquire a lock and run the setup.
   // If the lock is already taken, it will wait and retry.
   async function attemptSetup() {
+    // The space's BS SDK isn't loaded yet: the manager needs it, so wait for it.
+    if (typeof window.BS === 'undefined') {
+      console.log("FIRESCREEN_V2: Waiting for the BS SDK...");
+      setTimeout(attemptSetup, 500);
+      return;
+    }
     if (window.fireScreenSetupRunning) {
       console.log("FIRESCREEN_V2: Setup in progress. Waiting to retry...");
       setTimeout(attemptSetup, 500); // Wait 500ms and try again
@@ -67,6 +73,8 @@ if (typeof window.fireScreenV2Initialized === 'undefined') {
     try {
       // This function is now async and processes all unprocessed scripts sequentially.
       await window.setupFireScreenV2AndRun();
+    } catch (error) {
+      console.error("FIRESCREEN_V2: Setup failed.", error);
     } finally {
       console.log("FIRESCREEN_V2: Setup finished, releasing lock.");
       window.fireScreenSetupRunning = false;

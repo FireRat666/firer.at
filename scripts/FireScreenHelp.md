@@ -78,7 +78,8 @@ You can customize each FireScreen instance using attributes on the `<script>` ta
 | :--- | :--- | :--- |
 | `width` | `1024` | The pixel width of the browser surface. |
 | `height` | `576` | The pixel height of the browser surface. |
-| `pixelsperunit` | `1200` | The resolution of the web surface. In Banter's Unity-based world, 1 world unit is equivalent to 1 meter, so this value is effectively pixels-per-meter: the page is `width` / `pixelsperunit` metres wide (1024 / 1200 is about 0.85 m). Clients on the current SDK always draw pages at 1300 pixels per metre, so FireScreen scales the screen to keep this size. To make the page sharper, raise `width` and `height` with `pixelsperunit` in proportion. |
+| `pixelsperunit` | `1200` | Only used by the old `firescreenscripts.js` FireScreen, where the page is `width` / `pixelsperunit` metres wide. This version (`firescreenv2.js`) ignores it for sizing and uses `screen-width`. |
+| `screen-width` | `1` | The width of the page in metres (before `screen-scale`), the same as the Fire-V-Player's screen. It stays this size at any `width` x `height`; a higher resolution only makes the page sharper. The backdrop is a thin frame around it. |
 | `mipmaps` | `1` | The number of mipmaps for the browser texture. |
 | `backdrop` | `true` | If `true`, shows a dark backdrop behind the screen. |
 | `backdrop-color` | `0 0 0 0.9` | The color and alpha of the backdrop (R G B A, 0-1). |

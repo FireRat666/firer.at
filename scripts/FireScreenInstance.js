@@ -134,6 +134,7 @@ export class FireScreen {
         this.intervals = [];
         this.uiHandButtons = {};
         this.handControls = null;
+        this.handAttachTimeout = null;
         this.browserComponent = null;
         this.scriptElement = params.scriptElement;
 
@@ -193,10 +194,18 @@ export class FireScreen {
         // playlist panel makes its pill (see _addScreenHandle).
         this.grabbable = p['lock-position'] !== "true";
         if (this.grabbable) {
+            let handle = null;
             try {
-                this.gameObjects.push(await this._addScreenHandle(L.handleY, p['handle-color']));
+                handle = await this._addScreenHandle(L.handleY, p['handle-color']);
             } catch (e) {
                 console.warn(`FIRESCREEN_INSTANCE[${this.id}]: Could not make the screen's handle grabbable:`, e);
+            }
+            if (handle) {
+                this.gameObjects.push(handle);
+            } else if (BS.BoxCollider) {
+                // No pill on this client: grab the backdrop instead, the old way.
+                await this.geometryObject.AddComponent(new BS.BoxCollider(false, new BS.Vector3(0, 0, 0), new BS.Vector3(L.backdropWidth, L.backdropHeight, CONSTANTS.LAYOUT.PLANE.COLLIDER_DEPTH)));
+                await this.geometryObject.SetLayer(20);
             }
         }
         if (!this.firerigidBody) {
@@ -347,9 +356,8 @@ export class FireScreen {
 
     // Sizes the screen, the backdrop and the button places. As in the Fire-V-Player, width and height
     // are the page's resolution and only make it sharper: the screen stays the same size in the
-    // world. pixelsperunit sets that size, as wide as a 1024-pixel page at that many pixels per
-    // metre (the default 1200 gives the old 0.85 m screen, 1.09 x 0.64 backdrop and button places;
-    // 1000 gives 1.02 m). The height follows the page's shape.
+    // world. screen-width sets that size in metres (1 by default, as the Fire-V-Player's screen);
+    // pixelsperunit no longer does. The height follows the page's shape.
     _computeLayout() {
         const p = this.params;
         const pagePxWide = Number(p.width) > 0 ? Number(p.width) : 1024;
@@ -618,7 +626,10 @@ export class FireScreen {
         wrapperTransform.localScale = CONSTANTS.LAYOUT.HAND_CONTROLS.CONTAINER_SCALE;
         await handWrapper.SetParent(this.handControls, false);
 
-        setTimeout(async () => {
+        this.handAttachTimeout = setTimeout(async () => {
+            this.handAttachTimeout = null;
+            // Removed in the meantime: nothing to attach.
+            if (!this.handControls || this.handControls.destroyed) return;
             await this.banterscene.LegacyAttachObject(this.handControls, userId, BS.LegacyAttachmentPosition.LEFT_HAND);
         }, 1000);
 		
@@ -645,6 +656,8 @@ export class FireScreen {
     }
 
     async _cleanupHandControls() {
+        clearTimeout(this.handAttachTimeout);
+        this.handAttachTimeout = null;
         if (this.handControls && !this.handControls.destroyed) {
             console.log(`FIRESCREEN_INSTANCE[${this.id}]: Cleaning up hand controls...`);
             await this.handControls.Destroy(); // This will destroy the container and all children
@@ -712,6 +725,8 @@ export class FireScreen {
         console.log(`FIRESCREEN_INSTANCE[${this.id}]: Destroying...`);
 
         this.intervals.forEach(intervalId => clearInterval(intervalId));
+        clearTimeout(this.handAttachTimeout);
+        this.handAttachTimeout = null;
         if (this.browserComponent && this.browserComponent.volumeSyncInterval) {
             clearInterval(this.browserComponent.volumeSyncInterval);
         }
