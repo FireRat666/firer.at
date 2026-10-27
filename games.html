@@ -30,6 +30,32 @@
     <meta property="twitter:title" content="Altspace &amp; Banter Games Guide | Embed Multiplayer Games in AltspaceVR &amp; BanterVR">
     <meta property="twitter:description" content="Embed interactive 3D board &amp; card games directly into your AltspaceVR (the new Altspace, altvr.app) and BanterVR worlds with simple script tags.">
     <meta property="twitter:image" content="https://firer.at/files/FireRat-Logo-V2.png">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      "name": "AltspaceVR & BanterVR Embeddable Multiplayer Games",
+      "description": "Serverless 3D multiplayer board and card games built for AltspaceVR (altvr.app) and BanterVR virtual worlds by FireRat.",
+      "url": "https://firer.at/games.html",
+      "numberOfItems": 12,
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Checkers for AltspaceVR & BanterVR", "url": "https://checkers.firer.at/" },
+        { "@type": "ListItem", "position": 2, "name": "Chess for AltspaceVR & BanterVR", "url": "https://chess.firer.at/" },
+        { "@type": "ListItem", "position": 3, "name": "Reversi (Othello) for AltspaceVR & BanterVR", "url": "https://reversi.firer.at/" },
+        { "@type": "ListItem", "position": 4, "name": "Connect 4 for AltspaceVR & BanterVR", "url": "https://connect4.firer.at/" },
+        { "@type": "ListItem", "position": 5, "name": "Go (Weiqi / Baduk) for AltspaceVR & BanterVR", "url": "https://go.firer.at/" },
+        { "@type": "ListItem", "position": 6, "name": "Gomoku (Five in a Row) for AltspaceVR & BanterVR", "url": "https://gomoku.firer.at/" },
+        { "@type": "ListItem", "position": 7, "name": "Mancala (Kalah) for AltspaceVR & BanterVR", "url": "https://mancala.firer.at/" },
+        { "@type": "ListItem", "position": 8, "name": "Tic-Tac-Toe for AltspaceVR & BanterVR", "url": "https://tic-tac-toe.firer.at/" },
+        { "@type": "ListItem", "position": 9, "name": "Blackjack for AltspaceVR & BanterVR", "url": "https://blackjack.firer.at/" },
+        { "@type": "ListItem", "position": 10, "name": "UNO for AltspaceVR & BanterVR", "url": "https://uno.firer.at/" },
+        { "@type": "ListItem", "position": 11, "name": "Rummy10 for AltspaceVR & BanterVR", "url": "https://rummy10.firer.at/" },
+        { "@type": "ListItem", "position": 12, "name": "Holograms Against Humanity (HAH) for AltspaceVR & BanterVR", "url": "https://hah.firer.at/" }
+      ]
+    }
+    </script>
     
     <!-- Typography & Stylesheets -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -54,7 +80,7 @@
     <div class="container">
       <header>
         <h1><span class="text-gradient">Altspace &amp; Banter Games</span></h1>
-        <p>A collection of serverless multiplayer games designed for <strong>AltspaceVR</strong> (<a href="https://altvr.app" target="_blank" style="color: var(--accent-green);">altvr.app</a>, the new Altspace) and <strong>BanterVR</strong> spaces. These games feature real-time synchronization, allowing friends to play together in VR or inside standard 2D web browsers across both platforms.</p>
+        <p>A collection of serverless 3D multiplayer games built specifically for <strong>AltspaceVR</strong> (<a href="https://altvr.app" target="_blank" style="color: var(--accent-green);">altvr.app</a>, the new Altspace) and <strong>BanterVR</strong> spaces. Players stay synced in real time through the space's shared state—no external game server required.</p>
       </header>
       
       <nav>
@@ -183,7 +209,7 @@
                 <pre><code>&lt;script src="https://checkers.firer.at/Checkers.js" position="0 1.1 -2" scale="1.5" rotation="0 45 0"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
-                <a href="https://checkers.firer.at" class="buttonss btn-gradient">Details</a>
+                <a href="https://checkers.firer.at/" class="buttonss btn-gradient">Checkers Guide</a>
                 <a href="https://github.com/FireRat666/Banter-Checkers" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -202,7 +228,7 @@
                 <pre><code>&lt;script src="https://chess.firer.at/Chess.js" position="0 1.1 -2" scale="0.8"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
-                <a href="https://chess.firer.at" class="buttonss btn-gradient">Details</a>
+                <a href="https://chess.firer.at/" class="buttonss btn-gradient">Chess Guide</a>
                 <a href="https://github.com/FireRat666/Banter-Chess" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -221,7 +247,7 @@
                 <pre><code>&lt;script src="https://reversi.firer.at/Reversi.js" position="0 1.1 -2"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
-                <a href="https://reversi.firer.at" class="buttonss btn-gradient">Details</a>
+                <a href="https://reversi.firer.at/" class="buttonss btn-gradient">Reversi Guide</a>
                 <a href="https://github.com/FireRat666/Banter-Reversi" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -240,7 +266,7 @@
                 <pre><code>&lt;script src="https://connect4.firer.at/Connect4.js" position="0 1.5 5"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
-                <a href="https://connect4.firer.at" class="buttonss btn-gradient">Details</a>
+                <a href="https://connect4.firer.at/" class="buttonss btn-gradient">Connect 4 Guide</a>
                 <a href="https://github.com/FireRat666/Banter-Connect4" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -254,12 +280,12 @@
                 </div>
                 <h3>Go (Weiqi)</h3>
                 <p>Full-featured board game of Go. Implements liberty tracking, ko rule validation, and suicide prevention.</p>
-                <p class="snippet-slug">Altspace snippet: <code>gow</code></p>
+                <p class="snippet-slug">Altspace snippet: <code>go</code></p>
                 <div class="code-header">Embed Script (Click to copy)</div>
                 <pre><code>&lt;script src="https://go.firer.at/Go.js" position="0 1.5 2" board-size="13"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
-                <a href="https://go.firer.at" class="buttonss btn-gradient">Details</a>
+                <a href="https://go.firer.at/" class="buttonss btn-gradient">Go Guide</a>
                 <a href="https://github.com/FireRat666/Banter-Go" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -278,7 +304,7 @@
                 <pre><code>&lt;script src="https://gomoku.firer.at/Gomoku.js" position="0 1.5 -3" scale="0.8" board-size="19"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
-                <a href="https://gomoku.firer.at" class="buttonss btn-gradient">Details</a>
+                <a href="https://gomoku.firer.at/" class="buttonss btn-gradient">Gomoku Guide</a>
                 <a href="https://github.com/FireRat666/Banter-Gomoku" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -291,13 +317,13 @@
                   <span class="badge api">Embeddable</span>
                 </div>
                 <h3>Mancala</h3>
-                <p>Traditional stone sow-and-capture game (Work in Progress).</p>
+                <p>Traditional Kalah stone sow-and-capture board game with captures, extra turns, and reset support.</p>
                 <p class="snippet-slug">Altspace snippet: <code>mancala</code></p>
                 <div class="code-header">Embed Script (Click to copy)</div>
                 <pre><code>&lt;script src="https://mancala.firer.at/Mancala.js" position="0 1.1 -2" lighting="lit"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
-                <a href="https://mancala.firer.at" class="buttonss btn-gradient">Details</a>
+                <a href="https://mancala.firer.at/" class="buttonss btn-gradient">Mancala Guide</a>
                 <a href="https://github.com/FireRat666/Banter-Mancala" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -316,7 +342,7 @@
                 <pre><code>&lt;script src="https://tic-tac-toe.firer.at/TicTacToe.js" position="0 1.2 2" scale="1.5"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
-                <a href="https://tic-tac-toe.firer.at" class="buttonss btn-gradient">Details</a>
+                <a href="https://tic-tac-toe.firer.at/" class="buttonss btn-gradient">Tic-Tac-Toe Guide</a>
                 <a href="https://github.com/FireRat666/Banter-Tic-Tac-Toe" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -335,7 +361,7 @@
                 <pre><code>&lt;script src="https://blackjack.firer.at/blackjack.js" position="0 0 2" rotation="0 180 0" instance="lobby-bj"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
-                <a href="https://blackjack.firer.at" class="buttonss btn-gradient">Details</a>
+                <a href="https://blackjack.firer.at/" class="buttonss btn-gradient">Blackjack Guide</a>
                 <a href="https://github.com/FireRat666/Banter-BlackJack" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -354,7 +380,7 @@
                 <pre><code>&lt;script src="https://uno.firer.at/uno.js" position="0 0 2" rotation="0 180 0" instance="lobby-uno"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
-                <a href="https://uno.firer.at" class="buttonss btn-gradient">Details</a>
+                <a href="https://uno.firer.at/" class="buttonss btn-gradient">UNO Guide</a>
                 <a href="https://github.com/FireRat666/Banter-UNO" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -373,7 +399,7 @@
                 <pre><code>&lt;script src="https://rummy10.firer.at/rummy10.js" position="0 0 2" rotation="0 180 0" instance="lobby-rummy10"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
-                <a href="https://rummy10.firer.at" class="buttonss btn-gradient">Details</a>
+                <a href="https://rummy10.firer.at/" class="buttonss btn-gradient">Rummy10 Guide</a>
                 <a href="https://github.com/FireRat666/Banter-Rummy10" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
@@ -386,13 +412,13 @@
                   <span class="badge api">Embeddable</span>
                 </div>
                 <h3>Holograms Against Humanity (HAH)</h3>
-                <p>Serverless Cards Against Humanity clone for social VR. Runs client-side using space state properties. Supports up to 10 players and over 70 expansions.</p>
+                <p>Serverless Cards Against Humanity clone for social VR powered by <a href="https://jah.firer.at/" target="_blank" style="color: var(--accent-green);">JSON Against Humanity</a>. Runs client-side using space state properties. Supports up to 10 players and over 70 expansions.</p>
                 <p class="snippet-slug">Altspace snippet: <code>hah</code></p>
                 <div class="code-header">Embed Script (Click to copy)</div>
                 <pre><code>&lt;script src="https://hah.firer.at/hah.js" position="0 -0.4 -5" instance="my-private-game"&gt;&lt;/script&gt;</code></pre>
               </div>
               <div class="card-actions">
-                <a href="https://hah.firer.at" class="buttonss btn-gradient">Details</a>
+                <a href="https://hah.firer.at/" class="buttonss btn-gradient">HAH Guide</a>
                 <a href="https://github.com/FireRat666/HaH" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>

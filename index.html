@@ -45,7 +45,8 @@
 						"https://shader.firer.at/",
 						"https://s.firer.at/",
 						"https://jah.firer.at/",
-						"https://cah-api.firer.at/"
+						"https://cah-api.firer.at/",
+						"https://hah.firer.at/"
 					]
 				},
 				{
@@ -68,17 +69,68 @@
 				},
 				{
 					"@type": "Dataset",
+					"@id": "https://jah.firer.at/#dataset",
 					"name": "JSON Against Humanity",
+					"alternateName": [
+						"Cards Against Humanity JSON Dataset",
+						"Cards Against Humanity Spreadsheet",
+						"Cards Against Humanity Card Database",
+						"JAH"
+					],
 					"url": "https://jah.firer.at/",
-					"description": "Comprehensive Cards Against Humanity card database and spreadsheet dataset in clean plaintext and optimized JSON formats.",
+					"sameAs": "https://github.com/FireRat666/json-against-humanity",
+					"isAccessibleForFree": true,
+					"license": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+					"keywords": [
+						"Cards Against Humanity spreadsheet",
+						"Cards Against Humanity database",
+						"Cards Against Humanity JSON",
+						"Cards Against Humanity CSV",
+						"CAH deck list",
+						"CAH cards dataset",
+						"custom CAH packs"
+					],
+					"description": "Actively maintained, up-to-date Cards Against Humanity card database and spreadsheet dataset containing 83,410+ cards across 423 official sets and community custom packs in clean plaintext, CSV, and optimized JSON formats.",
 					"creator": { "@id": "https://firer.at/#person" }
 				},
 				{
-					"@type": "SoftwareApplication",
+					"@type": "WebAPI",
+					"@id": "https://cah-api.firer.at/#api",
 					"name": "CAH Serverless API",
+					"alternateName": [
+						"Cards Against Humanity API",
+						"Cards Against Humanity REST API"
+					],
 					"url": "https://cah-api.firer.at/",
-					"applicationCategory": "DeveloperApplication",
-					"description": "Serverless, database-free REST API serving Cards Against Humanity card data with in-memory caching.",
+					"documentation": "https://cah-api.firer.at/",
+					"description": "Serverless, database-free REST API serving 83,410+ Cards Against Humanity cards and 423 decks from JSON Against Humanity with in-memory caching.",
+					"provider": { "@id": "https://firer.at/#person" }
+				},
+				{
+					"@type": "SoftwareApplication",
+					"name": "FireMaze",
+					"url": "https://firer.at/pages/FireMaze/",
+					"applicationCategory": "3DApplication",
+					"operatingSystem": "Blender 4.2+",
+					"description": "Free, open-source Blender 4.2+ extension for generating, editing, and customizing rectangular and polar 3D tile-based mazes.",
+					"author": { "@id": "https://firer.at/#person" }
+				},
+				{
+					"@type": "SoftwareApplication",
+					"name": "Fire-V-Player",
+					"url": "https://firer.at/pages/FireVPlayer/",
+					"applicationCategory": "MultimediaApplication",
+					"operatingSystem": "AltspaceVR, BanterVR",
+					"description": "Synced collaborative YouTube and karaoke video player snippet for AltspaceVR (altvr.app) and BanterVR worlds.",
+					"author": { "@id": "https://firer.at/#person" }
+				},
+				{
+					"@type": "VideoGame",
+					"name": "Holograms Against Humanity",
+					"url": "https://hah.firer.at/",
+					"gamePlatform": ["AltspaceVR", "BanterVR"],
+					"applicationCategory": "GameApplication",
+					"description": "Serverless multiplayer Cards Against Humanity table game for AltspaceVR (altvr.app) and BanterVR spaces supporting up to 10 players and 70+ card expansions.",
 					"author": { "@id": "https://firer.at/#person" }
 				}
 			]
@@ -200,7 +252,7 @@
 								<span class="badge api">Open-Source</span>
 							</div>
 							<h3>JSON Against Humanity</h3>
-							<p>A comprehensive Cards Against Humanity card database and spreadsheet dataset in clean plaintext and optimized JSON formats. Features official sets and community-created custom packs.</p>
+							<p>An actively maintained, up-to-date Cards Against Humanity card database and spreadsheet dataset in clean plaintext, CSV, and optimized JSON formats. Features the latest official sets and community-created custom packs.</p>
 							
 							<div class="project-stats">
 								<div class="stat-item">
@@ -209,12 +261,12 @@
 								</div>
 								<div class="stat-item">
 									<span class="stat-val">423</span>
-									<span class="stat-lbl">Packs</span>
+									<span class="stat-lbl">Decks &amp; Packs</span>
 								</div>
 							</div>
 						</div>
 						<div class="card-actions">
-							<a href="https://jah.firer.at/" class="buttonss buttonG btn-gradient" target="_blank">Live Dataset</a>
+							<a href="https://jah.firer.at/" class="buttonss buttonG btn-gradient" target="_blank">CAH Card Database &amp; Spreadsheet</a>
 							<a href="https://github.com/FireRat666/json-against-humanity" class="buttonss buttonW" target="_blank">GitHub</a>
 						</div>
 					</div>
@@ -227,10 +279,10 @@
 								<span class="badge json">Serverless</span>
 							</div>
 							<h3>CAH Serverless API</h3>
-							<p>A serverless, database-free REST API serving Cards Against Humanity. Optimized for Vercel/Netlify with in-memory caching and zero setup overhead.</p>
+							<p>A serverless, database-free Cards Against Humanity REST API powered by the JSON Against Humanity dataset. Query packs, white/black cards, and random hands with in-memory caching and zero setup overhead.</p>
 						</div>
 						<div class="card-actions">
-							<a href="https://cah-api.firer.at/" class="buttonss buttonG btn-gradient" target="_blank">API Portal</a>
+							<a href="https://cah-api.firer.at/" class="buttonss buttonG btn-gradient" target="_blank">CAH REST API Portal</a>
 							<a href="https://github.com/FireRat666/CAH-Serverless-API" class="buttonss buttonW" target="_blank">GitHub</a>
 						</div>
 					</div>
@@ -243,10 +295,10 @@
 								<span class="badge websocket">Multiplayer</span>
 							</div>
 							<h3>Altspace &amp; Banter Games</h3>
-							<p>A collection of real-time multiplayer games designed for AltspaceVR (<a href="https://altvr.app" target="_blank" style="color: var(--accent-green);">altvr.app</a>, the new Altspace) and BanterVR. Easily embed Checkers, Chess, Connect 4, Go, UNO, and more into virtual spaces using a simple script tag.</p>
+							<p>A collection of real-time multiplayer 3D games built for AltspaceVR (<a href="https://altvr.app" target="_blank" style="color: var(--accent-green);">altvr.app</a>, the new Altspace) and BanterVR spaces. Easily embed Checkers, Chess, Connect 4, Go, UNO, Blackjack, and more into virtual worlds using a snippet or script tag.</p>
 						</div>
 						<div class="card-actions">
-							<a href="games.html" class="buttonss buttonG">View Integration Guide</a>
+							<a href="games.html" class="buttonss buttonG">Altspace &amp; Banter Games Guide</a>
 						</div>
 					</div>
 					
@@ -320,10 +372,11 @@
 								<span class="badge websocket">Serverless</span>
 							</div>
 							<h3>Holograms Against Humanity</h3>
-							<p>A multiplayer Cards Against Humanity clone for social VR spaces. Runs entirely client-side using Banter Space properties, eliminating Node.js/WebSockets. Supports 10 players and custom deck expansions.</p>
+							<p>A multiplayer Cards Against Humanity table game for AltspaceVR and BanterVR spaces. Runs entirely client-side using shared space state properties, supporting up to 10 players and 70+ card deck expansions.</p>
 						</div>
 						<div class="card-actions">
-							<a href="games.html" class="buttonss buttonG">Embed Guide</a>
+							<a href="https://hah.firer.at/" class="buttonss btn-gradient">HAH Setup Guide</a>
+							<a href="games.html" class="buttonss buttonG">All VR Games</a>
 							<a href="https://github.com/FireRat666/HaH" class="buttonss buttonW" target="_blank">GitHub</a>
 						</div>
 					</div>
