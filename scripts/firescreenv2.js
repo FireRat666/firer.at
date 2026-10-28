@@ -1,34 +1,100 @@
-// SDK2 Based FireScreen, V0.9 Beta 1.0.0 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
+// SDK2 Based FireScreen, V0.99 Beta 1.0 -- Thank you Everyone who helped make this possible, HBR, Vanquish3r, DedZed, Sebek, Skizot, Shane and FireRat, And thank you to everyone who helped test it
 // FireScreen Tablet for Screen Casts / live streams with volume controls or a portable browser for any website.
-function checkForMatchingFireScripts() {
-  const scripts = Array.from(document.getElementsByTagName('script'));
-  const matchingScriptFound = scripts.some(script => script.src.startsWith('https://best-v-player.glitch.me/') || script.src.startsWith('https://fire-v-player.glitch.me/') || script.src.startsWith('https://vidya.sdq.st/') );
-  return matchingScriptFound;
-}
+// This script is the main entry point for initializing FireScreens.
+// It sets up a manager to handle all screen instances and uses a locking
+// mechanism to prevent race conditions when multiple scripts are added at once.
 
-async function loadAndExecuteFireScript(src) {
-  try {
-    const response = await fetch(src);
-    const scriptContent = await response.text();
-    const delay = checkForMatchingFireScripts() ? 10000 : 0;
-    setTimeout(() => { eval(scriptContent); }, delay);
-    console.log(`FireScreen Script executed successfully! YT Detected:${checkForMatchingFireScripts()}`);
-  } catch (error) { console.error("Failed to load or execute the FireScreen script:", error); }
-}
+if (typeof window.fireScreenV2Initialized === 'undefined') {
+  window.fireScreenV2Initialized = true;
+  console.log("FIRESCREEN_V2: Core system initialized.");
 
-function checkForBS() {
-  if (window.BS) {
-    // BS is loaded, so we can now execute the script
-    console.log(`FireScreen Script BS is loaded, so we can now execute the script`);
-    loadAndExecuteFireScript('https://firer.at/scripts/firescreenscripts.js');
-  } else {
-    // BS not loaded yet, wait for it
-    window.addEventListener("bs-loaded", () => {
-      console.log(`FireScreen Script BS not loaded yet, wait for it`);
-      loadAndExecuteFireScript('https://firer.at/scripts/firescreenscripts.js');
-    })
+  // Get the base URL from the current script's src.
+  // This will be something like 'https://firer.at/scripts/'
+  const scriptSrc = document.currentScript.src;
+  const baseUrl = scriptSrc.substring(0, scriptSrc.lastIndexOf('/') + 1);
+  window.fireScreenV2BaseUrl = baseUrl;
+
+  // This flag is the lock to prevent multiple setup runs at the same time.
+  window.fireScreenSetupRunning = false;
+
+  // This function will be called by the loader logic below.
+  // It ensures the manager exists and then tells it to process screens.
+  window.setupFireScreenV2AndRun = async function() {
+    // Dynamically import the manager to start the process.
+    // The '.js' extension is important for ES modules in the browser.
+    if (typeof window.fireScreenManager === 'undefined') {
+      try {
+        const managerUrl = window.fireScreenV2BaseUrl + 'FireScreenManager.js';
+        const { FireScreenManager } = await import(managerUrl);
+        window.fireScreenManager = new FireScreenManager();
+        console.log("FIRESCREEN_V2: Manager created.");
+        // Add the cleanup function to the window for backward compatibility
+        window.cleanupFireScreenV2 = async function(instanceId) {
+            console.log(`FIRESCREEN_V2: Global cleanup called for instance ${instanceId}.`);
+            if (window.fireScreenManager) {
+                await window.fireScreenManager.cleanup(instanceId);
+            } else {
+                console.error("FireScreenManager not found.");
+            }
+        };
+      } catch (error) {
+        console.error("FIRESCREEN_V2: Failed to load the FireScreenManager module.", error);
+        return; // reported here; the next script tag tries again
+      }
+    }
+
+    // Tell the manager to set up any unprocessed screens.
+    await window.fireScreenManager.setupScreens();
+  };
+}
+// This IIFE runs for every <script> tag. It uses a locking mechanism
+// to ensure that setup only runs once at a time, even if multiple
+// scripts are injected simultaneously.
+(async () => {
+  // if (!window.isBanter) return;
+  // This function will attempt to acquire a lock and run the setup.
+  // If the lock is already taken, it will wait and retry.
+  async function attemptSetup() {
+    // The space's BS SDK isn't loaded yet: the manager needs it, so wait for it.
+    if (typeof window.BS === 'undefined') {
+      console.log("FIRESCREEN_V2: Waiting for the BS SDK...");
+      setTimeout(attemptSetup, 500);
+      return;
+    }
+    if (window.fireScreenSetupRunning) {
+      console.log("FIRESCREEN_V2: Setup in progress. Waiting to retry...");
+      setTimeout(attemptSetup, 500); // Wait 500ms and try again
+      return;
+    }
+    // Acquire lock
+    window.fireScreenSetupRunning = true;
+    console.log("FIRESCREEN_V2: Lock acquired, starting setup...");
+
+    try {
+      // This function is now async and processes all unprocessed scripts sequentially.
+      await window.setupFireScreenV2AndRun();
+    } catch (error) {
+      console.error("FIRESCREEN_V2: Setup failed.", error);
+    } finally {
+      console.log("FIRESCREEN_V2: Setup finished, releasing lock.");
+      window.fireScreenSetupRunning = false;
+    }
   }
-    console.log(`FireScreen Script Checked for BS`);
-}
 
-checkForBS();
+  // Function to check for conflicting scripts to ensure compatibility.
+  function checkForMatchingFireScripts() {
+    const scripts = Array.from(document.getElementsByTagName('script'));
+    const matchingScriptFound = scripts.some(script =>
+      script.src.startsWith('https://best-v-player.glitch.me/') ||
+      script.src.startsWith('https://fire-v-player.glitch.me/') ||
+      script.src.startsWith('https://vidya.sdq.st/')
+    );
+    return matchingScriptFound;
+  }
+
+  // Calculate delay and start initialization.
+  const delay = checkForMatchingFireScripts() ? 10000 : 500;
+  console.log(`FIRESCREEN_V2: Delaying setup attempt by ${delay}ms for compatibility.`);
+  setTimeout(attemptSetup, delay);
+
+})();

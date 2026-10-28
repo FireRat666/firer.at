@@ -30,6 +30,25 @@
 		<meta property="twitter:description" content="Add a synced YouTube and karaoke player to your Altspace world in a few clicks with the fire-v-player snippet.">
 		<meta property="twitter:image" content="https://firer.at/files/FireRat-Transparentv3.webp">
 
+		<!-- Structured Data -->
+		<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "SoftwareApplication",
+			"name": "Fire-V-Player",
+			"url": "https://firer.at/pages/FireVPlayer/",
+			"applicationCategory": "MultimediaApplication",
+			"runtimePlatform": "AltspaceVR, BanterVR, Unity",
+			"offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+			"description": "Free synced YouTube and karaoke video player snippet for AltspaceVR (altvr.app) and BanterVR worlds, including a Unity Creator SDK live preview editor script.",
+			"author": {
+				"@type": "Person",
+				"name": "FireRat",
+				"url": "https://firer.at/"
+			}
+		}
+		</script>
+
 		<!-- Typography & Stylesheets -->
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -128,7 +147,7 @@
 					<ol class="steps">
 						<li><strong>Make an empty object.</strong> In the top menu choose <span class="menu">GameObject &rsaquo; Create Empty</span>. Rename it to <code>Fire-V-Player</code> so you can find it later (the name of the object doesn't matter, only the slug does).</li>
 						<li><strong>Put it at the middle of the world.</strong> With the new object selected, look at <strong>Transform</strong> in the Inspector and set <strong>Position</strong> to <code>0 0 0</code> and <strong>Rotation</strong> to <code>0 0 0</code>.
-							<span class="sub">Why: you don't move the player by moving this object. You move it with the snippet's own settings (step 6). If the object isn't at 0 0 0, the outlines in the Scene view won't line up with where the screen really appears.</span></li>
+							<span class="sub">Why: you don't move the player by moving this object. You move it with the snippet's own settings (step 6). If the object (or anything it's inside) isn't at 0 0 0, the SDK's blue boxes won't line up with where the screen really appears. The orange preview always shows the real spot, and puts a yellow note on the object when it's been moved.</span></li>
 						<li><strong>Add the Snippet component.</strong> Click <span class="menu">Add Component</span>, type <code>Snippet</code> in the search box, and pick <span class="menu">BS &rsaquo; Snippet</span>.</li>
 						<li><strong>Type the slug and press Enter.</strong> In the Snippet's <strong>Slug</strong> box type <button type="button" class="copy-chip" data-copy="fire-v-player">fire-v-player <span class="copy-label">Copy</span></button> and press <kbd>Enter</kbd> (the box only takes it after Enter or clicking somewhere else).
 							<span class="sub">It downloads the player and adds it to your world's <code>Assets/WebRoot/index.html</code> for you. After a moment the Inspector shows the title <strong>Fire-V-Player</strong> and a list of settings. If nothing happens, click <strong>Refresh from server</strong>.</span></li>
@@ -170,7 +189,7 @@
 					<p class="lead">A small helper file for the Unity editor. While the Fire-V-Player object is selected, it draws exactly where the player will put things, at their real size and angle, and updates the moment you change a setting:</p>
 					<ul>
 						<li><span class="swatch orange"></span><strong>Orange</strong>: the screen, the row of buttons and the playlist panel.</li>
-						<li><span class="swatch pink"></span><strong>Pink</strong>: the Singers button (karaoke mode only).</li>
+						<li><span class="swatch pink"></span><strong>Pink</strong>: the Singers button (karaoke mode only), with its own drag handle.</li>
 					</ul>
 					<p>It only runs inside the Unity editor. It never goes into your uploaded world and does nothing for visitors.</p>
 
