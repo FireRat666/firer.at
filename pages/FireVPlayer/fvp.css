@@ -141,3 +141,11 @@ details.fix .fix-body p:last-child, details.fix .fix-body ul:last-child, details
 
 /* Long paths wrap on narrow screens instead of running off the edge */
 .guide :not(pre) > code { overflow-wrap: anywhere; }
+
+/* Setting names in tables stay whole (the table scrolls sideways on phones instead) */
+.guide td:first-child code { overflow-wrap: normal; white-space: nowrap; }
+.guide td ul { margin: 0.4rem 0 0; padding-left: 1.1rem; }
+.guide h4 { margin: 1.4rem 0 0.5rem; font-size: 1.02rem; color: #fff; }
+.guide li > ul { margin-top: 0.35rem; }
+/* Long links in copy chips wrap on narrow screens */
+.copy-chip { max-width: 100%; overflow-wrap: anywhere; text-align: left; }
