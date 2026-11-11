@@ -35,24 +35,38 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "ItemList",
-      "name": "AltspaceVR & BanterVR Embeddable Multiplayer Games",
-      "description": "Serverless 3D multiplayer board and card games built for AltspaceVR (altvr.app) and BanterVR virtual worlds by FireRat.",
-      "url": "https://firer.at/games.html",
-      "numberOfItems": 12,
-      "itemListElement": [
-        { "@type": "ListItem", "position": 1, "name": "Checkers for AltspaceVR & BanterVR", "url": "https://checkers.firer.at/" },
-        { "@type": "ListItem", "position": 2, "name": "Chess for AltspaceVR & BanterVR", "url": "https://chess.firer.at/" },
-        { "@type": "ListItem", "position": 3, "name": "Reversi (Othello) for AltspaceVR & BanterVR", "url": "https://reversi.firer.at/" },
-        { "@type": "ListItem", "position": 4, "name": "Connect 4 for AltspaceVR & BanterVR", "url": "https://connect4.firer.at/" },
-        { "@type": "ListItem", "position": 5, "name": "Go (Weiqi / Baduk) for AltspaceVR & BanterVR", "url": "https://go.firer.at/" },
-        { "@type": "ListItem", "position": 6, "name": "Gomoku (Five in a Row) for AltspaceVR & BanterVR", "url": "https://gomoku.firer.at/" },
-        { "@type": "ListItem", "position": 7, "name": "Mancala (Kalah) for AltspaceVR & BanterVR", "url": "https://mancala.firer.at/" },
-        { "@type": "ListItem", "position": 8, "name": "Tic-Tac-Toe for AltspaceVR & BanterVR", "url": "https://tic-tac-toe.firer.at/" },
-        { "@type": "ListItem", "position": 9, "name": "Blackjack for AltspaceVR & BanterVR", "url": "https://blackjack.firer.at/" },
-        { "@type": "ListItem", "position": 10, "name": "UNO for AltspaceVR & BanterVR", "url": "https://uno.firer.at/" },
-        { "@type": "ListItem", "position": 11, "name": "Rummy10 for AltspaceVR & BanterVR", "url": "https://rummy10.firer.at/" },
-        { "@type": "ListItem", "position": 12, "name": "Holograms Against Humanity (HAH) for AltspaceVR & BanterVR", "url": "https://hah.firer.at/" }
+      "@graph": [
+        {
+          "@type": "ItemList",
+          "name": "AltspaceVR & BanterVR Embeddable Multiplayer Games",
+          "description": "Serverless 3D multiplayer board, card, and party room games built for AltspaceVR (altvr.app) and BanterVR virtual worlds by FireRat.",
+          "url": "https://firer.at/games.html",
+          "numberOfItems": 15,
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Checkers for AltspaceVR & BanterVR", "url": "https://checkers.firer.at/" },
+            { "@type": "ListItem", "position": 2, "name": "Chess for AltspaceVR & BanterVR", "url": "https://chess.firer.at/" },
+            { "@type": "ListItem", "position": 3, "name": "Reversi (Othello) for AltspaceVR & BanterVR", "url": "https://reversi.firer.at/" },
+            { "@type": "ListItem", "position": 4, "name": "Connect 4 for AltspaceVR & BanterVR", "url": "https://connect4.firer.at/" },
+            { "@type": "ListItem", "position": 5, "name": "Go (Weiqi / Baduk) for AltspaceVR & BanterVR", "url": "https://go.firer.at/" },
+            { "@type": "ListItem", "position": 6, "name": "Gomoku (Five in a Row) for AltspaceVR & BanterVR", "url": "https://gomoku.firer.at/" },
+            { "@type": "ListItem", "position": 7, "name": "Mancala (Kalah) for AltspaceVR & BanterVR", "url": "https://mancala.firer.at/" },
+            { "@type": "ListItem", "position": 8, "name": "Tic-Tac-Toe for AltspaceVR & BanterVR", "url": "https://tic-tac-toe.firer.at/" },
+            { "@type": "ListItem", "position": 9, "name": "Blackjack for AltspaceVR & BanterVR", "url": "https://blackjack.firer.at/" },
+            { "@type": "ListItem", "position": 10, "name": "UNO for AltspaceVR & BanterVR", "url": "https://uno.firer.at/" },
+            { "@type": "ListItem", "position": 11, "name": "Rummy10 for AltspaceVR & BanterVR", "url": "https://rummy10.firer.at/" },
+            { "@type": "ListItem", "position": 12, "name": "Holograms Against Humanity (HAH) for AltspaceVR & BanterVR", "url": "https://hah.firer.at/" },
+            { "@type": "ListItem", "position": 13, "name": "Drop: Colour Tile Party Game Room for AltspaceVR & BanterVR", "url": "https://drop.firer.at/" },
+            { "@type": "ListItem", "position": 14, "name": "Sumo Rings: Push-Off Party Game Room for AltspaceVR & BanterVR", "url": "https://sumo.firer.at/" },
+            { "@type": "ListItem", "position": 15, "name": "Sinking Tiles: Floor-Is-Falling Game Room for AltspaceVR & BanterVR", "url": "https://sink.firer.at/" }
+          ]
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "FireR.at", "item": "https://firer.at/" },
+            { "@type": "ListItem", "position": 2, "name": "Altspace & Banter Games", "item": "https://firer.at/games.html" }
+          ]
+        }
       ]
     }
     </script>
@@ -420,6 +434,61 @@
               <div class="card-actions">
                 <a href="https://hah.firer.at/" class="buttonss btn-gradient">HAH Guide</a>
                 <a href="https://github.com/FireRat666/HaH" class="buttonss buttonG" target="_blank">GitHub</a>
+              </div>
+            </div>
+        </section>
+
+        <h2 class="section-title" id="rooms">Party Game Rooms</h2>
+        <p style="text-align: center;">These are whole spaces rather than embeddable scripts. Open the address as a space in Altspace or Banter to play, no server or install needed.</p>
+        <section id="room-games">
+            <!-- Drop -->
+            <div class="project-card">
+              <div>
+                <div class="tech-badges">
+                  <span class="badge vr">Game Room</span>
+                  <span class="badge websocket">Up to 30 players</span>
+                </div>
+                <h3>Drop</h3>
+                <p>Colour tile party game. Find the target colour and stand on it before the countdown ends, because every other tile falls away. Last player standing wins.</p>
+                <p class="snippet-slug">Space address: <code>drop.firer.at</code></p>
+              </div>
+              <div class="card-actions">
+                <a href="https://drop.firer.at/" class="buttonss btn-gradient">Drop Guide</a>
+                <a href="https://github.com/FireRat666/Drop" class="buttonss buttonG" target="_blank">GitHub</a>
+              </div>
+            </div>
+
+            <!-- Sumo Rings -->
+            <div class="project-card">
+              <div>
+                <div class="tech-badges">
+                  <span class="badge vr">Game Room</span>
+                  <span class="badge websocket">Up to 30 players</span>
+                </div>
+                <h3>Sumo Rings</h3>
+                <p>Push-off party game. Everyone wears a bumper ring: shove the other players off a shrinking platform and be the last one standing.</p>
+                <p class="snippet-slug">Space address: <code>sumo.firer.at</code></p>
+              </div>
+              <div class="card-actions">
+                <a href="https://sumo.firer.at/" class="buttonss btn-gradient">Sumo Rings Guide</a>
+                <a href="https://github.com/FireRat666/SumoRings" class="buttonss buttonG" target="_blank">GitHub</a>
+              </div>
+            </div>
+
+            <!-- Sinking Tiles -->
+            <div class="project-card">
+              <div>
+                <div class="tech-badges">
+                  <span class="badge vr">Game Room</span>
+                  <span class="badge websocket">Up to 30 players</span>
+                </div>
+                <h3>Sinking Tiles</h3>
+                <p>Floor-is-falling party game. Every tile you step on sinks away, so keep moving across the layers and be the last player standing.</p>
+                <p class="snippet-slug">Space address: <code>sink.firer.at</code></p>
+              </div>
+              <div class="card-actions">
+                <a href="https://sink.firer.at/" class="buttonss btn-gradient">Sinking Tiles Guide</a>
+                <a href="https://github.com/FireRat666/SinkingTiles" class="buttonss buttonG" target="_blank">GitHub</a>
               </div>
             </div>
         </section>

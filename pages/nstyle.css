@@ -485,7 +485,8 @@ main section { margin-bottom: 4.5rem; }
 }
 
 /* Project cards */
-#projects {
+#projects,
+#room-games {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 1.5rem;
@@ -830,7 +831,7 @@ main ul li { margin-bottom: 0.5rem; }
   .shader-actions a.buttonss { flex: 1 1 100%; }
   .shader-mosaic { gap: 0.5rem; }
   .media-tile .tile-label { font-size: 0.64rem; padding: 1.2rem 0.45rem 0.4rem; line-height: 1.25; }
-  #projects { grid-template-columns: 1fr; }
+  #projects, #room-games { grid-template-columns: 1fr; }
   table { display: block; overflow-x: auto; }
 }
 
