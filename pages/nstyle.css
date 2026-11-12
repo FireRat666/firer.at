@@ -277,6 +277,24 @@ nav a.nav-feature::before {
   box-shadow: 0 0 8px var(--accent-green);
 }
 
+nav .nav-divider {
+  width: 1px;
+  height: 18px;
+  background: var(--border-color);
+  align-self: center;
+  margin: 0 0.15rem;
+}
+
+nav a.buttonss.nav-icon {
+  padding: 8px 10px;
+}
+
+nav a.buttonss.nav-icon svg {
+  width: 17px;
+  height: 17px;
+  display: block;
+}
+
 /* Sticky only where the bar fits on one row */
 @media (min-width: 1000px) {
   nav { position: sticky; top: 1rem; }
@@ -300,6 +318,13 @@ a.buttonss {
               border-color 0.25s var(--ease), box-shadow 0.25s var(--ease), color 0.25s var(--ease);
   cursor: pointer;
   white-space: nowrap;
+}
+
+a.buttonss svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  fill: currentColor;
 }
 
 a.buttonss:hover { transform: translateY(-2px); background-color: rgba(255, 255, 255, 0.07); }
@@ -365,6 +390,18 @@ main section { margin-bottom: 4.5rem; }
   position: relative;
   overflow: hidden;
   scroll-margin-top: 6rem;
+}
+
+.shader-feature + .shader-feature {
+  margin-top: 2rem;
+}
+
+.fvp-feature {
+  grid-template-columns: 1fr;
+}
+
+.fvp-feature .shader-points {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
 
 .shader-feature h2 {
@@ -820,6 +857,8 @@ main ul li { margin-bottom: 0.5rem; }
   nav a.buttonss.buttonW,
   nav a.buttonss.buttonGY,
   nav a.buttonss.buttonY { padding: 7px 11px; font-size: 0.82rem; }
+  nav a.buttonss.nav-icon { padding: 7px 9px; }
+  nav .nav-divider { height: 14px; }
 
   a.buttonss { padding: 11px 14px; }
   .project-card { padding: 1.5rem; }
