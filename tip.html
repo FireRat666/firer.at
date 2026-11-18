@@ -2,117 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <link id="favicon" rel="icon" href="./files/favicon.ico" type="image/x-icon" />
-    <meta name="color-scheme" content="dark">
-    <meta name="theme-color" content="#ff7a1a">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tip FireRat | FireR.at</title>
-    <meta name="description" content="Tip FireRat for the free tools, games and worlds made for Altspace: Ko-fi, PayPal, Buy Me a Coffee, Patreon or Liberapay.">
-    <meta name="author" content="FireRat">
-    <link rel="canonical" href="https://firer.at/tip">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://firer.at/tip">
-    <meta property="og:title" content="Tip FireRat">
-    <meta property="og:description" content="Free tools, games and worlds for Altspace. A tip keeps them coming.">
-    <meta property="og:image" content="https://firer.at/files/FireRat-Logo-V2.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
-    <style>
-        :root { --bg: #040605; --panel: #0b120e; --panel-2: #111c15; --line: rgba(255,255,255,0.12); --fire: #ff7a1a; --gold: #ffc93c; --text: #f5f7f6; --muted: #a9b8b0;
-                --grad-fire: linear-gradient(120deg, #ffc93c 0%, #ff7a1a 45%, #ff3d2e 100%); }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { min-height: 100vh; color: var(--text); font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased;
-               background: radial-gradient(ellipse at 20% 90%, rgba(255,110,20,0.22) 0%, transparent 50%), radial-gradient(ellipse at 90% 0%, rgba(0,255,140,0.10) 0%, transparent 45%), var(--bg); }
-        main { max-width: 520px; margin: 0 auto; padding: 32px 16px 48px; }
-        .top { display: flex; align-items: center; gap: 14px; margin-bottom: 8px; }
-        .top img { width: 60px; height: 60px; border-radius: 16px; object-fit: cover; }
-        h1 { font-family: 'Outfit', sans-serif; font-size: 34px; font-weight: 800; line-height: 1.05; }
-        h1 span { background: var(--grad-fire); -webkit-background-clip: text; background-clip: text; color: transparent; }
-        p.lead { color: var(--muted); font-size: 17px; margin: 12px 0 24px; line-height: 1.5; }
-        h2 { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 0 0 10px; }
-        .amounts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 24px; }
-        .amounts button { min-height: 54px; border-radius: 14px; border: 1px solid var(--line); background: var(--panel-2); color: var(--text); font: 700 20px 'Inter', sans-serif; cursor: pointer; }
-        .currencies { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
-        .currencies button { min-height: 40px; padding: 0 12px; border-radius: 12px; border: 1px solid var(--line); background: transparent; color: var(--muted); font: 700 16px 'Inter', sans-serif; cursor: pointer; }
-        .currencies button[aria-pressed="true"] { border-color: var(--fire); color: var(--gold); background: rgba(255,122,26,0.12); }
-        .amounts button[aria-pressed="true"] { border-color: var(--fire); background: rgba(255,122,26,0.18); color: var(--gold); }
-        .links { display: grid; gap: 10px; }
-        .links a { display: flex; align-items: center; gap: 14px; padding: 16px 18px; min-height: 68px; border-radius: 16px; border: 1px solid var(--line); background: var(--panel); color: var(--text); text-decoration: none; }
-        .links a:hover { border-color: rgba(255,201,60,0.6); }
-        .links svg { width: 28px; height: 28px; fill: currentColor; flex: none; }
-        .links b { display: block; font-size: 19px; }
-        .links small { color: var(--muted); font-size: 14px; }
-        .kofi svg { color: #ff5e5b; } .paypal svg { color: #ffc439; } .patreon svg { color: #f96854; } .bmc svg { color: #ffdd00; } .liberapay svg { color: #f6c915; }
-        footer { margin-top: 32px; text-align: center; color: var(--muted); font-size: 14px; }
-        footer a { color: var(--muted); }
-    </style>
+    <meta name="robots" content="noindex">
+    <link rel="canonical" href="https://donate.firer.at/">
+    <!-- firer.at/tip is the short address on the donate kiosks and in their QR code: it sends you on to
+         donate.firer.at, keeping ?amount= and ?currency= from the donate emails. -->
+    <script>location.replace("https://donate.firer.at/" + location.search + location.hash);</script>
+    <meta http-equiv="refresh" content="0; url=https://donate.firer.at/">
 </head>
-<body>
-<main>
-    <div class="top">
-        <img src="./files/FireRat-DALLE-Tv2.png" alt="">
-        <h1><span>Tip</span> FireRat</h1>
-    </div>
-    <p class="lead">I make free tools, games and worlds for Altspace. If you enjoy them, a tip keeps them coming. Thank you!</p>
-
-    <h2>Amount (PayPal fills it in)</h2>
-    <div class="currencies" id="currencies">
-        <button type="button" data-code="AUD" data-symbol="A$" aria-pressed="true">AUD</button>
-        <button type="button" data-code="USD" data-symbol="US$">USD</button>
-        <button type="button" data-code="EUR" data-symbol="€">EUR</button>
-        <button type="button" data-code="GBP" data-symbol="£">GBP</button>
-        <button type="button" data-code="CAD" data-symbol="C$">CAD</button>
-    </div>
-    <div class="amounts" id="amounts">
-        <button type="button" data-amount="3">A$3</button>
-        <button type="button" data-amount="5" aria-pressed="true">A$5</button>
-        <button type="button" data-amount="10">A$10</button>
-        <button type="button" data-amount="20">A$20</button>
-    </div>
-
-    <h2>Pick one</h2>
-    <div class="links">
-        <a class="kofi" href="https://ko-fi.com/FireRat666" rel="noopener">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.351 2.715c-2.7 0-4.986.025-6.83.26C2.078 3.285 0 5.154 0 8.61c0 3.506.182 6.13 1.585 8.493 1.584 2.701 4.233 4.182 7.662 4.182h.83c4.209 0 6.494-2.234 7.637-4a9.5 9.5 0 0 0 1.091-2.338C21.792 14.688 24 12.22 24 9.208v-.415c0-3.247-2.13-5.507-5.792-5.870-1.558-.156-2.65-.208-6.857-.208m0 1.947c4.208 0 5.09.052 6.571.182 2.624.311 4.13 1.584 4.13 4v.39c0 2.156-1.792 3.844-3.87 3.844h-.935l-.156.649c-.208 1.013-.597 1.818-1.039 2.546-.909 1.428-2.545 3.064-5.922 3.064h-.805c-2.571 0-4.831-.883-6.078-3.195-1.09-2-1.298-4.155-1.298-7.506 0-2.181.857-3.402 3.012-3.714 1.533-.233 3.559-.26 6.39-.26m6.547 2.287c-.416 0-.65.234-.65.546v2.935c0 .311.234.545.65.545 1.324 0 2.051-.754 2.051-2s-.727-2.026-2.052-2.026m-10.39.182c-1.818 0-3.013 1.48-3.013 3.142 0 1.533.858 2.857 1.949 3.897.727.701 1.87 1.429 2.649 1.896a1.47 1.470 0 0 0 1.507 0c.78-.467 1.922-1.195 2.623-1.896 1.117-1.039 1.974-2.364 1.974-3.897 0-1.662-1.247-3.142-3.039-3.142-1.065 0-1.792.545-2.338 1.298-.493-.753-1.246-1.298-2.312-1.298"/></svg>
-            <span><b>Ko-fi</b><small>One-off tip, card or PayPal, no account needed</small></span>
-        </a>
-        <a class="paypal" id="paypal" href="https://paypal.me/FireRat666/5AUD" rel="noopener">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.607 4.653H8.941L6.645 19.251H1.82L4.862 0h7.995c3.754 0 6.375 2.294 6.473 5.513-.648-.478-2.105-.86-3.722-.86m6.57 5.546c0 3.41-3.010 6.853-6.958 6.853h-2.493L11.595 24H6.74l1.845-11.538h3.592c4.208 0 7.346-3.634 7.153-6.949a5.24 5.240 0 0 1 2.848 4.686M9.653 5.546h6.408c.907 0 1.942.222 2.363.541-.195 2.741-2.655 5.483-6.441 5.483H8.714Z"/></svg>
-            <span><b>PayPal</b><small id="paypal-note">A$5, filled in for you</small></span>
-        </a>
-        <a class="bmc" href="https://buymeacoffee.com/firerat" rel="noopener">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h13v6a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Zm13 1.5h1.5a2.5 2.5 0 0 1 0 5H17v-2h1.5a.5.5 0 0 0 0-1H17v-2ZM3 20.5h15v1.5H3v-1.5ZM8 2.5c1 1 1 2 0 3M11.5 2.5c1 1 1 2 0 3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
-            <span><b>Buy Me a Coffee</b><small>One-off coffee</small></span>
-        </a>
-        <a class="patreon" href="https://www.patreon.com/c/FireRat" rel="noopener">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22.957 7.21c-.004-3.064-2.391-5.576-5.191-6.482-3.478-1.125-8.064-.962-11.384.604C2.357 3.231 1.093 7.391 1.046 11.540c-.039 3.411.302 12.396 5.369 12.46 3.765.047 4.326-4.804 6.068-7.141 1.240-1.662 2.836-2.132 4.801-2.618 3.376-.836 5.678-3.501 5.673-7.031Z"/></svg>
-            <span><b>Patreon</b><small>Monthly support</small></span>
-        </a>
-        <a class="liberapay" href="https://liberapay.com/FireRat/donate" rel="noopener">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.5-9.2C1.1 8.5 3 4.5 6.8 4.5c2.1 0 3.6 1.2 5.2 3 1.6-1.8 3.1-3 5.2-3 3.8 0 5.7 4 4.3 7.3C19.5 16.4 12 21 12 21Z"/></svg>
-            <span><b>Liberapay</b><small>Recurring, non-profit, low fees</small></span>
-        </a>
-    </div>
-
-    <footer><a href="./">firer.at</a> · <a href="./contact.html">Contact</a></footer>
-</main>
-<script>
-    let code = 'AUD', symbol = 'A$', amount = '5';
-    const update = () => {
-        document.querySelectorAll('#amounts button').forEach((b) => { b.textContent = symbol + b.dataset.amount; b.setAttribute('aria-pressed', String(b.dataset.amount === amount)); });
-        document.querySelectorAll('#currencies button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.code === code)));
-        document.getElementById('paypal').href = `https://paypal.me/FireRat666/${amount}${code}`;
-        document.getElementById('paypal-note').textContent = `${symbol}${amount}, filled in for you`;
-    };
-    document.querySelectorAll('#amounts button').forEach((b) => b.addEventListener('click', () => { amount = b.dataset.amount; update(); }));
-    document.querySelectorAll('#currencies button').forEach((b) => b.addEventListener('click', () => { code = b.dataset.code; symbol = b.dataset.symbol; update(); }));
-    // From the donate panel's email: ?amount=10&currency=USD picks them (any whole amount from 1 to 500).
-    const q = new URLSearchParams(location.search);
-    const cur = document.querySelector(`#currencies button[data-code="${CSS.escape(q.get('currency') || '')}"]`);
-    if (cur) { code = cur.dataset.code; symbol = cur.dataset.symbol; }
-    const n = parseInt(q.get('amount') || '', 10);
-    if (n >= 1 && n <= 500) amount = String(n);
-    update();
-</script>
+<body style="background:#040605;color:#f5f7f6;font-family:system-ui,sans-serif;text-align:center;padding:40px 16px">
+    <p>Taking you to <a href="https://donate.firer.at/" style="color:#ffc93c">donate.firer.at</a>…</p>
 </body>
 </html>
