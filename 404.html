@@ -13,6 +13,9 @@
         var p = window.location.pathname.toLowerCase().replace(/\/+$/, "");
         if (p === "/fvp" || p === "/fvp.html") {
           window.location.replace("/pages/FireVPlayer/" + window.location.search + window.location.hash);
+        } else if (p === "/tip" || p === "/tip.html") {
+          // /TIP, /Tip, /tip/ and so on (GitHub Pages paths are case-sensitive)
+          window.location.replace("/tip" + window.location.search + window.location.hash);
         }
       })();
     </script>
