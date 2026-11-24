@@ -216,6 +216,7 @@
   mute="false"
   captions="true"
   untrusted-links="false"
+  ready-delay="5"
   hand-controls="true"
   position="0 1.5 2"
   rotation="0 0 0"
@@ -225,6 +226,8 @@
   spatial="true"
   spatial-min-distance="5"
   spatial-max-distance="40"
+  audio-3d="true"
+  audio-position=""
   controls-follow-screen="false"
   button-position="0 0.83 2"
   button-rotation=""
@@ -296,6 +299,18 @@
 						<li><span class="swatch orange"></span><strong>Orange</strong>: the screen, the row of buttons and the playlist panel.</li>
 						<li><span class="swatch pink"></span><strong>Pink</strong>: the Singers button (karaoke mode only), with its own drag handle.</li>
 					</ul>
+					<p>Each outline is <strong>solid</strong> where it's in front of the world and <strong>dotted</strong> where a wall or other mesh hides it, so you can see exactly where the screen meets a wall.</p>
+					<p>The screen and the playlist panel also show <strong>how far the wall behind them is</strong>, in a label that stays the same size however far you zoom, for example <strong>Wall 3.2 cm behind</strong>:</p>
+					<ul>
+						<li><strong>Green:</strong> there's a gap between it and the wall.</li>
+						<li><strong>Red:</strong> it's closer than 0.5 cm, or has gone into the wall. The label says how far to move it.</li>
+						<li>If its corners are at different distances, the label says it isn't parallel to the wall.</li>
+						<li>Only meshes with a collider count. With none within 1 m behind it, the label says so.</li>
+					</ul>
+					<div class="callout info">
+						<p><strong>Leave a gap of about 1 cm</strong> between the screen and a wall. Closer than that, the wall can flicker through the picture, in Unity and in your world.</p>
+					</div>
+					<p>It also makes <strong>Undo and Redo</strong> (Ctrl + Z / Ctrl + Y) work for snippet settings. The SDK leaves them out of Undo, so before, Ctrl + Z after changing a setting or dragging a handle undid something else instead. A drag, or a quick run of typing in one box, is one Undo step. This works for every snippet in your world, not only Fire-V-Player.</p>
 					<p>It only runs inside the Unity editor. It never goes into your uploaded world and does nothing for visitors.</p>
 
 					<div class="hero-actions" style="justify-content:flex-start">
@@ -339,7 +354,7 @@
 					<ul>
 						<li><strong>YouTube and most links:</strong> the video, as on the main screen.</li>
 						<li><strong>Twitch:</strong> the player's own browser.</li>
-						<li><strong>Video files on the world's video player:</strong> there's no picture to share, so second screens go black.</li>
+						<li><strong>Video files on the world's video player:</strong> the video's own picture, at its own size, from its first frame on.</li>
 					</ul>
 					<p>While the player loads, second screens show the loading picture. Second screens only work in the world, not in Unity's Play mode.</p>
 
@@ -374,9 +389,9 @@
 						<tbody>
 							<tr><td><code>karaoke</code></td><td>Tick it (<code>true</code>) for karaoke mode: people join a queue and take turns singing. Leave it unticked for a normal shared playlist.</td><td><code>false</code></td></tr>
 							<tr><td><code>playlist</code></td><td>A YouTube playlist to start with when the room is empty. Paste the part after <code>list=</code> in a YouTube playlist link.</td><td><code>PLZWiw-xxQ4...</code></td></tr>
-							<tr><td><code>room</code></td><td>Worlds with the same room share the same player and playlist. Leave it empty and each world gets its own.</td><td><code>my-bar</code></td></tr>
+							<tr><td><code>room</code></td><td>A name for the room, so one world can have several players with their own playlists. Each world gets its own room for a name. To share one room across worlds on purpose, start it with <code>shared:</code>. See <a href="#rooms">Rooms</a>.</td><td><code>my-bar</code></td></tr>
 							<tr><td><code>volume</code></td><td>Starting volume, 0 to 100. Everyone can change their own volume in world.</td><td><code>10</code></td></tr>
-							<tr><td><code>hand-controls</code></td><td>Puts small buttons on your left wrist in VR (mute, volume, skip, Playlist).</td><td><code>true</code></td></tr>
+							<tr><td><code>hand-controls</code></td><td>Gives everyone small buttons that go with them (mute, volume, skip, Playlist): on the left wrist in VR, in the bottom right corner on desktop.</td><td><code>true</code></td></tr>
 							<tr><td><code>position</code></td><td>Where the screen is (x y z, in metres). Easiest to set by dragging its handle in the Scene view.</td><td><code>0 1.5 2</code></td></tr>
 							<tr><td><code>rotation</code></td><td>Which way the screen faces (in degrees). <code>0 180 0</code> turns it around.</td><td><code>0 0 0</code></td></tr>
 							<tr><td><code>scale</code></td><td>Size of the screen. <code>2</code> is 2 m wide; <code>4</code> is 4 m wide.</td><td><code>2</code></td></tr>
@@ -384,7 +399,8 @@
 							<tr><td><code>playlist-panel-position</code></td><td>Where the playlist panel goes. Has its own drag handle. Empty puts it beside the screen.</td><td><code>-1.8 1.5 1.85</code></td></tr>
 							<tr><td><code>controls-follow-screen</code></td><td>Tick it and the buttons and panel move and turn with the screen. Their drag handles then won't show where they really go, so use the <a href="#preview">preview script</a>.</td><td><code>false</code></td></tr>
 							<tr><td><code>spatial</code></td><td>Sound gets quieter as you walk away from the screen.</td><td><code>true</code></td></tr>
-							<tr><td><code>untrusted-links</code></td><td>Also allow video files, streams and VDO.Ninja links from any site. Off by default because those aren't moderated.</td><td><code>false</code></td></tr>
+						<tr><td><code>audio-3d</code></td><td>Sound comes from the screen's direction (3D). Untick it for 2D sound, the same in both ears.</td><td><code>true</code></td></tr>
+							<tr><td><code>untrusted-links</code></td><td>Also allow video files, streams, VDO.Ninja and screen shares from any site. Off by default because those aren't moderated.</td><td><code>false</code></td></tr>
 						</tbody>
 					</table>
 					<p>Every other setting is in <a href="#reference">Every setting</a>.</p>
@@ -394,7 +410,7 @@
 						<li><strong><code>position</code> and <code>rotation</code> are Unity world values</strong>, as for every snippet, so the Scene view handle shows where the screen will be.</li>
 						<li><strong><code>scale</code> can be a single number.</strong> At scale 1 the screen is 1 m wide and 0.5625 m tall, whatever the <code>resolution</code>.</li>
 						<li><strong><code>karaoke</code> is a checkbox.</strong> Ticked (<code>true</code>) is karaoke mode. Unticked or empty is playlist mode. A hand-written <code>mode="karaoke"</code> works too. Both modes use the same settings. <code>playlist</code> only matters in playlist mode.</li>
-						<li><strong>The room is <code>room</code>, not <code>instance</code>,</strong> because Unity's Snippet component writes its own <code>instance</code>. Without <code>room</code>, each space gets its own room.</li>
+						<li><strong>The room is <code>room</code>, not <code>instance</code>,</strong> because Unity's Snippet component writes its own <code>instance</code>. See <a href="#rooms">Rooms</a>.</li>
 						<li><strong><code>button-position</code></strong> is where the row of buttons goes, as a world position with its own drag handle. Empty or <code>0 0 0</code> puts them just under the screen. An empty or <code>0 0 0</code> <code>button-rotation</code> uses the screen's rotation.</li>
 						<li><strong><code>playlist-panel-position</code> and <code>playlist-panel-rotation</code></strong> place the panel in the world, and it has its own drag handle. Clear <code>playlist-panel-position</code> to put the panel beside the screen. <code>playlist-panel-rotation</code> is then relative to the screen.</li>
 						<li><strong><code>singer-button-position</code> and <code>singer-button-rotation</code></strong> (karaoke) place the Singers button, as a world position and rotation.
@@ -407,6 +423,16 @@
 						<li><strong>An empty <code>youtube</code></strong> uses the default silent video.</li>
 						<li><strong>Unity reads the snippet section as XML.</strong> Quote every value, close every element, and write <code>&amp;</code> as <code>&amp;amp;</code>.</li>
 					</ul>
+
+					<h3 id="rooms">Rooms</h3>
+					<p>Everyone in the same room sees the same player and playlist. The room comes from your space and its <code>room</code> setting:</p>
+					<ul>
+						<li><strong>Empty:</strong> each space has its own room.</li>
+						<li><strong>A name</strong> (<code>room="movies"</code>): a room for that name in this space only. Two worlds that happen to pick the same name don't share a playlist, and one world can have several rooms with different names.</li>
+						<li><strong><code>shared:</code> and a name</strong> (<code>room="shared:gothparty"</code>): the same room in every world that uses it, for linking worlds on purpose.</li>
+						<li><strong>A copy of a space</strong> (such as a portal to a quiet copy, with <code>?instance=1</code> on its address) has a room of its own.</li>
+					</ul>
+					<p>Before, a name alone was shared by every world that used it. The first time a space opens its new room, it copies the playlist, lists and settings from the old shared one, once. After that they're separate.</p>
 				</section>
 
 				<!-- 6. Using it -->
@@ -426,25 +452,27 @@
 					<p>The row also has <strong>Reload</strong> (just after Playlist; reloads your screen only, see below) and, for the host only, <strong>Play/Pause</strong> (just before the skip buttons). Turn them off with <code>reload-button="false"</code> and <code>play-pause-button="false"</code>.</p>
 
 					<h3>The playlist panel</h3>
-					<p>Press <strong>Playlist</strong> to open the panel next to the screen. Its main view has:</p>
+					<p>Press <strong>Playlist</strong> to open the panel next to the screen. Its buttons use symbols where they can, so they read in any language. <strong>&#9432;</strong> (Info) has a list of what each one means.</p>
 					<ul>
-						<li><strong>Playback and volume controls</strong>, and <strong>Reload</strong>.</li>
-						<li><strong>The playlist.</strong> Play, reorder, remove and vote on videos.</li>
-						<li><strong>Lists:</strong> saved playlists (see <a href="#lists">Saved lists</a>).</li>
-						<li><strong>Search.</strong> Find a video, or paste a video link or a playlist link. A playlist link asks whether to replace the playlist, add it all, or save it to Lists.
+						<li><strong>Top row:</strong> the host's name with <strong>&#9819;</strong> and a padlock showing <a href="#host">who controls the player</a>, <strong>&#9432;</strong> Info, <strong>&#9776;</strong> More, and <strong>&#10005;</strong> to close.</li>
+						<li><strong>Playback:</strong> previous, skip back and forward, pause and play, next, and the brown <strong>&#8635;</strong> Reload. On the right, your own volume down, volume up and mute.</li>
+						<li><strong>&#9835; Playlist:</strong> play, reorder and remove videos, or vote on them when voting is on.</li>
+						<li><strong>&#9776; Lists:</strong> saved playlists (see <a href="#lists">Saved lists</a>).</li>
+						<li><strong>+ Search &amp; Add:</strong> find a video, or paste a video link or a playlist link. A playlist link asks whether to replace the playlist, add it all, or save it to Lists.
 							<ul>
-								<li>Under the search box are your last five searches. Click one to search again. <strong>Clear</strong> forgets them. They're kept on your device only.</li>
+								<li>Under the search box are your last five searches. Click one to search again. <strong>&#10005;</strong> forgets them. They're kept on your device only.</li>
 								<li>In karaoke mode, <strong>+ karaoke</strong>, <strong>+ lyrics</strong> and <strong>+ zoom karaoke</strong> add that word to your search.</li>
 							</ul></li>
-						<li><strong>Refresh</strong> gets the latest playlist from the server. The panel also does this every time it opens.</li>
+						<li><strong>&#9742; Phone</strong> (beside the search box): send a link or search from your phone. Scan the QR code, or open <code>vidya.firer.at/paste</code> and type the 6-letter code. It lands in your own search box in the world, and you still press Add. A code works for 10 minutes, only for you.</li>
 					</ul>
+					<p>The panel gets the latest playlist from the server every time it opens (<strong>&#9776; &rsaquo; Refresh List</strong> does it again).</p>
 
 					<h4>Moving round a long playlist</h4>
 					<ul>
 						<li>The list scrolls with the thumbstick, or drag it. It shows 20 rows at a time and opens at the video that's playing.</li>
 						<li>Beside the tabs, <strong>21-40 / 300</strong> says which rows you're seeing.</li>
-						<li><strong>&lt;</strong> and <strong>&gt;</strong> move 20 rows. <strong>&lt;&lt;</strong> and <strong>&gt;&gt;</strong> move 100. <strong>|&lt;</strong> and <strong>&gt;|</strong> go to the start and end.</li>
-						<li><strong>Now</strong> jumps back to the video that's playing.</li>
+						<li><strong>&lsaquo;</strong> and <strong>&rsaquo;</strong> move 20 rows. <strong>&laquo;</strong> and <strong>&raquo;</strong> move 100. <strong>&#8676;</strong> and <strong>&#8677;</strong> go to the start and end.</li>
+						<li><strong>&#9673; Now</strong> jumps back to the video that's playing.</li>
 						<li>On a client without scrolling lists, it shows pages of 7 and the same buttons turn the pages.</li>
 					</ul>
 
@@ -456,36 +484,44 @@
 						<li><strong>Playlist button by the screen:</strong> puts it back beside the screen.</li>
 					</ul>
 
-					<h4>More...</h4>
-					<p><strong>More...</strong> opens a second view with:</p>
+					<h4>More (&#9776;)</h4>
+					<p><strong>&#9776;</strong> opens a second view with:</p>
 					<ul>
-						<li><strong>Host controls:</strong> Lock, Take Over, Voting, Clear, load the default playlist, and seek to a time.</li>
-						<li><strong>Your player only:</strong>
+						<li><strong>Who controls the player</strong> (see <a href="#host">Who's in charge</a>), with <strong>&#9819; Take Over</strong> when the host allows it.</li>
+						<li><strong>Host controls:</strong> Voting (playlist) or Auto Advance (karaoke), Clear Playlist, Load Default Playlist, and go to a time, with 30 s back and forward.</li>
+						<li><strong>Just for you:</strong>
 							<ul>
 								<li><strong>Reload Video</strong>, and skip back and forward.</li>
 								<li><strong>Auto Sync.</strong></li>
-								<li><strong>Captions:</strong> on or off for you, remembered on your device.</li>
-								<li><strong>Resolution:</strong> steps your screen through 1280&times;720, 1600&times;900 and 1920&times;1080, then back to the snippet's setting. Remembered on your device.</li>
-								<li><strong>Hand Controls</strong>, when the snippet has them (see below).</li>
-							</ul></li>
+								<li><strong>CC:</strong> captions on or off for you.</li>
+								<li><strong>Refresh List.</strong></li>
+								<li><strong>Resolution:</strong> steps your screen through 1280&times;720, 1600&times;900, 1920&times;1080 and 2560&times;1440 (2K), and on PC also 3840&times;2160 (4K), then back to the snippet's setting. Quest stops at 2K. Higher is sharper, mostly for 4K and 360 videos, but costs more to draw.</li>
+								<li><strong>Sound:</strong> 3D (from the screen's direction) or 2D (the same in both ears), and <strong>Fade</strong>: whether your sound gets quieter as you walk away.</li>
+								<li><strong>Hand</strong> controls, when the snippet has them (see below).</li>
+							</ul>
+							These are remembered on your device.</li>
+						<li><strong>Look &amp; language:</strong> the panel's <strong>Language</strong> (English, Fran&ccedil;ais, Deutsch, Espa&ntilde;ol or Portugu&ecirc;s), <strong>Theme</strong> (dark or light) and <strong>Accent</strong> colour. Just for your own panel.</li>
 						<li><strong>Add by link:</strong> a video (YouTube, Twitch, Vimeo or any link from <a href="#links">What it can play</a>), or a YouTube playlist or list of links. <strong>Add</strong> adds a video, and asks what to do with a playlist.</li>
 						<li><strong>Space admins only:</strong> Admin Take Over and the playlist / karaoke switch (see <a href="#admins">Space admins</a>).</li>
 					</ul>
-					<p>When someone can't play a video, the panel shows a suggested replacement with <strong>Replace</strong> (host) and <strong>Dismiss</strong>.</p>
+					<p>When someone can't play a video, the panel shows a suggested replacement with <strong>&#8644; Replace</strong> (host) and <strong>&#10005;</strong>.</p>
 
 					<h3>Hand controls</h3>
-					<p>With <code>hand-controls="true"</code>, everyone gets seven buttons that go with them: mute, volume down, volume up, reload, skip back, skip forward and the Playlist (or Singers) panel. <strong>More... &rsaquo; Hand Controls</strong> moves them, one place per click, and your choice is remembered on your device:</p>
+					<p>With <code>hand-controls="true"</code>, everyone gets seven buttons that go with them: mute, volume down, volume up, reload, skip back, skip forward and the Playlist (or Singers) panel. <strong>&#9776; &rsaquo; Hand</strong> moves them, one place per click, and your choice is remembered on your device:</p>
 					<ul>
-						<li><strong>Left Wrist:</strong> on the back of the left wrist. The default in VR.</li>
-						<li><strong>Right Wrist:</strong> the same on the right wrist, for when another menu is on your left hand.</li>
-						<li><strong>In View:</strong> at the bottom right of what you see, wherever you look. The default on desktop, where you can't turn your hand to see the buttons.</li>
+						<li><strong>Left Wrist:</strong> on the back of the left wrist. The default in VR. VR only.</li>
+						<li><strong>Right Wrist:</strong> the same on the right wrist, for when another menu is on your left hand. VR only.</li>
+						<li><strong>In View:</strong> at the bottom right of what you see, wherever you look.</li>
+						<li><strong>Big View Corner:</strong> big, in the bottom right corner of your window. The default on desktop, where you can't turn your hand to see the buttons. Desktop only.</li>
+						<li><strong>View Corner:</strong> the same corner, but smaller and out of the way. Desktop only.</li>
 						<li><strong>In Front:</strong> left in the world just in front of you, facing you. Choose it again later to bring them to where you are now.</li>
 						<li><strong>Off:</strong> no hand buttons.</li>
 					</ul>
-					<p><code>hand-controls-place</code> sets where they start for people who haven't chosen. The buttons come back if you leave and rejoin the space.</p>
+					<p>It only offers the places you can see: the wrists in VR, the window's corners on desktop.</p>
+					<p>The orange button on the left folds the others away and brings them back. <code>hand-controls-place</code> sets where they start for people who haven't chosen. The buttons come back if you leave and rejoin the space.</p>
 
 					<h3>Reloading your screen</h3>
-					<p>When a video or stream freezes or won't load for you, press <strong>Reload</strong> to rebuild your own screen. It's the circular arrow under the screen and on the hand controls, the panel's <strong>Reload</strong>, or <strong>More... &rsaquo; Reload Video</strong>. The video starts again at the same point as everyone else's, as when someone joins late. Nobody else's screen changes, so the host doesn't need to switch videos back and forth to fix it for you. In karaoke it's in <strong>More...</strong> and on the hand controls.</p>
+					<p>When a video or stream freezes or won't load for you, press <strong>Reload</strong> to rebuild your own screen. It's the circular arrow under the screen and on the hand controls, the panel's brown <strong>&#8635;</strong>, or <strong>&#9776; &rsaquo; Reload Video</strong>. The video starts again at the same point as everyone else's, as when someone joins late. Nobody else's screen changes, so the host doesn't need to switch videos back and forth to fix it for you. In karaoke it's in <strong>&#9776;</strong> and on the hand controls.</p>
 
 					<h3 id="lists">Saved lists</h3>
 					<p>The panel's <strong>Lists</strong> tab shows the snippet's playlists: the default <code>playlist</code> first, then each one in <code>playlists</code>. <code>playlists</code> is a comma-separated list of YouTube playlists and <a href="#link-lists">playlists of links</a>, up to 10 in all:</p>
@@ -504,8 +540,8 @@
 						<li><strong>Add All</strong> adds every video to the end of the playlist, skipping ones already in it.</li>
 						<li><strong>Replace</strong> (host) makes the list the playlist.</li>
 					</ul>
-					<p>Adding follows the usual rules: anyone can add while the player is unlocked, and only the host while it's locked.</p>
-					<p>You can also save lists from inside the world. Pasting a YouTube playlist or a list of links into Search or <strong>Add by link</strong> asks what to do with it:</p>
+					<p>Adding follows <a href="#host">who controls the player</a>: with <strong>Everyone</strong>, anyone can use Add and Add All. Otherwise anyone else's Add waits for the host to approve it, and Add All is the host's only.</p>
+					<p>You can also save lists from inside the world. Pasting a YouTube playlist or a list of links into <strong>+ Search &amp; Add</strong> or <strong>&#9776; &rsaquo; Add by link</strong> asks what to do with it:</p>
 					<ul>
 						<li><strong>Replace Playlist</strong> (host).</li>
 						<li><strong>Add All to End.</strong></li>
@@ -520,24 +556,33 @@
 					</ul>
 					<p>The snippet's lists come first, then the shared ones, then your own. The server remembers what it read from a list for 5 minutes, so a change to the file shows after that.</p>
 
-					<h3>Who's in charge (the host)</h3>
+					<h3 id="host">Who's in charge (the host)</h3>
+					<p>The <strong>host</strong> (&#9819;) runs the player for everyone. If you can't skip or change the video, someone else is the host. In <strong>&#9776;</strong>, the host picks one of three, and the padlock at the top of everyone's panel shows which is on:</p>
 					<ul>
-						<li>The <strong>host</strong> controls what plays for everyone. If you can't skip or change the video, someone else is the host.</li>
-						<li>To become the host, open <strong>More...</strong> and press <strong>Take Over</strong>. The host can <strong>Lock</strong> the player so nobody else can take over, and can turn on <strong>Voting</strong> so people vote on what plays next.</li>
+						<li><strong>Only the host</strong> (green, closed padlock): only the host changes videos. Videos other people add wait on a brown row until the host presses <strong>&#10003;</strong> or <strong>&#10005;</strong>. Each person can have 3 waiting, and 30 can wait in all.</li>
+						<li><strong>Everyone</strong> (orange, open padlock): anyone can add videos and save lists, but only the host can play, skip, move or remove them. Switching to Everyone adds every waiting video.</li>
+						<li><strong>Everyone + Take Over</strong> (red, open padlock): anyone can press <strong>&#9819; Take Over</strong> and become the host.</li>
 					</ul>
+					<p>When the host leaves the space, Take Over turns on after 42 seconds, so the player is never stuck.</p>
+					<p><strong>Voting</strong> (host, in &#9776;) lets people vote videos up and down, and the top-voted video plays next. With voting on, <strong>Next</strong> ends the current video as if it had finished.</p>
 
 					<h3>Karaoke mode</h3>
 					<p>Whoever runs the karaoke should press <strong>Take Over</strong> first, as only the host can start other people's songs. The <strong>Singers</strong> button (and Join/Leave Queue) opens the panel as a <strong>Singers panel</strong>:</p>
 					<ul>
-						<li><strong>Now singing</strong> shows who is singing which song. The host and the singer get <strong>Restart Song</strong> and <strong>Stop Song</strong>.</li>
-						<li><strong>Singers</strong> is the queue.
+						<li><strong>Now singing</strong> shows who is singing which song. The host and the singer get <strong>|&#9664;</strong> (start the song again) and <strong>&#9632;</strong> (stop it).</li>
+						<li><strong>&#9834; Singers</strong> is the queue.
 							<ul>
-								<li>The host can <strong>Play &amp; Sing</strong> anyone, move singers <strong>Up</strong> or <strong>Down</strong>, and <strong>Remove</strong> them.</li>
-								<li>The singer at the top can start their own song.</li>
-								<li>Anyone can <strong>Remove Me</strong>.</li>
+								<li>The host can <strong>&#9654; Sing</strong> anyone (start their song), move singers up or down, and <strong>&#10005;</strong> remove them.</li>
+								<li>With control on <strong>Everyone</strong>, the singer at the top can start their own song, but only when no song is playing.</li>
+								<li>Anyone can <strong>&#10005; Leave</strong>.</li>
 							</ul></li>
-						<li><strong>Search</strong> finds a song, or takes a pasted video link. <strong>Sing It</strong> puts you in the queue with that song. You can be in the queue once.</li>
-						<li><strong>More...</strong> has the host controls, including <strong>Auto Advance</strong>, which starts the next singer when a song ends. It also has seek, and your own skip, Auto Sync and Captions.</li>
+						<li><strong>+ Search Songs</strong> finds a song, or takes a pasted video link.
+							<ul>
+								<li><strong>&#9654; Preview</strong> plays it on the main screen just for you, so you can check it loads and has lyrics before adding it. <strong>&#9632; Stop</strong> or closing the panel goes back to the room's song.</li>
+								<li><strong>&#9834; Sing It</strong> puts you in the queue with that song. You can be in the queue once.</li>
+								<li>While only the host controls the player, your song waits in the queue until the host presses <strong>&#10003;</strong> or <strong>&#10005;</strong>.</li>
+							</ul></li>
+						<li><strong>&#9776;</strong> has the host controls, including <strong>Auto Advance</strong>, which starts the next singer when a song ends. It also has your own skip, Auto Sync and CC.</li>
 					</ul>
 					<p><strong>Singing area (optional).</strong> The <code>box-trigger-*</code> settings add a box people stand in to sing:</p>
 					<ul>
@@ -567,6 +612,8 @@
 								<li>A series in the results adds its first episode. Paste the series link to see every episode.</li>
 							</ul></li>
 						<li><strong>NASA+.</strong></li>
+						<li><strong>ESO:</strong> all of ESO's astronomy videos. <strong>ESO Fulldome</strong> only its fulldome videos, for planetarium domes.</li>
+						<li><strong>Screen Share</strong> (only with <code>untrusted-links="true"</code>): a screen.sdq.st room code finds that room's screen share.</li>
 					</ul>
 
 					<h3>Always allowed</h3>
@@ -574,18 +621,27 @@
 					<table>
 						<thead><tr><th>Link</th><th>Example</th><th>Notes</th></tr></thead>
 						<tbody>
-							<tr><td>YouTube video or playlist</td><td><code>https://www.youtube.com/watch?v=...</code></td><td>Stays in sync. Mixes (<code>RD...</code>) can't be used as playlists.</td></tr>
-							<tr><td>Twitch channel</td><td><code>https://www.twitch.tv/&lt;channel&gt;</code></td><td>Live, so it plays until someone skips. Seek and skip do nothing. If Twitch waits for a click or starts muted, the player clicks the screen for you (a few tries at most).</td></tr>
+							<tr><td>YouTube video or playlist</td><td><code>https://www.youtube.com/watch?v=...</code></td><td>Stays in sync. Mixes (<code>RD...</code>) can't be used as playlists. Live streams play from their live point (see <a href="#live">Live YouTube videos</a>).</td></tr>
+							<tr><td>Twitch channel</td><td><code>https://www.twitch.tv/&lt;channel&gt;</code></td><td>Live, so it plays until someone skips. Seek and skip do nothing. It starts muted, as Twitch won't start with sound on its own, and the sound comes on a moment later. If it hasn't started after a few seconds, the player reloads it once, then clicks the screen for you (a few tries at most).</td></tr>
 							<tr><td>Twitch video (VOD)</td><td><code>https://www.twitch.tv/videos/&lt;id&gt;</code></td><td>Stays in sync like YouTube.</td></tr>
-							<tr><td>Twitch clip</td><td><code>https://clips.twitch.tv/&lt;id&gt;</code></td><td>Twitch's clip player can't be controlled. Clips aren't synced, and volume, mute and <code>spatial</code> don't change them. Each gets 60 seconds before the playlist moves on.</td></tr>
+							<tr><td>Twitch clip</td><td><code>https://www.twitch.tv/&lt;channel&gt;/clip/&lt;id&gt;</code> or <code>https://clips.twitch.tv/&lt;id&gt;</code></td><td>Twitch's clip player can't be controlled. Clips aren't synced, and volume, mute and <code>spatial</code> don't change them. Each gets 60 seconds before the playlist moves on.</td></tr>
 							<tr><td>Vimeo</td><td><code>https://vimeo.com/&lt;id&gt;</code></td><td>Only videos whose owner allows embedding on other sites.</td></tr>
-							<tr><td>Tubi movie or episode</td><td><code>https://tubitv.com/movies/&lt;id&gt;/&lt;name&gt;</code></td><td>Free films and TV, without Tubi's ads. Stays in sync. Titles Tubi only offers with copy protection (DRM) or to signed-in viewers say so instead of playing. What's available depends on the server's country.</td></tr>
+							<tr><td>Tubi movie or episode</td><td><code>https://tubitv.com/movies/&lt;id&gt;/&lt;name&gt;</code> or <code>https://tubitv.com/tv-shows/&lt;id&gt;/&lt;name&gt;</code></td><td>Free films and TV, without Tubi's ads. Stays in sync. Titles Tubi only offers with copy protection (DRM) or to signed-in viewers say so instead of playing. What's available depends on the server's country.</td></tr>
 							<tr><td>Tubi series</td><td><code>https://tubitv.com/series/&lt;id&gt;/&lt;name&gt;</code></td><td>In search, lists every episode. As a list, opens its episodes.</td></tr>
 							<tr><td>NASA+ video</td><td><code>https://plus.nasa.gov/video/&lt;name&gt;/</code></td><td>NASA's own videos. Stays in sync.</td></tr>
+							<tr><td>ESO or ESA/Hubble video</td><td><code>https://www.eso.org/public/videos/eso-jcmw/</code>, <code>https://esahubble.org/videos/dome_iya2009/</code></td><td>Astronomy videos and planetarium shows, free to use with their credit, played from the site's own MP4. Stays in sync. Archive pages (a category or a search) work as lists of up to 100 videos.</td></tr>
 							<tr><td>Library of Congress film</td><td><code>https://www.loc.gov/item/mbrs01836081/</code></td><td>Public-domain films from the Library's own video files. Stays in sync. See below.</td></tr>
 						</tbody>
 					</table>
 					<p>Tubi categories (<code>https://tubitv.com/category/westerns</code>), Tubi series and NASA+ series (<code>https://plus.nasa.gov/video_series/&lt;name&gt;/</code>) also work as lists in <code>playlist</code>, <code>playlists</code>, <strong>Load Playlist</strong> and list files. You can then browse them from the Lists tab. A category list has its films, not its series.</p>
+
+					<h3 id="live">Live YouTube videos</h3>
+					<ul>
+						<li>A live stream plays from its <strong>live point</strong>, for everyone together. In search, it has a <strong>LIVE</strong> badge.</li>
+						<li>Its time shows how far behind live it is, such as <strong>-0:30:00 / LIVE</strong>, or <strong>LIVE</strong> at the live point.</li>
+						<li>Seeks and skips go back as far as YouTube keeps the stream (its last 12 hours) and stop at the live point.</li>
+						<li>Coming back to a live video goes to its live point, unless the host has seeked in it since.</li>
+					</ul>
 
 					<h3>Library of Congress films</h3>
 					<p>These links all work, in search, Load Playlist and list files:</p>
@@ -609,6 +665,7 @@
 							<tr><td>DASH stream</td><td><code>https://.../manifest.mpd</code></td><td>Like HLS. Protected (DRM) streams can't play, and some codecs (HEVC, MPEG-H audio) may not.</td></tr>
 							<tr><td>VRCDN stream</td><td><code>https://stream.vrcdn.live/live/NAME.live.ts</code> or <code>rtspt://stream.vrcdn.live/live/NAME</code></td><td>Plays for everyone, PC and Quest. The <code>rtspt://</code> link is changed to the <code>.live.ts</code> one. Plays until someone skips. Test stream: <code>https://stream.vrcdn.live/live/vrcdn.live.ts</code></td></tr>
 							<tr><td>VDO.Ninja</td><td><code>https://vdo.ninja/?view=&lt;stream id&gt;</code>, or <code>?room=&lt;room&gt;&amp;scene</code></td><td>Shows VDO.Ninja's own page until someone skips. Volume and mute work, but there's no pause or seek. Links that would join a room or send video (<code>?push=</code>, or <code>?room=</code> without <code>scene</code>) aren't accepted.</td></tr>
+							<tr><td>Screen share (screen.sdq.st)</td><td><code>https://screen.sdq.st:8443/?room=&lt;room&gt;</code>, or the room's publish link</td><td>The room's shared screen. Volume, mute and pause work, but there's no seek. It can be added before anyone is sharing: the screen waits and shows the share when it starts, and joins again if the connection drops.</td></tr>
 						</tbody>
 					</table>
 					<p>If a browser won't start a file with sound, it starts muted and the sound comes on at the first click on the screen.</p>
@@ -619,7 +676,8 @@
 						<li><strong>One at a time:</strong> while a file plays, the browser screen is swapped for the video player, and it swaps back when the playlist moves on.</li>
 						<li><strong>Controls:</strong> volume, mute, <code>spatial</code>, skips, pause and the host's controls work as usual.</li>
 						<li><strong>Sync:</strong> Unity's player can't change speed, so it jumps when it's more than a second out of step.</li>
-						<li><strong>Formats:</strong> MP4 with H.264 video is safest, especially on Quest. On PC, WebM needs VP8 video, not VP9. Ogg Theora video doesn't play on Quest at all.</li>
+						<li><strong>Formats:</strong> MP4 with H.264 video is safest, especially on Quest. On PC, Unity's player plays WebM only with VP8 video, so WebM with VP9 or AV1 plays in the browser screen instead. Ogg Theora video doesn't play on Quest at all.</li>
+						<li><strong>Backup:</strong> a file the world's player can't start (after 10 seconds for WebM, 20 for anything else) plays in the browser screen for that viewer instead, if its host lets other sites play it.</li>
 						<li><strong>Audio files</strong> play in the browser screen, so their host must let other sites play its files.</li>
 						<li><strong>Size:</strong> the video player is sized like the browser screen. Set <code>native-screen-size</code> if it doesn't match yours.</li>
 						<li><strong>Outside a world</strong> (the 2D page), files still play in the browser.</li>
@@ -644,8 +702,9 @@
 						<li><strong>A Google Drive folder</strong> shared with anyone who has the link: every video directly inside it, sorted by name. Subfolders are skipped.</li>
 						<li><strong>An archive.org item</strong> (<code>https://archive.org/details/&lt;id&gt;</code>): its videos.</li>
 						<li><strong>A Library of Congress free-to-use page:</strong> its films.</li>
+						<li><strong>An ESO or ESA/Hubble archive page</strong>, such as ESO's <a href="https://www.eso.org/public/videos/archive/category/fulldome/" target="_blank" rel="noopener">Fulldome</a> category, another category, or a search: its first 100 videos.</li>
 					</ul>
-					<p>A list file can mix everything the player plays: YouTube videos and playlists (each playlist is expanded), Twitch, Vimeo, VDO.Ninja, streams, files, Drive and Dropbox files, archive.org items and Library of Congress films.</p>
+					<p>A list file can mix everything the player plays: YouTube videos and playlists (each playlist is expanded), Twitch, Vimeo, VDO.Ninja, streams, files, Drive and Dropbox files, archive.org items, Library of Congress films and ESO videos.</p>
 					<ul>
 						<li>Blank lines and lines starting with <code>#</code> are ignored.</li>
 						<li>Text after a link on the same line becomes that video's title. So does an m3u <code>#EXTINF:&lt;seconds&gt;,&lt;title&gt;</code> line above it.</li>
@@ -679,7 +738,7 @@ https://archive.org/details/Popeye_forPresident</code></pre>
 				<!-- 8. Space admins -->
 				<section id="admins">
 					<h2>8. Space admin tools</h2>
-					<p class="lead">At the bottom of the panel's <strong>More...</strong> view, the <strong>Space admins only</strong> section has tools for the world's owner, an Owner or Moderator of the community hosting it, or a SideQuest admin.</p>
+					<p class="lead">At the bottom of the panel's <strong>&#9776;</strong> (More) view, the <strong>Space admins only</strong> section has tools for the world's owner, an Owner or Moderator of the community hosting it, or a SideQuest admin.</p>
 					<p>Everyone sees these buttons, because the client can't always tell who is a space admin, but they only work for space admins. When someone else presses one, nothing changes and the panel says so after a few seconds.</p>
 
 					<h3>Switching between playlist and karaoke</h3>
@@ -694,11 +753,11 @@ https://archive.org/details/Popeye_forPresident</code></pre>
 					<h3>Admin Take Over</h3>
 					<p><strong>Admin Take Over</strong> (shown when you aren't the host) makes a space admin the host, even when the player is locked or the host has turned Take Over off. A world's owner or moderators can always stop someone running the player.</p>
 					<ul>
-						<li>While the admin is in the space, nobody else can take over. They can turn it back on, or Lock and Unlock, like any host.</li>
+						<li>While the admin is in the space, nobody else can take over. They can change <a href="#host">who controls the player</a> like any host.</li>
 						<li>When they leave, the usual rule applies: 42 seconds later anyone can take over again, so people can still use the player when no admin is around.</li>
 						<li>It saves the admin's ID as protected space state (the key <code>fire-v-player-admin</code>).</li>
 						<li>The player server trusts the admin's player, as it trusts every player's own user ID. That stops anyone using the normal client, but not a modified one.</li>
-						<li>The room is shared by everyone with the same <code>room</code>, so an admin of one world can take control of a room another world uses too. Without a <code>room</code>, each space has its own.</li>
+						<li>A room shared on purpose with <code>shared:</code> (see <a href="#rooms">Rooms</a>) is shared by every world that uses it, so an admin of one of them can take control of it for all of them. Otherwise each space has its own room.</li>
 					</ul>
 
 					<h3>Blacklist</h3>
@@ -721,7 +780,7 @@ https://archive.org/details/Popeye_forPresident</code></pre>
 						<thead><tr><th>Setting</th><th>What it does</th><th>Default</th></tr></thead>
 						<tbody>
 							<tr><td><code>src</code></td><td>Script tags only, and required: the player's <code>playlist.js</code> or <code>karaoke.js</code>.</td><td>&ndash;</td></tr>
-							<tr><td><code>instance</code> / <code>room</code></td><td>Everyone with the same ID shares one player. Script tags use <code>instance</code>, snippets <code>room</code>.</td><td>The page or space</td></tr>
+							<tr><td><code>instance</code> / <code>room</code></td><td>The room's name. Each space has its own room for a name; <code>shared:&lt;name&gt;</code> is the same room in every world that uses it. See <a href="#rooms">Rooms</a>. Script tags use <code>instance</code>, snippets <code>room</code>.</td><td>The space</td></tr>
 							<tr><td><code>karaoke</code></td><td>Snippets: <code>true</code> for karaoke mode.</td><td><code>false</code></td></tr>
 							<tr><td><code>playlist</code></td><td>What to load when the room is empty. Accepts:
 								<ul>
@@ -729,19 +788,21 @@ https://archive.org/details/Popeye_forPresident</code></pre>
 									<li>a <a href="#link-lists">playlist of links</a></li>
 									<li>a Tubi category or series</li>
 									<li>a NASA+ series</li>
+									<li>an ESO or ESA/Hubble archive page</li>
 								</ul></td><td><code>""</code></td></tr>
 							<tr><td><code>playlists</code></td><td>Saved playlists for the Lists tab, comma separated, up to 10 with <code>playlist</code>. See <a href="#lists">Saved lists</a>.</td><td><code>""</code></td></tr>
 							<tr><td><code>youtube</code></td><td>A YouTube video to show when nothing is playing.</td><td>A silent video</td></tr>
 							<tr><td><code>volume</code></td><td>Starting volume, <code>0</code> to <code>100</code>.</td><td><code>40</code> (snippet <code>10</code>)</td></tr>
 							<tr><td><code>mute</code></td><td>Start muted.</td><td><code>false</code></td></tr>
-							<tr><td><code>untrusted-links</code></td><td>Also allow links from any site. See <a href="#links">What it can play</a>. Each viewer's own world must allow them for them to play on their screen.</td><td><code>false</code></td></tr>
-							<tr><td><code>captions</code></td><td>Whether captions start on. Each viewer can change it in More, remembered on their device.</td><td><code>true</code></td></tr>
+							<tr><td><code>untrusted-links</code></td><td>Also allow links from any site: video files, <code>.m3u8</code> and <code>.mpd</code> streams, VRCDN, VDO.Ninja and screen.sdq.st screen shares. See <a href="#links">What it can play</a>. Each viewer's own world must allow them for them to play on their screen.</td><td><code>false</code></td></tr>
+						<tr><td><code>ready-delay</code></td><td>The longest, in seconds, a new playlist song waits for everyone's screen to load it before it starts. It starts as soon as every screen has it, so a room of PCs hardly waits, and a slow screen (a Quest) doesn't start late and then jump ahead. <code>0</code> starts songs at once. Up to <code>15</code>. Karaoke and live videos don't wait.</td><td><code>5</code></td></tr>
+							<tr><td><code>captions</code></td><td>Whether captions start on. Each viewer can change it with <strong>CC</strong> in &#9776;, remembered on their device.</td><td><code>true</code></td></tr>
 							<tr><td><code>resolution</code></td><td>Width in pixels of the screen's page, from 640 to 3840. The page is 16:9, so <code>1600</code> is 1600&times;900.
 								<ul>
 									<li>Higher is sharper, and YouTube and Twitch lay out as for a bigger window.</li>
 									<li>Each frame costs more to draw, especially on Quest.</li>
 									<li>The screen stays the same size in the world.</li>
-									<li>Each viewer can pick another in More.</li>
+									<li>Each viewer can pick another in &#9776;.</li>
 								</ul></td><td><code>1600</code></td></tr>
 							<tr><td><code>space-screen</code></td><td>Altspace only.
 								<ul>
@@ -760,9 +821,12 @@ https://archive.org/details/Popeye_forPresident</code></pre>
 							<tr><td><code>position</code></td><td><code>x y z</code> position of the screen.</td><td><code>0 0 0</code></td></tr>
 							<tr><td><code>rotation</code></td><td><code>x y z</code> rotation of the screen.</td><td><code>0 0 0</code></td></tr>
 							<tr><td><code>scale</code></td><td>Size of the screen: <code>x y z</code>, or one number in a snippet.</td><td><code>1 1 1</code></td></tr>
-							<tr><td><code>spatial</code></td><td>Volume fades as you walk away from the screen. It only changes the volume. On PC the sound always comes from the screen's direction. On Quest it isn't placed in the world.</td><td><code>true</code></td></tr>
+							<tr><td><code>spatial</code></td><td>Volume fades as you walk away from the screen. Turned off, the volume is the same wherever you stand. Works with both <code>audio-3d</code> settings. Each viewer can pick their own with <strong>Fade</strong> in &#9776;.</td><td><code>true</code></td></tr>
 							<tr><td><code>spatial-min-distance</code></td><td>With <code>spatial</code>, the distance where the fade starts.</td><td><code>5</code></td></tr>
 							<tr><td><code>spatial-max-distance</code></td><td>With <code>spatial</code>, how far past the start the volume reaches zero.</td><td><code>40</code></td></tr>
+						<tr><td><code>audio-3d</code></td><td><code>true</code>: 3D sound from the direction of the screen (or <code>audio-position</code>). <code>false</code>: 2D sound, the same in both ears. On PC and Quest. Each viewer can pick their own with <strong>Sound</strong> in &#9776;.</td><td><code>true</code></td></tr>
+						<tr><td><code>audio-position</code></td><td>The <code>x y z</code> position the sound comes from, in the same terms as <code>position</code>. Empty: the screen.</td><td>Empty</td></tr>
+						<tr><td><code>audio-position-left</code>, <code>audio-position-right</code></td><td>Separate positions for the left and right speakers of a <strong>video file</strong>, for stereo across a room. YouTube and other links play through one speaker, at <code>audio-position</code>.</td><td>Empty</td></tr>
 							<tr><td><code>mip-maps</code></td><td>Mip-map levels for the browser texture, in older Banter clients. The Creator SDK ignores it.</td><td><code>1</code></td></tr>
 						</tbody>
 					</table>
@@ -772,7 +836,7 @@ https://archive.org/details/Popeye_forPresident</code></pre>
 						<thead><tr><th>Setting</th><th>What it does</th><th>Default</th></tr></thead>
 						<tbody>
 							<tr><td><code>hand-controls</code></td><td>Gives everyone seven buttons that go with them. See <a href="#using">Hand controls</a>.</td><td><code>false</code></td></tr>
-							<tr><td><code>hand-controls-place</code></td><td>Where they start until someone picks: <code>auto</code> (left wrist in VR, in view on desktop), <code>left</code>, <code>right</code>, <code>view</code>, <code>front</code> or <code>off</code>.</td><td><code>auto</code></td></tr>
+							<tr><td><code>hand-controls-place</code></td><td>Where they start until someone picks: <code>auto</code> (left wrist in VR, big view corner on desktop), <code>left</code>, <code>right</code>, <code>view</code>, <code>big-corner</code>, <code>corner</code>, <code>front</code> or <code>off</code>. The wrists are VR only and the corners desktop only: someone who can't see the place starts at their own default.</td><td><code>auto</code></td></tr>
 							<tr><td><code>hand-controls-position</code></td><td>Moves the hand buttons on the wrist: <code>x y z</code> in metres, in the left hand's own axes (mirrored on the right).
 								<ul>
 									<li><code>z</code>: bigger slides them toward the fingers, smaller toward the wrist.</li>
@@ -794,14 +858,14 @@ https://archive.org/details/Popeye_forPresident</code></pre>
 								<ul>
 									<li><code>panel</code>: the in-world panel.</li>
 									<li><code>page</code>: the 2D playlist page in the client's menu browser.</li>
-									<li><code>auto</code>: the panel when the client supports it (the Creator SDK), otherwise the page.</li>
+									<li><code>auto</code>: the panel when the client has the UI Kit (the Creator SDK), otherwise the page.</li>
 								</ul></td><td><code>auto</code></td></tr>
 							<tr><td><code>playlist-panel-position</code></td><td>Where the panel sits in the world. When set, <code>playlist-panel-rotation</code> is a world rotation too, and <code>playlist-panel-offset</code> is ignored.</td><td>Beside the screen</td></tr>
 							<tr><td><code>playlist-panel-offset</code></td><td>Where the panel sits relative to the screen, in metres: <code>x</code> right, <code>y</code> up, <code>z</code> toward the viewer.</td><td>Beside the screen</td></tr>
 							<tr><td><code>playlist-panel-rotation</code></td><td>The panel's rotation. It's relative to the screen, or a world rotation when <code>playlist-panel-position</code> is set. Empty gives relative <code>0 -20 0</code>, or the screen's rotation.</td><td>See left</td></tr>
 							<tr><td><code>playlist-panel-scale</code></td><td>Size of the panel. <code>1</code> is 1.4 m wide.</td><td><code>1</code></td></tr>
 							<tr><td><code>playlist-panel-front-height</code></td><td>When the hand Playlist button opens the panel in front of you, how high its middle is above the floor, in metres.</td><td><code>1.4</code></td></tr>
-							<tr><td><code>data-*-icon-url</code></td><td>Custom button icons: <code>data-playlist-icon-url</code>, <code>data-vol-up-icon-url</code>, <code>data-vol-down-icon-url</code>, <code>data-mute-icon-url</code>, <code>data-unmute-icon-url</code>, <code>data-play-icon-url</code>, <code>data-pause-icon-url</code>, <code>data-reload-icon-url</code>, <code>data-skip-forward-icon-url</code>, <code>data-skip-backward-icon-url</code>.</td><td>Built-in icons</td></tr>
+							<tr><td><code>data-*-icon-url</code></td><td>Custom button icons: <code>data-playlist-icon-url</code>, <code>data-vol-up-icon-url</code>, <code>data-vol-down-icon-url</code>, <code>data-mute-icon-url</code>, <code>data-unmute-icon-url</code>, <code>data-play-icon-url</code>, <code>data-pause-icon-url</code>, <code>data-reload-icon-url</code>, <code>data-skip-forward-icon-url</code>, <code>data-skip-backward-icon-url</code>, and <code>data-controls-show-icon-url</code> and <code>data-controls-hide-icon-url</code> for the hand controls' fold button. The built-in icons are round Material icons. The older dotted ones are still at <code>https://firer.at/files/fvp/</code> (<code>Playlist.png</code>, <code>VolUp.png</code>, <code>VolDown.png</code>, <code>Mute.png</code>, <code>Unmute.png</code>, <code>Play.png</code>, <code>Pause.png</code>, <code>Reload.png</code>, <code>Forward.png</code>, <code>Backwards.png</code>, <code>ControlsShow.png</code>, <code>ControlsHide.png</code>).</td><td>Built-in icons</td></tr>
 						</tbody>
 					</table>
 
@@ -855,7 +919,7 @@ window.videoPlayerCore.setVolumeIncrement(-15);</code></pre>
 								<li>Blue boxes are normal on their own: they come from the SDK. The orange preview only appears once the <a href="#preview">preview script</a> is installed.</li>
 								<li>Check the file is at exactly <code>Assets/Editor/FireVPlayerSnippetPreview.cs</code>: folder named <code>Editor</code>, file ending in <code>.cs</code> (not <code>.cs.txt</code>).</li>
 								<li>Click the Fire-V-Player object in the Hierarchy: the preview only shows while it's selected.</li>
-								<li>Make sure the Scene view's <strong>Gizmos</strong> button (top right of the Scene view) is turned on.</li>
+								<li>The preview shows even with the Scene view's <strong>Gizmos</strong> button off, but older copies needed it on: turn it on, or <a href="#download-preview">download it again</a>. The SDK's blue boxes always need Gizmos on.</li>
 								<li>Open <span class="menu">Window &rsaquo; General &rsaquo; Console</span>. Any red errors there stop the preview; see the next two problems.</li>
 								<li>Got an old copy? <a href="#download-preview">Download it again</a>; older versions only worked if the slug was typed in lowercase.</li>
 							</ul>
