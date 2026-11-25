@@ -338,10 +338,10 @@
 
 				<!-- 4. More screens -->
 				<section id="screens">
-					<h2>4. Show the video on more screens (Unity)</h2>
-					<p class="lead">You can show what the player is playing on any number of extra surfaces in your world: a second screen at the back of the room, a curved screen, even a sphere.</p>
+					<h2>4. Show the video on more screens</h2>
+					<p class="lead">You can show what the player is playing on any number of extra surfaces in your world: a second screen at the back of the room, a curved screen, even a sphere. In Unity, follow the steps below. Without Unity, <a href="#screens-html">add them in your world's HTML</a>.</p>
 
-					<h3>Second screens (the easy way)</h3>
+					<h3>Second screens in Unity (the easy way)</h3>
 					<ol class="steps">
 						<li><strong>Pick or make an object</strong> to show the video on. Any shape works: a flat quad, a curved screen, a sphere. It needs no camera or render texture.</li>
 						<li><strong>Give it a <span class="menu">BS Material</span></strong> component.</li>
@@ -370,6 +370,66 @@
 						<li><strong>Make a screen:</strong> choose <span class="menu">GameObject &rsaquo; Fire-V-Player &rsaquo; Second Screen</span>, or right-click in the Hierarchy.</li>
 						<li><strong>Move it</strong> wherever you want it.</li>
 					</ol>
+
+					<h3 id="screens-html">Second screens in your world's HTML (no Unity)</h3>
+					<p>No Unity? Paste this into your world's HTML and you get an extra screen. It works on the website and in Altspace.</p>
+					<ol class="steps">
+						<li><strong>Copy the code below</strong> (click it).</li>
+						<li><strong>Paste it into your world's HTML</strong>, just before <code>&lt;/body&gt;</code>. Paste it <strong>once</strong>, even for lots of screens.</li>
+						<li><strong>Change only the numbers</strong> in the <code>Your screens</code> part. Leave everything under "Don't change anything below" alone.</li>
+						<li><strong>Save</strong> and join your world. The screen shows the loading picture, then the video.</li>
+					</ol>
+<pre><code>&lt;script&gt;
+// ===== Your screens: change these numbers =====
+const MY_SCREENS = [
+  { position: "0 2 -6", rotation: "0 180 0", size: 1 },
+];
+// ===== Don't change anything below =====
+(function () {
+  let made = false;
+  async function makeScreens() {
+    if (made || !BS.Scene || !BS.Plane || !BS.Material) return;
+    made = true;
+    for (let i = 0; i &lt; MY_SCREENS.length; i++) {
+      const s = MY_SCREENS[i];
+      const p = s.position.split(" ").map(Number), r = s.rotation.split(" ").map(Number);
+      const screen = await new BS.GameObject({
+        name: "Fire-V-Player Screen " + (i + 1),
+        localPosition: new BS.Vector3(p[0], p[1], p[2]),
+        localEulerAngles: new BS.Vector3(r[0], r[1], r[2])
+      }).Async();
+      await screen.AddComponent(new BS.Plane({ width: 2 * s.size, height: 1.125 * s.size }));
+      await screen.AddComponent(new BS.Material({
+        shaderName: "Unlit/Diffuse",
+        texture: "https://firer.at/files/fvp/SecondScreenLoading.png",
+        color: new BS.Vector4(1, 1, 1, 1)
+      }));
+    }
+  }
+  function start() {
+    const scene = (BS.Scene || BS.BanterScene).GetInstance();
+    if (scene.unityLoaded) makeScreens();
+    scene.On("unity-loaded", makeScreens);
+  }
+  if (window.BS) start(); else window.addEventListener("bs-loaded", start);
+})();
+&lt;/script&gt;</code></pre>
+					<p>What the numbers mean:</p>
+					<ul>
+						<li><strong><code>position</code></strong> is where the screen goes, as <code>"left/right up/down forward/back"</code> in metres from the middle of your world. <code>"0 2 -6"</code> is 2 m up and 6 m behind the middle.
+							<span class="sub">These are the same numbers Unity uses, the same as the snippet's <code>position</code>, not the flipped Z of a <a href="#banter">script tag</a>.</span></li>
+						<li><strong><code>rotation</code></strong> is which way it faces. <code>"0 0 0"</code> faces the same way as the main screen. <code>"0 180 0"</code> turns it right round, for a screen on the back wall. <code>"0 90 0"</code> is for the right-hand wall and <code>"0 -90 0"</code> for the left-hand wall (as you look at the main screen).</li>
+						<li><strong><code>size</code></strong>: <code>1</code> is the same size as the main screen at its default size, <code>2</code> is twice as big.</li>
+					</ul>
+					<p><strong>More than one screen?</strong> Copy the <code>{ ... },</code> line, one line per screen:</p>
+<pre><code>const MY_SCREENS = [
+  { position: "0 2 -6", rotation: "0 180 0", size: 1 },
+  { position: "6 1.5 7", rotation: "0 37 0", size: 1 },
+  { position: "0 3.5 8", rotation: "-15 0 0", size: 4 },
+];</code></pre>
+					<div class="callout warn">
+						<p><strong>Keep the quotes and commas.</strong> Each <code>position</code> and <code>rotation</code> is three numbers inside quotes with spaces between, and every line ends with a comma. Missing one stops every screen showing.</p>
+					</div>
 
 					<h3>Camera screens</h3>
 					<p>A camera screen is a camera filming the player's screen into a render texture, such as a "RenderTextureScreen" prefab. Unlike second screens, it also shows video files. The cost is a second render of the scene every frame.</p>
